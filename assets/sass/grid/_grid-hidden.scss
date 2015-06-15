@@ -1,0 +1,28 @@
+%origam-hidden,
+.origam-hidden{
+  display: none !important;
+}
+
+@media (max-width: $origam-sm) {
+  .origam-hidden--small{
+    display: none !important;
+  }
+}
+
+@media (min-width: ($origam-sm+1)) and (max-width: $origam-md) {
+  .origam-hidden--medium{
+    display: none !important;
+  }
+}
+
+  @media (min-width: ($origam-md+1)) and (max-width: $origam-lg) {
+  .origam-hidden--large{
+    display: none !important;
+  }
+}
+
+@media (min-width: $origam-lg) {
+  .origam-hidden--xlarge{
+    display: none !important;
+  }
+}

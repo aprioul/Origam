@@ -1,0 +1,86 @@
+/**
+ *
+ */
+@media (max-width: $origam-sm) {
+  body:after {
+    display: none;
+    content: "small";
+  }
+}
+
+@media (min-width: ($origam-sm+1)) {
+  body:after {
+    display: none;
+    content: "medium";
+  }
+}
+
+@media (min-width: ($origam-md+1)) {
+  body:after {
+    display: none;
+    content: "large";
+  }
+}
+
+@media (min-width: ($origam-lg+1)) {
+  body:after {
+    display: none;
+    content: "xlarge";
+  }
+}
+
+/**
+ *
+ */
+* {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/**
+ * 1. Remove inter-unit whitespace that appears between `inline-block` child
+ * elements. Work for all non-monospace font-families. If you're using a
+ * monospace base font, you will need to set the `Grid` font-family to
+ * `sans-serif` and then redeclare the monospace font on the `Grid-cell`
+ * objects.
+ * 2. Reset IE < 8
+ * 3. IE < 8 :collapse white-space between units
+ * 4. Protect against WebKit bug with optimizelegibility.
+ */
+%#{$origam-grid-prefix},
+.#{$origam-grid-prefix} {
+  clear: both;
+  display: block;
+  letter-spacing: -0.31em;
+  *letter-spacing: normal;
+  *word-spacing: -0.43em;
+  text-rendering: optimizespeed;
+  .#{$origam-grid-prefix} {
+    margin-left: -$origam-grid-padding;
+    margin-right: -$origam-grid-padding;
+  }
+  > .#{$origam-grid-prefix} {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+/**
+ * Hack to remove inter-child whitespace in Opera for Windows. All other supported browsers will drop the ruleset.
+ * The ".opera" selector is used to prevent actual prefocus styling and is not required in markup.
+ */
+%#{$origam-grid-prefix}-wordspace,
+.opera:-o-prefocus,
+.#{$origam-grid-prefix} {
+  word-spacing: -0.43em;
+}
+
+/**
+ *
+ */
+%#{$origam-grid-prefix}-no-maxwidth,
+.#{$origam-grid-prefix}__cell .#{$origam-grid-prefix} {
+  max-width: none;
+}

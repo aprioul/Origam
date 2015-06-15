@@ -1,0 +1,22 @@
+/**
+ * 1. Fundamentals of the non-float grid layout mechanism.
+ * 2. Controls vertical positioning of units.
+ * 3. Reset text defaults.
+*/
+%#{$origam-grid-prefix}__cell,
+.#{$origam-grid-prefix}__cell {
+  position: relative;
+  display: -moz-inline-block;
+  /* 1 */
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  margin: 0;
+  padding-left: $origam-grid-padding;
+  padding-right: $origam-grid-padding;
+  width: 100%;
+  vertical-align: top;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-rendering: auto;
+}
