@@ -1,0 +1,66 @@
+/**
+  * Pager
+  */
+
+.goo-pager {
+  @include position(relative, null, null, null, null);
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.goo-pager--navigation {
+  @include position(relative, null, null, null, null);
+  text-align: center;
+  font-size: 0;
+  @include filter(url("../filter/filter.html#goo"));
+  @include translateZ(0);
+}
+
+.goo-pager--dot,
+.goo-pager--current {
+  @include position(relative, null, null, null, null);
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  line-height: 32px;
+  background: $primary-color-1;
+  @include border-radius(50%);
+  margin: 0 $padding-base-horizontal;
+  border: none;
+  outline: none;
+  font-size: $font-size-large;
+  font-weight: bold;
+  color: #fff;
+  font-family: $font-family-sans-serif;
+}
+
+.goo-pager--number {
+  display: block;
+  width: 100%;
+  height: 100%;
+  @include border-radius(50%);
+  @include scale(0.01, 0.01);
+}
+
+.goo-pager--current {
+  @include position(absolute, 0, null, null, 0);
+}
+
+.goo-pager--content {
+  height: 300px;
+}
+
+.goo-pager--item {
+  @include position(absolute, null, null, null, 50%);
+  margin-left: -200px;
+  font-size: 0;
+  @include border-radius($border-radius-large);
+  border: 7px solid #fff;
+}
+
+.goo-pager--item img {
+  @include position(relative, null, null, null, null);
+  @include opacity(0.95);
+}

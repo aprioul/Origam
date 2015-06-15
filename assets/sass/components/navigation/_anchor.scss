@@ -1,0 +1,28 @@
+/**
+  * Anchor
+  */
+
+.anchor-link {
+  float: left;
+  width: 1em;
+  height: 1em;
+  margin-left: -1.2em;
+  opacity: 0;
+  color: inherit;
+  text-align: center;
+  :hover > &{
+    opacity: .75;
+    @include transition(color, .16s, linear);
+    text-decoration: none;
+    &:hover {
+      opacity: 1;
+    }
+  }
+  .origamicon{
+    font-size: 60%;
+    vertical-align: .2em;
+  }
+}
+
+
+
