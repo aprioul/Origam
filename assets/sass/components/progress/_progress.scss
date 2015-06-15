@@ -1,0 +1,131 @@
+/**
+  * Progress bar
+  */
+
+$width: 100px;
+$zoom: 1.7;
+
+.progress-circular {
+  @include position(relative, null, null, null, null);
+  margin: 0px auto;
+  @include size($width, $width);
+  zoom: $zoom;
+  background: url('../images/circular.svg');
+}
+
+.circular {
+  @include animation(rotate, 2s, linear, infinite);
+  @include size($width, $width);
+  @include position(relative, null, null, null, null);
+}
+
+
+.path {
+  stroke-dasharray: 1,200;
+  stroke-dashoffset: 0;
+  @include animation(dash, 1.5s, ease-in-out, infinite);
+  @include animation(color, 6s, ease-in-out, infinite);
+  stroke-linecap: round;
+}
+
+%progress-bar,
+.progress-bar{
+  z-index: 1031;
+  background: $blue-grey-50;
+  @include size(100%, 10px);
+  @include position(fixed, 0, null, null, 0);
+}
+
+
+.progress-bar {
+  overflow: hidden;
+  .bar {
+    @extend %progress-bar;
+    background: $primary-color-1;
+    @include position(absolute, 0, null, null, 0);
+    @include animation(indeterminate, 2.8s, infinite, linear);
+    @include animation(color, 11.2s, ease-in-out, infinite);
+  }
+}
+
+@include keyframes(indeterminate) {
+  0% {
+    @include translateX(-100%);
+    @include scaleX(0.2);
+  }
+  20% {
+    @include translateX(-40%);
+    @include scaleX(0.2);
+  }
+  30% {
+    @include translateX(0%);
+    @include scaleX(0.5);
+  }
+  55% {
+    @include translateX(100%);
+    @include scaleX(0.7);
+  }
+  55.99% {
+    @include scaleX(0);
+  }
+  56% {
+    @include translateX(-100%);
+    @include scaleX(0);
+  }
+  56.99% {
+    @include translateX(-100%);
+    @include scaleX(0.6);
+  }
+  75% {
+    @include translateX(-5%);
+    @include scaleX(0.6);
+  }
+  85% {
+    @include translateX(30%);
+    @include scaleX(0.3);
+  }
+  98% {
+    @include translateX(100%);
+    @include scaleX(0.2);
+  }
+  99.99% {
+    @include scaleX(0);
+  }
+  100% {
+    @include translateX(-100%);
+  }
+}
+
+@include keyframes(rotate){
+  100%{
+    @include rotate(360deg);
+  }
+}
+@include keyframes(dash){
+  0%{
+    stroke-dasharray: 1,200;
+    stroke-dashoffset: 0;
+  }
+  50%{
+    stroke-dasharray: 89,200;
+    stroke-dashoffset: -35;
+  }
+  100%{
+    stroke-dasharray: 89,200;
+    stroke-dashoffset: -124;
+  }
+}
+@include keyframes(color){
+  100%, 0%{
+    stroke: $red;
+  }
+  40%{
+    stroke: $blue;
+  }
+  66%{
+    stroke: $green;
+  }
+  80%, 90%{
+    stroke: $yellow;
+  }
+}
