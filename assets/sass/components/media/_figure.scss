@@ -1,0 +1,16 @@
+/**
+* Figure
+*/
+
+figure {
+  margin: 0;
+  padding: $padding-large-horizontal;
+  border: 1px solid $primary-color-1;
+
+  figcaption {
+    text-align: center;
+    margin: $padding-large-vertical 0;
+    @include font-size($base-font-size);
+    color: $base-text-color;
+  }
+}
