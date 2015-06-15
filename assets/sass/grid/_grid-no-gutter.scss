@@ -1,0 +1,12 @@
+/**
+ *
+ */
+%#{$origam-grid-prefix}-no-gutter,
+.#{$origam-grid-prefix} .#{$origam-grid-prefix}--no-gutter {
+  padding-left: $origam-grid-padding;
+  padding-right: $origam-grid-padding;
+  > .#{$origam-grid-prefix}__cell {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

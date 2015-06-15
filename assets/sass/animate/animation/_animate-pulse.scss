@@ -1,0 +1,19 @@
+/* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
+
+@include keyframes(pulse) {
+  0% {
+    @include scale3d(1, 1, 1);
+  }
+
+  50% {
+    @include scale3d(1.05, 1.05, 1.05);
+  }
+
+  100% {
+    @include scale3d(1, 1, 1);
+  }
+}
+
+.pulse {
+  @include animation-name(pulse);
+}

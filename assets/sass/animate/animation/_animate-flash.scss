@@ -1,0 +1,13 @@
+@include keyframes(flash) {
+  0%, 50%, 100% {
+    @include opacity(1);
+  }
+
+  25%, 75% {
+    @include opacity(0);
+  }
+}
+
+.flash {
+  @include animation-name(flash);
+}

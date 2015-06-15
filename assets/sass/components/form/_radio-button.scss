@@ -1,0 +1,86 @@
+/**
+  * Radio base styles
+  */
+
+.radio-group {
+  .radio-button {
+    margin-bottom: $base-space;
+  }
+}
+
+.radio-button {}
+
+.radio-button--input {
+  @extend %visuallyhidden;
+
+  &:not(:checked) {
+    & + .radio-button--label {
+      &:before {
+        @include transform(scale(1));
+      }
+
+      &:after {
+        @include transform(scale(0));
+      }
+    }
+  }
+
+  &:checked {
+    & + .radio-button--label {
+      &:before {
+        @include transform(scale(0));
+      }
+
+      &:after {
+        @include transform(scale(1));
+      }
+    }
+  }
+
+  &[disabled] {
+    & + .radio-button--label {
+      cursor: not-allowed;
+
+      &:before,
+      &:after {
+        color: $black-3;
+      }
+    }
+  }
+}
+
+.radio-button--label {
+  display: block;
+  @include position(relative, null, null, null, null);
+  padding-left: $base-space * 4;
+  font-weight: 400;
+  line-height: $size-xs;
+  cursor: pointer;
+
+  &:before,
+  &:after {
+    @include origamicon;
+    @include position(absolute, 0, null, null, 0);
+    @include font-size($size-xs);
+    line-height: $size-xs;
+    @include transition-property(transform);
+    @include transition-duration(0.2s);
+  }
+
+  &:before {
+    content: '\f3fb';
+  }
+
+  &:after {
+    content: '\f3fc';
+    color: $blue-500;
+  }
+}
+
+.radio-button--help {
+  display: block;
+  padding-left: $base-space * 4;
+  @extend %fts-caption;
+  color: $black-2;
+  text-align: left;
+}

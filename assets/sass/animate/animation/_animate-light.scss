@@ -1,0 +1,44 @@
+@include keyframes(lightSpeedIn) {
+  0% {
+    @include translate3d(100%, 0, 0);
+    @include skewX(-30deg);
+    @include opacity(0);
+  }
+
+  60% {
+    @include skewX(20deg);
+    @include opacity(1);
+  }
+
+  80% {
+    @include skewX(-5deg);
+    @include opacity(1);
+  }
+
+  100% {
+    @include transform(none);
+    @include opacity(1);
+  }
+}
+
+.lightSpeedIn {
+  @include animation-name(lightSpeedIn);
+  @include animation-timing-function (ease-out);
+}
+
+@include keyframes(lightSpeedOut) {
+  0% {
+    @include opacity(1);
+  }
+
+  100% {
+    @include translate3d(100%, 0, 0);
+    @include skewX(30deg);
+    @include opacity(0);
+  }
+}
+
+.lightSpeedOut {
+  @include animation-name(lightSpeedOut);
+  @include animation-timing-function (ease-in);
+}

@@ -1,0 +1,21 @@
+// List Icons
+// -------------------------
+
+%#{$origam-css-prefix}-ul,
+.#{$origam-css-prefix}-ul {
+  padding-left: 0;
+  margin-left: $origam-li-width;
+  list-style-type: none;
+  > li { position: relative; }
+}
+%#{$origam-css-prefix}-li,
+.#{$origam-css-prefix}-li {
+  position: absolute;
+  left: -$origam-li-width;
+  width: $origam-li-width;
+  top: (2em / 14);
+  text-align: center;
+  &.#{$origam-css-prefix}-lg {
+    left: -$origam-li-width + (4em / 14);
+  }
+}

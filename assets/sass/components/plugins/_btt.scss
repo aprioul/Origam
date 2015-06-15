@@ -1,0 +1,17 @@
+/**
+ * Back top top
+ */
+.back-to-top{
+  @include position(fixed, null, $backtop-margin, $backtop-margin, null);
+  font-size: $backtop-size;
+  height: $backtop-size;
+  width: $backtop-size;
+  line-height: $backtop-size;
+  text-align: center;
+  background: $btn-primary-bg;
+  color: $btn-primary-color;
+  border: 1px solid $btn-primary-border;
+  &:hover{
+    background: $backtop-primary-bg-hover;
+  }
+}

@@ -1,0 +1,38 @@
+/**
+  * Card base styles
+  */
+
+.card {
+  border-radius: $base-round;
+  background-color: $white;
+  overflow: hidden;
+  @include box-shadow(1);
+  @extend %clearfix;
+}
+
+// Card image
+.card-img--top{
+  .card-aside{
+    @include position(relative, null, null, null, null);
+    figure{
+      padding: 0;
+    }
+
+    span, strong,figcaption,
+    h1, h2, h3, h4, h5, h6 {
+      @include position(absolute, null, $base-space * 2, $base-space * 2, $base-space * 2);
+      color: $white;
+      text-align: left;
+    }
+  }
+}
+
+.card-content {
+  padding: $padding-large-horizontal;
+}
+
+// Card actions
+.card-actions {
+  padding: $base-space;
+  border-top: 1px solid $black-4;
+}

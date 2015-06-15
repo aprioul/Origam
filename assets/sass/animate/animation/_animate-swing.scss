@@ -1,0 +1,26 @@
+@include keyframes(swing) {
+  20% {
+    @include rotate3d(0, 0, 1, 15deg);
+  }
+
+  40% {
+    @include rotate3d(0, 0, 1, -10deg);
+  }
+
+  60% {
+    @include rotate3d(0, 0, 1, 5deg);
+  }
+
+  80% {
+    @include rotate3d(0, 0, 1, -5deg);
+  }
+
+  100% {
+    @include rotate3d(0, 0, 1, 0deg);
+  }
+}
+
+.swing {
+  @include transform-origin(top, center);
+  @include animation-name(swing);
+}

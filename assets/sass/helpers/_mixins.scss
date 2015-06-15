@@ -1,0 +1,85 @@
+@mixin font-size($font-size) {
+  font-size: $font-size;
+  font-size: ($font-size / $base-font-size) * 1rem;
+}
+
+// Icon
+@mixin origamicon() {
+  font-family: origamicon;
+  font-weight: 400;
+  font-style: normal;
+  speak: none;
+  text-decoration: inherit;
+  text-transform: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Position
+
+@mixin position($position: relative, $top: null, $right: null, $bottom: null, $left: null) {
+  @if type-of($position) == list {
+    $coordinates: $position;
+    $position: relative;
+  }
+  position: $position;
+  @if $top {
+    top: $top;
+  }
+  @if $right {
+    right:  $right;
+  }
+  @if $bottom {
+    bottom: $bottom;
+  }
+  @if $left {
+    left:   $left;
+  }
+}
+
+// Size
+
+@mixin size($width: auto, $height: auto){
+  width: $width;
+  height: $height;
+}
+
+// Box shadow
+@mixin box-shadow($shadow) {
+  @if $shadow == 1 {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  } @elseif $shadow == 2 {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+  } @elseif $shadow == 3 {
+    box-shadow: 0 9px 18px rgba(0, 0, 0, 0.5);
+  }
+}
+
+// Media Ratio
+@mixin media-ratio($width, $height) {
+  padding-top: ($height/$width) * 100%;
+}
+
+// Color typo
+@mixin text-emphasis-variant($color) {
+  color: $color;
+  a:hover {
+    color: darken($color, 10%);
+  }
+}
+
+@mixin CenterContent($position:relative){
+  position: $position;
+  top: 50%;
+  @include translateY(-50%);
+}
+
+@mixin h-line($direction : bottom, $color : $blue){
+  border-#{$direction}: 2px solid $color;
+  padding: ($padding-base-vertical+3) 0;
+  span{
+    border-#{$direction}: 5px solid $color;
+    padding: $padding-base-vertical $padding-base-horizontal;
+  }
+}
