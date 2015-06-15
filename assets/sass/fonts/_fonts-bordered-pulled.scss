@@ -1,0 +1,21 @@
+// Bordered & Pulled
+// -------------------------
+
+%#{$origam-css-prefix}-border,
+.#{$origam-css-prefix}-border {
+  padding: .2em .25em .15em;
+  border: solid .08em $origam-border-color;
+  border-radius: .1em;
+}
+
+%#{$origam-css-prefix}-pull-right,
+.#{$origam-css-prefix}-pull-right {
+  float: right;
+  margin-right: .3em;
+}
+
+%#{$origam-css-prefix}-pull-left,
+.#{$origam-css-prefix}-pull-left {
+  float: left;
+  margin-left: .3em;
+}

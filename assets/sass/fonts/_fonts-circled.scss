@@ -1,0 +1,34 @@
+%#{$origam-css-prefix}--circled,
+.#{$origam-css-prefix}--circled {
+  border-radius: 50%;
+  %#{$origam-css-prefix}--xs,
+  &.#{$origam-css-prefix}--xs {
+    height: 24px;
+    width: 24px;
+    line-height: 24px !important;
+  }
+  %#{$origam-css-prefix}--s,
+  &.#{$origam-css-prefix}--s {
+    height: 30px;
+    width: 30px;
+    line-height: 30px !important;
+  }
+  %#{$origam-css-prefix}--m,
+  &.#{$origam-css-prefix}--m {
+    height: 36px;
+    width: 36px;
+    line-height: 36px !important;
+  }
+  %#{$origam-css-prefix}--l,
+  &.#{$origam-css-prefix}--l {
+    height: 40px;
+    width: 40px;
+    line-height: 40px !important;
+  }
+  %#{$origam-css-prefix}--xl,
+  &.#{$origam-css-prefix}--xl {
+    height: 56px;
+    width: 56px;
+    line-height: 56px !important;
+  }
+}
