@@ -1,0 +1,81 @@
+/**
+  * Checkbox base styles
+  */
+
+.checkbox {}
+
+.checkbox-input {
+  @extend %visuallyhidden;
+
+  &:not(:checked) {
+    & + .checkbox-label {
+      &:before {
+        @include transform(scale(1));
+      }
+
+      &:after {
+        @include transform(scale(0));
+      }
+    }
+  }
+
+  &:checked {
+    & + .checkbox-label {
+      &:before {
+        @include transform(scale(0));
+      }
+
+      &:after {
+        @include transform(scale(1));
+      }
+    }
+  }
+
+  &[disabled] {
+    & + .checkbox-label {
+      cursor: not-allowed;
+
+      &:before,
+      &:after {
+        color: $black-3;
+      }
+    }
+  }
+}
+
+.checkbox-label {
+  display: block;
+  @include position(relative, null, null, null, null);
+  padding-left: $base-space * 4;
+  font-weight: 400;
+  line-height: $size-xs;
+  cursor: pointer;
+  @include user-select(none);
+
+  &:before,
+  &:after {
+    @include origamicon;
+    @include position(absolute, 0, null, null, 0);
+    @include font-size($size-xs);
+    line-height: $size-xs;
+    @include transition-property(transform);
+    @include transition-duration(0.2s);
+  }
+
+  &:before {
+    content: '\f1d6';
+  }
+
+  &:after {
+    content: '\f1d7';
+    color: $blue-500;
+  }
+}
+
+.checkbox-help {
+  display: block;
+  padding-left: $base-space * 4;
+  @extend %fts-caption;
+  color: $black-2;
+  text-align: left;
+}

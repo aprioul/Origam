@@ -1,0 +1,88 @@
+/**
+  * Switch base styles
+  */
+
+.switch {}
+
+.switch-input {
+  @extend %visuallyhidden;
+
+  &:not(:checked) {
+    & + .switch-label {
+      &:before {
+        background-color: $black-3;
+      }
+
+      &:after {
+        background-color: $grey-50;
+      }
+    }
+  }
+
+  &:checked {
+    & + .switch-label {
+      &:before {
+        background-color: rgba($blue-500, 0.5);
+      }
+
+      &:after {
+        background-color: $blue-500;
+        @include transform(translateX(15px));
+      }
+    }
+  }
+
+  &[disabled] {
+    & + .switch-label {
+      cursor: not-allowed;
+
+      &:before {
+        background-color: $black-4;
+      }
+
+      &:after {
+        background-color: $grey-400;
+      }
+    }
+  }
+}
+
+.switch-label {
+  display: block;
+  @include position(relative, null, null, null, null);
+  padding-left: 45px;
+  font-weight: 400;
+  line-height: 24px;
+  cursor: pointer;
+  @include user-select(none);
+
+  &:before {
+    content: '';
+    @include position(absolute, 5px null null 0);
+    z-index: 1;
+    @include size(35px 14px);
+    border-radius: 7px;
+    @include transition-property(background-color);
+    @include transition-duration(0.2s);
+  }
+
+  &:after {
+    content: '';
+    @include position(absolute, 2px, null, null, 0);
+    z-index: 2;
+    display: block;
+    @include size(20px);
+    border-radius: 50%;
+    @include box-shadow(1);
+    @include transition-property(background-color, transform);
+    @include transition-duration(0.2s);
+  }
+}
+
+.switch-help {
+  display: block;
+  padding-left: 45px;
+  @extend %fts-caption;
+  color: $black-2;
+  text-align: left;
+}
