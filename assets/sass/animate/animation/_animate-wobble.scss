@@ -1,0 +1,40 @@
+/* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
+
+@include keyframes(wobble) {
+  0% {
+    @include transform(none);
+  }
+
+  15% {
+    @include translate3d(-25%, 0, 0);
+    @include rotate3d(0, 0, 1, -5deg);
+  }
+
+  30% {
+    @include translate3d(20%, 0, 0);
+    @include rotate3d(0, 0, 1, 3deg);
+  }
+
+  45% {
+    @include translate3d(-15%, 0, 0);
+    @include rotate3d(0, 0, 1, -3deg);
+  }
+
+  60% {
+    @include translate3d(10%, 0, 0);
+    @include rotate3d(0, 0, 1, 2deg);
+  }
+
+  75% {
+    @include rotate3d(0, 0, 1, -1deg);
+    @include translate3d(-5%, 0, 0);
+  }
+
+  100% {
+    @include transform(none);
+  }
+}
+
+.wobble {
+  @include animation-name(wobble);
+}

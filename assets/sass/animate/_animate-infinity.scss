@@ -1,0 +1,3 @@
+.animated.infinite {
+  @include animation-iteration-count(infinite);
+}

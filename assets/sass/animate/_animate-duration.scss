@@ -1,0 +1,13 @@
+.animated.bounceIn,
+.animated.bounceOut {
+  @include animation-duration(.75s);
+}
+
+.animated.flipOutX,
+.animated.flipOutY {
+  @include animation-duration(.75s);
+}
+
+.animated.hinge {
+  @include animation-duration(2s);
+}

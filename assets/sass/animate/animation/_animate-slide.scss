@@ -1,0 +1,119 @@
+@include keyframes(slideInDown) {
+  0% {
+    @include translate3d(0, -100%, 0);
+    visibility: visible;
+  }
+
+  100% {
+    @include translate3d(0, 0, 0);
+  }
+}
+
+.slideInDown {
+  @include animation-name(slideInDown);
+}
+
+@include keyframes(slideInLeft) {
+  0% {
+    @include translate3d(-100%, 0, 0);
+    visibility: visible;
+  }
+
+  100% {
+    @include translate3d(0, 0, 0);
+  }
+}
+
+.slideInLeft {
+  @include animation-name(slideInLeft);
+}
+
+@include keyframes(slideInRight) {
+  0% {
+    @include translate3d(100%, 0, 0);
+    visibility: visible;
+  }
+
+  100% {
+    @include translate3d(0, 0, 0);
+  }
+}
+
+.slideInRight {
+  @include animation-name(slideInRight);
+}
+
+@include keyframes(slideInUp) {
+  0% {
+    @include translate3d(0, 100%, 0);
+    visibility: visible;
+  }
+
+  100% {
+    @include translate3d(0, 0, 0);
+  }
+}
+
+.slideInUp {
+  @include animation-name(slideInUp);
+}
+
+@include keyframes(slideOutDown) {
+  0% {
+    @include translate3d(0, 0, 0);
+  }
+
+  100% {
+    visibility: hidden;
+    @include translate3d(0, 100%, 0);
+  }
+}
+
+.slideOutDown {
+  @include animation-name(slideOutDown);
+}
+
+@include keyframes(slideOutLeft) {
+  0% {
+    @include translate3d(0, 0, 0);
+  }
+
+  100% {
+    visibility: hidden;
+    @include translate3d(-100%, 0, 0);
+  }
+}
+
+.slideOutLeft {
+  @include animation-name(slideOutLeft);
+}
+
+@include keyframes(slideOutRight) {
+  0% {
+    @include translate3d(0, 0, 0);
+  }
+
+  100% {
+    visibility: hidden;
+    @include translate3d(100%, 0, 0);
+  }
+}
+
+.slideOutRight {
+  @include animation-name(slideOutRight);
+}
+
+@include keyframes(slideOutUp) {
+  0% {
+    @include translate3d(0, 0, 0);
+  }
+
+  100% {
+    visibility: hidden;
+    @include translate3d(0, -100%, 0);
+  }
+}
+
+.slideOutUp {
+  @include animation-name(slideOutUp);
+}

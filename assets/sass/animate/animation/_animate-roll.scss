@@ -1,0 +1,36 @@
+/* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
+
+@include keyframes(rollIn) {
+  0% {
+    @include opacity(0);
+    @include translate3d(-100%, 0, 0);
+    @include rotate3d(0, 0, 1, -120deg);
+  }
+
+  100% {
+    @include opacity(1);
+    @include transform(none);
+  }
+}
+
+.rollIn {
+  @include animation-name(rollIn);
+}
+
+/* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
+
+@include keyframes(rollOut) {
+  0% {
+    @include opacity(1);
+  }
+
+  100% {
+    @include opacity(0);
+    @include translate3d(100%, 0, 0);
+    @include rotate3d(0, 0, 1, 120deg);
+  }
+}
+
+.rollOut {
+  @include animation-name(rollOut);
+}
