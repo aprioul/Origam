@@ -1,0 +1,64 @@
+/**
+ * Copyright
+ */
+//
+%copyrightIcon {
+  &:after {
+    content: '\00a9';
+    margin-left: 0.5em;
+    font-size: 1.2em;
+    vertical-align: middle;
+  }
+}
+
+// Hide content off-screen without resorting to `display:none;`.
+.visuallyhidden,
+%visuallyhidden {
+  border: 0 !important;
+  clip: rect(0 0 0 0) !important;
+  height: 1px !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  position: absolute !important;
+  width: 1px !important;
+}
+
+//Overlay
+.cover,
+%cover{
+  @include position(absolute, 0, 0, 0, 0);
+  width: 100%;
+  height: 100%;
+}
+
+//Clearfix
+.clearfix,
+%clearfix{
+
+  &:before,
+  &:after {
+    content: " ";
+    display: table;
+    line-height: 0;
+  }
+
+  &:after {
+    clear: both;
+  }
+    *zoom: 1;
+}
+
+%fts-caption {
+  @include font-size(12px);
+  font-weight: 400;
+  line-height: 20px;
+}
+
+%h-line-bottom{
+  @include h-line();
+}
+
+%h-line-top{
+  @include h-line(top);
+}
