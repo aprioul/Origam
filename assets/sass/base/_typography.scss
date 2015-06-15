@@ -35,6 +35,29 @@ h1, h2, h3, h4, h5, h6,
     color: $white;
     padding: $padding-large-vertical $padding-large-horizontal;
   }
+  &.h-comic{
+    background: $primary-color-1;
+    color: $white;
+    padding: $padding-large-vertical $padding-large-vertical;
+    margin: 0 $padding-large-horizontal;
+    @extend %comic;
+    &.top{
+      &.left{
+        @extend %comic-top-left;
+      }
+      &.right{
+        @extend %comic-top-right;
+      }
+    }
+    &.bottom{
+      &.left{
+        @extend %comic-bottom-left;
+      }
+      &.right{
+        @extend %comic-bottom-right;
+      }
+    }
+  }
 }
 
 h1, .h1,
@@ -194,13 +217,41 @@ a {
     background-color: transparent;
     @include transition-property(background-color, color);
     @include transition-duration(0.4s);
-    > * {
+    > *:first-child {
       border-left: 5px solid;
       padding: $padding-small-vertical $padding-small-horizontal;
     }
     &:hover{
       background-color: $primary-color-1;
       color: $white;
+    }
+  }
+  &.link-comic{
+    background: $primary-color-1;
+    color: $white;
+    padding: $padding-small-vertical $padding-small-vertical;
+    margin: 0 $padding-large-horizontal;
+    @include transition-property(background-color, color);
+    @include transition-duration(0.4s);
+    @extend %comic;
+    &:hover{
+      background: $primary-color-3;
+    }
+    &.left{
+      &.top{
+        @extend %comic-top-left;
+      }
+      &.bottom{
+        @extend %comic-bottom-left;
+      }
+    }
+    &.right{
+      &.top{
+        @extend %comic-top-right;
+      }
+      &.bottom{
+        @extend %comic-bottom-right;
+      }
     }
   }
 }
