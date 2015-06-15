@@ -83,3 +83,54 @@
     padding: $padding-base-vertical $padding-base-horizontal;
   }
 }
+
+@mixin comic($position: bottom, $direction: left, $size: 30){
+  @if $position == top {
+    @if $direction == right {
+      @include skew(($size * 1deg), 0);
+      > *,
+      &:before {
+        @include skew((-$size * 1deg), 0);
+      }
+    } @else {
+      @include skew((-$size * 1deg), 0);
+      > *,
+      &:before {
+        @include skew(($size * 1deg), 0);
+      }
+    }
+  } @else {
+    @if $direction == right {
+      @include skew((-$size * 1deg), 0);
+      > *,
+      &:before {
+        @include skew(($size * 1deg), 0);
+      }
+    } @else {
+      @include skew(($size * 1deg), 0);
+      > *,
+      &:before {
+        @include skew((-$size * 1deg), 0);
+      }
+    }
+  }
+  text-align: $direction;
+  margin-#{$direction}: 16px;
+  > *{
+    margin-#{$direction}: -($size/5 * 1%);
+  }
+  &:before{
+    #{$direction}: -($size/6 * 2%);
+  }
+  @if $direction == right {
+    padding-left: ($size/3 * 2px);
+    &:before{
+      width: ($size/3 * 2%);
+    }
+  } @else {
+    padding-right: ($size/3 * 2px);
+    &:before{
+      width: ($size/3 * 2%);
+    }
+  }
+}

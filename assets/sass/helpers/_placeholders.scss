@@ -62,3 +62,35 @@
 %h-line-top{
   @include h-line(top);
 }
+
+%comic{
+  position: relative;
+  display: inline-block;
+  > *,
+  &:before{
+    display: block;
+  }
+  &:before{
+    content: "";
+    position: absolute;
+    height: 100%;
+    top: 0;
+    background: inherit;
+  }
+}
+
+%comic-top-left{
+  @include comic(top);
+}
+
+%comic-top-right{
+  @include comic(top,right);
+}
+
+%comic-bottom-left{
+  @include comic();
+}
+
+%comic-bottom-right{
+  @include comic(bottom, right);
+}
