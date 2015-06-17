@@ -193,8 +193,8 @@ p {
 .text-warning {
   @include text-emphasis-variant($color-warning);
 }
-.text-danger {
-  @include text-emphasis-variant($color-danger);
+.text-error {
+  @include text-emphasis-variant($color-error);
 }
 
 //Links

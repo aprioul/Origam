@@ -18,7 +18,7 @@ $base-space:            8px             !default;
 $color-success:         $light-green-400;
 $color-info:            $light-blue-400;
 $color-warning:         $orange-400;
-$color-danger:          $red-400;
+$color-error:          $red-400;
 
 // Gray color
 
@@ -60,14 +60,15 @@ $accent-color-3:        $light-blue-700     !default;
 //## Settings for some of the most global styles.
 
 //** Background color for `<body>`.
-$body-bg:               #fff;
-
+$body-bg:                         #fff;
 //** Global textual link color.
-$link-color:            $primary-color-1;
+$link-color:                      $primary-color-1;
 //** Link hover color set via `darken()` function.
-$link-hover-color:      darken($link-color, 15%);
+$link-hover-color:                darken($link-color, 15%);
 //** Link hover decoration.
-$link-hover-decoration: underline;
+$link-hover-decoration:           underline;
+//** Disabled cursor for form controls and buttons.
+$cursor-disabled:                 not-allowed;
 
 //== Typography
 //
@@ -151,9 +152,9 @@ $table-border-color:            #ddd;
 
 $btn-font-weight:                normal;
 
-$btn-default-color:              #333;
-$btn-default-bg:                 #fff;
-$btn-default-border:             #ccc;
+$btn-ghost-color:              #333;
+$btn-ghost-bg:                 rgba(255,255,255,0.2);
+$btn-ghost-border:             rgba(155,155,155,0.2);
 
 $btn-primary-color:              #fff;
 $btn-primary-bg:                 $primary-color-1;
@@ -171,11 +172,11 @@ $btn-warning-color:              #fff;
 $btn-warning-bg:                 $color-warning;
 $btn-warning-border:             darken($btn-warning-bg, 5%);
 
-$btn-danger-color:               #fff;
-$btn-danger-bg:                  $color-danger;
-$btn-danger-border:              darken($btn-danger-bg, 5%);
+$btn-error-color:               #fff;
+$btn-error-bg:                  $color-error;
+$btn-error-border:              darken($btn-error-bg, 5%);
 
-$btn-link-disabled-color:        $grey-300;
+$btn-disabled-bg:        $grey-300;
 
 //== Btt
 
