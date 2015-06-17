@@ -4,7 +4,7 @@ require 'sass-globbing';
 
 # Set environment [development, production]
 # environment = :production
-environment = :development
+environment = :production
 
 # Set this to the root of your project when deployed:
 http_path = "/"
