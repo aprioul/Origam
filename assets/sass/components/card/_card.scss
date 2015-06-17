@@ -10,10 +10,23 @@
   @extend %clearfix;
 }
 
-// Card image
+.card .card-aside{
+  @include position(relative, null, null, null, null);
+}
+
+.card-content {
+  padding: $padding-large-horizontal;
+}
+
+// Card actions
+.card-actions {
+  padding: $base-space;
+  text-align: right;
+}
+
+// Card image top
 .card-img--top{
   .card-aside{
-    @include position(relative, null, null, null, null);
     figure{
       padding: 0;
     }
@@ -27,12 +40,41 @@
   }
 }
 
-.card-content {
-  padding: $padding-large-horizontal;
+// Card image side
+.card-img--side{
+  .card-aside,
+  .card-main{
+    display: table-cell;
+    vertical-align: middle;
+  }
+  .card-main{
+    width: 66.66666666%;
+  }
+  .card-aside{
+    width: 33.3333%;
+
+    figure{
+      padding: 0;
+    }
+
+    span, strong,figcaption,
+    h1, h2, h3, h4, h5, h6 {
+      @include position(absolute, null, $base-space * 2, $base-space * 2, $base-space * 2);
+      color: $white;
+      text-align: left;
+    }
+  }
 }
 
-// Card actions
 .card-actions {
-  padding: $base-space;
-  border-top: 1px solid $black-4;
+  .card-aside + & {
+    .card-img--side & {
+      text-align: left;
+    }
+  }
+  .card-main + & {
+    .card-img--side & {
+      text-align: right;
+    }
+  }
 }
