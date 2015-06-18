@@ -57,21 +57,21 @@
   @include user-select(none);
 
   &:before {
-    content: '';
-    @include position(absolute, 5px null null 0);
+    content: "";
+    @include position(absolute, 5px, null, null, 0);
     z-index: 1;
-    @include size(35px 14px);
+    @include size(35px, 14px);
     border-radius: 7px;
     @include transition-property(background-color);
     @include transition-duration(0.2s);
   }
 
   &:after {
-    content: '';
+    content: "";
     @include position(absolute, 2px, null, null, 0);
     z-index: 2;
     display: block;
-    @include size(20px);
+    @include size(20px, 20px);
     border-radius: 50%;
     @include box-shadow(1);
     @include transition-property(background-color, transform);

@@ -48,7 +48,7 @@
   @include position(relative, null, null, null, null);
   padding-left: $base-space * 4;
   font-weight: 400;
-  line-height: $size-xs;
+  line-height: $base-line-height;
   cursor: pointer;
   @include user-select(none);
 
@@ -58,16 +58,18 @@
     @include position(absolute, 0, null, null, 0);
     @include font-size($size-xs);
     line-height: $size-xs;
+    height: 100%;
     @include transition-property(transform);
     @include transition-duration(0.2s);
   }
 
   &:before {
-    content: '\f1d6';
+    content: "\f54c";
+    color: $black-1;
   }
 
   &:after {
-    content: '\f1d7';
+    content: "\f54b";
     color: $blue-500;
   }
 }
