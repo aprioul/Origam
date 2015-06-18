@@ -3,20 +3,7 @@
   */
 
 .select {
-  @include position(relative, null, null, null, null);
-  margin-top: $base-space * 4;
-  padding-bottom: $base-space;
 
-  &:before {
-    content: '';
-    @include position(absolute, null, 0, $base-space - 1, 0);
-    height: 1px;
-    border-bottom: 1px solid $black-4;
-  }
-
-  .dropdown {
-    display: block;
-  }
 }
 
 .select-help {

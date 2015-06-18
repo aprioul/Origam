@@ -86,36 +86,36 @@
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="radio-group">
                                         <div class="radio-button">
-                                            <input type="radio" id="radio1" name="radio1" value="1" class="radio-button--input">
+                                            <input type="radio" id="radio1" id="radio1" value="1" class="radio-button--input">
                                             <label for="radio1" class="radio-button--label">Radio Button 1</label>
                                         </div>
 
                                         <div class="radio-button">
-                                            <input type="radio" id="radio2" name="radio1" value="2" class="radio-button--input">
+                                            <input type="radio" id="radio2" id="radio1" value="2" class="radio-button--input">
                                             <label for="radio2" class="radio-button--label">Radio Button 2</label>
                                         </div>
 
                                         <div class="radio-button">
-                                            <input type="radio" id="radio3" name="radio1" value="3" class="radio-button--input">
+                                            <input type="radio" id="radio3" id="radio1" value="3" class="radio-button--input">
                                             <label for="radio3" class="radio-button--label">Radio Button 3</label>
                                         </div>
                                     </div>
 
                                     <div class="radio-group">
                                         <div class="radio-button">
-                                            <input type="radio" id="radio4" name="radio2" value="4" class="radio-button--input">
+                                            <input type="radio" id="radio4" id="radio2" value="4" class="radio-button--input">
                                             <label for="radio4" class="radio-button--label">Radio with help 1</label>
                                             <span class="radio-button--help">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere faucibus efficitur.</span>
                                         </div>
 
                                         <div class="radio-button">
-                                            <input type="radio" id="radio5" name="radio2" value="4" class="radio-button--input">
+                                            <input type="radio" id="radio5" id="radio2" value="4" class="radio-button--input">
                                             <label for="radio5" class="radio-button--label">Radio with help 2</label>
                                             <span class="radio-button--help">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere faucibus efficitur.</span>
                                         </div>
 
                                         <div class="radio-button">
-                                            <input type="radio" id="radio6" name="radio2" value="5" class="radio-button--input" checked>
+                                            <input type="radio" id="radio6" id="radio2" value="5" class="radio-button--input" checked>
                                             <label for="radio6" class="radio-button--label">Radio with help 3</label>
                                             <span class="radio-button--help">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere faucibus efficitur.</span>
                                         </div>
@@ -201,9 +201,8 @@
                     <div class="origam-grid">
                         <div class="origam-wrapper">
                             <div class="origam-section">
-                                <div class="origam-grid__cell origam-size-1of2">
+                                <div class="origam-grid__cell origam-size-1of1">
                                     <div class="select-group">
-                                        <div class="select-label">Select</div>
                                         <select class="select">
                                             <option value="option 1">option 1</option>
                                             <option value="option 2">option 2</option>
@@ -211,7 +210,6 @@
                                         </select>
                                     </div>
                                     <div class="select-group">
-                                        <div class="select-label">Select with help</div>
                                         <select class="select">
                                             <option value="option 1">option 1</option>
                                             <option value="option 2">option 2</option>
@@ -220,7 +218,6 @@
                                         <span class="select-help">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere faucibus efficitur.</span>
                                     </div>
                                     <div class="select-group">
-                                        <div class="select-label">Select multiple</div>
                                         <select class="select" multiple="multiple" >
                                             <option value="option 1">option 1</option>
                                             <option value="option 2">option 2</option>
@@ -229,6 +226,121 @@
                                             <option value="option 5">option 5</option>
                                             <option value="option 6">option 6</option>
                                         </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="origam-section">
+            <div class="origam-grid__cell origam-size-1of1">
+                <h2 id="form-input-text">
+                    Input Text
+                    <a class="anchor-link" href="#form-input-text">
+                        <span class="anchor-icon">
+                            <i class="origamicon origamicon-link2"></i>
+                        </span>
+                    </a>
+                </h2>
+            </div>
+            <div class="origam-grid__cell origam-size-1of1">
+                <div class="origam-example">
+                    <div class="origam-grid">
+                        <div class="origam-wrapper">
+                            <div class="origam-section">
+                                <div class="origam-grid__cell origam-size-1of1">
+                                    <div class="text-field">
+                                        <label for="Company">Company</label>
+                                        <input type="text" id="Company" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="origam-grid__cell origam-size-1of2">
+                                    <div class="text-field">
+                                        <label for="Last id">Last Name</label>
+                                        <input type="text" id="Last Name">
+                                    </div>
+                                </div>
+
+                                <div class="origam-grid__cell origam-size-1of2">
+                                    <div class="text-field">
+                                        <label for="First-name">First Name</label>
+                                        <input type="text" id="First-name">
+                                    </div>
+                                </div>
+
+                                <div class="origam-grid__cell origam-size-1of3">
+                                    <div class="text-field">
+                                        <label for="bad-email"></label>
+                                        <input type="email" id="bad-email">
+                                    </div>
+                                </div>
+
+                                <div class="origam-grid__cell origam-size-1of3">
+                                    <div class="text-field">
+                                        <label for="email-normal"></label>
+                                        <input type="email" id="email-normal">
+                                    </div>
+                                </div>
+
+                                <div class="origam-grid__cell origam-size-1of3">
+                                    <div class="text-field">
+                                        <label for="email-success"></label>
+                                        <input type="email" id="email-success">
+                                    </div>
+                                </div>
+
+                                <div class="origam-grid__cell origam-size-1of1">
+                                    <div class="text-field">
+                                        <label for="description"></label>
+                                        <textarea id="description"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="origam-grid__cell origam-size-1of2">
+                                    <div class="text-field">
+                                        <form>
+                                            <div class="text-field">
+                                                <label for="first-last-name" data-fixed="true"></label>
+                                                <input id="first-last-name" type="text">
+                                            </div>
+                                            <div class="text-field">
+                                                <label for="Phone-number" data-fixed="true"></label>
+                                                <input type="text" id="Phone-number">
+                                            </div>
+                                            <div class="text-field">
+                                                <label for="Email-address" data-fixed="true"></label>
+                                                <input type="email" id="Email-address">
+                                            </div>
+                                            <div class="text-field">
+                                                <label for="Location" data-fixed="true"></label>
+                                                <input type="text" id="Location">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of2">
+                                    <div class="text-field">
+                                        <form>
+                                            <div class="text-field">
+                                            <label data-fixed="true"></label>
+                                            <input type="text">
+                                            </div>
+                                            <div class="text-field">
+                                                <label id="Last id" data-fixed="true"></label>
+                                                <input type="text">
+                                            </div>
+                                            <div class="text-field">
+                                                <label id="Email" data-fixed="true"></label>
+                                                <input type="email">
+                                            </div>
+                                            <div class="text-field">
+                                                <label id="Address" data-fixed="true"></label>
+                                                <input type="text">
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
