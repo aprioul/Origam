@@ -420,6 +420,7 @@ th {
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: inline-block;
 }
 
 /* makes the font 33% larger relative to the icon container */
@@ -16872,7 +16873,7 @@ a {
 a:hover, a:focus {
   color: #015f85;
 }
-a:visited:not(.button) {
+a:visited:not(.btn) {
   color: #015f85;
 }
 a.link-bordered {
@@ -17042,6 +17043,7 @@ blockquote.pull-right .small:after {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: inline-block;
   color: #E0E0E0;
   position: absolute;
   font-size: 200%;
@@ -17233,7 +17235,9 @@ th {
 }
 .btn:hover,
 .btn:focus,
-.btn.focus {
+.btn.focus,
+.btn:visited,
+.btn.visited {
   color: #333;
   text-decoration: none;
 }
@@ -17254,6 +17258,9 @@ th {
   background-color: #E0E0E0;
   color: #333;
 }
+.btn .ripple {
+  z-index: -1;
+}
 
 .btn-ghost {
   color: #333;
@@ -17272,6 +17279,10 @@ th {
 .btn-ghost:active,
 .btn-ghost.active {
   background-image: none;
+}
+.btn-ghost:visited,
+.btn-ghost.visited {
+  color: #333;
 }
 .btn-ghost.disabled,
 .btn-ghost.disabled:hover,
@@ -17298,6 +17309,9 @@ th {
   color: rgba(255, 255, 255, 0.2);
   background-color: #333;
 }
+.btn-ghost .ripple {
+  background-color: rgba(128, 128, 128, 0.2);
+}
 
 .btn-primary {
   color: #fff;
@@ -17316,6 +17330,10 @@ th {
 .btn-primary:active,
 .btn-primary.active {
   background-image: none;
+}
+.btn-primary:visited,
+.btn-primary.visited {
+  color: #fff;
 }
 .btn-primary.disabled,
 .btn-primary.disabled:hover,
@@ -17342,6 +17360,9 @@ th {
   color: #0196d1;
   background-color: #fff;
 }
+.btn-primary .ripple {
+  background-color: black;
+}
 
 .btn-success {
   color: #fff;
@@ -17360,6 +17381,10 @@ th {
 .btn-success:active,
 .btn-success.active {
   background-image: none;
+}
+.btn-success:visited,
+.btn-success.visited {
+  color: #fff;
 }
 .btn-success.disabled,
 .btn-success.disabled:hover,
@@ -17386,49 +17411,8 @@ th {
   color: #9CCC65;
   background-color: #fff;
 }
-
-.btn-info {
-  color: #fff;
-  background-color: #26C6DA;
-  border-color: #22b3c5;
-}
-.btn-info:hover,
-.btn-info:focus,
-.btn-info.focus,
-.btn-info:active,
-.btn-info.active {
-  color: #fff;
-  background-color: #1e9faf;
-  border-color: #198391;
-}
-.btn-info:active,
-.btn-info.active {
-  background-image: none;
-}
-.btn-info.disabled,
-.btn-info.disabled:hover,
-.btn-info.disabled:focus,
-.btn-info.disabled.focus,
-.btn-info.disabled:active,
-.btn-info.disabled.active,
-.btn-info[disabled],
-.btn-info[disabled]:hover,
-.btn-info[disabled]:focus,
-.btn-info[disabled].focus,
-.btn-info[disabled]:active,
-.btn-info[disabled].active, fieldset[disabled]
-.btn-info, fieldset[disabled]
-.btn-info:hover, fieldset[disabled]
-.btn-info:focus, fieldset[disabled]
-.btn-info.focus, fieldset[disabled]
-.btn-info:active, fieldset[disabled]
-.btn-info.active {
-  background-color: #26C6DA;
-  border-color: #22b3c5;
-}
-.btn-info .badge {
-  color: #26C6DA;
-  background-color: #fff;
+.btn-success .ripple {
+  background-color: #1a260c;
 }
 
 .btn-warning {
@@ -17448,6 +17432,10 @@ th {
 .btn-warning:active,
 .btn-warning.active {
   background-image: none;
+}
+.btn-warning:visited,
+.btn-warning.visited {
+  color: #fff;
 }
 .btn-warning.disabled,
 .btn-warning.disabled:hover,
@@ -17474,6 +17462,60 @@ th {
   color: #FFA726;
   background-color: #fff;
 }
+.btn-warning .ripple {
+  background-color: #261700;
+}
+
+.btn-info {
+  color: #fff;
+  background-color: #26C6DA;
+  border-color: #22b3c5;
+}
+.btn-info:hover,
+.btn-info:focus,
+.btn-info.focus,
+.btn-info:active,
+.btn-info.active {
+  color: #fff;
+  background-color: #1e9faf;
+  border-color: #198391;
+}
+.btn-info:active,
+.btn-info.active {
+  background-image: none;
+}
+.btn-info:visited,
+.btn-info.visited {
+  color: #fff;
+}
+.btn-info.disabled,
+.btn-info.disabled:hover,
+.btn-info.disabled:focus,
+.btn-info.disabled.focus,
+.btn-info.disabled:active,
+.btn-info.disabled.active,
+.btn-info[disabled],
+.btn-info[disabled]:hover,
+.btn-info[disabled]:focus,
+.btn-info[disabled].focus,
+.btn-info[disabled]:active,
+.btn-info[disabled].active, fieldset[disabled]
+.btn-info, fieldset[disabled]
+.btn-info:hover, fieldset[disabled]
+.btn-info:focus, fieldset[disabled]
+.btn-info.focus, fieldset[disabled]
+.btn-info:active, fieldset[disabled]
+.btn-info.active {
+  background-color: #26C6DA;
+  border-color: #22b3c5;
+}
+.btn-info .badge {
+  color: #26C6DA;
+  background-color: #fff;
+}
+.btn-info .ripple {
+  background-color: #000101;
+}
 
 .btn-error {
   color: #fff;
@@ -17492,6 +17534,10 @@ th {
 .btn-error:active,
 .btn-error.active {
   background-image: none;
+}
+.btn-error:visited,
+.btn-error.visited {
+  color: #fff;
 }
 .btn-error.disabled,
 .btn-error.disabled:hover,
@@ -17517,6 +17563,33 @@ th {
 .btn-error .badge {
   color: #EF5350;
   background-color: #fff;
+}
+.btn-error .ripple {
+  background-color: #3b0605;
+}
+
+.btn-large {
+  padding: 10px 16px;
+  font-size: 20px;
+  line-height: 1.33333;
+}
+
+.btn-base {
+  padding: 6px 12px;
+  font-size: 16px;
+  line-height: 1.42857;
+}
+
+.btn-small {
+  padding: 6px 10px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.btn-xs {
+  padding: 6px 5px;
+  font-size: 14px;
+  line-height: 1.21429;
 }
 
 /**
@@ -17642,6 +17715,7 @@ th {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: inline-block;
   position: absolute;
   top: 0;
   left: 0;
@@ -18072,6 +18146,7 @@ textarea.text-field--input {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: inline-block;
   position: absolute;
   top: 0;
   left: 0;
@@ -18154,6 +18229,7 @@ textarea.text-field--input {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: inline-block;
   content: '\f35e';
   position: absolute;
   right: 8px;
@@ -18247,6 +18323,7 @@ textarea.text-field--input {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: inline-block;
   position: absolute;
   top: 0;
   left: 16px;

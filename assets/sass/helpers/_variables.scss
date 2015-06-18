@@ -79,9 +79,11 @@ $font-family-serif:       Georgia, "Times New Roman", Times, serif;
 $font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace;
 $font-family-base:        $font-family-sans-serif;
 
-// Font size 
+// Font size
+$font-size-base:          $base-font-size;
 $font-size-large:         ceil(($base-font-size * 1.25)); // ~18px
 $font-size-small:         ceil(($base-font-size * 0.85)); // ~12px
+$font-size-xs:            $font-size-small;
 
 $font-size-h1:            floor(($base-font-size * 2.6)); // ~36px
 $font-size-h2:            floor(($base-font-size * 2.15)); // ~30px
@@ -91,8 +93,11 @@ $font-size-h5:            $base-font-size;
 $font-size-h6:            ceil(($base-font-size * 0.85)); // ~12px
 
 
-$line-height-base:        1.428571429;
-$line-height-computed:    floor(($base-font-size * $line-height-base)); 
+$line-height-base:          1.428571429;
+$line-height-large:         ($line-height-base * 1.25);
+$line-height-small:         ($line-height-base * 0.85);
+$line-height-xs:            $line-height-small;
+$line-height-computed:    floor(($base-font-size * $line-height-base));
 
 //** By default, this inherits from the `<body>`.
 $headings-font-family:        inherit;

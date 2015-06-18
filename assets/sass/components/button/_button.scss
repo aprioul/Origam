@@ -8,7 +8,7 @@
   &:focus,
   &.focus,
   &:active,
-  &.active {
+  &.active{
     color: $color;
     background-color: darken($background, 10%);
     border-color: darken($border, 12%);
@@ -16,6 +16,10 @@
   &:active,
   &.active{
     background-image: none;
+  }
+  &:visited,
+  &.visited{
+    color: $color;
   }
   &.disabled,
   &[disabled],
@@ -25,7 +29,7 @@
     &:focus,
     &.focus,
     &:active,
-    &.active {
+    &.active, {
       background-color: $background;
       border-color: $border;
     }
@@ -34,6 +38,10 @@
   .badge {
     color: $background;
     background-color: $color;
+  }
+
+  .ripple {
+    background-color: darken($background, 50%);
   }
 }
 
@@ -60,7 +68,9 @@
 
   &:hover,
   &:focus,
-  &.focus {
+  &.focus,
+  &:visited,
+  &.visited{
     color: $btn-ghost-color;
     text-decoration: none;
   }
@@ -83,37 +93,42 @@
     background-color: $btn-disabled-bg;
     color: $btn-ghost-color;
   }
+
+  .ripple {
+    z-index: -1;
+  }
 }
 
 // Alternate buttons
 // --------------------------------------------------
 
-%btn-ghost,
-.btn-ghost {
-  @include button-variant($btn-ghost-color, $btn-ghost-bg, $btn-ghost-border);
+$types : (
+  ghost: (color: $btn-ghost-color, bg: $btn-ghost-bg, border: $btn-ghost-border),
+  primary: (color: $btn-primary-color, bg: $btn-primary-bg, border: $btn-primary-border),
+  success: (color: $btn-success-color, bg: $btn-success-bg, border: $btn-success-border),
+  warning: (color: $btn-warning-color, bg: $btn-warning-bg, border: $btn-warning-border),
+  info: (color: $btn-info-color, bg: $btn-info-bg, border: $btn-info-border),
+  error: (color: $btn-error-color, bg: $btn-error-bg, border: $btn-error-border)
+) !default;
+
+@each $key, $type in $types {
+
+  %btn-#{$key},
+  .btn-#{$key} {
+    @include button-variant(map-get($type, color), map-get($type, bg), map-get($type, border));
+  }
 }
 
-%btn-primary,
-.btn-primary {
-  @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
-}
+$sizes : (
+  large: (vertical: $padding-large-vertical, horizontal: $padding-large-horizontal, font: $font-size-large, line: $line-height-large),
+  base: (vertical: $padding-base-vertical, horizontal: $padding-base-horizontal, font: $font-size-base, line: $line-height-base),
+  small: (vertical: $padding-base-vertical, horizontal: $padding-small-horizontal, font: $font-size-small, line: $line-height-small),
+  xs: (vertical: $padding-base-vertical, horizontal: $padding-xs-horizontal, font: $font-size-xs, line: $line-height-xs)
+) !default;
 
-%btn-sucess,
-.btn-success {
-  @include button-variant($btn-success-color, $btn-success-bg, $btn-success-border);
-}
-
-%btn-info,
-.btn-info {
-  @include button-variant($btn-info-color, $btn-info-bg, $btn-info-border);
-}
-
-%btn-warning,
-.btn-warning {
-  @include button-variant($btn-warning-color, $btn-warning-bg, $btn-warning-border);
-}
-
-%btn-error,
-.btn-error {
-  @include button-variant($btn-error-color, $btn-error-bg, $btn-error-border);
+@each $key, $size in $sizes {
+  %btn-#{$key},
+  .btn-#{$key} {
+    @include button-size(map-get($size, vertical), map-get($size, horizontal), map-get($size, font), map-get($size, line));
+  }
 }
