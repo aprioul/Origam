@@ -1,0 +1,343 @@
+.origam-pickacolor {
+  @include position(absolute,null,null,null,null);
+  width: 346px;
+  height: 170px;
+  overflow: hidden;
+  display: none;
+  font-family: Arial, Helvetica, sans-serif;
+  background:$black-4;
+  border: 1px solid $black-3;
+
+  @include user-select(none);
+}
+
+/*Color selection box with gradients*/
+.origam-pickacolor--color {
+  @include position(absolute,7px,null,null,7px);
+  width: 156px;
+  height: 156px;
+  overflow: hidden;
+  outline: 1px solid #aaa;
+  cursor: crosshair;
+}
+.origam-pickacolor--color_overlay1 {
+  @include position(absolute,0,null,null,0);
+  width: 156px;
+  height: 156px;
+  @include background-image(linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%));
+}
+.origam-pickacolor--color_overlay2 {
+  @include position(absolute,0,null,null,0);
+  width: 156px;
+  height: 156px;
+  @include background-image(linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%)); /* W3C */
+}
+/*Circular color selector*/
+.origam-pickacolor--selector_outer {
+  background:none;
+  @include position(absolute,null,null,null,null);
+  width: 11px;
+  height: 11px;
+  margin: -6px 0 0 -6px;
+  border: 1px solid black;
+  border-radius: 50%;
+}
+.origam-pickacolor--selector_inner{
+  @include position(absolute,null,null,null,null);
+  width: 9px;
+  height: 9px;
+  border: 1px solid white;
+  border-radius: 50%;
+}
+/*Vertical hue bar*/
+.origam-pickacolor--hue {
+  @include position(absolute,6px,null,null,175px);
+  width: 19px;
+  height: 156px;
+  border: 1px solid #aaa;
+  cursor: n-resize;
+}
+
+/*Hue bar sliding indicator*/
+.origam-pickacolor--hue_arrs {
+  position: absolute;
+  left: -8px;
+  width: 35px;
+  height: 7px;
+  margin: -7px 0 0 0;
+}
+
+.origam-pickacolor--hue_arrs__larr,
+.origam-pickacolor--hue_arrs__rarr{
+  @include position(absolute,null,null,null,null);
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 7px solid #858585;
+}
+
+.origam-pickacolor--hue_arrs__rarr {
+  @include position(absolute,null,0,null,null);
+  border-right: 7px solid #858585;
+  border-left: 0;
+}
+
+/*Color box*/
+.origam-pickacolor--newcolor,
+.origam-pickacolor--currentcolor{
+  @include position(absolute,6px,null,null,207px);
+  width: 60px;
+  height: 27px;
+  background: #f00;
+  border: 1px solid #8f8f8f;
+}
+
+/*Current color box*/
+.origam-pickacolor--currentcolor {
+  @include position(absolute,null,null,null,277px);
+}
+/*Input field containers*/
+.origam-pickacolor--field,
+.origam-pickacolor--hex_field  {
+  @include position(absolute,null,null,null,null);
+  height: 20px;
+  width: 60px;
+  overflow:hidden;
+  background:#f3f3f3;
+  color:#b8b8b8;
+  font-size:12px;
+  border:1px solid #bdbdbd;
+}
+.origam-pickacolor--rgb_r {
+  @include position(absolute,40px,null,null,207px);
+}
+.origam-pickacolor--rgb_g {
+  @include position(absolute,67px,null,null,207px);
+}
+.origam-pickacolor--rgb_b {
+  @include position(absolute,67px,null,null,207px);
+}
+.origam-pickacolor--hsb_h {
+  @include position(absolute,40px,null,null,277px);
+}
+.origam-pickacolor--hsb_s {
+  @include position(absolute,67px,null,null,277px);
+}
+.origam-pickacolor--hsb_b {
+  @include position(absolute,94px,null,null,277px);
+}
+.origam-pickacolor--hex_field {
+  @include position(absolute,121px,null,null,207px);
+  width: 68px;
+}
+/*Text field container on focus*/
+.origam-pickacolor--focus {
+  border-color: #999;
+}
+/*Field label container*/
+.origam-pickacolor--hex_field__letter,
+.origam-pickacolor--field_letter {
+  @include position(absolute,null,null,null,null);
+  width: 12px;
+  height: 20px;
+  line-height: 20px;
+  padding-left: 4px;
+  background: #efefef;
+  border-right: 1px solid #bdbdbd;
+  font-weight: bold;
+  color:#777;
+}
+/*Text inputs*/
+.origam-pickacolor--field,
+.origam-pickacolor--hex_field {
+  input {
+    @include position(absolute,null,11px,null,null);
+    margin: 0;
+    padding: 0;
+    height: 20px;
+    line-height: 20px;
+    background: transparent;
+    border: none;
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #555;
+    text-align: right;
+    outline: none;
+  }
+}
+.origam-pickacolor--hex_field input {
+  right: 4px;
+}
+/*Field up/down arrows*/
+.origam-pickacolor--field_arrs {
+  @include position(absolute,0,0,null,null);
+  width: 9px;
+  height: 21px;
+  cursor: n-resize;
+}
+.origam-pickacolor--field_arrs__uarr {
+  @include position(absolute,5px,null,null,null);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 4px solid #959595;
+}
+.origam-pickacolor--field_arrs__darr {
+  @include position(absolute,null,null,5px,null);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #959595;
+}
+/*Submit/Select button*/
+.origam-pickacolor--submit {
+  @include position(absolute,149px,null,null,207px);
+  width: 130px;
+  height: 22px;
+  line-height:22px;
+  background: #efefef;
+  text-align: center;
+  color: #555;
+  font-size: 12px;
+  font-weight:bold;
+  border: 1px solid #bdbdbd;
+}
+.origam-pickacolor--submit:hover {
+  background:#f3f3f3;
+  border-color:#999;
+  cursor: pointer;
+}
+
+/*full layout with no submit button*/
+.origam-pickacolor--full_ns {
+  .origam-pickacolor--submit,
+  .origam-pickacolor--currentcolor {
+    display: none;
+  }
+  .origam-pickacolor--new_olor {
+    width: 130px;
+    height: 25px;
+  }
+  .origam-pickacolor--rgb_r,
+  .origam-pickacolor--hsb_h {
+    @include position(absolute,42px,null,null,null);
+  }
+  .origam-pickacolor--rgb_g,
+  .origam-pickacolor--hsb_s {
+    @include position(absolute,73px,null,null,null);
+  }
+  .origam-pickacolor--rgb_b,
+  .origam-pickacolor--hsb_b {
+    @include position(absolute,104px,null,null,null);
+  }
+  .origam-pickacolor--hex_field {
+    @include position(absolute,135px,null,null,null);
+  }
+}
+
+/*rgbhex layout*/
+.origam-pickacolor--rgbhex {
+  width: 282px;
+
+  .origam-pickacolor--hsb_h,
+  .origam-pickacolor--hsb_s,
+  .origam-pickacolor--hsb_b {
+    display: none;
+  }
+  .origam-pickacolor--field,
+  .origam-pickacolor--submit {
+    width: 68px;
+  }
+  .origam-pickacolor--newcolor {
+    width: 34px;
+    border-right: none;
+  }
+  .origam-pickacolor--currentcolor {
+    width: 34px;
+    @include position(absolute,null,null,null,240px);
+    border-left: none;
+  }
+}
+
+  /*rgbhex layout, no submit button*/
+.origam-pickacolor--rgbhex_ns {
+  .origam-pickacolor--submit,
+  .origam-pickacolor--currentcolor {
+    display: none;
+  }
+  .origam-pickacolor--newcolor {
+    width: 68px;
+    border: 1px solid #8f8f8f;
+  }
+  .origam-pickacolor--rgb_r {
+    @include position(absolute,42px,null,null,null);
+  }
+  .origam-pickacolor--rgb_g {
+    @include position(absolute,73px,null,null,null);
+  }
+  .origam-pickacolor--rgb_b {
+    @include position(absolute,104px,null,null,null);
+  }
+  .origam-pickacolor--hex_field {
+    @include position(absolute,135px,null,null,null);
+  }
+}
+  /*hex layout*/
+.origam-pickacolor--hex {
+  width:206px;
+  height:201px;
+
+  .origam-pickacolor--hsb_h,
+  .origam-pickacolor--hsb_s,
+  .origam-pickacolor--hsb_b,
+  .origam-pickacolor--rgb_r,
+  .origam-pickacolor--rgb_g,
+  .origam-pickacolor--rgb_b {
+    display:none;
+  }
+  .origam-pickacolor--hex_field {
+    width:72px;
+    height:25px;
+    @include position(absolute,168px,null,null,80px);
+  }
+  .origam-pickacolor--hex_field div,
+  .origam-pickacolor--hex_field input {
+    height: 25px;
+    line-height: 25px;
+  }
+  .origam-pickacolor--newcolor {
+    @include position(absolute,168px,null,null,9px);
+    width:30px;
+    border-right:none;
+  }
+  .origam-pickacolor--currentcolor {
+    @include position(absolute,168px,null,null,39px);
+    width:30px;
+    border-left:none;
+  }
+  .origam-pickacolor--submit {
+    @include position(absolute,168px,null,null,164px);
+    width:30px;
+    height:25px;
+    line-height: 25px;
+  }
+}
+
+  /*hex layout, no submit button*/
+.origam-pickacolor--hex_ns {
+  .origam-pickacolor--submit,
+  .origam-pickacolor--currentcolor {
+    display: none;
+  }
+  .origam-pickacolor--hex_field {
+    width: 80px;
+  }
+  .origam-pickacolor--newcolor {
+    width: 60px;
+    border: 1px solid #8f8f8f;
+  }
+}
+
