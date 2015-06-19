@@ -5,6 +5,8 @@
     <title>Form</title>
     <link href="../assets/css/screen.css" rel="stylesheet"/>
     <link href="css/demo.css" rel="stylesheet"/>
+    <script src="../assets/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" async="" src="../assets/js/colorpicker.js"></script>
 </head>
 <body>
 <div class="origam-grid">
@@ -86,36 +88,36 @@
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="radio-group">
                                         <div class="radio-button">
-                                            <input type="radio" id="radio1" id="radio1" value="1" class="radio-button--input">
+                                            <input type="radio" id="radio1" name="group1" value="1" class="radio-button--input">
                                             <label for="radio1" class="radio-button--label">Radio Button 1</label>
                                         </div>
 
                                         <div class="radio-button">
-                                            <input type="radio" id="radio2" id="radio1" value="2" class="radio-button--input">
+                                            <input type="radio" id="radio2" name="group1" value="2" class="radio-button--input">
                                             <label for="radio2" class="radio-button--label">Radio Button 2</label>
                                         </div>
 
                                         <div class="radio-button">
-                                            <input type="radio" id="radio3" id="radio1" value="3" class="radio-button--input">
+                                            <input type="radio" id="radio3" name="group1" value="3" class="radio-button--input">
                                             <label for="radio3" class="radio-button--label">Radio Button 3</label>
                                         </div>
                                     </div>
 
                                     <div class="radio-group">
                                         <div class="radio-button">
-                                            <input type="radio" id="radio4" id="radio2" value="4" class="radio-button--input">
+                                            <input type="radio" id="radio4" name="group2" value="4" class="radio-button--input">
                                             <label for="radio4" class="radio-button--label">Radio with help 1</label>
                                             <span class="radio-button--help">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere faucibus efficitur.</span>
                                         </div>
 
                                         <div class="radio-button">
-                                            <input type="radio" id="radio5" id="radio2" value="4" class="radio-button--input">
+                                            <input type="radio" id="radio5" name="group2" value="4" class="radio-button--input">
                                             <label for="radio5" class="radio-button--label">Radio with help 2</label>
                                             <span class="radio-button--help">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere faucibus efficitur.</span>
                                         </div>
 
                                         <div class="radio-button">
-                                            <input type="radio" id="radio6" id="radio2" value="5" class="radio-button--input" checked>
+                                            <input type="radio" id="radio6" name="group2" value="5" class="radio-button--input" checked>
                                             <label for="radio6" class="radio-button--label">Radio with help 3</label>
                                             <span class="radio-button--help">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere faucibus efficitur.</span>
                                         </div>
@@ -236,9 +238,9 @@
         </div>
         <div class="origam-section">
             <div class="origam-grid__cell origam-size-1of1">
-                <h2 id="form-input-text">
-                    Input Text
-                    <a class="anchor-link" href="#form-input-text">
+                <h2 id="form-input-range">
+                    Range
+                    <a class="anchor-link" href="#form-input-range">
                         <span class="anchor-icon">
                             <i class="origamicon origamicon-link2"></i>
                         </span>
@@ -252,97 +254,408 @@
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="text-field">
-                                        <label for="Company">Company</label>
-                                        <input type="text" id="Company" disabled>
+                                        <label for="range">Range</label>
+                                        <input type="text" id="range"/>
                                     </div>
                                 </div>
-
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="origam-section">
+            <div class="origam-grid__cell origam-size-1of1">
+                <h2 id="form-input-color">
+                    Color
+                    <a class="anchor-link" href="#form-input-color">
+                        <span class="anchor-icon">
+                            <i class="origamicon origamicon-link2"></i>
+                        </span>
+                    </a>
+                </h2>
+            </div>
+            <div class="origam-grid__cell origam-size-1of1">
+                <div class="origam-example">
+                    <div class="origam-grid">
+                        <div class="origam-wrapper">
+                            <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of2">
                                     <div class="text-field">
-                                        <label for="Last id">Last Name</label>
-                                        <input type="text" id="Last Name">
+                                        <label for="color">Color</label>
+                                        <div class="text-field--group">
+                                            <div class="text-field--group__colorbox"></div>
+                                            <input class="text-field--group__input" data-type="color" type="text" id="color"/>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <div class="origam-grid__cell origam-size-1of2">
-                                    <div class="text-field">
-                                        <label for="First-name">First Name</label>
-                                        <input type="text" id="First-name">
-                                    </div>
-                                </div>
-
-                                <div class="origam-grid__cell origam-size-1of3">
-                                    <div class="text-field">
-                                        <label for="bad-email"></label>
-                                        <input type="email" id="bad-email">
-                                    </div>
-                                </div>
-
-                                <div class="origam-grid__cell origam-size-1of3">
-                                    <div class="text-field">
-                                        <label for="email-normal"></label>
-                                        <input type="email" id="email-normal">
-                                    </div>
-                                </div>
-
-                                <div class="origam-grid__cell origam-size-1of3">
-                                    <div class="text-field">
-                                        <label for="email-success"></label>
-                                        <input type="email" id="email-success">
-                                    </div>
-                                </div>
-
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="origam-section">
+            <div class="origam-grid__cell origam-size-1of1">
+                <h2 id="form-input-date">
+                    Date picker
+                    <a class="anchor-link" href="#form-input-date">
+                        <span class="anchor-icon">
+                            <i class="origamicon origamicon-link2"></i>
+                        </span>
+                    </a>
+                </h2>
+            </div>
+            <div class="origam-grid__cell origam-size-1of1">
+                <div class="origam-example">
+                    <div class="origam-grid">
+                        <div class="origam-wrapper">
+                            <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="text-field">
-                                        <label for="description"></label>
-                                        <textarea id="description"></textarea>
+                                        <label for="date">Date picker</label>
+                                        <input type="text" id="date"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="origam-section">
+            <div class="origam-grid__cell origam-size-1of1">
+                <h2 id="form-input-text">
+                    Text
+                    <a class="anchor-link" href="#form-input-text">
+                        <span class="anchor-icon">
+                            <i class="origamicon origamicon-link2"></i>
+                        </span>
+                    </a>
+                </h2>
+            </div>
+            <div class="origam-grid__cell origam-size-1of1">
+                <div class="origam-example">
+                    <div class="origam-grid">
+                        <div class="origam-wrapper">
+                            <div class="origam-section">
+                                <div class="origam-grid__cell origam-size-1of2">
+                                    <div class="text-field">
+                                        <label class="text-field--label" for="Text">Text</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" type="text" id="Text"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of2">
+                                    <div class="text-field text-field--disabled">
+                                        <label class="text-field--label" for="disabled">Text disabled</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" type="text" id="disabled" disabled/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of2">
+                                    <div class="text-field">
+                                        <label class="text-field--label" for="help">Text with help</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" type="text" id="help"/>
+                                        </div>
+                                        <span class="text-field--help">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere faucibus efficitur.</span>
+                                    </div>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of2">
+                                    <div class="text-field text-field--fixed">
+                                        <label class="text-field--label" for="Fixed" data-fixed="true">Text Fixed</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" id="Fixed" type="text" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of2">
+                                    <div class="text-field">
+                                        <div class="text-field text-field--addons">
+                                            <label class="text-field--label" for="icon">Text with "addons"</label>
+                                            <div class="text-field--group">
+                                                <div class="text-field--group__addons">
+                                                    <i class="origamicon origamicon-lab"></i>
+                                                </div>
+                                                <input class="text-field--group__input" id="icon" type="text" />
+                                            </div>
+                                            <span class="text-field--help">With addons you can add icon or money type ($,£)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of2">
+                                    <div class="text-field">
+                                        <div class="text-field text-field--focused">
+                                            <label class="text-field--label" for="focus">Text focus</label>
+                                            <div class="text-field--group">
+                                                <input class="text-field--group__input" id="focus" type="text" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of2">
+                                    <div class="text-field">
+                                        <div class="text-field text-field--hidden">
+                                            <label class="text-field--label" for="hidden">Text label hidden</label>
+                                            <div class="text-field--group">
+                                                <input class="text-field--group__input" id="hidden" type="text" />
+                                            </div>
+                                            <span class="text-field--help">Label is hidden</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of2">
+                                    <div class="text-field">
+                                        <div class="text-field text-field--active">
+                                            <label class="text-field--label" for="icon">Text active</label>
+                                            <div class="text-field--group">
+                                                <input class="text-field--group__input" id="active" type="text" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of1">
+                                    <div class="text-field">
+                                        <div class="text-field">
+                                            <label class="text-field--label" for="area" >Text area</label>
+                                            <div class="text-field--group">
+                                                <textarea class="text-field--group__input" id="area"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="origam-section">
+            <div class="origam-grid__cell origam-size-1of1">
+                <h2 id="form-input-number">
+                    Number
+                    <a class="anchor-link" href="#form-input-number">
+                        <span class="anchor-icon">
+                            <i class="origamicon origamicon-link2"></i>
+                        </span>
+                    </a>
+                </h2>
+            </div>
+            <div class="origam-grid__cell origam-size-1of1">
+                <div class="origam-example">
+                    <div class="origam-grid">
+                        <div class="origam-wrapper">
+                            <div class="origam-section">
+                                <div class="origam-grid__cell origam-size-1of1">
+                                    <div class="text-field">
+                                        <label class="text-field--label" for="number">Number</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" type="number" id="number" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="origam-section">
+            <div class="origam-grid__cell origam-size-1of1">
+                <h2 id="form-input-phone">
+                    Phone Number
+                    <a class="anchor-link" href="#form-input-phone">
+                        <span class="anchor-icon">
+                            <i class="origamicon origamicon-link2"></i>
+                        </span>
+                    </a>
+                </h2>
+            </div>
+            <div class="origam-grid__cell origam-size-1of1">
+                <div class="origam-example">
+                    <div class="origam-grid">
+                        <div class="origam-wrapper">
+                            <div class="origam-section">
+                                <div class="origam-grid__cell origam-size-1of1">
+                                    <div class="text-field">
+                                        <label class="text-field--label" for="phone">Phone Number</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" type="phone" id="phone" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="origam-section">
+            <div class="origam-grid__cell origam-size-1of1">
+                <h2 id="form-input-email">
+                    Email
+                    <a class="anchor-link" href="#form-input-email">
+                        <span class="anchor-icon">
+                            <i class="origamicon origamicon-link2"></i>
+                        </span>
+                    </a>
+                </h2>
+            </div>
+            <div class="origam-grid__cell origam-size-1of1">
+                <div class="origam-example">
+                    <div class="origam-grid">
+                        <div class="origam-wrapper">
+                            <div class="origam-section">
+                                <div class="origam-grid__cell origam-size-1of1">
+                                    <div class="text-field">
+                                        <label class="text-field--label" for="email">Email</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" type="email" id="email" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="origam-section">
+            <div class="origam-grid__cell origam-size-1of1">
+                <h2 id="form-input-url">
+                    Url
+                    <a class="anchor-link" href="#form-input-url">
+                        <span class="anchor-icon">
+                            <i class="origamicon origamicon-link2"></i>
+                        </span>
+                    </a>
+                </h2>
+            </div>
+            <div class="origam-grid__cell origam-size-1of1">
+                <div class="origam-example">
+                    <div class="origam-grid">
+                        <div class="origam-wrapper">
+                            <div class="origam-section">
+                                <div class="origam-grid__cell origam-size-1of1">
+                                    <div class="text-field">
+                                        <label class="text-field--label" for="url">Url</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" type="url" id="url" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="origam-section">
+            <div class="origam-grid__cell origam-size-1of1">
+                <h2 id="form-input-password">
+                    Password
+                    <a class="anchor-link" href="#form-input-password">
+                        <span class="anchor-icon">
+                            <i class="origamicon origamicon-link2"></i>
+                        </span>
+                    </a>
+                </h2>
+            </div>
+            <div class="origam-grid__cell origam-size-1of1">
+                <div class="origam-example">
+                    <div class="origam-grid">
+                        <div class="origam-wrapper">
+                            <div class="origam-section">
+                                <div class="origam-grid__cell origam-size-1of1">
+                                    <div class="text-field">
+                                        <label class="text-field--label" for="password">Password</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" type="password" id="password" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="origam-section">
+            <div class="origam-grid__cell origam-size-1of1">
+                <h2 id="form-input-file">
+                    File
+                    <a class="anchor-link" href="#form-input-file">
+                        <span class="anchor-icon">
+                            <i class="origamicon origamicon-link2"></i>
+                        </span>
+                    </a>
+                </h2>
+            </div>
+            <div class="origam-grid__cell origam-size-1of1">
+                <div class="origam-example">
+                    <div class="origam-grid">
+                        <div class="origam-wrapper">
+                            <div class="origam-section">
+                                <div class="origam-grid__cell origam-size-1of1">
+                                    <div class="text-field">
+                                        <label class="text-field--label" for="file">File</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" type="file" id="file" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="origam-section">
+            <div class="origam-grid__cell origam-size-1of1">
+                <h2 id="form-validate">
+                    Validate states
+                    <a class="anchor-link" href="#form-validate">
+                        <span class="anchor-icon">
+                            <i class="origamicon origamicon-link2"></i>
+                        </span>
+                    </a>
+                </h2>
+            </div>
+            <div class="origam-grid__cell origam-size-1of1">
+                <div class="origam-example">
+                    <div class="origam-grid">
+                        <div class="origam-wrapper">
+                            <div class="origam-section">
+                                <div class="origam-grid__cell origam-size-1of3">
+                                    <div class="text-field text-field--success">
+                                        <label class="text-field--label" for="success">success</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" type="text" id="success" />
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="origam-grid__cell origam-size-1of2">
-                                    <div class="text-field">
-                                        <form>
-                                            <div class="text-field">
-                                                <label for="first-last-name" data-fixed="true"></label>
-                                                <input id="first-last-name" type="text">
-                                            </div>
-                                            <div class="text-field">
-                                                <label for="Phone-number" data-fixed="true"></label>
-                                                <input type="text" id="Phone-number">
-                                            </div>
-                                            <div class="text-field">
-                                                <label for="Email-address" data-fixed="true"></label>
-                                                <input type="email" id="Email-address">
-                                            </div>
-                                            <div class="text-field">
-                                                <label for="Location" data-fixed="true"></label>
-                                                <input type="text" id="Location">
-                                            </div>
-                                        </form>
+                                <div class="origam-grid__cell origam-size-1of3">
+                                    <div class="text-field text-field--warning">
+                                        <label class="text-field--label" for="warning">warning</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" type="text" id="warning" />
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="origam-grid__cell origam-size-1of2">
-                                    <div class="text-field">
-                                        <form>
-                                            <div class="text-field">
-                                            <label data-fixed="true"></label>
-                                            <input type="text">
-                                            </div>
-                                            <div class="text-field">
-                                                <label id="Last id" data-fixed="true"></label>
-                                                <input type="text">
-                                            </div>
-                                            <div class="text-field">
-                                                <label id="Email" data-fixed="true"></label>
-                                                <input type="email">
-                                            </div>
-                                            <div class="text-field">
-                                                <label id="Address" data-fixed="true"></label>
-                                                <input type="text">
-                                            </div>
-                                        </form>
+
+                                <div class="origam-grid__cell origam-size-1of3">
+                                    <div class="text-field text-field--error">
+                                        <label class="text-field--label" for="error">Error</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" type="text" id="error" />
+                                        </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>

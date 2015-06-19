@@ -2,227 +2,14 @@
   * Text field base styles
   */
 
-.text-field {
+.text-field{
   @include position(relative, null, null, null, null);
   padding-top: $base-space * 4;
   padding-bottom: $base-space;
-
-  &:before,
-  &:after {
-    content: '';
-  }
-
-  &:before {
-    @include position(absolute, null 0 $base-space - 1 0);
-    height: 1px;
-    border-bottom: 1px solid $black-4;
-  }
-
-  &:after {
-    @include position(absolute, null 0 $base-space - 2 0);
-    height: 2px;
-    background-color: $blue-500;
-    @include transform(scale(0));
-    @include transition-property(transform);
-    @include transition-duration(0.6s);
-    @include transition-timing-function(ease-out);
-  }
 }
 
-.text-field--is-active {
-  .text-field--label {
-    @include transform(scale(0.75) translateY(0));
-  }
-}
-
-.text-field--is-focused {
-  &:after {
-    @include transform(scale(1));
-  }
-
-  .text-field--label {
-    color: $blue-500;
-  }
-
-  &.text-field--dark-theme {
-    .text-field--label {
-      color: $blue-500;
-    }
-  }
-}
-
-.text-field--is-disabled {
-  &:before {
-    border-bottom-style: dashed;
-  }
-
-  .text-field--input {
-    color: $black-3;
-    cursor: not-allowed;
-  }
-
-  &.text-field--dark-theme {
-    .text-field--input {
-      color: $white-3;
-    }
-  }
-}
-
-.text-field--has-error {
-  &:after {
-    background-color: $red-500;
-    @include transform(scale(1));
-  }
-
-  .text-field--label {
-    color: $red-500;
-  }
-
-  &.text-field--dark-theme {
-    .text-field--label {
-      color: $red-500;
-    }
-  }
-}
-
-.text-field--fixed-label {
-  padding-top: $base-space;
-
-  .text-field--label {
-    @include transform(none);
-  }
-
-  &.text-field--is-focused {
-    .text-field--label {
-      color: $black-3;
-    }
-  }
-
-  &.text-field--dark-theme.text-field--is-focused {
-    .text-field--label {
-      color: $white-3;
-    }
-  }
-}
-
-.text-field--label-hidden {
-  .text-field--label {
-    display: none;
-  }
-}
-
-.text-field--is-valid {
-  .text-field--label {
-    color: $green-500;
-  }
-
-  &:after {
-    background-color: $green-500;
-    @include transform(scale(1));
-  }
-
-  &.text-field--dark-theme {
-    .text-field--label {
-      color: $green-500;
-    }
-  }
-}
-
-.text-field--dark-theme {
-  &:before {
-    border-color: $white-3;
-  }
-}
-
-.text-field--with-icon {
-  margin-left: $base-space * 8;
-}
-
-// Text field label
-.text-field--label {
-  display: block;
-  @include position(absolute, $base-space, null, null, 0);
-  color: $black-3;
-  line-height: 32px;
-  pointer-events: none;
-  @include transform(translateY($base-space * 3));
-  @include transform-origin(bottom left);
-  @include transition-property(transform, color);
-  @include transition-duration(0.4s);
-  @include transition-timing-function(ease-out);
-
-  .text-field--dark-theme & {
-    color: $white-3;
-  }
-}
-
-// Text field input
-.text-field--input {
-  display: block;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  border: none;
-  overflow: hidden;
-  resize: none;
-  font-weight: 400;
-  cursor: text;
-  background-color: transparent;
-  @include appearance(none);
-  box-shadow: none;
-
-  &:focus {
-    outline: none;
-  }
-
-  .text-field--dark-theme & {
-    color: $white;
-  }
-}
-
-input.text-field--input {
-  height: 32px;
-  line-height: 32px;
-}
-
-textarea.text-field--input {
-  height: 24px;
-  margin: 4px 0;
-}
-
-// Text field icon
-.text-field--icon {
-  @include position(absolute, 2px null null -68px);
-  @include size(48px, 44px);
-  line-height: 44px;
-  @include font-size(24px);
-  color: $black-2;
-  text-align: center;
-  @include transition-property(color);
-  @include transition-duration(0.4s);
-  @include transition-timing-function(ease-out);
-
-  .text-field--dark-theme & {
-    color: $white;
-  }
-
-  .text-field--is-focused & {
-    color: $blue-500;
-  }
-
-  .text-field--has-error & {
-    color: $red-500;
-  }
-
-  .text-field--is-valid & {
-    color: $green-500;
-  }
-}
-
-// Input file base styles
-.input-file {
+.text-field--group {
   @include position(relative, null, null, null, null);
-  padding-top: $base-space * 4;
   padding-bottom: $base-space;
 
   &:before,
@@ -239,7 +26,7 @@ textarea.text-field--input {
   &:after {
     @include position(absolute, null, 0, $base-space - 2, 0);
     height: 2px;
-    background-color: $blue-500;
+    background-color: $primary-color-1;
     @include transform(scale(0));
     @include transition-property(transform);
     @include transition-duration(0.6s);
@@ -247,56 +34,173 @@ textarea.text-field--input {
   }
 }
 
-.input-file--is-active {
-  .input-file--label {
-    @include scale(0.75);
-    @include translateY(0);
-  }
-
-  .input-file--filename {
-    opacity: 1;
+.text-field--active {
+  .text-field--label {
+    @include transform(scale(0.75) translateY(0));
   }
 }
 
-.input-file--is-focused {
-  &:after {
-    @include scale(1);
+.text-field--focused {
+  .text-field--group:after {
+    @include transform(scale(1));
   }
 
-  .input-file--label {
-    color: $blue-500;
+  .text-field--label {
+    color: $primary-color-1;
+    @include transform(scale(0.75) translateY(0));
   }
 }
 
-// Input file label
-.input-file--label {
+.text-field--disabled {
+  .text-field--group:before {
+    border-bottom-style: dashed;
+  }
+
+  .text-field--group__input {
+    color: $black-3;
+    cursor: not-allowed;
+  }
+}
+
+.text-field--fixed {
+  padding-top: $base-space;
+
+  .text-field--label {
+    @include transform(none);
+  }
+
+  &.text-field--focused {
+    .text-field--label {
+      color: $black-3;
+    }
+  }
+}
+
+.text-field--hidden {
+  .text-field--label {
+    display: none;
+  }
+}
+
+// Text field label
+.text-field--label {
   display: block;
   @include position(absolute, $base-space, null, null, 0);
   color: $black-3;
   line-height: 32px;
   pointer-events: none;
-  @include translateY($base-space * 3);
+  @include transform(translateY($base-space * 3));
   @include transform-origin(bottom left);
   @include transition-property(transform, color);
   @include transition-duration(0.4s);
   @include transition-timing-function(ease-out);
+
 }
 
-// Input file filename
-.input-file--filename {
+// Text field input
+.text-field--group__input {
   display: block;
-  @include size(100% $base-space * 4);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
   overflow: hidden;
-  opacity: 0;
-  line-height: 32px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  resize: none;
+  font-weight: 400;
+  cursor: text;
+  background-color: transparent;
+  @include appearance(none);
+  box-shadow: none;
+
+  &:focus {
+    outline: none;
+  }
 }
 
-// Input file input
-.input-file--input {
-  @include position(absolute, $base-space * 4, null, null, 0);
-  @include size(100% 32px);
-  opacity: 0;
-  cursor: pointer;
+input.text-field--group__input {
+  height: 32px;
+  line-height: 32px;
+}
+
+textarea.text-field--group__input {
+  height: 24px;
+  margin: 4px 0;
+}
+
+.text-field--group__input[data-type=color]{
+  border-left:1px solid $black-4;
+  border-right:1px solid $black-4;
+  text-align: center;
+}
+
+.text-field--group__colorbox{
+  width: 100%;
+  min-height: 100px;
+  border: 1px solid $black-4;
+  background-color: $red;
+}
+
+// Text field addons
+.text-field--addons{
+  padding-left: 68px;
+  .text-field--label{
+    @include position(absolute, null, null, null, 68px);
+  }
+}
+
+.text-field--group__addons {
+  @include position(absolute, 2px, null, null, -68px);
+  @include size(48px, 44px);
+  line-height: 44px;
+  @include font-size(24px);
+  color: $black-2;
+  text-align: center;
+  @include transition-property(color);
+  @include transition-duration(0.4s);
+  @include transition-timing-function(ease-out);
+
+  .text-field--focused & {
+    color: $primary-color-1;
+  }
+
+  .text-field--error & {
+    color: $color-warning;
+  }
+
+  .text-field--success & {
+    color: $color-success;
+  }
+}
+
+.text-field--error {
+  .text-field--group:after {
+    background-color: $color-error;
+    @include transform(scale(1));
+  }
+
+  .text-field--label {
+    color: $color-error;
+  }
+}
+
+.text-field--success {
+  .text-field--label {
+    color: $color-success;
+  }
+
+  .text-field--group:after {
+    background-color: $color-success;
+    @include transform(scale(1));
+  }
+}
+
+.text-field--warning {
+  .text-field--label {
+    color: $color-warning;
+  }
+
+  .text-field--group:after {
+    background-color: $color-warning;
+    @include transform(scale(1));
+  }
 }
