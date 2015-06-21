@@ -6,7 +6,7 @@
     <link href="../assets/css/screen.css" rel="stylesheet"/>
     <link href="css/demo.css" rel="stylesheet"/>
     <script src="../assets/js/jquery-1.11.3.min.js"></script>
-    <script type="text/javascript" async="" src="../assets/js/colorpicker.js"></script>
+    <script type="text/javascript" async="" src="../assets/js/input.js"></script>
 </head>
 <body>
 <div class="origam-grid">
@@ -373,57 +373,47 @@
                                     </div>
                                 </div>
                                 <div class="origam-grid__cell origam-size-1of2">
-                                    <div class="text-field">
-                                        <div class="text-field text-field--addons">
-                                            <label class="text-field--label" for="icon">Text with "addons"</label>
-                                            <div class="text-field--group">
-                                                <div class="text-field--group__addons">
-                                                    <i class="origamicon origamicon-lab"></i>
-                                                </div>
-                                                <input class="text-field--group__input" id="icon" type="text" />
+                                    <div class="text-field text-field--addons">
+                                        <label class="text-field--label" for="icon">Text with "addons"</label>
+                                        <div class="text-field--group">
+                                            <div class="text-field--group__addons">
+                                                <i class="origamicon origamicon-lab"></i>
                                             </div>
-                                            <span class="text-field--help">With addons you can add icon or money type ($,£)</span>
+                                            <input class="text-field--group__input" id="icon" type="text" />
+                                        </div>
+                                        <span class="text-field--help">With addons you can add icon or money type ($,£)</span>
+                                    </div>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of2">
+                                    <div class="text-field text-field--focused">
+                                        <label class="text-field--label" for="focus">Text focus</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" id="focus" type="text" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="origam-grid__cell origam-size-1of2">
-                                    <div class="text-field">
-                                        <div class="text-field text-field--focused">
-                                            <label class="text-field--label" for="focus">Text focus</label>
-                                            <div class="text-field--group">
-                                                <input class="text-field--group__input" id="focus" type="text" />
-                                            </div>
+                                    <div class="text-field text-field--hidden">
+                                        <label class="text-field--label" for="hidden">Text label hidden</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" id="hidden" type="text" />
                                         </div>
+                                        <span class="text-field--help">Label is hidden</span>
                                     </div>
                                 </div>
                                 <div class="origam-grid__cell origam-size-1of2">
-                                    <div class="text-field">
-                                        <div class="text-field text-field--hidden">
-                                            <label class="text-field--label" for="hidden">Text label hidden</label>
-                                            <div class="text-field--group">
-                                                <input class="text-field--group__input" id="hidden" type="text" />
-                                            </div>
-                                            <span class="text-field--help">Label is hidden</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="origam-grid__cell origam-size-1of2">
-                                    <div class="text-field">
-                                        <div class="text-field text-field--active">
-                                            <label class="text-field--label" for="icon">Text active</label>
-                                            <div class="text-field--group">
-                                                <input class="text-field--group__input" id="active" type="text" />
-                                            </div>
+                                    <div class="text-field text-field--active">
+                                        <label class="text-field--label" for="icon">Text active</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" id="active" type="text" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="text-field">
-                                        <div class="text-field">
-                                            <label class="text-field--label" for="area" >Text area</label>
-                                            <div class="text-field--group">
-                                                <textarea class="text-field--group__input" id="area"></textarea>
-                                            </div>
+                                        <label class="text-field--label" for="area" >Text area</label>
+                                        <div class="text-field--group">
+                                            <textarea class="text-field--group__input" id="area"></textarea>
                                         </div>
                                     </div>
                                 </div>

@@ -127,19 +127,6 @@ textarea.text-field--group__input {
   margin: 4px 0;
 }
 
-.text-field--group__input[data-type=color]{
-  border-left:1px solid $black-4;
-  border-right:1px solid $black-4;
-  text-align: center;
-}
-
-.text-field--group__colorbox{
-  width: 100%;
-  min-height: 100px;
-  border: 1px solid $black-4;
-  background-color: $red;
-}
-
 // Text field addons
 .text-field--addons{
   padding-left: 68px;

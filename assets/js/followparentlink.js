@@ -64,19 +64,6 @@
                 });
                 $(this).css('cursor', 'pointer');
             });
-        },
-        getLabel: function () {
-            var elId = $(this).attr('id');
-            var $elLabel = $('label[for="' + elId + '"]:first');
-            return $elLabel;
-        },
-        labelToSelect: function () {
-            return this.each(function () {
-                var $elLabel = $(this).getLabel();
-                var titleLabel = $.trim($elLabel.text());
-                $elLabel.hide();
-                $(this).find('option:first').text(titleLabel);
-            });
         }
     });
 })(jQuery, window);
