@@ -402,8 +402,8 @@ th {
   */
 @font-face {
   font-family: 'origamicon';
-  src: url("../fonts/origamicon.eot?xisk0l");
-  src: url("../fonts/origamicon.eot?#iefixxisk0l") format("embedded-opentype"), url("../fonts/origamicon.woff?xisk0l") format("woff"), url("../fonts/origamicon.ttf?xisk0l") format("truetype"), url("../fonts/origamicon.svg?xisk0l#origamicon") format("svg");
+  src: url("../fonts/origamicon.eot");
+  src: url("../fonts/origamicon.eot?#iefix") format("embedded-opentype"), url("../fonts/origamicon.woff") format("woff"), url("../fonts/origamicon.ttf") format("truetype"), url("../fonts/origamicon.svg#origamicon") format("svg");
   font-weight: normal;
   font-style: normal;
 }
