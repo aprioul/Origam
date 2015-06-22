@@ -39,7 +39,9 @@
 
                     $inputParent.addClass(cls.clsloaded);
                     $input.focus(animationfocus).blur(animationBlur);
+                    if($input.is('textarea')){
 
+                    }
                 });
             }
         };
