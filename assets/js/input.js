@@ -22,27 +22,22 @@
                     baseHeight: '24'
                 },
                 password: {
-                    showHidewrapper: '<div class="text-field--group__addons"></div>',
-                    showHideHtmlElement: 'span',
-                    showHideClass: 'origamicon text-field--group__switchpass',
-                    showHideClassShow: 'origamicon-eye',
-                    showHideClassHide: 'origamicon-eye-blocked',
-                    showHideappendafter: true,
-                    strenghtMinimumChars: 8,
-                    strengthScaleFactor: 1,
-                    strenghtHtmlElement : 'span',
-                    strenghtClass: 'text-field--progressbar',
-                    strenghtClassDanger: 'text-field--progressbar__danger',
-                    strenghtClassSuccess:'text-field--progressbar__success',
-                    strenghtText: [
-                        'too short',
-                        'weak',
-                        'medium',
-                        'strong',
-                        'very strong'
-                    ],
-                    // CALLBACKS
-                    onProgress: function() {}
+                    showHide:{
+                        showHidewrapper: '<div class="text-field--group__addons"></div>',
+                        showHideHtmlElement: 'span',
+                        showHideClass: 'origamicon text-field--group__switchpass',
+                        showHideClassShow: 'origamicon-eye',
+                        showHideClassHide: 'origamicon-eye-blocked',
+                        showHideappendafter: true
+                    },
+                    strenght: {
+                        strenghtMinimumChars: 8,
+                        strengthScaleFactor: 1,
+                        strenghtHtmlElement: 'span',
+                        strenghtClass: 'text-field--progressbar',
+                        strenghtClassDanger: 'text-field--progressbar__danger',
+                        strenghtClassSuccess: 'text-field--progressbar__success'
+                    }
                 },
                 modules: [
                     'phone',
@@ -194,11 +189,6 @@
                 }
                 return 0;
             },
-            isEmpty = function(f) {
-                return typeof f === "function" && /^function [^(]*\(\)[ ]*{(.*)}$/.exec(
-                    f.toString().replace(/\n/g, "").replace(/(\/\*[\w\'\s\r\n\*]*\*\/)|(\/\/[\w\s\']*)|(\<![\-\-\s\w\>\/]*\>)/g, '')
-                )[1].trim() === "";
-            },
             resizeTextarea = function(e, $textarea, opt) {
                 var offset = e.offsetHeight - e.clientHeight;
                 $textarea.on('keyup input', function () {
@@ -212,22 +202,22 @@
             passwordSwitch = function(e, $password, opt){
                 var parentNode = '.' + opt.parentNode;
                 var classPosition = '';
-                var $element = document.createElement(opt.password.showHideHtmlElement);
-                opt.password.showHideappendafter ? classPosition = opt.classes.addonsRight : opt.classes.addonsLeft;
+                var $element = document.createElement(opt.password.showHide.showHideHtmlElement);
+                opt.password.showHide.showHideappendafter ? classPosition = opt.classes.addonsRight : opt.classes.addonsLeft;
 
                 $password.parents(parentNode).addClass(classPosition);
-                $password.parent().append(opt.password.showHidewrapper);
+                $password.parent().append(opt.password.showHide.showHidewrapper);
                 $password.next().append($element);
 
                 var $switch = $password.next().children();
-                $switch.addClass(opt.password.showHideClass).addClass(opt.password.showHideClassShow);
+                $switch.addClass(opt.password.showHide.showHideClass).addClass(opt.password.showHide.showHideClassShow);
                 $switch.bind('click', function () {
-                    if ($switch.hasClass(opt.password.showHideClassShow)) {
+                    if ($switch.hasClass(opt.password.showHide.showHideClassShow)) {
                         $password.attr('type', 'text');
-                        $switch.removeClass(opt.password.showHideClassShow).addClass(opt.password.showHideClassHide);
+                        $switch.removeClass(opt.password.showHide.showHideClassShow).addClass(opt.password.showHide.showHideClassHide);
                     } else {
                         $password.attr('type', 'password');
-                        $switch.removeClass(opt.password.showHideClassHide).addClass(opt.password.showHideClassShow);
+                        $switch.removeClass(opt.password.showHide.showHideClassHide).addClass(opt.password.showHide.showHideClassShow);
                     }
                 });
             },
@@ -246,36 +236,29 @@
                     }
 
                     // Use natural log to produce linear scale
-                    complexity = Math.log(Math.pow(complexity, password.length)) * (1 / opt.password.strengthScaleFactor);
+                    complexity = Math.log(Math.pow(complexity, password.length)) * (1 / opt.password.strenght.strengthScaleFactor);
 
-                    valid = (complexity > min_point && password.length >= opt.password.strenghtMinimumChars);
+                    valid = (complexity > min_point && password.length >= opt.password.strenght.strenghtMinimumChars);
 
                     // Scale to percentage, so it can be used for a progress bar
                     complexity = (complexity / max_point) * 100;
                     complexity = (complexity > 100) ? 100 : complexity;
 
-                    var callback = opt.password.onProgress;
+                    var $element = document.createElement(opt.password.strenght.showHideHtmlElement);
+                    var progressBarClass = '.' + opt.password.strenght.strenghtClass;
+                    var $progressBar = null;
 
-                    if(isEmpty(callback)){
-                        var $element = document.createElement(opt.password.showHideHtmlElement);
-                        var progressBarClass = '.' + opt.password.strenghtClass;
-                        var $progressBar = null;
-
-                        if($(progressBarClass).length === 0) {
-                            $password.parent().append($element);
-                            $progressBar = $password.siblings().last();
-                            $progressBar.addClass(opt.password.strenghtClass);
-                        }else{
-                            $progressBar = $password.siblings().last();
-                        }
-                        $progressBar.toggleClass(opt.password.strenghtClassSuccess, valid);
-                        $progressBar.toggleClass(opt.password.strenghtClassDanger, !valid);
-                        $progressBar.css({'width': complexity + '%'});
-
+                    if($(progressBarClass).length === 0) {
+                        $password.parent().append($element);
+                        $progressBar = $password.siblings().last();
+                        $progressBar.addClass(opt.password.strenght.strenghtClass);
+                    }else{
+                        $progressBar = $password.siblings().last();
                     }
-                    else{
-                        callback.call(this, valid, complexity);
-                    }
+
+                    $progressBar.toggleClass(opt.password.strenght.strenghtClassSuccess, valid);
+                    $progressBar.toggleClass(opt.password.strenght.strenghtClassDanger, !valid);
+                    $progressBar.css({'width': complexity + '%'});
                 });
             };
 
