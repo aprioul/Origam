@@ -17900,23 +17900,31 @@ input.text-field--group__input {
 textarea.text-field--group__input {
   height: 24px;
   margin: 4px 0;
+  overflow: hidden;
+  resize: none;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-.text-field--addons {
+.text-field--addons.left {
   padding-left: 68px;
 }
-.text-field--addons .text-field--label {
+.text-field--addons.left .text-field--label {
   position: absolute;
   left: 68px;
+}
+.text-field--addons.right {
+  padding-right: 68px;
 }
 
 .text-field--group__addons {
   position: absolute;
-  top: 2px;
+  top: 0;
   left: -68px;
-  width: 48px;
-  height: 44px;
-  line-height: 44px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
   font-size: 24px;
   font-size: 1.5rem;
   color: rgba(0, 0, 0, 0.54);
@@ -17933,6 +17941,18 @@ textarea.text-field--group__input {
   -o-transition-timing-function: ease-out;
   -webkit-transition-timing-function: ease-out;
   transition-timing-function: ease-out;
+}
+.text-field--group__input + .text-field--group__addons {
+  position: absolute;
+  right: -68px;
+  left: initial;
+}
+.text-field--group__addons .text-field--group__switchpass {
+  color: rgba(0, 0, 0, 0.26);
+  cursor: pointer;
+}
+.text-field--group__addons:hover .text-field--group__switchpass {
+  color: rgba(0, 0, 0, 0.54);
 }
 .text-field--focused .text-field--group__addons {
   color: #0196d1;

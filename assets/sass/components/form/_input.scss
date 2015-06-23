@@ -125,26 +125,47 @@ input.text-field--group__input {
 textarea.text-field--group__input {
   height: 24px;
   margin: 4px 0;
+  overflow: hidden;
+  resize: none;
+  @include box-sizing(border-box);
 }
 
 // Text field addons
 .text-field--addons{
-  padding-left: 68px;
-  .text-field--label{
-    @include position(absolute, null, null, null, 68px);
+  &.left {
+    padding-left: 68px;
+    .text-field--label{
+      @include position(absolute, null, null, null, 68px);
+    }
+  }
+  &.right{
+    padding-right: 68px;
   }
 }
 
 .text-field--group__addons {
-  @include position(absolute, 2px, null, null, -68px);
-  @include size(48px, 44px);
-  line-height: 44px;
+  @include position(absolute, 0, null, null, -68px);
+  @include size(40px, 40px);
+  line-height: 40px;
   @include font-size(24px);
   color: $black-2;
   text-align: center;
   @include transition-property(color);
   @include transition-duration(0.4s);
   @include transition-timing-function(ease-out);
+
+  .text-field--group__input + & {
+    @include position(absolute, null, -68px, null, initial);
+  }
+
+  .text-field--group__switchpass{
+    color: $black-3;
+    cursor: pointer;
+  }
+
+  &:hover .text-field--group__switchpass{
+    color: $black-2;
+  }
 
   .text-field--focused & {
     color: $primary-color-1;
