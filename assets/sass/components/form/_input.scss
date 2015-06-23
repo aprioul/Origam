@@ -41,8 +41,10 @@
 }
 
 .text-field--focused {
-  .text-field--group:after {
-    @include transform(scale(1));
+  &:not(.text-field--password) {
+    .text-field--group:after {
+      @include transform(scale(1));
+    }
   }
 
   .text-field--label {
@@ -137,6 +139,9 @@ textarea.text-field--group__input {
     .text-field--label{
       @include position(absolute, null, null, null, 68px);
     }
+    .text-field--progressbar{
+      @include position(absolute, null, null, null, 68px);
+    }
   }
   &.right{
     padding-right: 68px;
@@ -177,6 +182,18 @@ textarea.text-field--group__input {
 
   .text-field--success & {
     color: $color-success;
+  }
+}
+
+.text-field--progressbar {
+  @include position(absolute, null, null, $base-space - 2, null);
+  min-height: 1px;
+  border-top: 2px solid;
+  &.text-field--progressbar__danger{
+    border-color: $color-error;
+  }
+  &.text-field--progressbar__success{
+    border-color: $color-success;
   }
 }
 
