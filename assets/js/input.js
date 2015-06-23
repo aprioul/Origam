@@ -212,6 +212,7 @@
                 var $switch = $password.next().children();
                 $switch.addClass(opt.password.showHide.showHideClass).addClass(opt.password.showHide.showHideClassShow);
                 $switch.bind('click', function () {
+                    $password.focus();
                     if ($switch.hasClass(opt.password.showHide.showHideClassShow)) {
                         $password.attr('type', 'text');
                         $switch.removeClass(opt.password.showHide.showHideClassShow).addClass(opt.password.showHide.showHideClassHide);
