@@ -168,8 +168,23 @@ textarea.text-field--group__input {
     cursor: pointer;
   }
 
-  &:hover .text-field--group__switchpass{
-    color: $black-2;
+  .text-field--group__selectcountry{
+    color: $black-3;
+    cursor: pointer;
+    @include position(relative,null,null,null,null);
+    @include font-size($font-size-base);
+    @include size(100%, 100%);
+    &:before {
+      @include position(absolute,50%,0,null,null);
+      transform: translateY(-50%);
+    }
+  }
+
+  &:hover {
+    .text-field--group__switchpass,
+    .text-field--group__selectcountry{
+      color: $black-2;
+    }
   }
 
   .text-field--focused & {

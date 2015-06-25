@@ -16,24 +16,34 @@
                     error: 'text-field--error',
                     password: 'text-field--password'
                 },
+                wrapper: '<div class="text-field--group__addons"></div>',
                 parentNode: 'text-field',
-                phone: {},
+                phone: {
+                    autoFormat: true,
+                    autoPlaceholder: true,
+                    defaultCountry: "",
+                    onlyCountries: [],
+                    preferredCountries: [ "US", "GB", "FR" ],
+                    HtmlElement: 'div',
+                    Class: 'origamicon text-field--group__selectcountry',
+                    ClassShow: 'origamicon-angle-down',
+                    ClassHide: 'origamicon-angle-up',
+                    AdddAfter: true
+                },
                 textarea: {
                     baseHeight: '24'
                 },
                 password: {
                     showHide:{
-                        showHidewrapper: '<div class="text-field--group__addons"></div>',
-                        showHideHtmlElement: 'span',
-                        showHideClass: 'origamicon text-field--group__switchpass',
-                        showHideClassShow: 'origamicon-eye',
-                        showHideClassHide: 'origamicon-eye-blocked',
-                        showHideappendafter: true
+                        HtmlElement: 'span',
+                        Class: 'origamicon text-field--group__switchpass',
+                        ClassShow: 'origamicon-eye',
+                        ClassHide: 'origamicon-eye-blocked',
+                        AdddAfter: true
                     },
                     strenght: {
                         strenghtMinimumChars: 8,
                         strengthScaleFactor: 1,
-                        strenghtHtmlElement: 'span',
                         strenghtClass: 'text-field--progressbar',
                         strenghtClassDanger: 'text-field--progressbar__danger',
                         strenghtClassSuccess: 'text-field--progressbar__success'
@@ -148,19 +158,288 @@
                 [0xFF00, 0xFFEF], // Halfwidth and Fullwidth Forms
                 [0xFFF0, 0xFFFD]  // Specials
             ],
-            focus = function(){
-                $(this).parents('.text-field').removeClass(defaults.classes.active);
-                $(this).parents('.text-field').addClass(defaults.classes.focus);
+            countries = {
+                "AF": "Afghanistan",
+                "AL": "Albania",
+                "DZ": "Algeria",
+                "AS": "American Samoa",
+                "AD": "Andorra",
+                "AO": "Angola",
+                "AI": "Anguilla",
+                "AG": "Antigua and Barbuda",
+                "AR": "Argentina",
+                "AM": "Armenia",
+                "AW": "Aruba",
+                "AU": "Australia",
+                "AT": "Austria",
+                "AZ": "Azerbaijan",
+                "BS": "Bahamas",
+                "BH": "Bahrain",
+                "BD": "Bangladesh",
+                "BB": "Barbados",
+                "BY": "Belarus",
+                "BE": "Belgium",
+                "BZ": "Belize",
+                "BJ": "Benin",
+                "BM": "Bermuda",
+                "BT": "Bhutan",
+                "BO": "Bolivia, Plurinational State of",
+                "BA": "Bosnia and Herzegovina",
+                "BW": "Botswana",
+                "BV": "Bouvet Island",
+                "BR": "Brazil",
+                "IO": "British Indian Ocean Territory",
+                "BN": "Brunei Darussalam",
+                "BG": "Bulgaria",
+                "BF": "Burkina Faso",
+                "BI": "Burundi",
+                "KH": "Cambodia",
+                "CM": "Cameroon",
+                "CA": "Canada",
+                "CV": "Cape Verde",
+                "KY": "Cayman Islands",
+                "CF": "Central African Republic",
+                "TD": "Chad",
+                "CL": "Chile",
+                "CN": "China",
+                "CO": "Colombia",
+                "KM": "Comoros",
+                "CG": "Congo",
+                "CD": "Congo, the Democratic Republic of the",
+                "CK": "Cook Islands",
+                "CR": "Costa Rica",
+                "CI": "CÃ´te d'Ivoire",
+                "HR": "Croatia",
+                "CU": "Cuba",
+                "CW": "CuraÃ§ao",
+                "CY": "Cyprus",
+                "CZ": "Czech Republic",
+                "DK": "Denmark",
+                "DJ": "Djibouti",
+                "DM": "Dominica",
+                "DO": "Dominican Republic",
+                "EC": "Ecuador",
+                "EG": "Egypt",
+                "SV": "El Salvador",
+                "GQ": "Equatorial Guinea",
+                "ER": "Eritrea",
+                "EE": "Estonia",
+                "ET": "Ethiopia",
+                "FK": "Falkland Islands (Malvinas)",
+                "FO": "Faroe Islands",
+                "FJ": "Fiji",
+                "FI": "Finland",
+                "FR": "France",
+                "GF": "French Guiana",
+                "PF": "French Polynesia",
+                "TF": "French Southern Territories",
+                "GA": "Gabon",
+                "GM": "Gambia",
+                "GE": "Georgia",
+                "DE": "Germany",
+                "GH": "Ghana",
+                "GI": "Gibraltar",
+                "GR": "Greece",
+                "GL": "Greenland",
+                "GD": "Grenada",
+                "GP": "Guadeloupe",
+                "GU": "Guam",
+                "GT": "Guatemala",
+                "GG": "Guernsey",
+                "GN": "Guinea",
+                "GW": "Guinea-Bissau",
+                "GY": "Guyana",
+                "HT": "Haiti",
+                "HM": "Heard Island and McDonald Islands",
+                "VA": "Holy See (Vatican City State)",
+                "HN": "Honduras",
+                "HK": "Hong Kong",
+                "HU": "Hungary",
+                "IS": "Iceland",
+                "IN": "India",
+                "ID": "Indonesia",
+                "IR": "Iran, Islamic Republic of",
+                "IQ": "Iraq",
+                "IE": "Ireland",
+                "IM": "Isle of Man",
+                "IL": "Israel",
+                "IT": "Italy",
+                "JM": "Jamaica",
+                "JP": "Japan",
+                "JE": "Jersey",
+                "JO": "Jordan",
+                "KZ": "Kazakhstan",
+                "KE": "Kenya",
+                "KI": "Kiribati",
+                "KP": "Korea, Democratic People's Republic of",
+                "KR": "Korea, Republic of",
+                "KW": "Kuwait",
+                "KG": "Kyrgyzstan",
+                "LA": "Lao People's Democratic Republic",
+                "LV": "Latvia",
+                "LB": "Lebanon",
+                "LS": "Lesotho",
+                "LR": "Liberia",
+                "LY": "Libya",
+                "LI": "Liechtenstein",
+                "LT": "Lithuania",
+                "LU": "Luxembourg",
+                "MO": "Macao",
+                "MK": "Macedonia, the former Yugoslav Republic of",
+                "MG": "Madagascar",
+                "MW": "Malawi",
+                "MY": "Malaysia",
+                "MV": "Maldives",
+                "ML": "Mali",
+                "MT": "Malta",
+                "MH": "Marshall Islands",
+                "MQ": "Martinique",
+                "MR": "Mauritania",
+                "MU": "Mauritius",
+                "YT": "Mayotte",
+                "MX": "Mexico",
+                "FM": "Micronesia, Federated States of",
+                "MD": "Moldova, Republic of",
+                "MC": "Monaco",
+                "MN": "Mongolia",
+                "ME": "Montenegro",
+                "MS": "Montserrat",
+                "MA": "Morocco",
+                "MZ": "Mozambique",
+                "MM": "Myanmar",
+                "NA": "Namibia",
+                "NR": "Nauru",
+                "NP": "Nepal",
+                "NL": "Netherlands",
+                "NC": "New Caledonia",
+                "NZ": "New Zealand",
+                "NI": "Nicaragua",
+                "NE": "Niger",
+                "NG": "Nigeria",
+                "NU": "Niue",
+                "NF": "Norfolk Island",
+                "MP": "Northern Mariana Islands",
+                "NO": "Norway",
+                "OM": "Oman",
+                "PK": "Pakistan",
+                "PW": "Palau",
+                "PS": "Palestinian Territory, Occupied",
+                "PA": "Panama",
+                "PG": "Papua New Guinea",
+                "PY": "Paraguay",
+                "PE": "Peru",
+                "PH": "Philippines",
+                "PN": "Pitcairn",
+                "PL": "Poland",
+                "PT": "Portugal",
+                "PR": "Puerto Rico",
+                "QA": "Qatar",
+                "RE": "RÃ©union",
+                "RO": "Romania",
+                "RU": "Russian Federation",
+                "RW": "Rwanda",
+                "SH": "Saint Helena, Ascension and Tristan da Cunha",
+                "KN": "Saint Kitts and Nevis",
+                "LC": "Saint Lucia",
+                "MF": "Saint Martin (French part)",
+                "PM": "Saint Pierre and Miquelon",
+                "VC": "Saint Vincent and the Grenadines",
+                "WS": "Samoa",
+                "SM": "San Marino",
+                "ST": "Sao Tome and Principe",
+                "SA": "Saudi Arabia",
+                "SN": "Senegal",
+                "RS": "Serbia",
+                "SC": "Seychelles",
+                "SL": "Sierra Leone",
+                "SG": "Singapore",
+                "SX": "Sint Maarten (Dutch part)",
+                "SK": "Slovakia",
+                "SI": "Slovenia",
+                "SB": "Solomon Islands",
+                "SO": "Somalia",
+                "ZA": "South Africa",
+                "GS": "South Georgia and the South Sandwich Islands",
+                "SS": "South Sudan",
+                "ES": "Spain",
+                "LK": "Sri Lanka",
+                "SD": "Sudan",
+                "SR": "Suriname",
+                "SZ": "Swaziland",
+                "SE": "Sweden",
+                "CH": "Switzerland",
+                "SY": "Syrian Arab Republic",
+                "TW": "Taiwan, Province of China",
+                "TJ": "Tajikistan",
+                "TZ": "Tanzania, United Republic of",
+                "TH": "Thailand",
+                "TL": "Timor-Leste",
+                "TG": "Togo",
+                "TK": "Tokelau",
+                "TO": "Tonga",
+                "TT": "Trinidad and Tobago",
+                "TN": "Tunisia",
+                "TR": "Turkey",
+                "TM": "Turkmenistan",
+                "TC": "Turks and Caicos Islands",
+                "TV": "Tuvalu",
+                "UG": "Uganda",
+                "UA": "Ukraine",
+                "AE": "United Arab Emirates",
+                "GB": "United Kingdom",
+                "US": "United States",
+                "UM": "United States Minor Outlying Islands",
+                "UY": "Uruguay",
+                "UZ": "Uzbekistan",
+                "VU": "Vanuatu",
+                "VE": "Venezuela, Bolivarian Republic of",
+                "VN": "Viet Nam",
+                "VG": "Virgin Islands, British",
+                "VI": "Virgin Islands, U.S.",
+                "WF": "Wallis and Futuna",
+                "EH": "Western Sahara",
+                "YE": "Yemen",
+                "ZM": "Zambia",
+                "ZW": "Zimbabwe"
             },
-            blur = function(){
-                $(this).parents('.text-field').removeClass(defaults.classes.focus);
-                if($(this).val() != ''){
-                    $(this).parents('.text-field').addClass(defaults.classes.active);
+
+
+            /**
+             * Global Functions
+             */
+            addAddons = function($element,opt, optAddonsPosition){
+                var parentNode = '.' + opt.parentNode;
+                var classPosition = '';
+                optAddonsPosition ? classPosition = opt.classes.addonsRight : opt.classes.addonsLeft;
+
+                $element.parents(parentNode).addClass(classPosition);
+
+                if(optAddonsPosition) {
+                    $element.after(opt.wrapper);
+                    return ($element.next());
                 }
+                else{
+                    $element.before(opt.wrapper);
+                    return ($element.prev());
+                }
+            },
+            generateId = function(length) {
+                var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split('');
+                if (!length) {
+                    length = Math.floor(Math.random() * chars.length);
+                }
+                var str = '';
+                for (var i = 0; i < length; i++) {
+                    str += chars[Math.floor(Math.random() * chars.length)];
+                }
+                return str;
             },
             placeholder = function(){
 
             },
+            /**
+             * Init Functions
+             */
             moduleSwitch = function(mdl, e, $i, opt){
                 switch (mdl){
                     case "textarea":
@@ -181,14 +460,23 @@
                         break;
                 }
             },
-            additionalComplexityForCharset = function (str, charset) {
-                for (var i = str.length - 1; i >= 0; i--) {
-                    if (charset[0] <= str.charCodeAt(i) && str.charCodeAt(i) <= charset[1]) {
-                        return charset[1] - charset[0] + 1;
-                    }
-                }
-                return 0;
+            focus = function(){
+                $(this).parents('.text-field').removeClass(defaults.classes.active);
+                $(this).parents('.text-field').addClass(defaults.classes.focus);
             },
+            blur = function(){
+                $(this)
+                    .parents('.text-field')
+                    .removeClass(defaults.classes.focus);
+                if($(this).val() != ''){
+                    $(this)
+                        .parents('.text-field')
+                        .addClass(defaults.classes.active);
+                }
+            },
+            /**
+             * Textare Functions
+             */
             resizeTextarea = function(e, $textarea, opt) {
                 var offset = e.offsetHeight - e.clientHeight;
                 $textarea.on('keyup input', function () {
@@ -196,29 +484,135 @@
                     $textarea.css('height', baseHeight).css('height', e.scrollHeight + offset);
                 });
             },
-            phoneFormat = function(e,$phone, opt){
+            /**
+             * Phone Functions
+             */
+            phoneFormat = function(e, $phone, opt){
+                var $wrapper = addAddons($phone, opt, opt.phone.AdddAfter)
+                    .append(document.createElement(opt.phone.HtmlElement));
+                var plugin = this;
+                var $container = $wrapper.children();
+
+                var uniqueId = generateId(8);
+
+                plugin.countries = {};
+                plugin.selected = {value: null, text: null};
+                plugin.settings = {inputName: 'country-' + uniqueId};
+
+                var htmlSelectId = 'selectcountry-' + uniqueId;
+                var htmlSelect = '#' + htmlSelectId;
+
+                // Merge in global settings then merge in individual settings via data attributes
+                plugin.countries = countries;
+
+                if (undefined !== plugin.settings.countries) {
+                    plugin.countries = plugin.settings.countries;
+                }
+
+                // Build HTML Select, Construct the drop down button, Assemble the drop down list items element and insert
+                $container
+                    .addClass(opt.phone.Class)
+                    .addClass(opt.phone.ClassShow)
+                    .append(phoneSelect(plugin, htmlSelectId, opt))
+                    .append(phoneDropDownButton(plugin, uniqueId, htmlSelect, opt))
+                    .append(phoneDropDownButtonItemList(plugin, uniqueId, htmlSelect, opt));
+
+                // Hide the actual HTML select
+                $(htmlSelect).hide();
+            },
+            phoneSelect = function (plugin, htmlSelectId, opt) {
+                var htmlSelectElement = $('<select/>').attr('id', htmlSelectId).attr('name', plugin.settings.inputName);
+
+                $.each(plugin.countries, function (code, country) {
+                    var optionAttributes = {value: code};
+                    if (plugin.settings.selectedCountry !== undefined) {
+                        if (plugin.settings.selectedCountry === code) {
+                            optionAttributes = {value: code, selected: "selected"};
+                            plugin.selected = {value: code, text: code}
+                        }
+                    }
+                    htmlSelectElement.append($('<option>', optionAttributes).text(country));
+                });
+
+                return htmlSelectElement;
+            },
+            phoneDropDownButton = function (plugin, uniqueId, htmlSelect, opt) {
+
+                var selectedText = $(htmlSelect).find('option').first().val();
+                var selectedValue = $(htmlSelect).find('option').first().val();
+
+                selectedText = $('<span/>').addClass('selectcountry-selected--value').html( plugin.selected.value || selectedText );
+                selectedValue = plugin.selected.value || selectedValue;
+
+                var $selectedLabel = $('<i/>').addClass('selectcountry-selected--icon flag-icon flag-' + selectedValue.toLowerCase());
+
+                var button = $('<div/>')
+                    .addClass('selectcountry-selected')
+                    .attr('data-toggle', 'dropdown')
+                    .attr('id', 'selectcountry-dropdown-' + uniqueId)
+                    .attr('data-value', selectedValue)
+                    .html($selectedLabel)
+                    .append(selectedText)
+
+                return button;
 
             },
+            phoneDropDownButtonItemList = function (plugin, uniqueId, htmlSelect, opt) {
+                var items = $('<ul/>')
+                    .attr('id', 'selectcountry-dropdown-' + uniqueId + '-list')
+                    .addClass('selectcountry-select');
+
+                // Populate the bootstrap dropdown item list
+                $(htmlSelect).find('option').each(function () {
+
+                    // Get original select option values and labels
+                    var title = $(this).text();
+                    var value = $(this).val();
+                    var text = value;
+                    var $element = $('<span/>').addClass('selectcountry-select--list__value').html(text);
+
+                    // Build the flag icon
+                    var flagIcon = $('<i/>').addClass('selectcountry-select--list__icon flag-icon flag-' + value.toLowerCase());
+
+                    // Build a clickable drop down option item, insert the flag and label, attach click event
+                    var flagItem = $('<a/>')
+                        .attr('data-val', value)
+                        .attr('title', title)
+                        .html(flagIcon)
+                        .append($element)
+                        .on('click', function (e) {
+                            $(htmlSelect).find('option').removeAttr('selected');
+                            $(htmlSelect).find('option[value="' + $(this).data('val') + '"]').attr("selected", "selected");
+                            $('.selectcountry-selected').html($(this).html());
+                            e.preventDefault();
+                        });
+
+                    // Make it a list item
+                    var listItem = $('<li/>').addClass('selectcountry-select--list').prepend(flagItem);
+
+                    // Append it to the drop down item list
+                    items.append(listItem);
+
+                });
+
+                return items;
+            },
+            /**
+             * Password Functions
+             */
             passwordSwitch = function(e, $password, opt){
-                var parentNode = '.' + opt.parentNode;
-                var classPosition = '';
-                var $element = document.createElement(opt.password.showHide.showHideHtmlElement);
-                opt.password.showHide.showHideappendafter ? classPosition = opt.classes.addonsRight : opt.classes.addonsLeft;
-
-                $password.parents(parentNode).addClass(classPosition);
-                $password.parent().append(opt.password.showHide.showHidewrapper);
-                $password.next().append($element);
-
-                var $switch = $password.next().children();
-                $switch.addClass(opt.password.showHide.showHideClass).addClass(opt.password.showHide.showHideClassShow);
+                var $wrapper = addAddons($password, opt, opt.password.showHide.AdddAfter);
+                $wrapper.append(document.createElement(opt.password.showHide.HtmlElement));
+                var $switch = $wrapper.children();
+                $switch.addClass(opt.password.showHide.Class).addClass(opt.password.showHide.ClassShow);
                 $switch.bind('click', function () {
                     $password.focus();
-                    if ($switch.hasClass(opt.password.showHide.showHideClassShow)) {
+                    if ($switch.hasClass(opt.password.showHide.ClassShow)) {
                         $password.attr('type', 'text');
-                        $switch.removeClass(opt.password.showHide.showHideClassShow).addClass(opt.password.showHide.showHideClassHide);
+                        $switch.removeClass(opt.password.showHide.ClassShow).addClass(opt.password.showHide.ClassHide);
                     } else {
                         $password.attr('type', 'password');
-                        $switch.removeClass(opt.password.showHide.showHideClassHide).addClass(opt.password.showHide.showHideClassShow);
+                        $switch.removeClass(opt.password.showHide.ClassHide).addClass(opt.password.showHide.ClassShow);
                     }
                 });
             },
@@ -233,7 +627,7 @@
 
                     // Add character complexity
                     for (var i = charsets.length - 1; i >= 0; i--) {
-                        complexity += additionalComplexityForCharset(password, charsets[i]);
+                        complexity += passwordScore(password, charsets[i]);
                     }
 
                     // Use natural log to produce linear scale
@@ -245,7 +639,7 @@
                     complexity = (complexity / max_point) * 100;
                     complexity = (complexity > 100) ? 100 : complexity;
 
-                    var $element = document.createElement(opt.password.strenght.showHideHtmlElement);
+                    var $element = document.createElement(opt.HtmlElement);
                     var progressBarClass = '.' + opt.password.strenght.strenghtClass;
                     var $progressBar = null;
 
@@ -261,6 +655,14 @@
                     $progressBar.toggleClass(opt.password.strenght.strenghtClassDanger, !valid);
                     $progressBar.css({'width': complexity + '%'});
                 });
+            },
+            passwordScore = function (str, charset) {
+                for (var i = str.length - 1; i >= 0; i--) {
+                    if (charset[0] <= str.charCodeAt(i) && str.charCodeAt(i) <= charset[1]) {
+                        return charset[1] - charset[0] + 1;
+                    }
+                }
+                return 0;
             };
 
         return {
