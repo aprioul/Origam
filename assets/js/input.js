@@ -492,6 +492,7 @@
                     .append(document.createElement(opt.phone.HtmlElement));
                 var plugin = this;
                 var $container = $wrapper.children();
+                var $body = $('body');
 
                 var uniqueId = generateId(8);
 
@@ -514,7 +515,9 @@
                     .addClass(opt.phone.Class)
                     .addClass(opt.phone.ClassShow)
                     .append(phoneSelect(plugin, htmlSelectId, opt))
-                    .append(phoneDropDownButton(plugin, uniqueId, htmlSelect, opt))
+                    .append(phoneDropDownButton(plugin, uniqueId, htmlSelect, opt));
+                $body
+                    .append('<div class="overlay"></div>')
                     .append(phoneDropDownButtonItemList(plugin, uniqueId, htmlSelect, opt));
 
                 // Hide the actual HTML select
@@ -558,7 +561,7 @@
 
             },
             phoneDropDownButtonItemList = function (plugin, uniqueId, htmlSelect, opt) {
-                var items = $('<ul/>')
+                var items = $('<div/>')
                     .attr('id', 'selectcountry-dropdown-' + uniqueId + '-list')
                     .addClass('selectcountry-select');
 
@@ -588,7 +591,7 @@
                         });
 
                     // Make it a list item
-                    var listItem = $('<li/>').addClass('selectcountry-select--list').prepend(flagItem);
+                    var listItem = $('<div/>').addClass('selectcountry-select--list').prepend(flagItem);
 
                     // Append it to the drop down item list
                     items.append(listItem);
