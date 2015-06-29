@@ -159,7 +159,8 @@ textarea.text-field--group__input {
   @include transition-duration(0.4s);
   @include transition-timing-function(ease-out);
 
-  .text-field--group__input + & {
+  .text-field--group__input + &,
+  .text-field.right &{
     @include position(absolute, null, -68px, null, initial);
   }
 
