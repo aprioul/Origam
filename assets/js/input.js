@@ -28,6 +28,7 @@
                     Class: 'origamicon text-field--group__selectcountry',
                     ClassShow: 'origamicon-angle-down',
                     ClassHide: 'origamicon-angle-up',
+                    ClassOverlay: 'selectcountry-overlay',
                     AdddAfter: true
                 },
                 textarea: {
@@ -52,7 +53,8 @@
                 modules: [
                     'phone',
                     'textarea',
-                    'password'
+                    'passwordswitch',
+                    'passwordstrenght'
                 ]
             },
             min_point = 49,
@@ -434,6 +436,12 @@
                 }
                 return str;
             },
+            modal = function (opt) {
+                var overlay = $('<div/>')
+                    .addClass(opt.ClassOverlay);
+
+                return overlay;
+            },
             placeholder = function(){
 
             },
@@ -452,9 +460,13 @@
                             phoneFormat(e, $i, opt);
                         }
                         break;
-                    case "password":
+                    case "passwordswitch":
                         if($i.attr('type') === 'password') {
                             passwordSwitch(e, $i, opt);
+                        }
+                        break;
+                    case "passwordstrenght":
+                        if($i.attr('type') === 'password') {
                             passwordStrenght(e, $i, opt);
                         }
                         break;
@@ -492,7 +504,6 @@
                     .append(document.createElement(opt.phone.HtmlElement));
                 var plugin = this;
                 var $container = $wrapper.children();
-                var $body = $('body');
 
                 var uniqueId = generateId(8);
 
@@ -515,10 +526,19 @@
                     .addClass(opt.phone.Class)
                     .addClass(opt.phone.ClassShow)
                     .append(phoneSelect(plugin, htmlSelectId, opt))
-                    .append(phoneDropDownButton(plugin, uniqueId, htmlSelect, opt));
-                $body
-                    .append('<div class="overlay"></div>')
-                    .append(phoneDropDownButtonItemList(plugin, uniqueId, htmlSelect, opt));
+                    .append(phoneButton(plugin, uniqueId, htmlSelect, opt))
+                    .append(phoneItemList(plugin, uniqueId, htmlSelect, opt));
+
+                var $button = $('.selectcountry-selected');
+
+                $button.bind('click', function(){
+                    var button = $(this);
+                    var id = $(this).attr('id');
+                    var $list = $('#' +  id + '-list');
+
+                    $list.toggleClass('hide', $list.is(":visible"));
+
+                });
 
                 // Hide the actual HTML select
                 $(htmlSelect).hide();
@@ -539,31 +559,31 @@
 
                 return htmlSelectElement;
             },
-            phoneDropDownButton = function (plugin, uniqueId, htmlSelect, opt) {
+            phoneButton = function (plugin, uniqueId, htmlSelect, opt) {
 
-                var selectedText = $(htmlSelect).find('option').first().val();
+                var selectedText = $(htmlSelect).find('option').first().text();
                 var selectedValue = $(htmlSelect).find('option').first().val();
 
+                var $selectedLabel = $('<i/>').addClass('selectcountry-selected--icon flag-icon ' + selectedValue.toLowerCase());
                 selectedText = $('<span/>').addClass('selectcountry-selected--value').html( plugin.selected.value || selectedText );
-                selectedValue = plugin.selected.value || selectedValue;
 
-                var $selectedLabel = $('<i/>').addClass('selectcountry-selected--icon flag-icon flag-' + selectedValue.toLowerCase());
+                selectedValue = plugin.selected.value || selectedValue;
 
                 var button = $('<div/>')
                     .addClass('selectcountry-selected')
-                    .attr('data-toggle', 'dropdown')
-                    .attr('id', 'selectcountry-dropdown-' + uniqueId)
+                    .attr('id', 'selectcountry-' + uniqueId)
                     .attr('data-value', selectedValue)
                     .html($selectedLabel)
-                    .append(selectedText)
+                    .append(selectedText);
 
                 return button;
 
             },
-            phoneDropDownButtonItemList = function (plugin, uniqueId, htmlSelect, opt) {
+            phoneItemList = function (plugin, uniqueId, htmlSelect, opt) {
                 var items = $('<div/>')
-                    .attr('id', 'selectcountry-dropdown-' + uniqueId + '-list')
-                    .addClass('selectcountry-select');
+                    .attr('id', 'selectcountry-' + uniqueId + '-list')
+                    .addClass('selectcountry-select')
+                    .addClass('hide');
 
                 // Populate the bootstrap dropdown item list
                 $(htmlSelect).find('option').each(function () {
@@ -571,7 +591,7 @@
                     // Get original select option values and labels
                     var title = $(this).text();
                     var value = $(this).val();
-                    var text = value;
+                    var text = title;
                     var $element = $('<span/>').addClass('selectcountry-select--list__value').html(text);
 
                     // Build the flag icon
@@ -646,7 +666,7 @@
                     var progressBarClass = '.' + opt.password.strenght.strenghtClass;
                     var $progressBar = null;
 
-                    if($(progressBarClass).length === 0) {
+                    if($password.find(progressBarClass).length === 0) {
                         $password.parent().append($element);
                         $progressBar = $password.siblings().last();
                         $progressBar.addClass(opt.password.strenght.strenghtClass);
