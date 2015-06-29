@@ -132,6 +132,27 @@ textarea.text-field--group__input {
   @include box-sizing(border-box);
 }
 
+input[type="range"].text-field--group__input {
+  position: relative;
+  overflow: visible;
+  cursor: pointer;
+  margin-bottom: 2em;
+}
+input[type="range"].text-field--group__input:after,
+input[type="range"].text-field--group__input:before {
+  position: absolute;
+  top: 2em;
+  color: #aaa;
+}
+input[type="range"].text-field--group__input:before {
+  left:0em;
+  content: attr(min);
+}
+input[type="range"].text-field--group__input:after {
+  right: 0em;
+  content: attr(max);
+}
+
 // Text field addons
 .text-field--addons{
   &.left {

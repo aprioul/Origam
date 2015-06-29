@@ -258,8 +258,10 @@
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="text-field">
-                                        <label for="range">Range</label>
-                                        <input type="text" id="range"/>
+                                        <label class="text-field--label" for="range">Range</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" type="range" min="0" max="5" id="range"/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -288,7 +290,6 @@
                                     <div class="text-field">
                                         <label class="text-field--label" for="color">Color</label>
                                         <div class="text-field--group">
-                                            <div class="text-field--group__colorbox"></div>
                                             <input class="text-field--group__input" data-type="color" type="text" id="color"/>
                                         </div>
                                     </div>
@@ -322,7 +323,6 @@
                                             <input class="text-field--group__input" type="text" id="date"/>
                                         </div>
                                     </div>
-                                    <a href="card.html" class="datepicker">test</a>
                                 </div>
                             </div>
                         </div>
@@ -380,7 +380,7 @@
                                     </div>
                                 </div>
                                 <div class="origam-grid__cell origam-size-1of2">
-                                    <div class="text-field text-field--addons">
+                                    <div class="text-field text-field--addons left">
                                         <label class="text-field--label" for="icon">Text with "addons"</label>
                                         <div class="text-field--group">
                                             <div class="text-field--group__addons">

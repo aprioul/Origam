@@ -328,7 +328,9 @@
             Select = function (plugin, htmlSelectId, opt) {
                 var selectHtml = createHtmlElement('select');
                 var optionHtml = createHtmlElement('option');
-                var htmlSelectElement = $(selectHtml).attr('id', htmlSelectId).attr('name', plugin.settings.inputName);
+                var htmlSelectElement = $(selectHtml)
+                    .attr('id', htmlSelectId)
+                    .attr('name', plugin.settings.inputName);
 
                 $.each(plugin.countries, function (code, country) {
                     var optionAttributes = {value: code};
@@ -362,7 +364,7 @@
                 selectedValue = plugin.selected.value || selectedValue;
 
                 var button = $(buttonHtml)
-                    .addClass()
+                    .addClass(opt.classes.selected)
                     .attr('id', 'selectcountry-' + uniqueId)
                     .attr('data-value', selectedValue)
                     .html($selectedLabel)
