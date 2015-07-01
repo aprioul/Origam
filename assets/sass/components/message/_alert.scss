@@ -1,0 +1,91 @@
+@mixin message-variant($color, $background, $border) {
+  color: $color;
+  background-color: $background;
+  border-color: $border;
+  .alert-close{
+    color: darken($border, 12%);
+    &:hover{
+      color: darken($border, 24%);
+    }
+  }
+  &.alert-icon .icon {
+    color: $color;
+    background-color: $background;
+    border-color: $border;
+  }
+}
+
+%alert,
+.alert {
+  display: block;
+  margin-bottom: 0;
+  text-align: left;
+  vertical-align: middle;
+  background-image: none;
+  border: 3px solid transparent;
+  white-space: nowrap;
+  padding: $padding-large-vertical $padding-large-horizontal;
+  padding-right: 25px;
+  margin: $padding-large-vertical 0;
+  @include position(relative, null, null, null, null);
+  min-height: 70px;
+  .alert-close{
+    @include position(absolute, 5px, 5px, null, null);
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  &.alert-icon {
+    margin-left: 25px;
+    padding-left: 25px;
+    .icon {
+      @include position(absolute, 10px, null, null, 0);
+      @include translate(-50%, 0);
+      @include size(50px, 50px);
+      text-align: center;
+      line-height: 42px;
+      border: 3px solid transparent;
+      @include border-radius(50%);
+      & + .alert-main {
+        padding-left: $padding-large-horizontal;
+      }
+    }
+  }
+}
+
+.alert-ghost {
+  &.alert-icon {
+    border-left: none;
+    &:before,
+    &:after{
+      content: "";
+      background-color: $btn-ghost-border;
+      width: 3px;
+    }
+    &:before{
+      height: 10px;
+      @include position(absolute, 0, null, null, 0);
+    }
+    &:after{
+      height: calc(100% - 60px);
+      @include position(absolute, 60px, null, null, 0);
+    }
+  }
+}
+
+
+$types : (
+        ghost: (color: $btn-ghost-color, bg: $btn-ghost-bg, border: $btn-ghost-border),
+        primary: (color: $btn-primary-color, bg: $btn-primary-bg, border: $btn-primary-border),
+        success: (color: $btn-success-color, bg: $btn-success-bg, border: $btn-success-border),
+        warning: (color: $btn-warning-color, bg: $btn-warning-bg, border: $btn-warning-border),
+        info: (color: $btn-info-color, bg: $btn-info-bg, border: $btn-info-border),
+        error: (color: $btn-error-color, bg: $btn-error-bg, border: $btn-error-border)
+) !default;
+
+@each $key, $type in $types {
+
+  %alert-#{$key},
+  .alert-#{$key} {
+    @include message-variant(map-get($type, color), map-get($type, bg), map-get($type, border));
+  }
+}
