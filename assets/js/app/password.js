@@ -1,3 +1,37 @@
+
+/**
+ * Apply origamPassword on input elements (in a jQuery object) eq. $('input[type=password]'),
+ * password have 2 modules :
+ *  - passwordswitch
+ *  - passwordstrenght
+ * passwordswitch allow you to add switch button to hide or show password
+ * passwordstreght add progressbar to show to user if him password is nice or
+ * useless
+ * @param  {obj} options :
+ *     - classes : You can change default classes of element
+ *          - addonsLeft :
+ *          - addonsRight :
+ *          - wrapper :
+ *          - password :
+ *          - icon :
+ *          - show :
+ *          - hide :
+ *          - switch :
+ *          - progressbar :
+ *          - progressbarDanger :
+ *          - progressbarSuccess :
+ *     - parentNode : You can define parent
+ *     - HtmlElement :
+ *     - AddonHtmlElement :
+ *     - AdddAfter :
+ *     - strenght :
+ *          - MinimumChars :
+ *          - ScaleFactor :
+ *     - modules :
+ */
+
+(function ($, w) {
+
     var origamPassword = function () {
         var
             defaults = {
@@ -266,4 +300,6 @@
     $.fn.extend({
         origamPassword: origamPassword.init
     });
+
+})(jQuery, window);
 

@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 
         concat: {
             options: {
-                separator: ';'
+                separator: "<%= current_file_name %>"
             },
             dist: {
                 src: [ 'assets/js/demo/demo.js'],

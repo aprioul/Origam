@@ -1,3 +1,43 @@
+
+/**
+ * Apply origamPassword on input elements (in a jQuery object) eq. $('input[type=phone]').
+ * Allow you to format phone with country.
+ * Add country select and format number to specific country you selected.
+ * @param  {obj} options :
+ *     - classes : You can change default classes of element
+ *          - addonsLeft :
+ *          - addonsRight :
+ *          - wrapper :
+ *          - phone :
+ *          - selected :
+ *          - items :
+ *          - icon :
+ *          - show :
+ *          - hide :
+ *          - group :
+ *          - flagicon :
+ *          - flagPrefix :
+ *          - flagPrefix :
+ *          - selectValue :
+ *          - selectList :
+ *          - selectedFlag :
+ *          - selectedValue :
+ *     - parentNode : You can define parent
+ *     - HtmlElement :
+ *     - AddonHtmlElement :
+ *     - buttonHtmlElement :
+ *     - flagHtmlElement :
+ *     - itemsHtmlElement :
+ *     - AdddAfter :
+ *     - autoFormat :
+ *     - autoPlaceholder :
+ *     - defaultCountry :
+ *     - onlyCountries :
+ *     - preferredCountries :
+ */
+
+(function ($, w) {
+
     var origamPhone = function () {
         var
             defaults = {
@@ -27,13 +67,11 @@
                 flagHtmlElement: 'i',
                 itemsHtmlElement: 'div',
                 AdddAfter: true,
-                phone: {
-                    autoFormat: true,
-                    autoPlaceholder: true,
-                    defaultCountry: "",
-                    onlyCountries: [],
-                    preferredCountries: [ "US", "GB", "FR" ],
-                }
+                autoFormat: true,
+                autoPlaceholder: true,
+                defaultCountry: "",
+                onlyCountries: [],
+                preferredCountries: [ "US", "GB", "FR" ],
             },
             countries = {
                 "AF": "Afghanistan",
@@ -488,3 +526,6 @@
     $.fn.extend({
         origamPhone: origamPhone.init
     });
+
+})(jQuery, window);
+

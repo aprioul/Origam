@@ -1,22 +1,30 @@
 
+/**
+ * Apply origamInput on input elements (in a jQuery object) eq. $('input[type=text]'),
+ * parent element will have focus class and active class
+ * You can call origamInput on textarea to have autoresise, your element will
+ * have height equal to text.
+ * @param  {obj} options :
+ *     - placeholder : define placeholder for input/textarea
+ *     - classes : You can change default classes of element
+ *          - focus : define focus class
+ *          - active : define active class
+ *     - parentNode : You can define parent
+ *     - baseHeight : You define here your textarea height (at start)
+ */
+
+(function ($, w) {
+
     var origamInput = function () {
         var
             defaults = {
                 placeholder: '',
                 classes: {
-                    loading: 'text-field--loading',
-                    loaded: 'text-field--loaded',
                     focus: 'text-field--focused',
-                    active: 'text-field--active',
-                    success: 'text-field--success',
-                    warning: 'text-field--warning',
-                    error: 'text-field--error'
+                    active: 'text-field--active'
                 },
-                wrapper: 'text-field--group__addons',
                 parentNode: 'text-field',
-                textarea: {
-                    baseHeight: '24'
-                }
+                baseHeight: '24'
             },
 
             /**
@@ -45,7 +53,7 @@
             resizeTextarea = function(e, $textarea, opt) {
                 var offset = e.offsetHeight - e.clientHeight;
                 $textarea.on('keyup input', function () {
-                    var baseHeight = opt.textarea.baseHeight + 'px';
+                    var baseHeight = opt.baseHeight + 'px';
                     $textarea.css('height', baseHeight).css('height', e.scrollHeight + offset);
                 });
             }
@@ -65,7 +73,6 @@
                     var cls = options.classes;
                     var modules = options.modules;
 
-                    $inputParent.addClass(cls.loaded);
                     $input.focus(focus).blur(blur);
 
                     if ($input.is('textarea')) {
@@ -79,3 +86,6 @@
     $.fn.extend({
         origamInput: origamInput.init
     });
+
+})(jQuery, window);
+

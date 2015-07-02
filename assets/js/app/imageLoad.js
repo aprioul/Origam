@@ -1,18 +1,21 @@
 
-    $.fn.extend({/**
-         * trigger a function when all images inside the set of matched elements are
-         * loaded timeout is defined in case of broken images
-         *
-         * maj 21-11-2014: add a callback triggered when an image load fail,
-         * we give the image as parameter to the callback function.
-         * maj 01-09-2014: enhance image loading detection (probably do not work
-         * at all before that :-\ ), tested on FF and IE8!
-         *
-         * @param  {function} callbackFct the function to call when all is loaded
-         * @param  {obj} options     options of the plugin
-         * @return {obj}             jquery object
-         */
-        imagesLoaded: function (callbackFct, options) {
+/**
+ * trigger a function when all images inside the set of matched elements are
+ * loaded timeout is defined in case of broken images
+ *
+ * maj 21-11-2014: add a callback triggered when an image load fail,
+ * we give the image as parameter to the callback function.
+ * maj 01-09-2014: enhance image loading detection (probably do not work
+ * at all before that :-\ ), tested on FF and IE8!
+ *
+ * @param  {function} callbackFct the function to call when all is loaded
+ * @param  {obj} options     options of the plugin
+ * @return {obj}             jquery object
+ */
+
+(function ($, w) {
+    $.fn.extend({
+        origamImagesLoaded: function (callbackFct, options) {
             var defaults = {
                 timeout: 3000,
                 callbackImageLoadFail: function (image) {
@@ -81,3 +84,6 @@
             });
         }
     });
+})(jQuery, window);
+
+
