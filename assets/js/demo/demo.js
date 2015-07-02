@@ -18,6 +18,16 @@
         if($("#message-notification").length > 0) {
 
         }
+
+        if($("#button").length > 0) {
+            var $btn = $(".btn[data-ripple]");
+            $btn.each(function(){
+                if($(this).data('ripple') === 1) {
+                    $(this).origamRipple();
+                }
+            });
+        }
+
     });
 
 })(jQuery, window);

@@ -19,6 +19,6 @@
   pointer-events: none;
 }
 
-.ripple--is-animated {
+.ripple-is--animated {
   @include animation(ripple 0.65s linear);
 }

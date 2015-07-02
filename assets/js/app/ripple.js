@@ -30,7 +30,7 @@
 
                             if ($element.find('.ripple').length === 0) {
 
-                                ripple = $('<span/>').addclass('ripple');
+                                ripple = $('<span/>').addClass('ripple');
 
                                 if ($element.attr('data-ripple'))
                                 {
@@ -44,7 +44,7 @@
                                 ripple = $element.find('.ripple');
                             }
 
-                            ripple.removeClass('ripple--is-animated');
+                            ripple.removeClass('ripple-is--animated');
 
                             if (!ripple.height() && !ripple.width())
                             {
@@ -56,11 +56,11 @@
                             var x = e.pageX - $element.offset().left - ripple.width() / 2;
                             var y = e.pageY - $element.offset().top - ripple.height() / 2;
 
-                            ripple.css({ top: y+'px', left: x+'px' }).addClass('ripple--is-animated');
+                            ripple.css({ top: y+'px', left: x+'px' }).addClass('ripple-is--animated');
 
                             setTimeout(function()
                             {
-                                ripple.removeClass('ripple--is-animated');
+                                ripple.removeClass('ripple-is--animated');
                             }, 651);
                         });
                 });
