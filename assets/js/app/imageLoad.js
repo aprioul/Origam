@@ -1,4 +1,4 @@
-(function ($, w) {
+
     $.fn.extend({/**
          * trigger a function when all images inside the set of matched elements are
          * loaded timeout is defined in case of broken images
@@ -81,4 +81,3 @@
             });
         }
     });
-})(jQuery, window);

@@ -1,5 +1,3 @@
-(function ($) {
-
     var origamPassword = function () {
         var
             defaults = {
@@ -268,6 +266,4 @@
     $.fn.extend({
         origamPassword: origamPassword.init
     });
-
-})(jQuery);
 

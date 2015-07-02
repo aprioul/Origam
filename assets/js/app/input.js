@@ -1,4 +1,3 @@
-(function ($) {
 
     var origamInput = function () {
         var
@@ -80,5 +79,3 @@
     $.fn.extend({
         origamInput: origamInput.init
     });
-
-})(jQuery);

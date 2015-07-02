@@ -27,7 +27,7 @@ module.exports = function(grunt) {
                 livereload: true // Activons le livereload du navigateur
             },
             src: {
-                files: ['dist/js/*.js', 'dist/css/*.css', 'demo/*.html'], // Les fichiers à observer…
+                files: ['assets/js/*.js', 'assets/css/*.css', 'demo/*.html'], // Les fichiers à observer…
                 tasks: ['default']  // … la commande à effectuer
             }
         }
@@ -66,5 +66,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-csso');
 
     // J'assigne ma tâche à la commande par défaut de Grunt
-    grunt.registerTask("default", ["csso", "prepareModules", "concat", "watch"]);
+    grunt.registerTask("default", ["csso", "prepareModules", "concat"]);
 };

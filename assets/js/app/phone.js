@@ -1,5 +1,3 @@
-(function ($) {
-
     var origamPhone = function () {
         var
             defaults = {
@@ -490,5 +488,3 @@
     $.fn.extend({
         origamPhone: origamPhone.init
     });
-
-})(jQuery);

@@ -1,4 +1,3 @@
-(function ($, w) {
     $.fn.extend({
         /**
          * follow the first link inside each element in the set of matched elements
@@ -66,4 +65,3 @@
             });
         }
     });
-})(jQuery, window);
