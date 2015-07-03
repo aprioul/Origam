@@ -1,4 +1,4 @@
-@include keyframes(animGenie) {
+@include keyframes(genie) {
   0% {
     @include opacity(0);
     @include translate3d(0, calc(200% + 30px), 0);
@@ -23,7 +23,13 @@
   }
 }
 
-.genie {
-  @include animation-name(animGenie);
+.genieIn {
+  @include animation-name(genie);
   @include animation-duration(0.4s);
+}
+
+.genieOut {
+  @include animation-name(genie);
+  @include animation-duration(0.4s);
+  @include animation-direction(reverse);
 }
