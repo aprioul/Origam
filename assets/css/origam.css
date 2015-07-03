@@ -7255,6 +7255,26 @@ Copyright (c) 2015 Daniel Eden
   animation-iteration-count: infinite;
 }
 
+.animated.bounceIn,
+.animated.bounceOut {
+  -moz-animation-duration: 0.75s;
+  -webkit-animation-duration: 0.75s;
+  animation-duration: 0.75s;
+}
+
+.animated.flipOutX,
+.animated.flipOutY {
+  -moz-animation-duration: 0.75s;
+  -webkit-animation-duration: 0.75s;
+  animation-duration: 0.75s;
+}
+
+.animated.hinge {
+  -moz-animation-duration: 2s;
+  -webkit-animation-duration: 2s;
+  animation-duration: 2s;
+}
+
 @-moz-keyframes bounce {
   0%, 20%, 53%, 80%, 100% {
     -moz-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
@@ -8101,6 +8121,41 @@ Copyright (c) 2015 Daniel Eden
   -moz-animation-name: bounceOutUp;
   -webkit-animation-name: bounceOutUp;
   animation-name: bounceOutUp;
+}
+
+@-moz-keyframes ripple {
+  100% {
+    opacity: 0;
+    -moz-transform: scale(2.5);
+    transform: scale(2.5);
+  }
+}
+@-webkit-keyframes ripple {
+  100% {
+    opacity: 0;
+    -webkit-transform: scale(2.5);
+    transform: scale(2.5);
+  }
+}
+@keyframes ripple {
+  100% {
+    opacity: 0;
+    -moz-transform: scale(2.5);
+    -ms-transform: scale(2.5);
+    -webkit-transform: scale(2.5);
+    transform: scale(2.5);
+  }
+}
+.ripple.animated {
+  -moz-animation-duration: 0.4s;
+  -webkit-animation-duration: 0.4s;
+  animation-duration: 0.4s;
+  -moz-animation-name: ripple;
+  -webkit-animation-name: ripple;
+  animation-name: ripple;
+  -moz-animation-timing-function: linear;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
 }
 
 @-moz-keyframes jelly {
@@ -20926,29 +20981,6 @@ a .badge:hover, a .badge:focus {
 /**
   * Ripple animation
   */
-@-moz-keyframes ripple {
-  100% {
-    opacity: 0;
-    -moz-transform: scale(2.5);
-    transform: scale(2.5);
-  }
-}
-@-webkit-keyframes ripple {
-  100% {
-    opacity: 0;
-    -webkit-transform: scale(2.5);
-    transform: scale(2.5);
-  }
-}
-@keyframes ripple {
-  100% {
-    opacity: 0;
-    -moz-transform: scale(2.5);
-    -ms-transform: scale(2.5);
-    -webkit-transform: scale(2.5);
-    transform: scale(2.5);
-  }
-}
 .ripple {
   display: block;
   position: absolute;
@@ -20959,12 +20991,6 @@ a .badge:hover, a .badge:focus {
   -webkit-transform: scale(0);
   transform: scale(0);
   pointer-events: none;
-}
-
-.ripple-is--animated {
-  -moz-animation: ripple 0.65s linear;
-  -webkit-animation: ripple 0.65s linear;
-  animation: ripple 0.65s linear;
 }
 
 /**

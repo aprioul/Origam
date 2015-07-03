@@ -4,74 +4,104 @@
  */
 
 (function ($, w) {
+    'use strict';
 
-    var origamRipple = function () {
+    // Ripple CLASS DEFINITION
+    // ======================
 
-        var
-            defaults = {};
+    var dismiss = '[data-dismiss="ripple"]';
+    var Ripple   = function (el) {
+        $(el).on('mousedown', dismiss, this.ripple)
+    };
 
-        return {
-            init: function (opt) {
-                opt = $.extend({}, defaults, opt || {});
+    Ripple.VERSION = '1.0.0';
 
-                //For each selected DOM element
-                return this.each(function () {
-                    var event = this;
-                    var $element = $(event);
-                    var options = $.extend({}, opt);
+    Ripple.TRANSITION_DURATION = 651;
 
-                    $element
-                        .css({
-                            position: 'relative',
-                            overflow: 'hidden'
-                        })
-                        .bind('mousedown', function(e) {
-                            var ripple;
+    Ripple.prototype.ripple = function (e) {
+        var $this    = $(this);
 
-                            if ($element.find('.ripple').length === 0) {
+        $this.css({
+            position: 'relative',
+            overflow: 'hidden'
+        });
 
-                                ripple = $('<span/>').addClass('ripple');
+        var ripple;
 
-                                if ($element.attr('data-ripple'))
-                                {
-                                    ripple.addClass('ripple-' + $element.attr('data-ripple'));
-                                }
+        if ($this.find('.ripple').length === 0) {
 
-                                $element.prepend(ripple);
-                            }
-                            else
-                            {
-                                ripple = $element.find('.ripple');
-                            }
+            ripple = $('<span/>').addClass('ripple');
 
-                            ripple.removeClass('ripple-is--animated');
-
-                            if (!ripple.height() && !ripple.width())
-                            {
-                                var diameter = Math.max($element.outerWidth(), $element.outerHeight());
-
-                                ripple.css({ height: diameter, width: diameter });
-                            }
-
-                            var x = e.pageX - $element.offset().left - ripple.width() / 2;
-                            var y = e.pageY - $element.offset().top - ripple.height() / 2;
-
-                            ripple.css({ top: y+'px', left: x+'px' }).addClass('ripple-is--animated');
-
-                            setTimeout(function()
-                            {
-                                ripple.removeClass('ripple-is--animated');
-                            }, 651);
-                        });
-                });
+            if ($this.attr('data-ripple'))
+            {
+                ripple.addClass('ripple-' + $this.attr('data-ripple'));
             }
-        };
 
-    }();
+            $this.prepend(ripple);
+        }
+        else
+        {
+            ripple = $this.find('.ripple');
+        }
 
-    $.fn.extend({
-        origamRipple: origamRipple.init
-    });
+        ripple.removeClass('animated');
+
+        if (!ripple.height() && !ripple.width())
+        {
+            var diameter = Math.max($this.outerWidth(), $this.outerHeight());
+
+            ripple.css({ height: diameter, width: diameter });
+        }
+
+        var x = e.pageX - $this.offset().left - ripple.width() / 2;
+        var y = e.pageY - $this.offset().top - ripple.height() / 2;
+
+        ripple.css({ top: y+'px', left: x+'px' }).addClass('animated');
+
+        function removeElement() {
+            ripple.removeClass('animated');
+        }
+
+        $.support.transition ?
+            $this
+                .one('origamTransitionEnd', removeElement)
+                .emulateTransitionEnd(Ripple.TRANSITION_DURATION) :
+            removeElement()
+    };
+
+
+    // Ripple PLUGIN DEFINITION
+    // =======================
+
+    function Plugin(option) {
+        return this.each(function () {
+            var $this = $(this);
+            var data  = $this.data('origam.ripple');
+
+            if (!data) $this.data('origam.ripple', (data = new Ripple(this)));
+            if (typeof option == 'string') data[option].call($this)
+        })
+    }
+
+    var old = $.fn.Ripple;
+
+    $.fn.Ripple             = Plugin;
+    $.fn.Ripple.Constructor = Ripple;
+
+
+    // Ripple NO CONFLICT
+    // =================
+
+    $.fn.Ripple.noConflict = function () {
+        $.fn.Ripple = old
+        return this
+    };
+
+
+    // Ripple DATA-API
+    // ==============
+
+    $(document).on('click.origam.Ripple.data-api', dismiss, Ripple.prototype.ripple)
 
 })(jQuery, window);
 

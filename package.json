@@ -1,5 +1,6 @@
 {
   "name": "Origam",
+  "description": "Origam is a new framework css/js",
   "version": "0.1.0",
   "devDependencies": {
     "grunt": "~0.4.1",

@@ -1,0 +1,13 @@
+@include keyframes(ripple) {
+  100% {
+    opacity: 0;
+    @include transform(scale(2.5));
+  }
+}
+
+.ripple.animated{
+  @include animation-duration(0.4s);
+  @include animation-name(ripple);
+  @include animation-timing-function(linear);
+}
+
