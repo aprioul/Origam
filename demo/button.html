@@ -3,8 +3,12 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Button</title>
-    <link href="../assets/css/screen.css" rel="stylesheet"/>
-    <link href="css/demo.css" rel="stylesheet"/>
+    <link href="../dist/css/origam.min.css" rel="stylesheet"/>
+    <link href="../dist/css/demo.min.css" rel="stylesheet"/>
+    <script type="text/javascript" src="../dist/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../dist/js/app.min.js"></script>
+    <script type="text/javascript" src="../dist/js/main.js"></script>
+    <script src="node_modules/grunt-contrib-watch/tasks/lib/livereload.js"></script>
 </head>
 <body>
 <div class="origam-grid">
@@ -38,25 +42,25 @@
                         <div class="origam-wrapper">
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
-                                    <a class="btn btn-ghost" href="#">
+                                    <a class="btn btn-ghost" data-ripple="1" href="#">
                                         Ghost button
                                     </a>
-                                    <a class="btn btn-primary" href="#">
+                                    <a class="btn btn-primary" data-ripple="1" href="#">
                                         Button primary
                                     </a>
-                                    <a class="btn btn-success" href="#">
+                                    <a class="btn btn-success" data-ripple="1" href="#">
                                         Button success
                                     </a>
-                                    <a class="btn btn-info" href="#">
+                                    <a class="btn btn-info" data-ripple="1" href="#">
                                         Button info
                                     </a>
-                                    <a class="btn btn-warning" href="#">
+                                    <a class="btn btn-warning" data-ripple="1" href="#">
                                         Button warning
                                     </a>
-                                    <a class="btn btn-error" href="#">
+                                    <a class="btn btn-error" data-ripple="1" href="#">
                                         Button error
                                     </a>
-                                    <a class="btn" disabled href="#">
+                                    <a class="btn" disabled data-ripple="0" href="#">
                                         Button disabled
                                     </a>
                                 </div>
@@ -65,6 +69,8 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="origam-section">
             <div class="origam-grid__cell origam-size-1of1">
                 <h2 id="button-size">
                     Size

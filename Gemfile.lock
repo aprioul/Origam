@@ -85,3 +85,6 @@ DEPENDENCIES
   guard
   sass
   sass-globbing
+
+BUNDLED WITH
+   1.10.4

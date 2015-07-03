@@ -3,10 +3,12 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Form</title>
-    <link href="../assets/css/screen.css" rel="stylesheet"/>
-    <link href="css/demo.css" rel="stylesheet"/>
-    <script src="../assets/js/jquery-1.11.3.min.js"></script>
-    <script type="text/javascript" async="" src="../assets/js/colorpicker.js"></script>
+    <link href="../dist/css/origam.min.css" rel="stylesheet"/>
+    <link href="../dist/css/demo.min.css" rel="stylesheet"/>
+    <script type="text/javascript" src="../dist/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../dist/js/app.min.js"></script>
+    <script type="text/javascript" src="../dist/js/main.js"></script>
+    <script src="node_modules/grunt-contrib-watch/tasks/lib/livereload.js"></script>
 </head>
 <body>
 <div class="origam-grid">
@@ -254,8 +256,10 @@
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="text-field">
-                                        <label for="range">Range</label>
-                                        <input type="text" id="range"/>
+                                        <label class="text-field--label" for="range">Range</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" type="range" min="0" max="5" id="range"/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -267,7 +271,7 @@
         <div class="origam-section">
             <div class="origam-grid__cell origam-size-1of1">
                 <h2 id="form-input-color">
-                    Color
+                    Color picker
                     <a class="anchor-link" href="#form-input-color">
                         <span class="anchor-icon">
                             <i class="origamicon origamicon-link2"></i>
@@ -280,11 +284,10 @@
                     <div class="origam-grid">
                         <div class="origam-wrapper">
                             <div class="origam-section">
-                                <div class="origam-grid__cell origam-size-1of2">
+                                <div class="origam-grid__cell origam-size-1of1">
                                     <div class="text-field">
-                                        <label for="color">Color</label>
+                                        <label class="text-field--label" for="color">Color</label>
                                         <div class="text-field--group">
-                                            <div class="text-field--group__colorbox"></div>
                                             <input class="text-field--group__input" data-type="color" type="text" id="color"/>
                                         </div>
                                     </div>
@@ -313,8 +316,10 @@
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="text-field">
-                                        <label for="date">Date picker</label>
-                                        <input type="text" id="date"/>
+                                        <label class="text-field--label" for="date">Date picker</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" type="text" id="date"/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -373,57 +378,47 @@
                                     </div>
                                 </div>
                                 <div class="origam-grid__cell origam-size-1of2">
-                                    <div class="text-field">
-                                        <div class="text-field text-field--addons">
-                                            <label class="text-field--label" for="icon">Text with "addons"</label>
-                                            <div class="text-field--group">
-                                                <div class="text-field--group__addons">
-                                                    <i class="origamicon origamicon-lab"></i>
-                                                </div>
-                                                <input class="text-field--group__input" id="icon" type="text" />
+                                    <div class="text-field text-field--addons left">
+                                        <label class="text-field--label" for="icon">Text with "addons"</label>
+                                        <div class="text-field--group">
+                                            <div class="text-field--group__addons">
+                                                <i class="origamicon origamicon-lab"></i>
                                             </div>
-                                            <span class="text-field--help">With addons you can add icon or money type ($,£)</span>
+                                            <input class="text-field--group__input" id="icon" type="text" />
+                                        </div>
+                                        <span class="text-field--help">With addons you can add icon or money type ($,£)</span>
+                                    </div>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of2">
+                                    <div class="text-field text-field--focused">
+                                        <label class="text-field--label" for="focus">Text focus</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" id="focus" type="text" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="origam-grid__cell origam-size-1of2">
-                                    <div class="text-field">
-                                        <div class="text-field text-field--focused">
-                                            <label class="text-field--label" for="focus">Text focus</label>
-                                            <div class="text-field--group">
-                                                <input class="text-field--group__input" id="focus" type="text" />
-                                            </div>
+                                    <div class="text-field text-field--hidden">
+                                        <label class="text-field--label" for="hidden">Text label hidden</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" id="hidden" type="text" />
                                         </div>
+                                        <span class="text-field--help">Label is hidden</span>
                                     </div>
                                 </div>
                                 <div class="origam-grid__cell origam-size-1of2">
-                                    <div class="text-field">
-                                        <div class="text-field text-field--hidden">
-                                            <label class="text-field--label" for="hidden">Text label hidden</label>
-                                            <div class="text-field--group">
-                                                <input class="text-field--group__input" id="hidden" type="text" />
-                                            </div>
-                                            <span class="text-field--help">Label is hidden</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="origam-grid__cell origam-size-1of2">
-                                    <div class="text-field">
-                                        <div class="text-field text-field--active">
-                                            <label class="text-field--label" for="icon">Text active</label>
-                                            <div class="text-field--group">
-                                                <input class="text-field--group__input" id="active" type="text" />
-                                            </div>
+                                    <div class="text-field text-field--active">
+                                        <label class="text-field--label" for="icon">Text active</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" id="active" type="text" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="text-field">
-                                        <div class="text-field">
-                                            <label class="text-field--label" for="area" >Text area</label>
-                                            <div class="text-field--group">
-                                                <textarea class="text-field--group__input" id="area"></textarea>
-                                            </div>
+                                        <label class="text-field--label" for="area" >Text area</label>
+                                        <div class="text-field--group">
+                                            <textarea class="text-field--group__input" id="area"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -481,9 +476,25 @@
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="text-field">
-                                        <label class="text-field--label" for="phone">Phone Number</label>
+                                        <label class="text-field--label" for="phone1">Phone Number</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" type="phone" id="phone" />
+                                            <input class="text-field--group__input" type="phone" id="phone1" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of2">
+                                    <div class="text-field">
+                                        <label class="text-field--label" for="phone2">Phone Number</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" type="phone" id="phone2" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of2">
+                                    <div class="text-field">
+                                        <label class="text-field--label" for="phone3">Phone Number</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" type="phone" id="phone3" />
                                         </div>
                                     </div>
                                 </div>
@@ -571,9 +582,25 @@
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="text-field">
-                                        <label class="text-field--label" for="password">Password</label>
+                                        <label class="text-field--label" for="password1">Password</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" type="password" id="password" />
+                                            <input class="text-field--group__input password-strenght password-switch" type="password" id="password1" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of2">
+                                    <div class="text-field">
+                                        <label class="text-field--label" for="password2">Password</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input password-switch" type="password" id="password2" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of2">
+                                    <div class="text-field">
+                                        <label class="text-field--label" for="password3">Password</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input password-strenght" type="password" id="password3" />
                                         </div>
                                     </div>
                                 </div>

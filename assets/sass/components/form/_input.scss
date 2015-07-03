@@ -41,8 +41,10 @@
 }
 
 .text-field--focused {
-  .text-field--group:after {
-    @include transform(scale(1));
+  &:not(.text-field--password) {
+    .text-field--group:after {
+      @include transform(scale(1));
+    }
   }
 
   .text-field--label {
@@ -125,39 +127,87 @@ input.text-field--group__input {
 textarea.text-field--group__input {
   height: 24px;
   margin: 4px 0;
+  overflow: hidden;
+  resize: none;
+  @include box-sizing(border-box);
 }
 
-.text-field--group__input[data-type=color]{
-  border-left:1px solid $black-4;
-  border-right:1px solid $black-4;
-  text-align: center;
+input[type="range"].text-field--group__input {
+  position: relative;
+  overflow: visible;
+  cursor: pointer;
+  margin-bottom: 2em;
 }
-
-.text-field--group__colorbox{
-  width: 100%;
-  min-height: 100px;
-  border: 1px solid $black-4;
-  background-color: $red;
+input[type="range"].text-field--group__input:after,
+input[type="range"].text-field--group__input:before {
+  position: absolute;
+  top: 2em;
+  color: #aaa;
+}
+input[type="range"].text-field--group__input:before {
+  left:0em;
+  content: attr(min);
+}
+input[type="range"].text-field--group__input:after {
+  right: 0em;
+  content: attr(max);
 }
 
 // Text field addons
 .text-field--addons{
-  padding-left: 68px;
-  .text-field--label{
-    @include position(absolute, null, null, null, 68px);
+  &.left {
+    padding-left: 68px;
+    .text-field--label{
+      @include position(absolute, null, null, null, 68px);
+    }
+    .text-field--progressbar{
+      @include position(absolute, null, null, null, 68px);
+    }
+  }
+  &.right{
+    padding-right: 68px;
   }
 }
 
 .text-field--group__addons {
-  @include position(absolute, 2px, null, null, -68px);
-  @include size(48px, 44px);
-  line-height: 44px;
+  @include position(absolute, 0, null, null, -68px);
+  @include size(40px, 40px);
+  line-height: 40px;
   @include font-size(24px);
   color: $black-2;
   text-align: center;
   @include transition-property(color);
   @include transition-duration(0.4s);
   @include transition-timing-function(ease-out);
+
+  .text-field--group__input + &,
+  .text-field.right &{
+    @include position(absolute, null, -68px, null, initial);
+  }
+
+  .text-field--group__switchpass{
+    color: $black-3;
+    cursor: pointer;
+  }
+
+  .text-field--group__selectcountry{
+    color: $black-3;
+    cursor: pointer;
+    @include position(relative,null,null,null,null);
+    @include font-size($font-size-base);
+    @include size(100%, 100%);
+    &:before {
+      @include position(absolute,50%,0,null,null);
+      transform: translateY(-50%);
+    }
+  }
+
+  &:hover {
+    .text-field--group__switchpass,
+    .text-field--group__selectcountry{
+      color: $black-2;
+    }
+  }
 
   .text-field--focused & {
     color: $primary-color-1;
@@ -169,6 +219,18 @@ textarea.text-field--group__input {
 
   .text-field--success & {
     color: $color-success;
+  }
+}
+
+.text-field--progressbar {
+  @include position(absolute, null, null, $base-space - 2, null);
+  min-height: 1px;
+  border-top: 2px solid;
+  &.text-field--progressbar__danger{
+    border-color: $color-error;
+  }
+  &.text-field--progressbar__success{
+    border-color: $color-success;
   }
 }
 

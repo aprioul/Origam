@@ -1,6 +1,7 @@
 
-$origam-font-path:        "../fonts" !default;
-$origam-css-prefix:       origamicon !default;
+$origam-font-path:        "../fonts/" !default;
+$origam-file-name:        origamicon !default;
+$origam-css-prefix:       $origam-file-name !default;
 $origam-version:          "4.2.0" !default;
 $origam-border-color:     #eee !default;
 $origam-inverse:          #fff !default;
