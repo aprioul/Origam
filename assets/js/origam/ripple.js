@@ -9,12 +9,12 @@
     // Ripple CLASS DEFINITION
     // ======================
 
-    var dismiss = '[data-dismiss="ripple"]';
+    var app = '[data-app="ripple"]';
     var Ripple   = function (el) {
-        $(el).on('mousedown', dismiss, this.ripple)
+        $(el).on('mousedown', app, this.ripple)
     };
 
-    Ripple.VERSION = '1.0.0';
+    Ripple.VERSION = '0.1.0';
 
     Ripple.TRANSITION_DURATION = 651;
 
@@ -83,17 +83,17 @@
         })
     }
 
-    var old = $.fn.Ripple;
+    var old = $.fn.ripple;
 
-    $.fn.Ripple             = Plugin;
-    $.fn.Ripple.Constructor = Ripple;
+    $.fn.ripple             = Plugin;
+    $.fn.ripple.Constructor = Ripple;
 
 
     // Ripple NO CONFLICT
     // =================
 
-    $.fn.Ripple.noConflict = function () {
-        $.fn.Ripple = old
+    $.fn.ripple.noConflict = function () {
+        $.fn.ripple = old
         return this
     };
 
@@ -101,7 +101,7 @@
     // Ripple DATA-API
     // ==============
 
-    $(document).on('click.origam.Ripple.data-api', dismiss, Ripple.prototype.ripple)
+    $(document).on('click.origam.Ripple.data-api', app, Ripple.prototype.ripple)
 
 })(jQuery, window);
 

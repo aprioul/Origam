@@ -15,8 +15,8 @@
                 $(".text-field--group__input[type=phone]").origamPhone();
             }
         }
-        if($("#message-notification").length > 0) {
-
+        if($("notification-core").length > 0) {
+            $('[data-toggle="notification"]').notification();
         }
 
         /*if($("#button").length > 0) {

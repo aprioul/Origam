@@ -9,12 +9,12 @@
     // Close CLASS DEFINITION
     // ======================
 
-    var dismiss = '[data-dismiss="close"]';
+    var app = '[data-app="close"]';
     var Close   = function (el) {
-        $(el).on('click', dismiss, this.close)
+        $(el).on('click', app, this.close)
     };
 
-    Close.VERSION = '1.0.0';
+    Close.VERSION = '0.1.0';
 
     Close.TRANSITION_DURATION = 1000;
 
@@ -75,17 +75,17 @@
         })
     }
 
-    var old = $.fn.Close;
+    var old = $.fn.close;
 
-    $.fn.Close             = Plugin;
-    $.fn.Close.Constructor = Close;
+    $.fn.close             = Plugin;
+    $.fn.close.Constructor = Close;
 
 
     // Close NO CONFLICT
     // =================
 
-    $.fn.Close.noConflict = function () {
-        $.fn.Close = old
+    $.fn.close.noConflict = function () {
+        $.fn.close = old
         return this
     };
 
@@ -93,6 +93,6 @@
     // Close DATA-API
     // ==============
 
-    $(document).on('click.origam.Close.data-api', dismiss, Close.prototype.close)
+    $(document).on('click.origam.Close.data-api', app, Close.prototype.close)
 
 })(jQuery, window);

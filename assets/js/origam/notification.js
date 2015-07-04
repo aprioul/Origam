@@ -1,5 +1,0 @@
-
-/**
- * Apply origamClose
- */
-
