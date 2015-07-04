@@ -9,7 +9,7 @@
     // Ripple CLASS DEFINITION
     // ======================
 
-    var app = '[data-app="ripple"]';
+    var app = '[data-button="ripple"]';
     var Ripple   = function (el) {
         $(el).on('mousedown', app, this.ripple)
     };

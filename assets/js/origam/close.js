@@ -9,7 +9,7 @@
     // Close CLASS DEFINITION
     // ======================
 
-    var app = '[data-app="close"]';
+    var app = '[data-button="close"]';
     var Close   = function (el) {
         $(el).on('click', app, this.close)
     };
