@@ -40,11 +40,11 @@
             focus: 'text-field--focused',
             active: 'text-field--active',
             addonsLeft: 'text-field--addons left',
-            addonsRight: 'text-field--addons right',
+            addonsRight: 'text-field--addons right'
         },
         parentNode: 'text-field',
         placement: 'after',
-        addon: '<div class="text-field--group_addons"></div>'
+        addon: '<div class="text-field--group__addons"></div>'
     };
 
     Input.prototype.init = function (type, element, options) {

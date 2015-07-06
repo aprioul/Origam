@@ -58,7 +58,6 @@
             var data    = $this.data('origam.textarea');
             var options = typeof option == 'object' && option;
 
-            if (!data && /destroy|hide/.test(option)) return;
             if (!data) $this.data('origam.textarea', (data = new Textarea(this, options)));
             if (typeof option == 'string') data[option]()
         })

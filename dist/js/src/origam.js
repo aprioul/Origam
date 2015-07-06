@@ -379,11 +379,11 @@
             focus: 'text-field--focused',
             active: 'text-field--active',
             addonsLeft: 'text-field--addons left',
-            addonsRight: 'text-field--addons right',
+            addonsRight: 'text-field--addons right'
         },
         parentNode: 'text-field',
         placement: 'after',
-        addon: '<div class="text-field--group_addons"></div>'
+        addon: '<div class="text-field--group__addons"></div>'
     };
 
     Input.prototype.init = function (type, element, options) {
@@ -925,7 +925,11 @@
         MinimumChars: 8,
         ScaleFactor: 1,
         templateSwitch: '<span class="text-field--group__switchpass origamicon origamicon-eye"></span>',
-        templateStrenght: '<span class="text-field--progressbar text-field--progressbar__danger"></span>'
+        templateStrenght: '<span class="text-field--progressbar text-field--progressbar__danger"></span>',
+        classes: {
+            show: 'origamicon-eye',
+            hide: 'origamicon-eye-blocked'
+        }
     });
 
     Password.prototype = $.extend({}, $.fn.input.Constructor.prototype);
@@ -935,47 +939,25 @@
     Password.prototype.event = function (options) {
         this.inState   = { click: false, hover: false, focus: false };
 
-        var toggleSee = this.switch();
+        var toggleSee = this.switch(options);
     };
 
-    Password.prototype.switch = function(){
-        var $wrapper = this.addAddon();
-        console.log($wrapper);
-        var button = this.options.templateSwitch;
-
-        $wrapper.append(button);
-        var $switch = $wrapper.children();
-
-        this.$element.on('click.' + this.type, $.proxy(this.toggle, this))
+    Password.prototype.getDefaults = function () {
+        return Password.DEFAULTS
     };
 
-    Password.prototype.isInStateTrue = function () {
-        for (var key in this.inState) {
-            if (this.inState[key]) return true
-        }
+    Password.prototype.switch = function(options){
+        this.$wrapper = this.addAddon();
 
-        return false
-    };
+        console.log(this.$wrapper);
 
-    Password.prototype.toggle = function(e){
+        this.$switch = options.templateSwitch;
 
-        var self = this;
+        console.log(this);
 
-        console.log(e);
+        this.$wrapper.append(this.$switch);
+        var $switch = this.$wrapper.children();
 
-        if (e) {
-
-        } else {
-
-        }
-
-        /*if ($switch.hasClass(opt.classes.show)) {
-            this.$element.attr('type', 'text');
-            $switch.removeClass(opt.classes.show).addClass(opt.classes.hide);
-        } else {
-            this.$element.attr('type', 'password');
-            $switch.removeClass(opt.classes.hide).addClass(opt.classes.show);
-        }*/
     };
 
     // PASSWORD PLUGIN DEFINITION
@@ -987,7 +969,6 @@
             var data    = $this.data('origam.password');
             var options = typeof option == 'object' && option;
 
-            if (!data && /destroy|hide/.test(option)) return;
             if (!data) $this.data('origam.password', (data = new Password(this, options)));
             if (typeof option == 'string') data[option]()
         })
@@ -1729,7 +1710,6 @@
             var data    = $this.data('origam.textarea');
             var options = typeof option == 'object' && option;
 
-            if (!data && /destroy|hide/.test(option)) return;
             if (!data) $this.data('origam.textarea', (data = new Textarea(this, options)));
             if (typeof option == 'string') data[option]()
         })
