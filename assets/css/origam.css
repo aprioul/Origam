@@ -20083,6 +20083,7 @@ th {
   left: 0;
   height: 2px;
   background-color: #0196d1;
+  z-index: 2;
   -moz-transform: scale(0);
   -ms-transform: scale(0);
   -webkit-transform: scale(0);
@@ -20317,6 +20318,19 @@ input[type="range"].text-field--group__input:after {
   bottom: 6px;
   min-height: 1px;
   border-top: 2px solid;
+  z-index: 3;
+  -moz-transition-property: all;
+  -o-transition-property: all;
+  -webkit-transition-property: all;
+  transition-property: all;
+  -moz-transition-duration: 0.4s;
+  -o-transition-duration: 0.4s;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  -moz-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
 }
 .text-field--progressbar.text-field--progressbar__danger {
   border-color: #EF5350;

@@ -1,16 +1,7 @@
 
 /**
- * Apply origamInput on input elements (in a jQuery object) eq. $('input[type=text]'),
- * parent element will have focus class and active class
- * You can call origamInput on textarea to have autoresise, your element will
- * have height equal to text.
- * @param  {obj} options :
- *     - placeholder : define placeholder for input/textarea
- *     - classes : You can change default classes of element
- *          - focus : define focus class
- *          - active : define active class
- *     - parentNode : You can define parent
- *     - baseHeight : You define here your textarea height (at start)
+ * Apply origamInput
+ *
 */
 
 (function ($, w) {
