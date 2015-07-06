@@ -11,14 +11,14 @@
 
     var app = '[data-button="ripple"]';
     var Ripple   = function (el) {
-        $(el).on('mousedown', app, this.ripple)
+        $(el).on('mousedown', app, this.init)
     };
 
     Ripple.VERSION = '0.1.0';
 
     Ripple.TRANSITION_DURATION = 651;
 
-    Ripple.prototype.ripple = function (e) {
+    Ripple.prototype.init = function (e) {
         var $this    = $(this);
 
         $this.css({

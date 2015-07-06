@@ -350,85 +350,122 @@
  *          - active : define active class
  *     - parentNode : You can define parent
  *     - baseHeight : You define here your textarea height (at start)
- */
+*/
 
 (function ($, w) {
 
-    var origamInput = function () {
-        var
-            defaults = {
-                placeholder: '',
-                classes: {
-                    focus: 'text-field--focused',
-                    active: 'text-field--active'
-                },
-                parentNode: 'text-field',
-                baseHeight: '24'
-            },
+    'use strict';
 
-            /**
-             * Init Functions
-             */
-            placeholder = function(){
+    // TOOLTIP PUBLIC CLASS DEFINITION
+    // ===============================
 
-            },
-            focus = function(){
-                $(this).parents('.text-field').removeClass(defaults.classes.active);
-                $(this).parents('.text-field').addClass(defaults.classes.focus);
-            },
-            blur = function(){
-                $(this)
-                    .parents('.text-field')
-                    .removeClass(defaults.classes.focus);
-                if($(this).val() != ''){
-                    $(this)
-                        .parents('.text-field')
-                        .addClass(defaults.classes.active);
-                }
-            },
-            /**
-             * Textare Functions
-             */
-            resizeTextarea = function(e, $textarea, opt) {
-                var offset = e.offsetHeight - e.clientHeight;
-                $textarea.on('keyup input', function () {
-                    var baseHeight = opt.baseHeight + 'px';
-                    $textarea.css('height', baseHeight).css('height', e.scrollHeight + offset);
-                });
-            }
+    var Input = function (element, options) {
+        this.type       = null;
+        this.options    = null;
+        this.focus    = null;
+        this.blur    = null;
+        this.$element   = null;
 
-        return {
-            init: function (opt) {
-                opt = $.extend({}, defaults, opt || {});
+        this.init('input', element, options)
+    };
 
-                //For each selected DOM element
-                return this.each(function () {
-                    var event = this;
-                    var $input = $(event);
-                    var options = $.extend({}, opt);
-                    var parentNode = '.' + options.parentNode;
-                    var $inputParent = $input.parents(parentNode);
-                    var $inputlabel = $inputParent.children('label');
-                    var cls = options.classes;
-                    var modules = options.modules;
+    Input.VERSION  = '0.1.0';
 
-                    $input.focus(focus).blur(blur);
+    Input.TRANSITION_DURATION = 1000;
 
-                    if ($input.is('textarea')) {
-                        resizeTextarea(event, $input, opt);
-                    }
-                });
-            }
-        };
-    }();
+    Input.DEFAULTS = {
+        placeholder: '',
+        classes: {
+            focus: 'text-field--focused',
+            active: 'text-field--active'
+        },
+        parentNode: 'text-field'
+    };
 
-    $.fn.extend({
-        origamInput: origamInput.init
+    Input.prototype.init = function (type, element, options) {
+        this.type      = type;
+        this.element   = element;
+        this.$element  = $(element);
+        this.options   = this.getOptions(options);
+        this.$parent   = '.' + this.options.parentNode;
+
+        var event = this.event(this.options);
+
+        var eventIn  =  'focusin';
+        var eventOut =  'focusout';
+
+        this.$element.on(eventIn, $.proxy(this.startFocus, this));
+        this.$element.on(eventOut, $.proxy(this.endFocus, this));
+    };
+
+    Input.prototype.getDefaults = function () {
+        return Input.DEFAULTS
+    };
+
+    Input.prototype.getOptions = function (options) {
+        options = $.extend({}, this.getDefaults(), this.$element.data(), options);
+
+        return options
+    };
+
+    Input.prototype.event = function (options) {
+        return null;
+    };
+
+    Input.prototype.startFocus = function () {
+        this.$element
+            .parents(this.$parent)
+            .removeClass(this.options.classes.active);
+        this.$element
+            .parents(this.$parent)
+            .addClass(this.options.classes.focus);
+    };
+
+    Input.prototype.endFocus = function () {
+        this.$element
+            .parents(this.$parent)
+            .removeClass(this.options.classes.focus);
+        if(this.$element.val() != ''){
+            this.$element
+                .parents(this.$parent)
+                .addClass(this.options.classes.active);
+        }
+    };
+
+    // TOOLTIP PLUGIN DEFINITION
+    // =========================
+
+    function Plugin(option) {
+        return this.each(function () {
+            var $this   = $(this);
+            var data    = $this.data('origam.input');
+            var options = typeof option == 'object' && option;
+
+            if (!data && /destroy|hide/.test(option)) return;
+            if (!data) $this.data('origam.input', (data = new Input(this, options)));
+            if (typeof option == 'string') data[option]()
+        })
+    }
+
+    var old = $.fn.input;
+
+    $.fn.input             = Plugin;
+    $.fn.input.Constructor = Input;
+
+
+    // TOOLTIP NO CONFLICT
+    // ===================
+
+    $.fn.input.noConflict = function () {
+        $.fn.input = old;
+        return this
+    }
+
+    $(document).ready(function() {
+        $('[data-form="input"]').input();
     });
 
 })(jQuery, window);
-
-
 /**
  * Apply origamModal
  */
@@ -1282,14 +1319,14 @@
 
     var app = '[data-button="ripple"]';
     var Ripple   = function (el) {
-        $(el).on('mousedown', app, this.ripple)
+        $(el).on('mousedown', app, this.init)
     };
 
     Ripple.VERSION = '0.1.0';
 
     Ripple.TRANSITION_DURATION = 651;
 
-    Ripple.prototype.ripple = function (e) {
+    Ripple.prototype.init = function (e) {
         var $this    = $(this);
 
         $this.css({
@@ -1396,7 +1433,91 @@
  * Apply origamTabs
  */
 
+(function ($, w) {
 
+    'use strict';
+
+    // TOOLTIP PUBLIC CLASS DEFINITION
+    // ===============================
+
+    var Textarea = function (element, options) {
+        this.type       = null;
+        this.options    = null;
+        this.$element   = null;
+
+        this.init('textarea', element, options)
+    };
+
+    if (!$.fn.input) throw new Error('Notification requires input.js');
+
+    Textarea.VERSION  = '0.1.0';
+
+    Textarea.TRANSITION_DURATION = 1000;
+
+    Textarea.DEFAULTS = $.extend({}, $.fn.input.Constructor.DEFAULTS, {
+        baseHeight: '24'
+    });
+
+    Textarea.prototype = $.extend({}, $.fn.input.Constructor.prototype);
+
+    Textarea.prototype.constructor = Textarea;
+
+    Textarea.prototype.event = function (options) {
+
+        var offset = this.offset();
+
+        this.$element.on('keyup input', function() {
+            var $this = $(this);
+            var baseHeight = options.baseHeight + 'px';
+            $this.css('height', baseHeight);
+            $this.css('height', this.scrollHeight + offset);
+        });
+    };
+
+    Textarea.prototype.getDefaults = function () {
+        return Textarea.DEFAULTS
+    };
+
+    Textarea.prototype.offset = function() {
+        var offset = this.element.offsetHeight - this.element.clientHeight;
+
+        return offset;
+    }
+
+    // TOOLTIP PLUGIN DEFINITION
+    // =========================
+
+    function Plugin(option) {
+        return this.each(function () {
+            var $this   = $(this);
+            var data    = $this.data('origam.textarea');
+            var options = typeof option == 'object' && option;
+
+            if (!data && /destroy|hide/.test(option)) return;
+            if (!data) $this.data('origam.textarea', (data = new Textarea(this, options)));
+            if (typeof option == 'string') data[option]()
+        })
+    }
+
+    var old = $.fn.textarea;
+
+    $.fn.textarea             = Plugin;
+    $.fn.textarea.Constructor = Textarea;
+
+
+    // TOOLTIP NO CONFLICT
+    // ===================
+
+    $.fn.input.noConflict = function () {
+        $.fn.textarea = old;
+        return this
+    }
+
+    $(document).ready(function() {
+        $('[data-form="textarea"]').textarea();
+    });
+
+})(jQuery, window);
 /**
  * Apply origamTooltip
  */
