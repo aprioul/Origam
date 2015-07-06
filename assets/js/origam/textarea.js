@@ -2,7 +2,7 @@
 
     'use strict';
 
-    // TOOLTIP PUBLIC CLASS DEFINITION
+    // TEXTAREA PUBLIC CLASS DEFINITION
     // ===============================
 
     var Textarea = function (element, options) {
@@ -49,7 +49,7 @@
         return offset;
     }
 
-    // TOOLTIP PLUGIN DEFINITION
+    // TEXTAREA PLUGIN DEFINITION
     // =========================
 
     function Plugin(option) {
@@ -70,7 +70,7 @@
     $.fn.textarea.Constructor = Textarea;
 
 
-    // TOOLTIP NO CONFLICT
+    // TEXTAREA NO CONFLICT
     // ===================
 
     $.fn.input.noConflict = function () {

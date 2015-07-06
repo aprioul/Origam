@@ -5,7 +5,7 @@
 
     $(document).ready(function() {
         /*$(".text-field--group__input").origamInput();*/
-        $(".text-field--group__input[type=password]").origamPassword();
+        /*$(".text-field--group__input[type=password]").origamPassword();*/
         $(".text-field--group__input[type=phone]").origamPhone();
 
     });

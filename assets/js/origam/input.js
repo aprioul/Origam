@@ -38,9 +38,13 @@
         placeholder: '',
         classes: {
             focus: 'text-field--focused',
-            active: 'text-field--active'
+            active: 'text-field--active',
+            addonsLeft: 'text-field--addons left',
+            addonsRight: 'text-field--addons right',
         },
-        parentNode: 'text-field'
+        parentNode: 'text-field',
+        placement: 'after',
+        addon: '<div class="text-field--group_addons"></div>'
     };
 
     Input.prototype.init = function (type, element, options) {
@@ -71,6 +75,24 @@
 
     Input.prototype.event = function (options) {
         return null;
+    };
+
+    Input.prototype.addAddon = function() {
+        var classPosition = '';
+        this.options.placement === 'after' ? classPosition = this.options.classes.addonsRight : this.options.classes.addonsLeft;
+
+        this.$element.parents(this.$parent).addClass(classPosition);
+
+        var wrapper = this.options.addon;
+
+        if(this.options.placement === 'after') {
+            this.$element.after(wrapper);
+            return (this.$element.next());
+        }
+        else{
+            this.$element.before(wrapper);
+            return (this.$element.prev());
+        }
     };
 
     Input.prototype.startFocus = function () {
