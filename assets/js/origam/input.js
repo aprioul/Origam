@@ -77,6 +77,10 @@
         return null;
     };
 
+    Input.prototype.addPlaceholder = function (options){
+
+    };
+
     Input.prototype.addAddon = function() {
         var classPosition = '';
         this.options.placement === 'after' ? classPosition = this.options.classes.addonsRight : this.options.classes.addonsLeft;
