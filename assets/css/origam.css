@@ -20578,7 +20578,6 @@ figure figcaption {
 .alert {
   display: block;
   margin-bottom: 0;
-  text-align: left;
   vertical-align: middle;
   background-image: none;
   border: 3px solid transparent;
@@ -20588,6 +20587,9 @@ figure figcaption {
   margin: 10px 0;
   position: relative;
   min-height: 70px;
+  text-align: left;
+  max-width: 1024px;
+  margin: 10px auto;
 }
 .alert .alert-close {
   position: absolute;
@@ -20596,18 +20598,46 @@ figure figcaption {
   cursor: pointer;
   touch-action: manipulation;
 }
-.alert.icon {
-  margin-left: 25px;
+.alert.left.icon {
   padding-left: 25px;
 }
-.alert.icon .alert-icon {
-  position: absolute;
-  top: 10px;
-  left: 0;
+.alert.left.icon .alert-icon {
   -moz-transform: translate(-50%, 0);
   -ms-transform: translate(-50%, 0);
   -webkit-transform: translate(-50%, 0);
   transform: translate(-50%, 0);
+  position: absolute;
+  top: 10px;
+  left: 0;
+}
+.alert.left.icon .alert-icon + .alert-main {
+  padding-left: 16px;
+}
+.alert.right {
+  text-align: right;
+}
+.alert.right .alert-close {
+  position: absolute;
+  top: 5px;
+  right: initial;
+  left: 5px;
+}
+.alert.right.icon {
+  padding-right: 25px;
+}
+.alert.right.icon .alert-icon {
+  -moz-transform: translate(50%, 0);
+  -ms-transform: translate(50%, 0);
+  -webkit-transform: translate(50%, 0);
+  transform: translate(50%, 0);
+  position: absolute;
+  top: 10px;
+  right: 0;
+}
+.alert.right.icon .alert-icon + .alert-main {
+  padding-right: 16px;
+}
+.alert.icon .alert-icon {
   width: 50px;
   height: 50px;
   text-align: center;
@@ -20616,9 +20646,6 @@ figure figcaption {
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
   border-radius: 50%;
-}
-.alert.icon .alert-icon + .alert-main {
-  padding-left: 16px;
 }
 
 .alert-ghost.icon {

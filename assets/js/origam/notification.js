@@ -23,7 +23,7 @@
 
     Notification.DEFAULTS = {
         type: 'ghost',
-        position: 'top left',
+        selector: 'body',
         animate: true,
         animationIn: 'jellyIn',
         animationOut: 'jellyOut',
@@ -44,16 +44,13 @@
         this.$element   = $(element);
         this.options    = this.getOptions(options);
         this.$note      = $(this.options.wrapperTemplate);
-        this.$main = $(this.options.mainTemplate);
-        this.$close = $(this.options.closeTemplate);
-        this.$icon = $(this.options.iconTemplate);
-        this.$wrapper = $('<div id="notification-wrapper"></div>');
+        this.$main      = $(this.options.mainTemplate);
+        this.$close     = $(this.options.closeTemplate);
+        this.$icon      = $(this.options.iconTemplate);
+        this.id         = this.getUID(8);
 
-        if($('#notification-wrapper').length === 0)
-            this.$wrapper.appendTo('body');
-
-        this.$body = $('#notification-wrapper');
         this.$note
+            .attr('id', this.id)
             .addClass('alert-' + this.options.type)
             .append(this.$main)
             .append(this.$close);
@@ -88,6 +85,18 @@
         return options
     };
 
+    Notification.prototype.getUID = function (length){
+        var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split('');
+        if (!length) {
+            length = Math.floor(Math.random() * chars.length);
+        }
+        var str = '';
+        for (var i = 0; i < length; i++) {
+            str += chars[Math.floor(Math.random() * chars.length)];
+        }
+        return str;
+    };
+
     Notification.prototype.show = function () {
 
         var that = this;
@@ -102,7 +111,7 @@
             var animateClass = that.options.animationIn + ' animated';
         }
 
-        $note.appendTo(this.$body);
+        $note.appendTo(this.options.selector);
 
         var onShow = function () {
             if ($note.hasClass(animateClass))
@@ -115,6 +124,8 @@
                 .one('origamTransitionEnd', onShow)
                 .emulateTransitionEnd(Notification.TRANSITION_DURATION) :
             onShow();
+
+        return false;
 
     };
 
@@ -129,6 +140,7 @@
                 .addClass('animated');
             var animateClass = that.options.animationOut + ' animated';
         }
+
     };
 
     // NOTIFICATION PLUGIN DEFINITION

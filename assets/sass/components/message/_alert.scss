@@ -19,7 +19,6 @@
 .alert {
   display: block;
   margin-bottom: 0;
-  text-align: left;
   vertical-align: middle;
   background-image: none;
   border: 3px solid transparent;
@@ -29,25 +28,49 @@
   margin: $padding-large-vertical 0;
   @include position(relative, null, null, null, null);
   min-height: 70px;
-  .alert-close{
+  text-align: left;
+  max-width: $origam-section-width;
+  margin: $padding-large-vertical auto;
+  .alert-close {
     @include position(absolute, 5px, 5px, null, null);
     cursor: pointer;
     touch-action: manipulation;
   }
+  &.left {
+    &.icon {
+      padding-left: 25px;
+      .alert-icon {
+        @include translate(-50%, 0);
+        @include position(absolute, 10px, null, null, 0);
+        & + .alert-main {
+          padding-left: $padding-large-horizontal;
+        }
+      }
+    }
+  }
+  &.right {
+    text-align: right;
+    .alert-close {
+      @include position(absolute, 5px, initial, null, 5px);
+    }
+    &.icon{
+      padding-right: 25px;
+      .alert-icon {
+        @include translate(50%, 0);
+        @include position(absolute, 10px, 0, null, null);
+        & + .alert-main {
+          padding-right: $padding-large-horizontal;
+        }
+      }
+    }
+  }
   &.icon {
-    margin-left: 25px;
-    padding-left: 25px;
     .alert-icon {
-      @include position(absolute, 10px, null, null, 0);
-      @include translate(-50%, 0);
       @include size(50px, 50px);
       text-align: center;
       line-height: 42px;
       border: 3px solid transparent;
       @include border-radius(50%);
-      & + .alert-main {
-        padding-left: $padding-large-horizontal;
-      }
     }
   }
 }
