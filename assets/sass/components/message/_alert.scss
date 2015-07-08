@@ -8,7 +8,7 @@
       color: darken($border, 24%);
     }
   }
-  &.alert-icon .icon {
+  &.icon .alert-icon {
     color: $color;
     background-color: $background;
     border-color: $border;
@@ -34,10 +34,10 @@
     cursor: pointer;
     touch-action: manipulation;
   }
-  &.alert-icon {
+  &.icon {
     margin-left: 25px;
     padding-left: 25px;
-    .icon {
+    .alert-icon {
       @include position(absolute, 10px, null, null, 0);
       @include translate(-50%, 0);
       @include size(50px, 50px);
@@ -53,7 +53,7 @@
 }
 
 .alert-ghost {
-  &.alert-icon {
+  &.icon {
     border-left: none;
     &:before,
     &:after{

@@ -7,7 +7,7 @@
     <link href="../dist/css/demo.min.css" rel="stylesheet"/>
     <script type="text/javascript" src="../dist/js/jquery.min.js"></script>
     <script type="text/javascript" src="../dist/js/plugins.min.js"></script>
-    <script type="text/javascript" src="../dist/js/origam.min.js"></script>
+    <script type="text/javascript" src="../dist/js/src/origam.js"></script>
     <script type="text/javascript" src="../dist/js/main.js"></script>
 </head>
 <body>
@@ -41,9 +41,19 @@
                     <div class="origam-grid">
                         <div class="origam-wrapper">
                             <div class="origam-section">
-                                <div class="origam-grid__cell origam-size-1of1">
-                                    <a class="btn btn-primary" data-app="notification" data-animate="true" data-button="ripple" title="Notification" data-content="Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum." href="#">
+                                <div class="origam-grid__cell origam-size-1of3">
+                                    <a class="btn btn-primary" data-app="notification" data-button="ripple" data-html="true" title="Notification" data-content="<p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>" href="#">
                                         Notification popup
+                                    </a>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of3">
+                                    <a class="btn btn-primary" data-app="notification" data-button="ripple" data-icon="true" data-html="true" title="Notification" data-content="<p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>" href="#">
+                                        Notification popup icon left
+                                    </a>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of3">
+                                    <a class="btn btn-primary" data-app="notification" data-button="ripple" data-icon="true" data-direction="right" data-html="true" title="Notification" data-content="<p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>" href="#">
+                                        Notification popup icon right
                                     </a>
                                 </div>
                             </div>

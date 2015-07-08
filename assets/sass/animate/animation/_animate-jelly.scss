@@ -151,7 +151,7 @@
 }
 
 .jellyIn {
-  @include animation-name(jellyIn);
+  @include animation-name(jelly);
   @include animation-duration(1s);
   @include animation-timing-function(linear);
 }

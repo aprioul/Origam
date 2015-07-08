@@ -45,13 +45,18 @@
             if(animation){$parent.addClass(animation);}
             else{$parent.addClass('fadeOut');}
             $parent.addClass('animated');
+            var animateClass = animation + ' animated';
         }
 
         if (e.isDefaultPrevented()) return;
 
         function removeElement() {
-            // detach from parent, fire event then clean up data
-            $parent.detach().trigger('closed.origam.close').remove()
+            if ($parent.hasClass(animateClass))
+                $parent.removeClass(animateClass);
+            $parent
+                .detach()
+                .trigger('closed.origam.close')
+                .remove();
         }
 
         $.support.transition ?

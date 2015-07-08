@@ -45,13 +45,18 @@
             if(animation){$parent.addClass(animation);}
             else{$parent.addClass('fadeOut');}
             $parent.addClass('animated');
+            var animateClass = animation + ' animated';
         }
 
         if (e.isDefaultPrevented()) return;
 
         function removeElement() {
-            // detach from parent, fire event then clean up data
-            $parent.detach().trigger('closed.origam.close').remove()
+            if ($parent.hasClass(animateClass))
+                $parent.removeClass(animateClass);
+            $parent
+                .detach()
+                .trigger('closed.origam.close')
+                .remove();
         }
 
         $.support.transition ?
@@ -486,6 +491,176 @@
 /**
  * Apply origamModal
  */
+
+
+/**
+ * Apply origamnotification
+ */
+
+(function ($, w) {
+    'use strict';
+
+    // NOTIFICATION CLASS DEFINITION
+    // ======================
+
+    var Notification = function (element, options) {
+        this.type       = null;
+        this.options    = null;
+        this.$element   = null;
+
+        this.init('notification', element, options)
+    };
+
+    Notification.VERSION = '0.1.0';
+
+    Notification.TRANSITION_DURATION = 1000;
+
+    Notification.DEFAULTS = {
+        type: 'ghost',
+        position: 'top left',
+        animate: true,
+        animationIn: 'jellyIn',
+        animationOut: 'jellyOut',
+        html: false,
+        content: '',
+        icon: false,
+        direction: 'left',
+        wrapperTemplate: '<div class="alert"></div>',
+        mainTemplate: '<div class="alert-main"></div>',
+        closeTemplate: '<div class="alert-close" data-button="close"><i class="origamicon origamicon-close"></i></div>',
+        iconTemplate: '<div class="alert-icon"></div>',
+        iconClass: 'origamicon origamicon-check2'
+    };
+
+    Notification.prototype.init = function (type, element, options) {
+        // Element collection
+        this.type       = type;
+        this.$element   = $(element);
+        this.options    = this.getOptions(options);
+        this.$note      = $(this.options.wrapperTemplate);
+        this.$main = $(this.options.mainTemplate);
+        this.$close = $(this.options.closeTemplate);
+        this.$icon = $(this.options.iconTemplate);
+        this.$wrapper = $('<div id="notification-wrapper"></div>');
+
+        if($('#notification-wrapper').length === 0)
+            this.$wrapper.appendTo('body');
+
+        this.$body = $('#notification-wrapper');
+        this.$note
+            .addClass('alert-' + this.options.type)
+            .append(this.$main)
+            .append(this.$close);
+
+        this.$main[this.options.html ? 'html' : 'text'](this.options.content);
+
+        if(this.options.icon){
+
+            $('<i>')
+                .addClass(this.options.iconClass)
+                .appendTo(this.$icon);
+
+            this.$note
+                .addClass('icon')
+                .addClass(this.options.direction);
+            this.$note[this.options.direction === 'left' ? 'prepend': 'append'](this.$icon);
+        }
+
+        this.$element.on('click', $.proxy(this.show, this));
+
+        this.$close.on('click', $.proxy(this.hide, this));
+
+    };
+
+    Notification.prototype.getDefaults = function () {
+        return Notification.DEFAULTS
+    };
+
+    Notification.prototype.getOptions = function (options) {
+        options = $.extend({}, this.getDefaults(), this.$element.data(), options);
+
+        return options
+    };
+
+    Notification.prototype.show = function () {
+
+        var that = this;
+        var $note = that.$note;
+
+        if(that.options.animate) {
+            $note
+                .attr('data-animate', 'true')
+                .attr('data-animation', that.options.animationOut)
+                .addClass(that.options.animationIn)
+                .addClass('animated');
+            var animateClass = that.options.animationIn + ' animated';
+        }
+
+        $note.appendTo(this.$body);
+
+        var onShow = function () {
+            if ($note.hasClass(animateClass))
+                $note.removeClass(animateClass);
+            $note.trigger('show.origam.' + that.type);
+        };
+
+        $.support.transition && $note.hasClass(animateClass) ?
+            $note
+                .one('origamTransitionEnd', onShow)
+                .emulateTransitionEnd(Notification.TRANSITION_DURATION) :
+            onShow();
+
+    };
+
+    Notification.prototype.hide = function () {
+
+        var that = this;
+        var $note = that.$note;
+
+        if(that.options.animate) {
+            $note
+                .addClass(that.options.animationOut)
+                .addClass('animated');
+            var animateClass = that.options.animationOut + ' animated';
+        }
+    };
+
+    // NOTIFICATION PLUGIN DEFINITION
+    // =======================
+
+    function Plugin(option) {
+        return this.each(function () {
+            var $this = $(this);
+            var data  = $this.data('origam.notification');
+
+            if (!data) $this.data('origam.notification', (data = new Notification(this)));
+            if (typeof option == 'string') data[option].call($this)
+        })
+    }
+
+    var old = $.fn.notification;
+
+    $.fn.notification             = Plugin;
+    $.fn.notification.Constructor = Notification;
+
+
+    // NOTIFICATION NO CONFLICT
+    // =================
+
+    $.fn.notification.noConflict = function () {
+        $.fn.notification = old;
+        return this
+    };
+
+
+    // NOTIFICATION DATA-API
+    // ==============
+
+    $(document).ready(function() {
+        $('[data-app="notification"]').notification();
+    });
+
+})(jQuery, window);
 
 
 /**
@@ -2063,52 +2238,61 @@
     // Ripple CLASS DEFINITION
     // ======================
 
-    var app = '[data-button="ripple"]';
-    var Ripple   = function (el) {
-        $(el).on('mousedown', app, this.init)
+    var Ripple   = function (element, options) {
+        this.type       = null;
+        this.options    = null;
+        this.$element   = null;
+
+        this.init('ripple', element, options)
     };
 
     Ripple.VERSION = '0.1.0';
 
     Ripple.TRANSITION_DURATION = 651;
 
-    Ripple.prototype.init = function (e) {
-        var $this    = $(this);
+    Ripple.prototype.init = function (type, element, options) {
+        this.type       = type;
+        this.$element   = $(element);
 
-        $this.css({
+        this.$element.on('mousedown', $.proxy(this.show, this));
+
+    };
+
+    Ripple.prototype.show = function (e) {
+        this.$element.css({
             position: 'relative',
             overflow: 'hidden'
         });
 
         var ripple;
 
-        if ($this.find('.ripple').length === 0) {
+        if (this.$element.find('.ripple').length === 0) {
 
             ripple = $('<span/>').addClass('ripple');
 
-            if ($this.attr('data-ripple'))
+            if (this.$element.attr('data-ripple'))
             {
-                ripple.addClass('ripple-' + $this.attr('data-ripple'));
+                ripple.addClass('ripple-' + this.$element.attr('data-ripple'));
             }
 
-            $this.prepend(ripple);
+            this.$element.prepend(ripple);
         }
         else
         {
-            ripple = $this.find('.ripple');
+            ripple = this.$element.find('.ripple');
         }
 
         ripple.removeClass('animated');
 
         if (!ripple.height() && !ripple.width())
         {
-            var diameter = Math.max($this.outerWidth(), $this.outerHeight());
+            var diameter = Math.max(this.$element.outerWidth(), this.$element.outerHeight());
 
             ripple.css({ height: diameter, width: diameter });
         }
 
-        var x = e.pageX - $this.offset().left - ripple.width() / 2;
-        var y = e.pageY - $this.offset().top - ripple.height() / 2;
+        var x = e.pageX - this.$element.offset().left - ripple.width() / 2;
+        var y = e.pageY - this.$element.offset().top - ripple.height() / 2;
 
         ripple.css({ top: y+'px', left: x+'px' }).addClass('animated');
 
@@ -2117,7 +2301,7 @@
         }
 
         $.support.transition ?
-            $this
+            this.$element
                 .one('origamTransitionEnd', removeElement)
                 .emulateTransitionEnd(Ripple.TRANSITION_DURATION) :
             removeElement()
@@ -2155,7 +2339,9 @@
     // Ripple DATA-API
     // ==============
 
-    $(document).on('click.origam.Ripple.data-api', app, Ripple.prototype.ripple)
+    $(document).ready(function() {
+        $('[data-button="ripple"]').ripple();
+    });
 
 })(jQuery, window);
 
@@ -2806,115 +2992,6 @@
 
     $(document).ready(function() {
         $('[data-app="tooltip"]').tooltip();
-    });
-
-})(jQuery, window);
-/**
- * Apply origamNotification
- */
-
-(function ($, w) {
-    'use strict';
-
-    // NOTIFICATION PUBLIC CLASS DEFINITION
-    // ===============================
-
-    var Notification = function (element, options) {
-        this.init('notification', element, options)
-    };
-
-    if (!$.fn.tooltip) throw new Error('Notification requires tooltip-main.js');
-
-    Notification.VERSION  = '0.1.0';
-
-    Notification.DEFAULTS = $.extend({}, $.fn.tooltip.Constructor.DEFAULTS, {
-        placement: 'right',
-        trigger: 'click',
-        content: '',
-        template: '<div class="notification"><h3 class="notification-title"></h3><div class="notification-content"></div><span class="notification-close" data-button="close" data-target=".notification"><i class="origamicon origamicon-close"></i></span></div>'
-    });
-
-
-    // NOTE: NOTIFICATION EXTENDS tooltip-main.js
-    // ================================
-
-    Notification.prototype = $.extend({}, $.fn.tooltip.Constructor.prototype);
-
-    Notification.prototype.constructor = Notification;
-
-    Notification.prototype.getDefaults = function () {
-        return Notification.DEFAULTS
-    };
-
-    Notification.prototype.setContent = function () {
-        var $tip    = this.tip();
-        var title   = this.getTitle();
-        var content = this.getContent();
-        var app = '[data-app="close"]';
-
-        $tip.find('.notification-title')[this.options.html ? 'html' : 'text'](title);
-        $tip.find('.notification-content').children().detach().end()[ // we use append for html objects to maintain js events
-            this.options.html ? (typeof content == 'string' ? 'html' : 'append') : 'text'
-            ](content);
-
-        $tip.removeClass('fade top bottom left right in');
-
-        // IE8 doesn't accept hiding via the `:empty` pseudo selector, we have to do
-        // this manually by checking the contents.
-        if (!$tip.find('.notification-title').html()) $tip.find('.notification-title').hide();
-
-        // Add close event
-        var data  = $tip.find('.notification-close').data('origam.close');
-
-        if (!data) $tip.find('.notification-close').data('origam.close', (data = $tip.find('.notification-close').on('click', app, this.close)));
-    }
-
-    Notification.prototype.hasContent = function () {
-        return this.getTitle() || this.getContent()
-    }
-
-    Notification.prototype.getContent = function () {
-        var $e = this.$element;
-        var o  = this.options;
-
-        return $e.attr('data-content')
-            || (typeof o.content == 'function' ?
-                o.content.call($e[0]) :
-                o.content)
-    };
-
-
-    // NOTIFICATION PLUGIN DEFINITION
-    // =========================
-
-    function Plugin(option) {
-        return this.each(function () {
-            var $this   = $(this);
-            var data    = $this.data('origam.notification');
-            var options = typeof option == 'object' && option;
-
-            if (!data && /destroy|hide/.test(option)) return;
-            if (!data) $this.data('origam.notification', (data = new Notification(this, options)));
-            if (typeof option == 'string') data[option]()
-        })
-    }
-
-    var old = $.fn.notification;
-
-    $.fn.notification             = Plugin;
-    $.fn.notification.Constructor = Notification;
-
-
-    // NOTIFICATION NO CONFLICT
-    // ===================
-
-    $.fn.notification.noConflict = function () {
-        $.fn.notification = old;
-        return this
-    }
-
-    $(document).ready(function() {
-        $('[data-app="notification"]').notification();
     });
 
 })(jQuery, window);

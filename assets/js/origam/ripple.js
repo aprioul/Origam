@@ -9,52 +9,61 @@
     // Ripple CLASS DEFINITION
     // ======================
 
-    var app = '[data-button="ripple"]';
-    var Ripple   = function (el) {
-        $(el).on('mousedown', app, this.init)
+    var Ripple   = function (element, options) {
+        this.type       = null;
+        this.options    = null;
+        this.$element   = null;
+
+        this.init('ripple', element, options)
     };
 
     Ripple.VERSION = '0.1.0';
 
     Ripple.TRANSITION_DURATION = 651;
 
-    Ripple.prototype.init = function (e) {
-        var $this    = $(this);
+    Ripple.prototype.init = function (type, element, options) {
+        this.type       = type;
+        this.$element   = $(element);
 
-        $this.css({
+        this.$element.on('mousedown', $.proxy(this.show, this));
+
+    };
+
+    Ripple.prototype.show = function (e) {
+        this.$element.css({
             position: 'relative',
             overflow: 'hidden'
         });
 
         var ripple;
 
-        if ($this.find('.ripple').length === 0) {
+        if (this.$element.find('.ripple').length === 0) {
 
             ripple = $('<span/>').addClass('ripple');
 
-            if ($this.attr('data-ripple'))
+            if (this.$element.attr('data-ripple'))
             {
-                ripple.addClass('ripple-' + $this.attr('data-ripple'));
+                ripple.addClass('ripple-' + this.$element.attr('data-ripple'));
             }
 
-            $this.prepend(ripple);
+            this.$element.prepend(ripple);
         }
         else
         {
-            ripple = $this.find('.ripple');
+            ripple = this.$element.find('.ripple');
         }
 
         ripple.removeClass('animated');
 
         if (!ripple.height() && !ripple.width())
         {
-            var diameter = Math.max($this.outerWidth(), $this.outerHeight());
+            var diameter = Math.max(this.$element.outerWidth(), this.$element.outerHeight());
 
             ripple.css({ height: diameter, width: diameter });
         }
 
-        var x = e.pageX - $this.offset().left - ripple.width() / 2;
-        var y = e.pageY - $this.offset().top - ripple.height() / 2;
+        var x = e.pageX - this.$element.offset().left - ripple.width() / 2;
+        var y = e.pageY - this.$element.offset().top - ripple.height() / 2;
 
         ripple.css({ top: y+'px', left: x+'px' }).addClass('animated');
 
@@ -63,7 +72,7 @@
         }
 
         $.support.transition ?
-            $this
+            this.$element
                 .one('origamTransitionEnd', removeElement)
                 .emulateTransitionEnd(Ripple.TRANSITION_DURATION) :
             removeElement()
@@ -101,7 +110,9 @@
     // Ripple DATA-API
     // ==============
 
-    $(document).on('click.origam.Ripple.data-api', app, Ripple.prototype.ripple)
+    $(document).ready(function() {
+        $('[data-button="ripple"]').ripple();
+    });
 
 })(jQuery, window);
 
