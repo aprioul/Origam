@@ -19,7 +19,7 @@
         this.init('password', element, options)
     };
 
-    if (!$.fn.input) throw new Error('Notification requires input.js');
+    if (!$.fn.input) throw new Error('Password requires input.js');
 
     Password.VERSION  = '0.1.0';
 

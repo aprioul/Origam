@@ -19,7 +19,7 @@
         this.init('phone', element, options)
     };
 
-    if (!$.fn.input) throw new Error('Notification requires input.js');
+    if (!$.fn.input) throw new Error('Phone requires input.js');
 
     Phone.VERSION  = '0.1.0';
 

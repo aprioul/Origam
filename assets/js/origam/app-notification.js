@@ -71,8 +71,6 @@
 
         this.$element.on('click', $.proxy(this.show, this));
 
-        this.$close.on('click', $.proxy(this.hide, this));
-
     };
 
     Notification.prototype.getDefaults = function () {
@@ -100,7 +98,8 @@
     Notification.prototype.show = function () {
 
         var that = this;
-        var $note = that.$note;
+        var $note = that.$note,
+            viewportWidtht  = $(window).width();
 
         if(that.options.animate) {
             $note
@@ -112,6 +111,12 @@
         }
 
         $note.appendTo(this.options.selector);
+
+        $note.css({
+           'position': 'fixed',
+           'top': 0,
+           'left': (viewportWidtht/2) - (this.$note.outerWidth()/2)
+        });
 
         var onShow = function () {
             if ($note.hasClass(animateClass))
