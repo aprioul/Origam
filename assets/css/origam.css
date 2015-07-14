@@ -20169,19 +20169,28 @@ th {
 /**
   * Text inputs
   */
+.origam-colorpick--field,
+.origam-colorpick--hex_field,
+.origam-colorpick--origin_field {
+  display: inline-block;
+  vertical-align: top;
+}
 .origam-colorpick--field.text-field,
-.origam-colorpick--hex_field.text-field {
+.origam-colorpick--hex_field.text-field,
+.origam-colorpick--origin_field.text-field {
   width: calc( 50% - 12px);
   padding: 0;
   margin: 0 6px;
   margin-bottom: 6px;
 }
 .origam-colorpick--field.text-field--addons.left,
-.origam-colorpick--hex_field.text-field--addons.left {
+.origam-colorpick--hex_field.text-field--addons.left,
+.origam-colorpick--origin_field.text-field--addons.left {
   padding-left: 32px;
 }
 .origam-colorpick--field .text-field--group__addons,
-.origam-colorpick--hex_field .text-field--group__addons {
+.origam-colorpick--hex_field .text-field--group__addons,
+.origam-colorpick--origin_field .text-field--group__addons {
   left: -32px;
   width: 32px;
   height: 32px;
@@ -20189,9 +20198,11 @@ th {
   font-size: 14px;
   font-size: 0.875rem;
 }
-
-.origam-colorpick--field {
-  display: inline-block;
+.origam-colorpick--field .text-field--group__input,
+.origam-colorpick--hex_field .text-field--group__input,
+.origam-colorpick--origin_field .text-field--group__input {
+  min-height: 32px;
+  line-height: 32px;
 }
 
 /**
@@ -20216,58 +20227,6 @@ th {
   background-color: #F44336;
 }
 
-/**
-  * Input field containers
-  */
-/**
-  * Text field container on focus
-  */
-/**
-  * Field label container
-  */
-/**
-  * Field up/down arrows
-  */
-.origam-colorpick--field_arrs {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 9px;
-  height: 32px;
-  cursor: n-resize;
-}
-
-.origam-colorpick--field_uarr {
-  position: absolute;
-  top: 5px;
-  width: 0;
-  height: 0;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-bottom: 4px solid rgba(0, 0, 0, 0.26);
-}
-
-.origam-colorpick--field_darr {
-  position: absolute;
-  bottom: 5px;
-  width: 0;
-  height: 0;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 4px solid rgba(0, 0, 0, 0.26);
-}
-
-/**
-  * full layout with no submit button
-  */
-/**
-  * rgbhex layout
-  */
-/*rgbhex layout, no submit button*/
-/*hex layout*/
-/**
-  * hex layout, no submit button
-  */
 /**
   * Text field base styles
   */

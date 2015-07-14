@@ -143,7 +143,10 @@
   */
 
 .origam-colorpick--field,
-.origam-colorpick--hex_field {
+.origam-colorpick--hex_field,
+.origam-colorpick--origin_field{
+  display: inline-block;
+  vertical-align: top;
   &.text-field {
     width: calc( 50% - 12px);
     padding: 0;
@@ -160,10 +163,10 @@
     line-height: 32px;
     @include font-size($font-size-small);
   }
-}
-
-.origam-colorpick--field {
-  display: inline-block;
+  .text-field--group__input{
+    min-height: 32px;
+    line-height: 32px;
+  }
 }
 
 /**
@@ -191,225 +194,4 @@
   margin-top: 0;
   @include size( calc( 50% - 12px), 47px);
   background-color: $red;
-}
-
-/**
-  * Input field containers
-  */
-
-.origam-colorpick--field, .origam-colorpick--hex_field  {
-
-}
-
-.origam-colorpick--rgb_r {
-
-}
-
-.origam-colorpick--rgb_g {
-
-}
-
-.origam-colorpick--rgb_b {
-
-}
-
-.origam-colorpick--hsb_h {
-
-}
-
-.origam-colorpick--hsb_s {
-
-}
-
-.origam-colorpick--hsb_b {
-
-}
-
-.origam-colorpick--hex_field {
-
-}
-
-/**
-  * Text field container on focus
-  */
-
-.origam-colorpick--focus {
-
-}
-
-/**
-  * Field label container
-  */
-
-.origam-colorpick--field_letter {
-
-}
-
-/**
-  * Field up/down arrows
-  */
-
-.origam-colorpick--field_arrs {
-  @include position(absolute, 0, 0, null, null);
-  @include size(9px, 32px);
-  cursor: n-resize;
-}
-
-.origam-colorpick--field_uarr {
-  @include position(absolute, 5px, null, null, null);
-  @include size(0, 0);
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-bottom: 4px solid $black-3;
-}
-
-.origam-colorpick--field_darr {
-  @include position(absolute, null, null, 5px, null);
-  @include size(0, 0);
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 4px solid $black-3;
-}
-
-/**
-  * full layout with no submit button
-  */
-
-.origam-colorpick--full_ns  {
-
-  .origam-colorpick--submit,
-  .origam-colorpick--current_color{
-
-  }
-
-  .origam-colorpick--new_color {
-
-  }
-
-  .origam-colorpick--rgb_r,
-  .origam-colorpick--hsb_h {
-
-  }
-
-  .origam-colorpick--rgb_g,
-  .origam-colorpick--hsb_s {
-
-  }
-
-  .origam-colorpick--rgb_b,
-  .origam-colorpick--hsb_b {
-
-  }
-
-  .origam-colorpick--hex_field {
-
-  }
-}
-
-/**
-  * rgbhex layout
-  */
-
-.origam-colorpick--rgbhex  {
-
-  .origam-colorpick--hsb_h,
-  .origam-colorpick--hsb_s,
-  .origam-colorpick--hsb_b{
-
-  }
-
-  .origam-colorpick--field,
-  .origam-colorpick--submit {
-
-  }
-
-  .origam-colorpick--new_color {
-
-  }
-
-  .origam-colorpick--current_color {
-
-  }
-}
-
-/*rgbhex layout, no submit button*/
-.origam-colorpick--rgbhex_ns  {
-
-  .origam-colorpick--submit,
-  .origam-colorpick--current_color {
-
-  }
-
-  .origam-colorpick--new_color{
-
-  }
-
-  .origam-colorpick--rgb_r {
-
-  }
-
-  .origam-colorpick--rgb_g {
-
-  }
-
-  .origam-colorpick--rgb_b {
-
-  }
-
-  .origam-colorpick--hex_field {
-
-  }
-}
-
-/*hex layout*/
-.origam-colorpick--hex
-
-.origam-colorpick--hex {
-
-  .origam-colorpick--hsb_h,
-  .origam-colorpick--hsb_s,
-  .origam-colorpick--hsb_b,
-  .origam-colorpick--rgb_r,
-  .origam-colorpick--rgb_g,
-  .origam-colorpick--rgb_b {
-
-  }
-
-  .origam-colorpick--hex_field {
-
-    div,
-    input{
-
-    }
-  }
-
-  .origam-colorpick--new_color {
-
-  }
-
-  .origam-colorpick--current_color {
-
-  }
-
-  .origam-colorpick--submit {
-
-  }
-}
-
-/**
-  * hex layout, no submit button
-  */
-.origam-colorpick--hex_ns {
-  .origam-colorpick--submit,
-  .origam-colorpick--current_color{
-
-  }
-
-  .origam-colorpick--hex_field {
-
-  }
-
-  .origam-colorpick--new_color{
-
-  }
 }

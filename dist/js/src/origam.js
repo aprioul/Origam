@@ -1498,7 +1498,7 @@
 
     Color.DEFAULTS = $.extend({}, $.fn.input.Constructor.DEFAULTS, {
         showEvent: 'click',
-        template: '<div class="origam-colorpick"><div class="origam-colorpick--color"><div class="origam-colorpick--color_overlay1"><div class="origam-colorpick--color_overlay2"><div class="origam-colorpick--selector_outer"><div class="origam-colorpick--selector_inner"></div></div></div></div></div><div class="origam-colorpick--hue"><div class="origam-colorpick--hue_arrs"><div class="origam-colorpick--hue_larr"></div><div class="origam-colorpick--hue_rarr"></div></div></div><div class="origam-colorpick--form"><div class="origam-colorpick--new_color"></div><div class="origam-colorpick--current_color"></div><div class="origam-colorpick--hex_field text-field text-field--addons left"><div class="text-field--group"><div class="origam-colorpick--field_letter text-field--group__addons">#</div><input class="text-field--group__input" data-form="input" type="text" maxlength="6" size="6" /></div></div><div class="origam-colorpick--rgb_r origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"><div class="origam-colorpick--field_letter text-field--group__addons">R</div><input class="text-field--group__input" data-form="input" type="text" maxlength="3" size="3" /></div><div class="origam-colorpick--field_arrs"><div class="origam-colorpick--field_uarr"></div><div class="origam-colorpick--field_darr"></div></div></div><div class="origam-colorpick--hsb_h origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"><div class="origam-colorpick--field_letter text-field--group__addons">H</div><input class="text-field--group__input" data-form="input" type="text" maxlength="3" size="3" /></div><div class="origam-colorpick--field_arrs"><div class="origam-colorpick--field_uarr"></div><div class="origam-colorpick--field_darr"></div></div></div><div class="origam-colorpick--rgb_g origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"><div class="origam-colorpick--field_letter text-field--group__addons">G</div><input class="text-field--group__input" data-form="input" type="text" maxlength="3" size="3" /></div><div class="origam-colorpick--field_arrs"><div class="origam-colorpick--field_uarr"></div><div class="origam-colorpick--field_darr"></div></div></div><div class="origam-colorpick--hsb_s origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"><div class="origam-colorpick--field_letter text-field--group__addons">S</div><input class="text-field--group__input" data-form="input" type="text" maxlength="3" size="3" /></div><div class="origam-colorpick--field_arrs"><div class="origam-colorpick--field_uarr"></div><div class="origam-colorpick--field_darr"></div></div></div><div class="origam-colorpick--rgb_b origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"><div class="origam-colorpick--field_letter text-field--group__addons">B</div><input class="text-field--group__input" data-form="input" type="text" maxlength="3" size="3" /></div><div class="origam-colorpick--field_arrs"><div class="origam-colorpick--field_uarr"></div><div class="origam-colorpick--field_darr"></div></div></div><div class="origam-colorpick--hsb_b origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"><div class="origam-colorpick--field_letter text-field--group__addons">B</div><input class="text-field--group__input" data-form="input" type="text" maxlength="3" size="3" /></div><div class="origam-colorpick--field_arrs"><div class="origam-colorpick--field_uarr"></div><div class="origam-colorpick--field_darr"></div></div></div><div class="origam-colorpick--submit btn btn-primary"></div></div></div>',
+        template: '<div class="origam-colorpick"><div class="origam-colorpick--color"><div class="origam-colorpick--color_overlay1"><div class="origam-colorpick--color_overlay2"><div class="origam-colorpick--selector_outer"><div class="origam-colorpick--selector_inner"></div></div></div></div></div><div class="origam-colorpick--hue"><div class="origam-colorpick--hue_arrs"><div class="origam-colorpick--hue_larr"></div><div class="origam-colorpick--hue_rarr"></div></div></div><div class="origam-colorpick--form"><div class="origam-colorpick--new_color"></div><div class="origam-colorpick--current_color"></div><div class="origam-colorpick--hex_field text-field text-field--addons left"><div class="text-field--group"><div class="origam-colorpick--field_letter text-field--group__addons">#</div><input class="text-field--group__input" data-form="input" type="text" maxlength="6" size="6" /></div></div><div class="origam-colorpick--origin_field text-field text-field--addons left text-field--disabled"><div class="text-field--group"><div class="origam-colorpick--field_letter text-field--group__addons">#</div><div class="text-field--group__input"></div></div></div><div class="origam-colorpick--rgb_r origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"><div class="origam-colorpick--field_letter text-field--group__addons">R</div><input class="text-field--group__input" data-form="input" type="text" maxlength="3" size="3" /></div></div><div class="origam-colorpick--hsb_h origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"><div class="origam-colorpick--field_letter text-field--group__addons">H</div><input class="text-field--group__input" data-form="input" type="text" maxlength="3" size="3" /></div></div><div class="origam-colorpick--rgb_g origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"><div class="origam-colorpick--field_letter text-field--group__addons">G</div><input class="text-field--group__input" data-form="input" type="text" maxlength="3" size="3" /></div></div><div class="origam-colorpick--hsb_s origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"><div class="origam-colorpick--field_letter text-field--group__addons">S</div><input class="text-field--group__input" data-form="input" type="text" maxlength="3" size="3" /></div></div><div class="origam-colorpick--rgb_b origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"><div class="origam-colorpick--field_letter text-field--group__addons">B</div><input class="text-field--group__input" data-form="input" type="text" maxlength="3" size="3" /></div></div><div class="origam-colorpick--hsb_b origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"><div class="origam-colorpick--field_letter text-field--group__addons">B</div><input class="text-field--group__input" data-form="input" type="text" maxlength="3" size="3" /></div></div><div class="origam-colorpick--submit btn btn-primary" data-button="close"></div></div></div>',
         closeTemplate: '<div class="origam-colorpick--close" data-button="close"><i class="origamicon origamicon-close"></i></div>',
         overlayTemplate: '<div class="origam-colorpick--overlay" data-self="true" data-button="close"></div>',
         color: 'FF0000',
@@ -1548,84 +1548,82 @@
             return this;
         }
 
-        if (!this.$element.data('origam-colorpickId')) {
+        this.origColor = this.options.color;
 
-            this.origColor = this.options.color;
+        this.$element.data('origam-colorpickId', this.id);
+        this.$overlay = $(this.options.overlayTemplate).attr('data-target', '#' + this.id);
+        this.colorpick = $(this.options.template).attr('id', this.id);
+        this.$close = $(this.options.closeTemplate).attr('data-target', '#' + this.id);
 
-            this.$element.data('origam-colorpickId', this.id);
-            this.$overlay = $(this.options.overlayTemplate).attr('data-target', '#' + this.id);
-            this.colorpick = $(this.options.template).attr('id', this.id);
-            this.$close = $(this.options.closeTemplate).attr('data-target', '#' + this.id);
+        this.colorpick
+            .addClass('origam-colorpick--'+this.options.layout)
+            .addClass(this.options.submit?'':' origam-colorpick--'+this.options.layout+'_ns')
+            .prepend(this.$close);
 
-            this.colorpick
-                .addClass('origam-colorpick--'+this.options.layout)
-                .addClass(this.options.submit?'':' origam-colorpick--'+this.options.layout+'_ns')
-                .prepend(this.$close);
+        this.colorpick
+            .find('.origam-colorpick--submit')
+            .html(this.options.submitText)
+            .on("click", $.proxy(this.submit, this));
 
-            this.colorpick
-                .find('.origam-colorpick--submit')
-                .html(this.options.submitText)
-                .on("click", $.proxy(this.submit, this));
+        this.fields = this.colorpick
+            .find('input')
+            .on("change", $.proxy(this.change, this))
+            .on("blur", $.proxy(this.blur, this))
+            .on("focus", $.proxy(this.focus, this));
 
-            this.fields = this.colorpick
-                .find('input')
-                .on("change", $.proxy(this.change, this))
-                .on("blur", $.proxy(this.blur, this))
-                .on("focus", $.proxy(this.focus, this));
+        this.colorpick
+            .find('.origam-colorpick--field_arrs')
+            .on("mousedown", $.proxy(this.eventIncrement, this))
+            .end()
+            .find('.origam-colorpick--current_color')
+            .on("click", $.proxy(this.restoreOriginal, this));
 
-            this.colorpick
-                .find('.origam-colorpick--field_arrs')
-                .on("mousedown", $.proxy(this.eventIncrement, this))
-                .end()
-                .find('.origam-colorpick--current_color')
-                .on("click", $.proxy(this.restoreOriginal, this));
+        this.selector = this.colorpick
+            .find('.origam-colorpick--color')
+            .on('mousedown touchstart', $.proxy(this.eventSelector, this));
 
-            this.selector = this.colorpick
-                .find('.origam-colorpick--color')
-                .on('mousedown touchstart', $.proxy(this.eventSelector, this));
+        this.selectorIndic = this.selector
+            .find('.origam-colorpick--selector_outer');
 
-            this.selectorIndic = this.selector
-                .find('.origam-colorpick--selector_outer');
+        this.el = this;
+        this.hue = this.colorpick
+            .find('.origam-colorpick--hue_arrs');
 
-            this.el = this;
-            this.hue = this.colorpick
-                .find('.origam-colorpick--hue_arrs');
-
-            var huebar = this.hue.parent();
-            var UA = navigator.userAgent.toLowerCase();
-            var isIE = navigator.appName === 'Microsoft Internet Explorer';
-            var IEver = isIE ? parseFloat( UA.match( /msie ([0-9]{1,}[\.0-9]{0,})/ )[1] ) : 0;
-            var ngIE = ( isIE && IEver < 10 );
-            var stops = ['#ff0000','#ff0080','#ff00ff','#8000ff','#0000ff','#0080ff','#00ffff','#00ff80','#00ff00','#80ff00','#ffff00','#ff8000','#ff0000'];
-            if(ngIE) {
-                var i;
-                for(i=0; i<=11; i++) {
-                    $('<div>')
-                        .attr('style','height:8.333333%; filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='+stops[i]+', endColorstr='+stops[i+1]+'); -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='+stops[i]+', endColorstr='+stops[i+1]+')";')
-                        .appendTo(huebar);
-                }
-            } else {
-                var stopList = stops.join(',');
-                huebar.attr('style','background:-webkit-linear-gradient(top,'+stopList+'); background: -o-linear-gradient(top,'+stopList+'); background: -ms-linear-gradient(top,'+stopList+'); background:-moz-linear-gradient(top,'+stopList+'); -webkit-linear-gradient(top,'+stopList+'); background:linear-gradient(to bottom,'+stopList+'); ');
+        var huebar = this.hue.parent();
+        var UA = navigator.userAgent.toLowerCase();
+        var isIE = navigator.appName === 'Microsoft Internet Explorer';
+        var IEver = isIE ? parseFloat( UA.match( /msie ([0-9]{1,}[\.0-9]{0,})/ )[1] ) : 0;
+        var ngIE = ( isIE && IEver < 10 );
+        var stops = ['#ff0000','#ff0080','#ff00ff','#8000ff','#0000ff','#0080ff','#00ffff','#00ff80','#00ff00','#80ff00','#ffff00','#ff8000','#ff0000'];
+        if(ngIE) {
+            var i;
+            for(i=0; i<=11; i++) {
+                $('<div>')
+                    .attr('style','height:8.333333%; filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='+stops[i]+', endColorstr='+stops[i+1]+'); -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='+stops[i]+', endColorstr='+stops[i+1]+')";')
+                    .appendTo(huebar);
             }
-            this.colorpick
-                .find('.origam-colorpick--hue')
-                .on('mousedown touchstart', $.proxy(this.eventHue, this));
-
-            this.newColor = this.colorpick.find('.origam-colorpick--new_color');
-            this.currentColor = this.colorpick.find('.origam-colorpick--current_color');
-
-            this.fillRGBFields(this.options.color);
-            this.fillHSBFields(this.options.color);
-            this.fillHexFields(this.options.color);
-            this.setHue(this.options.color);
-            this.setSelector(this.options.color);
-            this.setCurrentColor(this.options.color);
-            this.setNewColor(this.options.color);
-
-            this.$element.on(this.options.showEvent, $.proxy(this.show, this));
-
+        } else {
+            var stopList = stops.join(',');
+            huebar.attr('style','background:-webkit-linear-gradient(top,'+stopList+'); background: -o-linear-gradient(top,'+stopList+'); background: -ms-linear-gradient(top,'+stopList+'); background:-moz-linear-gradient(top,'+stopList+'); -webkit-linear-gradient(top,'+stopList+'); background:linear-gradient(to bottom,'+stopList+'); ');
         }
+        this.colorpick
+            .find('.origam-colorpick--hue')
+            .on('mousedown touchstart', $.proxy(this.eventHue, this));
+
+        this.newColor = this.colorpick.find('.origam-colorpick--new_color');
+        this.currentColor = this.colorpick.find('.origam-colorpick--current_color');
+
+        this.fillRGBFields(this.options.color);
+        this.fillHSBFields(this.options.color);
+        this.fillHexFields(this.options.color);
+        this.setHue(this.options.color);
+        this.setSelector(this.options.color);
+        this.setCurrentColor(this.options.color);
+        this.setNewColor(this.options.color);
+        this.setOrigineFields(this.options.color);
+
+        this.$element.on(this.options.showEvent, $.proxy(this.show, this));
+
     };
 
     Color.prototype.getDefaults = function () {
@@ -1633,13 +1631,39 @@
     };
 
     Color.prototype.submit = function(e) {
-        this.origColor = this.newColor;
-        setCurrentColor(this.newColor);
-        this.colorpick.onSubmit(this.newColor, hsbToHex(this.newColor), hsbToRgb(this.newColor), this.element);
+        this.origColor = this.options.color;
+        this.setCurrentColor(this.options.color);
+        this.setOrigineFields(this.options.color);
+        this.$element.val(hsbToHex(this.options.color));
     };
 
-    Color.prototype.change = function(e) {
+    Color.prototype.change = function(field) {
 
+        if (field.parents('.text-field').attr('class').indexOf('--hex') > 0) {
+            this.options.color = hexToHsb(fixHex(this.value));
+            this.fillRGBFields(this.options.color);
+            this.fillHSBFields(this.options.color);
+        } else if (field.parents('.text-field').attr('class').indexOf('--hsb') > 0) {
+            this.options.color = fixHSB({
+                h: this.fields.eq(2).val(),
+                s: this.fields.eq(4).val(),
+                b: this.fields.eq(6).val()
+            });
+            this.fillRGBFields(this.options.color);
+            this.fillHexFields(this.options.color);
+        } else {
+            this.options.color= rgbToHsb(fixRGB({
+                r: this.fields.eq(1).val(),
+                g: this.fields.eq(3).val(),
+                b: this.fields.eq(5).val()
+            }));
+            this.fillHexFields(this.options.color);
+            this.fillHSBFields(this.options.color);
+        }
+
+        this.setSelector(this.options.color);
+        this.setHue(this.options.color);
+        this.setNewColor(this.options.color);
     };
 
     Color.prototype.blur = function(e) {
@@ -1662,12 +1686,51 @@
         }
     };
 
-    Color.prototype.eventIncrement = function(e) {
+    Color.prototype.eventSelector = function (e) {
+        e.preventDefault ? e.preventDefault() : e.returnValue = false;
 
+        var offset      = 0,
+            pageX       = ((e.type == 'touchstart') ? e.originalEvent.changedTouches[0].pageX : e.pageX ),
+            pageY       = ((e.type == 'touchstart') ? e.originalEvent.changedTouches[0].pageY : e.pageY );
+
+        if($(e.target).attr('class').indexOf('--color') > 0){
+            offset = $(e.target).offset();
+        }
+
+        $(document).on('mouseup touchend',offset, $.proxy(this.updateSelector, this));
+        $(document).on('mousemove touchmove',offset, $.proxy(this.moveSelector, this));
+
+        this.fields.eq(4).val(parseInt(100*(Math.max(0,Math.min(this.options.height,(pageX - offset.left))))/this.options.height, 10));
+        this.fields.eq(6).val(parseInt(100*(this.options.height - Math.max(0,Math.min(this.options.height,(pageY - offset.top))))/this.options.height, 10));
+
+        this.change(this.fields.eq(4).end().eq(6));
+
+        return false;
     };
 
-    Color.prototype.eventSelector = function (e) {
+    Color.prototype.moveSelector = function (e) {
+        var offset      = 0,
+            pageX       = ((e.type == 'touchmove') ? e.originalEvent.changedTouches[0].pageX : e.pageX ),
+            pageY       = ((e.type == 'touchmove') ? e.originalEvent.changedTouches[0].pageY : e.pageY );
 
+        if($(e.target).attr('class').indexOf('--color') > 0){
+            offset = $(e.target).offset();
+        }else {
+            offset = $(e.target).parent().parent().offset();
+        }
+
+        this.fields.eq(4).val(parseInt(100*(Math.max(0,Math.min(this.options.height,(pageX - offset.left))))/this.options.height, 10));
+        this.fields.eq(6).val(parseInt(100*(this.options.height - Math.max(0,Math.min(this.options.height,(pageY - offset.top))))/this.options.height, 10));
+
+        this.change(this.fields.eq(4).end().eq(6));
+
+        return false;
+    };
+
+    Color.prototype.updateSelector = function (e) {
+        $(document).off('mouseup touchend', $.proxy(this.updateSelector, this));
+        $(document).off('mousemove touchmove', $.proxy(this.moveSelector, this));
+        return false;
     };
 
     Color.prototype.eventHue = function (e) {
@@ -1686,9 +1749,10 @@
         $(document).on('mouseup touchend', offsetTop, $.proxy(this.updateHue, this));
         $(document).on('mousemove touchmove', offsetTop, $.proxy(this.moveHue, this));
 
-        this.change.apply(
-            this.fields.eq(2).val(Math.round(parseInt(360*(offset/this.options.height)), 10))
-        );
+        this.fields.eq(2).val(parseInt(Math.round(360*(this.options.height - Math.max(0,Math.min(this.options.height,offset)))/this.options.height), 10));
+
+        this.change(this.fields.eq(2));
+
         return false;
     };
 
@@ -1705,24 +1769,23 @@
 
         offset =  pageY - offsetTop;
 
-        this.change.apply(
-            this.fields.eq(2).val(parseInt(Math.round(360*(this.options.height - Math.max(0,Math.min(this.options.height,offset))))/this.options.height), 10)
-        );
+        this.fields.eq(2).val(parseInt(Math.round(360*(this.options.height - Math.max(0,Math.min(this.options.height,offset)))/this.options.height), 10));
+
+        this.change(this.fields.eq(2));
+
         return false;
     };
 
     Color.prototype.updateHue = function (e) {
 
-        //this.fillRGBFields(ev.data.cal.data('colpick').color, ev.data.cal.get(0));
-        //this.fillHexFields(ev.data.cal.data('colpick').color, ev.data.cal.get(0));
-        $(document).off('mouseup touchend',$.proxy(this.updateHue, this));
+        $(document).off('mouseup touchend', $.proxy(this.updateHue, this));
         $(document).off('mousemove touchmove',$.proxy(this.moveHue, this));
         return false;
     };
 
     Color.prototype.restoreOriginal = function(e) {
         var col = this.origColor;
-        this.color = col;
+        this.options.color = col;
         this.fillRGBFields(col);
         this.fillHSBFields(col);
         this.fillHexFields(col);
@@ -1769,6 +1832,10 @@
 
     Color.prototype.setNewColor = function (hsb) {
         this.newColor.css('backgroundColor', '#' + hsbToHex(hsb));
+    };
+
+    Color.prototype.setOrigineFields = function (hsb) {
+        this.colorpick.find('.text-field--disabled').find('.text-field--group__input').text(hsbToHex(hsb));
     };
 
     Color.prototype.show = function () {
