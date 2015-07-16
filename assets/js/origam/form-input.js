@@ -87,21 +87,21 @@
         }
     };
 
-    Input.prototype.startFocus = function () {
-        this.$element
+    Input.prototype.startFocus = function (e) {
+        $(e.currentTarget)
             .parents(this.$parent)
             .removeClass(this.options.classes.active);
-        this.$element
+        $(e.currentTarget)
             .parents(this.$parent)
             .addClass(this.options.classes.focus);
     };
 
-    Input.prototype.endFocus = function () {
-        this.$element
+    Input.prototype.endFocus = function (e) {
+        $(e.currentTarget)
             .parents(this.$parent)
             .removeClass(this.options.classes.focus);
-        if(this.$element.val() != ''){
-            this.$element
+        if($(e.currentTarget).val() != ''){
+            $(e.currentTarget)
                 .parents(this.$parent)
                 .addClass(this.options.classes.active);
         }
