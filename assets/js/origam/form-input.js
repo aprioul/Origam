@@ -134,7 +134,7 @@
     $.fn.input.noConflict = function () {
         $.fn.input = old;
         return this
-    }
+    };
 
     $(document).ready(function() {
         $('[data-form="input"]').input();

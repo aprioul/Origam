@@ -641,7 +641,7 @@
     $.fn.input.noConflict = function () {
         $.fn.color = old;
         return this
-    }
+    };
 
     $(document).ready(function() {
         $('[data-form="color"]').color();
