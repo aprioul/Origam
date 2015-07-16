@@ -20224,7 +20224,11 @@ th {
   margin-top: 0;
   width: calc( 50% - 12px);
   height: 47px;
-  background-color: #F44336;
+  background-color: #9E9E9E;
+}
+
+.origam-colorpick--current_color {
+  cursor: pointer;
 }
 
 /**
