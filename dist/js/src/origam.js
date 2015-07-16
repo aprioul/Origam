@@ -1,216 +1,341 @@
 
 /**
- * Apply origamCollapse
- */
-
-
-/**
- * Apply origamModal
- */
-
-
-/**
- * Apply origamnotification
- */
+ * Apply origamInput
+ *
+*/
 
 (function ($, w) {
+
     'use strict';
 
-    // NOTIFICATION CLASS DEFINITION
-    // ======================
+    // TOOLTIP PUBLIC CLASS DEFINITION
+    // ===============================
 
-    var Notification = function (element, options) {
+    var Input = function (element, options) {
         this.type       = null;
         this.options    = null;
+        this.focus    = null;
+        this.blur    = null;
         this.$element   = null;
 
-        this.init('notification', element, options)
+        this.init('input', element, options)
     };
 
-    Notification.VERSION = '0.1.0';
+    Input.VERSION  = '0.1.0';
 
-    Notification.TRANSITION_DURATION = 1000;
+    Input.TRANSITION_DURATION = 1000;
 
-    Notification.DEFAULTS = {
-        type: 'ghost',
-        selector: 'body',
-        animate: true,
-        animationIn: 'jellyIn',
-        animationOut: 'jellyOut',
-        html: false,
-        content: '',
-        icon: false,
-        direction: 'left',
-        wrapperTemplate: '<div class="alert"></div>',
-        mainTemplate: '<div class="alert-main"></div>',
-        closeTemplate: '<div class="alert-close" data-button="close"><i class="origamicon origamicon-close"></i></div>',
-        iconTemplate: '<div class="alert-icon"></div>',
-        iconClass: 'origamicon origamicon-check2'
+    Input.DEFAULTS = {
+        placeholder: '',
+        classes: {
+            focus: 'text-field--focused',
+            active: 'text-field--active',
+            addonsLeft: 'text-field--addons left',
+            addonsRight: 'text-field--addons right'
+        },
+        parentNode: 'text-field',
+        placement: 'after',
+        addon: '<div class="text-field--group__addons"></div>'
     };
 
-    Notification.prototype.init = function (type, element, options) {
-        // Element collection
-        this.type       = type;
-        this.$element   = $(element);
-        this.options    = this.getOptions(options);
-        this.$note      = $(this.options.wrapperTemplate);
-        this.$main      = $(this.options.mainTemplate);
-        this.$close     = $(this.options.closeTemplate);
-        this.$icon      = $(this.options.iconTemplate);
-        this.id         = this.getUID(8);
+    Input.prototype.init = function (type, element, options) {
+        this.type      = type;
+        this.element   = element;
+        this.$element  = $(element);
+        this.options   = this.getOptions(options);
+        this.$parent   = '.' + this.options.parentNode;
 
-        this.$note
-            .attr('id', this.id)
-            .addClass('alert-' + this.options.type)
-            .append(this.$main)
-            .append(this.$close);
+        var event = this.event(this.options);
 
-        this.$main[this.options.html ? 'html' : 'text'](this.options.content);
-
-        if(this.options.icon){
-
-            $('<i>')
-                .addClass(this.options.iconClass)
-                .appendTo(this.$icon);
-
-            this.$note
-                .addClass('icon')
-                .addClass(this.options.direction);
-            this.$note[this.options.direction === 'left' ? 'prepend': 'append'](this.$icon);
-        }
-
-        this.$element.on('click', $.proxy(this.show, this));
-
+        this.$element.on('focusin', $.proxy(this.startFocus, this));
+        this.$element.on('focusout', $.proxy(this.endFocus, this));
     };
 
-    Notification.prototype.getDefaults = function () {
-        return Notification.DEFAULTS
+    Input.prototype.getDefaults = function () {
+        return Input.DEFAULTS
     };
 
-    Notification.prototype.getOptions = function (options) {
+    Input.prototype.getOptions = function (options) {
         options = $.extend({}, this.getDefaults(), this.$element.data(), options);
 
         return options
     };
 
-    Notification.prototype.getUID = function (length){
-        var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split('');
-        if (!length) {
-            length = Math.floor(Math.random() * chars.length);
-        }
-        var str = '';
-        for (var i = 0; i < length; i++) {
-            str += chars[Math.floor(Math.random() * chars.length)];
-        }
-        return str;
+    Input.prototype.event = function (options) {
+        return null;
     };
 
-    Notification.prototype.show = function () {
-
-        var that = this;
-        var $note = that.$note,
-            viewportWidtht  = $(window).width();
-
-        if(that.options.animate) {
-            $note
-                .attr('data-animate', 'true')
-                .attr('data-animation', that.options.animationOut)
-                .addClass(that.options.animationIn)
-                .addClass('animated');
-            var animateClass = that.options.animationIn + ' animated';
-        }
-
-        $note.appendTo(this.options.selector);
-
-        $note.css({
-           'position': 'fixed',
-           'top': 0,
-           'left': (viewportWidtht/2) - (this.$note.outerWidth()/2)
-        });
-
-        var onShow = function () {
-            if ($note.hasClass(animateClass))
-                $note.removeClass(animateClass);
-            $note.trigger('show.origam.' + that.type);
-        };
-
-        $.support.transition && $note.hasClass(animateClass) ?
-            $note
-                .one('origamTransitionEnd', onShow)
-                .emulateTransitionEnd(Notification.TRANSITION_DURATION) :
-            onShow();
-
-        return false;
+    Input.prototype.addPlaceholder = function (options){
 
     };
 
-    Notification.prototype.hide = function () {
+    Input.prototype.addAddon = function() {
+        var classPosition = '';
+        classPosition = (this.options.placement === 'after') ? this.options.classes.addonsRight : this.options.classes.addonsLeft;
 
-        var that = this;
-        var $note = that.$note;
+        this.$element.parents(this.$parent).addClass(classPosition);
 
-        if(that.options.animate) {
-            $note
-                .addClass(that.options.animationOut)
-                .addClass('animated');
-            var animateClass = that.options.animationOut + ' animated';
+        var wrapper = this.options.addon;
+
+        if(this.options.placement === 'after') {
+            this.$element.after(wrapper);
+            return (this.$element.next());
         }
+        else{
+            this.$element.before(wrapper);
+            return (this.$element.prev());
+        }
+    };
+
+    Input.prototype.startFocus = function (e) {
+        $(e.currentTarget)
+            .parents(this.$parent)
+            .removeClass(this.options.classes.active);
+        $(e.currentTarget)
+            .parents(this.$parent)
+            .addClass(this.options.classes.focus);
+    };
+
+    Input.prototype.endFocus = function (e) {
+        $(e.currentTarget)
+            .parents(this.$parent)
+            .removeClass(this.options.classes.focus);
+        if($(e.currentTarget).val() != ''){
+            $(e.currentTarget)
+                .parents(this.$parent)
+                .addClass(this.options.classes.active);
+        }
+    };
+
+    // TOOLTIP PLUGIN DEFINITION
+    // =========================
+
+    function Plugin(option) {
+        return this.each(function () {
+            var $this   = $(this);
+            var data    = $this.data('origam.input');
+            var options = typeof option == 'object' && option;
+
+            if (!data && /destroy|hide/.test(option)) return;
+            if (!data) $this.data('origam.input', (data = new Input(this, options)));
+            if (typeof option == 'string') data[option]()
+        })
+    }
+
+    var old = $.fn.input;
+
+    $.fn.input             = Plugin;
+    $.fn.input.Constructor = Input;
+
+
+    // TOOLTIP NO CONFLICT
+    // ===================
+
+    $.fn.input.noConflict = function () {
+        $.fn.input = old;
+        return this
+    };
+
+    $(document).ready(function() {
+        $('[data-form="input"]').input();
+    });
+
+})(jQuery, window);
+/**
+ * Apply origamMask
+ */
+
+(function ($, w) {
+    'use strict';
+
+    // MASK CLASS DEFINITION
+    // ======================
+
+    var Mask = function (element, options) {
+        this.type       = null;
+        this.options    = null;
+        this.$element   = null;
+
+        this.init('mask', element, options)
+    };
+
+    if (!$.fn.input) throw new Error('Notification requires input.js');
+
+    Mask.VERSION = '0.1.0';
+
+    Mask.TRANSITION_DURATION = 1000;
+
+    Mask.DEFAULTS = $.extend({}, $.fn.input.Constructor.DEFAULTS, {
+        definitions: {
+            "9": "[0-9]",
+            a: "[A-Za-z]",
+            "*": "[A-Za-z0-9]",
+            "~": "[+-]"
+        },
+        mask: "9999 9999 9999 9999"
+    });
+
+    Mask.prototype = $.extend({}, $.fn.input.Constructor.prototype);
+
+    Mask.prototype.constructor = Mask;
+
+    Mask.prototype.event = function (options) {
+        // Element collection
+        this.options    = this.getOptions(options);
+        this.mask     = this.options.mask;
+
+        this.$element.on('keyup input', $.proxy(this.keyEvent, this));
+    };
+
+    Mask.prototype.getDefaults = function () {
+        return Mask.DEFAULTS
+    };
+
+    Mask.prototype.keyEvent = function () {
+        this.val      = this.$element.val();
+
 
     };
 
-    // NOTIFICATION PLUGIN DEFINITION
+    // MASK PLUGIN DEFINITION
     // =======================
 
     function Plugin(option) {
         return this.each(function () {
             var $this = $(this);
-            var data  = $this.data('origam.notification');
+            var data  = $this.data('origam.mask');
 
-            if (!data) $this.data('origam.notification', (data = new Notification(this)));
+            if (!data) $this.data('origam.mask', (data = new Mask(this)));
             if (typeof option == 'string') data[option].call($this)
         })
     }
 
-    var old = $.fn.notification;
+    var old = $.fn.mask;
 
-    $.fn.notification             = Plugin;
-    $.fn.notification.Constructor = Notification;
+    $.fn.mask             = Plugin;
+    $.fn.mask.Constructor = Mask;
 
 
-    // NOTIFICATION NO CONFLICT
+    // MASK NO CONFLICT
     // =================
 
-    $.fn.notification.noConflict = function () {
-        $.fn.notification = old;
+    $.fn.mask.noConflict = function () {
+        $.fn.mask = old;
         return this
     };
 
 
-    // NOTIFICATION DATA-API
+    // MASK DATA-API
     // ==============
 
     $(document).ready(function() {
-        $('[data-app="notification"]').notification();
+        $('[data-form="mask"]').mask();
     });
 
 })(jQuery, window);
 
-
 /**
- * Apply origamScrollbar
+ * Apply origamClose
  */
 
+(function ($, w) {
+    'use strict';
 
-/**
- * Apply origamSlider
- */
+    // Close CLASS DEFINITION
+    // ======================
+
+    var app = '[data-button="close"]';
+    var Close   = function (el) {
+        $(el).on('click', app, this.close)
+    };
+
+    Close.VERSION = '0.1.0';
+
+    Close.TRANSITION_DURATION = 1000;
+
+    Close.prototype.close = function (e) {
+
+        var $this    = $(this);
+        var selector = $this.attr('data-target');
+
+        if (!selector) {
+            selector = $this.attr('href');
+            selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '');// strip for ie7
+        }
+
+        var $parent = $(selector);
+
+        if (e) e.preventDefault();
+
+        if (!$parent.length) {
+            $parent = $this.closest('.alert')
+        }
+
+        $parent.trigger(e = $.Event('close.origam.close'));
+
+        var animate = $parent.attr('data-animate');
+        var animation = $parent.attr('data-animation');
+
+        if (animate) {
+            if(animation){$parent.addClass(animation);}
+            else{$parent.addClass('fadeOut');}
+            $parent.addClass('animated');
+            var animateClass = animation + ' animated';
+        }
+
+        if (e.isDefaultPrevented()) return;
+
+        function removeElement() {
+            if ($parent.hasClass(animateClass))
+                $parent.removeClass(animateClass);
+            $parent
+                .detach()
+                .trigger('closed.origam.close')
+                .remove();
+        }
+
+        $.support.transition ?
+            $parent
+                .one('origamTransitionEnd', removeElement)
+                .emulateTransitionEnd(Close.TRANSITION_DURATION) :
+            removeElement()
+    };
 
 
-/**
- * Apply origamTabs
- */
+    // Close PLUGIN DEFINITION
+    // =======================
+
+    function Plugin(option) {
+        return this.each(function () {
+            var $this = $(this);
+            var data  = $this.data('origam.close');
+
+            if (!data) $this.data('origam.close', (data = new Close(this)));
+            if (typeof option == 'string') data[option].call($this)
+        })
+    }
+
+    var old = $.fn.close;
+
+    $.fn.close             = Plugin;
+    $.fn.close.Constructor = Close;
 
 
+    // Close NO CONFLICT
+    // =================
+
+    $.fn.close.noConflict = function () {
+        $.fn.close = old
+        return this
+    };
+
+
+    // Close DATA-API
+    // ==============
+
+    $(document).on('click.origam.Close.data-api', app, Close.prototype.close)
+
+})(jQuery, window);
 /**
  * Apply origamTooltip
  */
@@ -758,617 +883,10 @@
 
 })(jQuery, window);
 /**
- * Apply origamPopover
+ * Apply origamCollapse
  */
 
-(function ($, w) {
-    'use strict';
 
-    // POPOVER PUBLIC CLASS DEFINITION
-    // ===============================
-
-    var Popover = function (element, options) {
-        this.init('popover', element, options)
-    }
-
-    if (!$.fn.tooltip) throw new Error('Popover requires tooltip-main.js')
-
-    Popover.VERSION  = '0.1.0'
-
-    Popover.DEFAULTS = $.extend({}, $.fn.tooltip.Constructor.DEFAULTS, {
-        placement: 'right',
-        trigger: 'click',
-        content: '',
-        template: '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
-    })
-
-
-    // NOTE: POPOVER EXTENDS tooltip.js
-    // ================================
-
-    Popover.prototype = $.extend({}, $.fn.tooltip.Constructor.prototype)
-
-    Popover.prototype.constructor = Popover
-
-    Popover.prototype.getDefaults = function () {
-        return Popover.DEFAULTS
-    }
-
-    Popover.prototype.setContent = function () {
-        var $tip    = this.tip()
-        var title   = this.getTitle()
-        var content = this.getContent()
-
-        $tip.find('.popover-title')[this.options.html ? 'html' : 'text'](title)
-        $tip.find('.popover-content').children().detach().end()[ // we use append for html objects to maintain js events
-            this.options.html ? (typeof content == 'string' ? 'html' : 'append') : 'text'
-            ](content)
-
-        $tip.removeClass('fade top bottom left right in')
-
-        // IE8 doesn't accept hiding via the `:empty` pseudo selector, we have to do
-        // this manually by checking the contents.
-        if (!$tip.find('.popover-title').html()) $tip.find('.popover-title').hide()
-    }
-
-    Popover.prototype.hasContent = function () {
-        return this.getTitle() || this.getContent()
-    }
-
-    Popover.prototype.getContent = function () {
-        var $e = this.$element
-        var o  = this.options
-
-        return $e.attr('data-content')
-            || (typeof o.content == 'function' ?
-                o.content.call($e[0]) :
-                o.content)
-    }
-
-    Popover.prototype.arrow = function () {
-        return (this.$arrow = this.$arrow || this.tip().find('.arrow'))
-    }
-
-
-    // POPOVER PLUGIN DEFINITION
-    // =========================
-
-    function Plugin(option) {
-        return this.each(function () {
-            var $this   = $(this)
-            var data    = $this.data('origam.popover')
-            var options = typeof option == 'object' && option
-
-            if (!data && /destroy|hide/.test(option)) return
-            if (!data) $this.data('origam.popover', (data = new Popover(this, options)))
-            if (typeof option == 'string') data[option]()
-        })
-    }
-
-    var old = $.fn.popover
-
-    $.fn.popover             = Plugin
-    $.fn.popover.Constructor = Popover
-
-
-    // POPOVER NO CONFLICT
-    // ===================
-
-    $.fn.popover.noConflict = function () {
-        $.fn.popover = old
-        return this
-    }
-
-    $(document).ready(function() {
-        $('[data-app="popover"]').notification();
-        $('body').on('click', function (e) {
-            $('[data-app="popover"]').each(function () {
-                //The 'is' for buttons that trigger popups
-                //The 'has' for icons within a button that triggers a popup
-                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-                    $(this).popover('hide');
-                    $(this).next().css({display: 'none'});
-                }
-            });
-        });
-    });
-
-})(jQuery, window);
-/**
- * Apply origamClose
- */
-
-(function ($, w) {
-    'use strict';
-
-    // Close CLASS DEFINITION
-    // ======================
-
-    var app = '[data-button="close"]';
-    var Close   = function (el) {
-        $(el).on('click', app, this.close)
-    };
-
-    Close.VERSION = '0.1.0';
-
-    Close.TRANSITION_DURATION = 1000;
-
-    Close.prototype.close = function (e) {
-
-        var $this    = $(this);
-        var selector = $this.attr('data-target');
-
-        if (!selector) {
-            selector = $this.attr('href');
-            selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '');// strip for ie7
-        }
-
-        var $parent = $(selector);
-
-        if (e) e.preventDefault();
-
-        if (!$parent.length) {
-            $parent = $this.closest('.alert')
-        }
-
-        $parent.trigger(e = $.Event('close.origam.close'));
-
-        var animate = $parent.attr('data-animate');
-        var animation = $parent.attr('data-animation');
-
-        if (animate) {
-            if(animation){$parent.addClass(animation);}
-            else{$parent.addClass('fadeOut');}
-            $parent.addClass('animated');
-            var animateClass = animation + ' animated';
-        }
-
-        if (e.isDefaultPrevented()) return;
-
-        function removeElement() {
-            if ($parent.hasClass(animateClass))
-                $parent.removeClass(animateClass);
-            $parent
-                .detach()
-                .trigger('closed.origam.close')
-                .remove();
-        }
-
-        $.support.transition ?
-            $parent
-                .one('origamTransitionEnd', removeElement)
-                .emulateTransitionEnd(Close.TRANSITION_DURATION) :
-            removeElement()
-    };
-
-
-    // Close PLUGIN DEFINITION
-    // =======================
-
-    function Plugin(option) {
-        return this.each(function () {
-            var $this = $(this);
-            var data  = $this.data('origam.close');
-
-            if (!data) $this.data('origam.close', (data = new Close(this)));
-            if (typeof option == 'string') data[option].call($this)
-        })
-    }
-
-    var old = $.fn.close;
-
-    $.fn.close             = Plugin;
-    $.fn.close.Constructor = Close;
-
-
-    // Close NO CONFLICT
-    // =================
-
-    $.fn.close.noConflict = function () {
-        $.fn.close = old
-        return this
-    };
-
-
-    // Close DATA-API
-    // ==============
-
-    $(document).on('click.origam.Close.data-api', app, Close.prototype.close)
-
-})(jQuery, window);
-/**
- * Apply origamRipple
- */
-
-(function ($, w) {
-    'use strict';
-
-    // Ripple CLASS DEFINITION
-    // ======================
-
-    var Ripple   = function (element, options) {
-        this.type       = null;
-        this.options    = null;
-        this.$element   = null;
-
-        this.init('ripple', element, options)
-    };
-
-    Ripple.VERSION = '0.1.0';
-
-    Ripple.TRANSITION_DURATION = 651;
-
-    Ripple.prototype.init = function (type, element, options) {
-        this.type       = type;
-        this.$element   = $(element);
-
-        this.$element.on('mousedown', $.proxy(this.show, this));
-
-    };
-
-    Ripple.prototype.show = function (e) {
-        this.$element.css({
-            position: 'relative',
-            overflow: 'hidden'
-        });
-
-        var ripple;
-
-        if (this.$element.find('.ripple').length === 0) {
-
-            ripple = $('<span/>').addClass('ripple');
-
-            if (this.$element.attr('data-ripple'))
-            {
-                ripple.addClass('ripple-' + this.$element.attr('data-ripple'));
-            }
-
-            this.$element.prepend(ripple);
-        }
-        else
-        {
-            ripple = this.$element.find('.ripple');
-        }
-
-        ripple.removeClass('animated');
-
-        if (!ripple.height() && !ripple.width())
-        {
-            var diameter = Math.max(this.$element.outerWidth(), this.$element.outerHeight());
-
-            ripple.css({ height: diameter, width: diameter });
-        }
-
-        var x = e.pageX - this.$element.offset().left - ripple.width() / 2;
-        var y = e.pageY - this.$element.offset().top - ripple.height() / 2;
-
-        ripple.css({ top: y+'px', left: x+'px' }).addClass('animated');
-
-        function removeElement() {
-            ripple.removeClass('animated');
-        }
-
-        $.support.transition ?
-            this.$element
-                .one('origamTransitionEnd', removeElement)
-                .emulateTransitionEnd(Ripple.TRANSITION_DURATION) :
-            removeElement()
-    };
-
-
-    // Ripple PLUGIN DEFINITION
-    // =======================
-
-    function Plugin(option) {
-        return this.each(function () {
-            var $this = $(this);
-            var data  = $this.data('origam.ripple');
-
-            if (!data) $this.data('origam.ripple', (data = new Ripple(this)));
-            if (typeof option == 'string') data[option].call($this)
-        })
-    }
-
-    var old = $.fn.ripple;
-
-    $.fn.ripple             = Plugin;
-    $.fn.ripple.Constructor = Ripple;
-
-
-    // Ripple NO CONFLICT
-    // =================
-
-    $.fn.ripple.noConflict = function () {
-        $.fn.ripple = old
-        return this
-    };
-
-
-    // Ripple DATA-API
-    // ==============
-
-    $(document).ready(function() {
-        $('[data-button="ripple"]').ripple();
-    });
-
-})(jQuery, window);
-
-
-/**
- * Apply origamEqualHeight on a list of elements (in a jQuery object) eq. $('ul li'),
- * all elements will get the higher element height
- * You can call equalHeight several times on the same elements, height will
- * be processed again.
- * @param  {obj} options :
- *     - contentContainerSelector: equalHeight can test the width of the
- *     content before reprocessing. Often we don't need to calculate height
- *     again of the content width doesn't change.
- *     - onResize: callback function called after equalHeight a processed on
- *     windows resize. Will not be called if the container width doesn't change.
- * @return {obj}         jQuery object
- */
-
-(function ($, w) {
-    $.fn.extend({
-        origamEqualHeight: function (options) {
-            var defaults = {
-                contentContainerSelector: 'body',
-                onResize: function () {
-                },
-            };
-
-            options = $.extend(defaults, options);
-            var o = options;
-
-            var $els = $(this);
-
-            var loadElementsHeight = function () {
-                var maxHeight = 0;
-                $els.removeClass('equal-height-processed');
-                $els
-                    .css('height', 'auto')
-                    .each(function () {
-                        var thisHeight = $(this).height();
-                        maxHeight = ( thisHeight > maxHeight ) ? thisHeight : maxHeight;
-                    });
-                $els.height(maxHeight);
-                $els.addClass('equal-height-processed');
-            };
-
-            var timerRedim;
-            var containerWidth = $(o.contentContainerSelector).width();
-
-            var elementResize = function () {
-                clearTimeout(timerRedim);
-                timerRedim = setTimeout(function () {
-                    newContainerWidth = $(o.contentContainerSelector).width();
-                    if (newContainerWidth != containerWidth) {
-                        containerWidth = newContainerWidth;
-                        loadElementsHeight();
-                        o.onResize();
-                    }
-                }, 500);
-            };
-
-            loadElementsHeight();
-            $(w).bind('resize', elementResize);
-        }
-    });
-})(jQuery, window);
-/**
- * follow the first link inside each element in the set of matched elements
- * maj 31-01-2013 : replace colorbox-load -> cboxElement
- * maj 24-08-2012 :
- * - added the parameter linkContainer
- * - added support for colorbox links (just trigger the click event)
- * - have to return TRUE if a link is not found, otherwise we stop to loop through the set of elements !
- * maj 01-09-2012
- * - improve colorbox links support, the click was triggered two times in case of clicking directly on the link
- * @param  {obj} options.linkContainer is a selector inside the element to click to target the link more accurately
- * @return {jquery}         the original set of elements
- */
-
-(function ($, w) {
-    $.fn.extend({
-        origamLink: function (options) {
-            var defaults = {
-                linkContainer: false
-            };
-
-            options = $.extend(defaults, options);
-
-            return this.each(function () {
-                var elParent = ( !options.linkContainer ) ? $(this) : $(this).find(options.linkContainer);
-                if (elParent.length === 0) elParent = $(this);
-
-                var $firstLink;
-                if (elParent.is('a')) $firstLink = elParent;
-                else $firstLink = $('a:first', elParent);
-
-                if ($firstLink.length === 0) return true;
-
-                var newWindow = ( $firstLink.filter('[target="_blank"]').length > 0 ) ? true : false;
-
-                if ($firstLink.hasClass('cboxElement')) {
-                    var $tempLink = $firstLink.clone(true); // have to clone the link out of the parent $(this) to avoid infinite loop because of event delegation
-                    $('body').append($tempLink.hide());
-                    $firstLink.unbind('click');
-                }
-
-                $(this).click(function (e) {
-                    $target = $(e.target);
-                    targetIsLink = $target.is('a');
-
-                    // test if we click on another link in the container
-                    if (targetIsLink) return true;
-                    else e.preventDefault();
-
-                    if ($tempLink) {
-                        $tempLink.click();
-                        return false;
-                    } else {
-                        var url = $firstLink.attr('href');
-                        if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
-                            var referLink = document.createElement('a');
-                            if (newWindow) referLink.setAttribute('target', '_blank');
-                            referLink.href = url;
-                            document.body.appendChild(referLink);
-                            referLink.click();
-                        } else {
-                            if (newWindow) window.open(url);
-                            else location.href = url;
-                        }
-                    }
-                });
-                $(this).css('cursor', 'pointer');
-            });
-        }
-    });
-})(jQuery, window);
-
-
-/**
- * Apply origamInput
- *
-*/
-
-(function ($, w) {
-
-    'use strict';
-
-    // TOOLTIP PUBLIC CLASS DEFINITION
-    // ===============================
-
-    var Input = function (element, options) {
-        this.type       = null;
-        this.options    = null;
-        this.focus    = null;
-        this.blur    = null;
-        this.$element   = null;
-
-        this.init('input', element, options)
-    };
-
-    Input.VERSION  = '0.1.0';
-
-    Input.TRANSITION_DURATION = 1000;
-
-    Input.DEFAULTS = {
-        placeholder: '',
-        classes: {
-            focus: 'text-field--focused',
-            active: 'text-field--active',
-            addonsLeft: 'text-field--addons left',
-            addonsRight: 'text-field--addons right'
-        },
-        parentNode: 'text-field',
-        placement: 'after',
-        addon: '<div class="text-field--group__addons"></div>'
-    };
-
-    Input.prototype.init = function (type, element, options) {
-        this.type      = type;
-        this.element   = element;
-        this.$element  = $(element);
-        this.options   = this.getOptions(options);
-        this.$parent   = '.' + this.options.parentNode;
-
-        var event = this.event(this.options);
-
-        this.$element.on('focusin', $.proxy(this.startFocus, this));
-        this.$element.on('focusout', $.proxy(this.endFocus, this));
-    };
-
-    Input.prototype.getDefaults = function () {
-        return Input.DEFAULTS
-    };
-
-    Input.prototype.getOptions = function (options) {
-        options = $.extend({}, this.getDefaults(), this.$element.data(), options);
-
-        return options
-    };
-
-    Input.prototype.event = function (options) {
-        return null;
-    };
-
-    Input.prototype.addPlaceholder = function (options){
-
-    };
-
-    Input.prototype.addAddon = function() {
-        var classPosition = '';
-        classPosition = (this.options.placement === 'after') ? this.options.classes.addonsRight : this.options.classes.addonsLeft;
-
-        this.$element.parents(this.$parent).addClass(classPosition);
-
-        var wrapper = this.options.addon;
-
-        if(this.options.placement === 'after') {
-            this.$element.after(wrapper);
-            return (this.$element.next());
-        }
-        else{
-            this.$element.before(wrapper);
-            return (this.$element.prev());
-        }
-    };
-
-    Input.prototype.startFocus = function (e) {
-        $(e.currentTarget)
-            .parents(this.$parent)
-            .removeClass(this.options.classes.active);
-        $(e.currentTarget)
-            .parents(this.$parent)
-            .addClass(this.options.classes.focus);
-    };
-
-    Input.prototype.endFocus = function (e) {
-        $(e.currentTarget)
-            .parents(this.$parent)
-            .removeClass(this.options.classes.focus);
-        if($(e.currentTarget).val() != ''){
-            $(e.currentTarget)
-                .parents(this.$parent)
-                .addClass(this.options.classes.active);
-        }
-    };
-
-    // TOOLTIP PLUGIN DEFINITION
-    // =========================
-
-    function Plugin(option) {
-        return this.each(function () {
-            var $this   = $(this);
-            var data    = $this.data('origam.input');
-            var options = typeof option == 'object' && option;
-
-            if (!data && /destroy|hide/.test(option)) return;
-            if (!data) $this.data('origam.input', (data = new Input(this, options)));
-            if (typeof option == 'string') data[option]()
-        })
-    }
-
-    var old = $.fn.input;
-
-    $.fn.input             = Plugin;
-    $.fn.input.Constructor = Input;
-
-
-    // TOOLTIP NO CONFLICT
-    // ===================
-
-    $.fn.input.noConflict = function () {
-        $.fn.input = old;
-        return this
-    };
-
-    $(document).ready(function() {
-        $('[data-form="input"]').input();
-    });
-
-})(jQuery, window);
 /**
  * Apply origamColorPicker
  */
@@ -2090,8 +1608,425 @@
 
 })(jQuery, window);
 /**
+ * Apply origamEqualHeight on a list of elements (in a jQuery object) eq. $('ul li'),
+ * all elements will get the higher element height
+ * You can call equalHeight several times on the same elements, height will
+ * be processed again.
+ * @param  {obj} options :
+ *     - contentContainerSelector: equalHeight can test the width of the
+ *     content before reprocessing. Often we don't need to calculate height
+ *     again of the content width doesn't change.
+ *     - onResize: callback function called after equalHeight a processed on
+ *     windows resize. Will not be called if the container width doesn't change.
+ * @return {obj}         jQuery object
+ */
+
+(function ($, w) {
+    $.fn.extend({
+        origamEqualHeight: function (options) {
+            var defaults = {
+                contentContainerSelector: 'body',
+                onResize: function () {
+                },
+            };
+
+            options = $.extend(defaults, options);
+            var o = options;
+
+            var $els = $(this);
+
+            var loadElementsHeight = function () {
+                var maxHeight = 0;
+                $els.removeClass('equal-height-processed');
+                $els
+                    .css('height', 'auto')
+                    .each(function () {
+                        var thisHeight = $(this).height();
+                        maxHeight = ( thisHeight > maxHeight ) ? thisHeight : maxHeight;
+                    });
+                $els.height(maxHeight);
+                $els.addClass('equal-height-processed');
+            };
+
+            var timerRedim;
+            var containerWidth = $(o.contentContainerSelector).width();
+
+            var elementResize = function () {
+                clearTimeout(timerRedim);
+                timerRedim = setTimeout(function () {
+                    newContainerWidth = $(o.contentContainerSelector).width();
+                    if (newContainerWidth != containerWidth) {
+                        containerWidth = newContainerWidth;
+                        loadElementsHeight();
+                        o.onResize();
+                    }
+                }, 500);
+            };
+
+            loadElementsHeight();
+            $(w).bind('resize', elementResize);
+        }
+    });
+})(jQuery, window);
+/**
  * Apply origamFile
  */
+
+
+/**
+ * follow the first link inside each element in the set of matched elements
+ * maj 31-01-2013 : replace colorbox-load -> cboxElement
+ * maj 24-08-2012 :
+ * - added the parameter linkContainer
+ * - added support for colorbox links (just trigger the click event)
+ * - have to return TRUE if a link is not found, otherwise we stop to loop through the set of elements !
+ * maj 01-09-2012
+ * - improve colorbox links support, the click was triggered two times in case of clicking directly on the link
+ * @param  {obj} options.linkContainer is a selector inside the element to click to target the link more accurately
+ * @return {jquery}         the original set of elements
+ */
+
+(function ($, w) {
+    $.fn.extend({
+        origamLink: function (options) {
+            var defaults = {
+                linkContainer: false
+            };
+
+            options = $.extend(defaults, options);
+
+            return this.each(function () {
+                var elParent = ( !options.linkContainer ) ? $(this) : $(this).find(options.linkContainer);
+                if (elParent.length === 0) elParent = $(this);
+
+                var $firstLink;
+                if (elParent.is('a')) $firstLink = elParent;
+                else $firstLink = $('a:first', elParent);
+
+                if ($firstLink.length === 0) return true;
+
+                var newWindow = ( $firstLink.filter('[target="_blank"]').length > 0 ) ? true : false;
+
+                if ($firstLink.hasClass('cboxElement')) {
+                    var $tempLink = $firstLink.clone(true); // have to clone the link out of the parent $(this) to avoid infinite loop because of event delegation
+                    $('body').append($tempLink.hide());
+                    $firstLink.unbind('click');
+                }
+
+                $(this).click(function (e) {
+                    $target = $(e.target);
+                    targetIsLink = $target.is('a');
+
+                    // test if we click on another link in the container
+                    if (targetIsLink) return true;
+                    else e.preventDefault();
+
+                    if ($tempLink) {
+                        $tempLink.click();
+                        return false;
+                    } else {
+                        var url = $firstLink.attr('href');
+                        if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
+                            var referLink = document.createElement('a');
+                            if (newWindow) referLink.setAttribute('target', '_blank');
+                            referLink.href = url;
+                            document.body.appendChild(referLink);
+                            referLink.click();
+                        } else {
+                            if (newWindow) window.open(url);
+                            else location.href = url;
+                        }
+                    }
+                });
+                $(this).css('cursor', 'pointer');
+            });
+        }
+    });
+})(jQuery, window);
+
+
+/**
+ * Apply origamFullScreen
+ */
+/**
+ * trigger a function when all images inside the set of matched elements are
+ * loaded timeout is defined in case of broken images
+ *
+ * maj 21-11-2014: add a callback triggered when an image load fail,
+ * we give the image as parameter to the callback function.
+ * maj 01-09-2014: enhance image loading detection (probably do not work
+ * at all before that :-\ ), tested on FF and IE8!
+ *
+ * @param  {function} callbackFct the function to call when all is loaded
+ * @param  {obj} options     options of the plugin
+ * @return {obj}             jquery object
+ */
+
+(function ($, w) {
+    $.fn.extend({
+        origamImagesLoaded: function (callbackFct, options) {
+            var defaults = {
+                timeout: 3000,
+                callbackImageLoadFail: function (image) {
+                }
+            };
+            options = $.extend(defaults, options);
+
+            if (typeof(callbackFct) != 'function') return this;
+
+            return this.each(function () {
+                var o = options;
+                var el = this;
+                var $el = $(el);
+                var countImgLoaded = 0;
+                var $images = $("img", $el);
+                var countImg = $images.length;
+
+                /* trigger callback immediatly if no image */
+                if (countImg == 0 && typeof(callbackFct) == 'function') callbackFct(el, null);
+
+                var triggerBehavior = function () {
+                    if (typeof(callbackFct) == 'function') callbackFct(el, $images);
+                };
+
+                /* check of the image laod */
+                var checkLoad = function () {
+                    countImgLoaded++;
+                    if (countImgLoaded >= countImg) {
+                        triggerBehavior();
+                    }
+                };
+
+                $images.each(function () {
+                    var timeoutLoad;
+                    var image = this;
+                    var $image = $(image);
+
+                    // immediately check for cached image
+                    // source: http://stackoverflow.com/a/12905092
+                    if (image.complete || typeof image.complete === 'undefined') {
+                        image.onload = null;
+                        checkLoad();
+                    } else {
+                        // try to force image reload in case of caching
+                        $image.attr('data-src', image.src);
+                        image.src = '';
+
+                        // I use onload instead of bind('load'), because this last one does
+                        // not trigger at all!
+                        image.onload = function () {
+                            clearTimeout(timeoutLoad);
+                            checkLoad();
+                        };
+                        image.src = $image.attr('data-src');
+
+                        /* each image has a 'o.timeout' millisecond timeout, if missing */
+                        timeoutLoad = setTimeout(function () {
+                            image.onload = null;
+                            // trigger the callback on the image load failure
+                            o.callbackImageLoadFail(image);
+
+                            checkLoad();
+                        }, o.timeout);
+                    }
+                });
+            });
+        }
+    });
+})(jQuery, window);
+
+
+
+/**
+ * Apply origamModal
+ */
+
+
+/**
+ * Apply origamnotification
+ */
+
+(function ($, w) {
+    'use strict';
+
+    // NOTIFICATION CLASS DEFINITION
+    // ======================
+
+    var Notification = function (element, options) {
+        this.type       = null;
+        this.options    = null;
+        this.$element   = null;
+
+        this.init('notification', element, options)
+    };
+
+    Notification.VERSION = '0.1.0';
+
+    Notification.TRANSITION_DURATION = 1000;
+
+    Notification.DEFAULTS = {
+        type: 'ghost',
+        selector: 'body',
+        animate: true,
+        animationIn: 'jellyIn',
+        animationOut: 'jellyOut',
+        html: false,
+        content: '',
+        icon: false,
+        direction: 'left',
+        wrapperTemplate: '<div class="alert"></div>',
+        mainTemplate: '<div class="alert-main"></div>',
+        closeTemplate: '<div class="alert-close" data-button="close"><i class="origamicon origamicon-close"></i></div>',
+        iconTemplate: '<div class="alert-icon"></div>',
+        iconClass: 'origamicon origamicon-check2'
+    };
+
+    Notification.prototype.init = function (type, element, options) {
+        // Element collection
+        this.type       = type;
+        this.$element   = $(element);
+        this.options    = this.getOptions(options);
+        this.$note      = $(this.options.wrapperTemplate);
+        this.$main      = $(this.options.mainTemplate);
+        this.$close     = $(this.options.closeTemplate);
+        this.$icon      = $(this.options.iconTemplate);
+        this.id         = this.getUID(8);
+
+        this.$note
+            .attr('id', this.id)
+            .addClass('alert-' + this.options.type)
+            .append(this.$main)
+            .append(this.$close);
+
+        this.$main[this.options.html ? 'html' : 'text'](this.options.content);
+
+        if(this.options.icon){
+
+            $('<i>')
+                .addClass(this.options.iconClass)
+                .appendTo(this.$icon);
+
+            this.$note
+                .addClass('icon')
+                .addClass(this.options.direction);
+            this.$note[this.options.direction === 'left' ? 'prepend': 'append'](this.$icon);
+        }
+
+        this.$element.on('click', $.proxy(this.show, this));
+
+    };
+
+    Notification.prototype.getDefaults = function () {
+        return Notification.DEFAULTS
+    };
+
+    Notification.prototype.getOptions = function (options) {
+        options = $.extend({}, this.getDefaults(), this.$element.data(), options);
+
+        return options
+    };
+
+    Notification.prototype.getUID = function (length){
+        var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split('');
+        if (!length) {
+            length = Math.floor(Math.random() * chars.length);
+        }
+        var str = '';
+        for (var i = 0; i < length; i++) {
+            str += chars[Math.floor(Math.random() * chars.length)];
+        }
+        return str;
+    };
+
+    Notification.prototype.show = function () {
+
+        var that = this;
+        var $note = that.$note,
+            viewportWidtht  = $(window).width();
+
+        if(that.options.animate) {
+            $note
+                .attr('data-animate', 'true')
+                .attr('data-animation', that.options.animationOut)
+                .addClass(that.options.animationIn)
+                .addClass('animated');
+            var animateClass = that.options.animationIn + ' animated';
+        }
+
+        $note.appendTo(this.options.selector);
+
+        $note.css({
+           'position': 'fixed',
+           'top': 0,
+           'left': (viewportWidtht/2) - (this.$note.outerWidth()/2)
+        });
+
+        var onShow = function () {
+            if ($note.hasClass(animateClass))
+                $note.removeClass(animateClass);
+            $note.trigger('show.origam.' + that.type);
+        };
+
+        $.support.transition && $note.hasClass(animateClass) ?
+            $note
+                .one('origamTransitionEnd', onShow)
+                .emulateTransitionEnd(Notification.TRANSITION_DURATION) :
+            onShow();
+
+        return false;
+
+    };
+
+    Notification.prototype.hide = function () {
+
+        var that = this;
+        var $note = that.$note;
+
+        if(that.options.animate) {
+            $note
+                .addClass(that.options.animationOut)
+                .addClass('animated');
+            var animateClass = that.options.animationOut + ' animated';
+        }
+
+    };
+
+    // NOTIFICATION PLUGIN DEFINITION
+    // =======================
+
+    function Plugin(option) {
+        return this.each(function () {
+            var $this = $(this);
+            var data  = $this.data('origam.notification');
+
+            if (!data) $this.data('origam.notification', (data = new Notification(this)));
+            if (typeof option == 'string') data[option].call($this)
+        })
+    }
+
+    var old = $.fn.notification;
+
+    $.fn.notification             = Plugin;
+    $.fn.notification.Constructor = Notification;
+
+
+    // NOTIFICATION NO CONFLICT
+    // =================
+
+    $.fn.notification.noConflict = function () {
+        $.fn.notification = old;
+        return this
+    };
+
+
+    // NOTIFICATION DATA-API
+    // ==============
+
+    $(document).ready(function() {
+        $('[data-app="notification"]').notification();
+    });
+
+})(jQuery, window);
 
 
 /**
@@ -3660,7 +3595,265 @@
 
 })(jQuery, window);
 /**
+ * Apply origamPopover
+ */
+
+(function ($, w) {
+    'use strict';
+
+    // POPOVER PUBLIC CLASS DEFINITION
+    // ===============================
+
+    var Popover = function (element, options) {
+        this.init('popover', element, options)
+    }
+
+    if (!$.fn.tooltip) throw new Error('Popover requires tooltip-main.js')
+
+    Popover.VERSION  = '0.1.0'
+
+    Popover.DEFAULTS = $.extend({}, $.fn.tooltip.Constructor.DEFAULTS, {
+        placement: 'right',
+        trigger: 'click',
+        content: '',
+        template: '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+    })
+
+
+    // NOTE: POPOVER EXTENDS tooltip.js
+    // ================================
+
+    Popover.prototype = $.extend({}, $.fn.tooltip.Constructor.prototype)
+
+    Popover.prototype.constructor = Popover
+
+    Popover.prototype.getDefaults = function () {
+        return Popover.DEFAULTS
+    }
+
+    Popover.prototype.setContent = function () {
+        var $tip    = this.tip()
+        var title   = this.getTitle()
+        var content = this.getContent()
+
+        $tip.find('.popover-title')[this.options.html ? 'html' : 'text'](title)
+        $tip.find('.popover-content').children().detach().end()[ // we use append for html objects to maintain js events
+            this.options.html ? (typeof content == 'string' ? 'html' : 'append') : 'text'
+            ](content)
+
+        $tip.removeClass('fade top bottom left right in')
+
+        // IE8 doesn't accept hiding via the `:empty` pseudo selector, we have to do
+        // this manually by checking the contents.
+        if (!$tip.find('.popover-title').html()) $tip.find('.popover-title').hide()
+    }
+
+    Popover.prototype.hasContent = function () {
+        return this.getTitle() || this.getContent()
+    }
+
+    Popover.prototype.getContent = function () {
+        var $e = this.$element
+        var o  = this.options
+
+        return $e.attr('data-content')
+            || (typeof o.content == 'function' ?
+                o.content.call($e[0]) :
+                o.content)
+    }
+
+    Popover.prototype.arrow = function () {
+        return (this.$arrow = this.$arrow || this.tip().find('.arrow'))
+    }
+
+
+    // POPOVER PLUGIN DEFINITION
+    // =========================
+
+    function Plugin(option) {
+        return this.each(function () {
+            var $this   = $(this)
+            var data    = $this.data('origam.popover')
+            var options = typeof option == 'object' && option
+
+            if (!data && /destroy|hide/.test(option)) return
+            if (!data) $this.data('origam.popover', (data = new Popover(this, options)))
+            if (typeof option == 'string') data[option]()
+        })
+    }
+
+    var old = $.fn.popover
+
+    $.fn.popover             = Plugin
+    $.fn.popover.Constructor = Popover
+
+
+    // POPOVER NO CONFLICT
+    // ===================
+
+    $.fn.popover.noConflict = function () {
+        $.fn.popover = old
+        return this
+    }
+
+    $(document).ready(function() {
+        $('[data-app="popover"]').notification();
+        $('body').on('click', function (e) {
+            $('[data-app="popover"]').each(function () {
+                //The 'is' for buttons that trigger popups
+                //The 'has' for icons within a button that triggers a popup
+                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                    $(this).popover('hide');
+                    $(this).next().css({display: 'none'});
+                }
+            });
+        });
+    });
+
+})(jQuery, window);
+/**
+ * Apply origamRipple
+ */
+
+(function ($, w) {
+    'use strict';
+
+    // Ripple CLASS DEFINITION
+    // ======================
+
+    var Ripple   = function (element, options) {
+        this.type       = null;
+        this.options    = null;
+        this.$element   = null;
+
+        this.init('ripple', element, options)
+    };
+
+    Ripple.VERSION = '0.1.0';
+
+    Ripple.TRANSITION_DURATION = 651;
+
+    Ripple.prototype.init = function (type, element, options) {
+        this.type       = type;
+        this.$element   = $(element);
+
+        this.$element.on('mousedown', $.proxy(this.show, this));
+
+    };
+
+    Ripple.prototype.show = function (e) {
+        this.$element.css({
+            position: 'relative',
+            overflow: 'hidden'
+        });
+
+        var ripple;
+
+        if (this.$element.find('.ripple').length === 0) {
+
+            ripple = $('<span/>').addClass('ripple');
+
+            if (this.$element.attr('data-ripple'))
+            {
+                ripple.addClass('ripple-' + this.$element.attr('data-ripple'));
+            }
+
+            this.$element.prepend(ripple);
+        }
+        else
+        {
+            ripple = this.$element.find('.ripple');
+        }
+
+        ripple.removeClass('animated');
+
+        if (!ripple.height() && !ripple.width())
+        {
+            var diameter = Math.max(this.$element.outerWidth(), this.$element.outerHeight());
+
+            ripple.css({ height: diameter, width: diameter });
+        }
+
+        var x = e.pageX - this.$element.offset().left - ripple.width() / 2;
+        var y = e.pageY - this.$element.offset().top - ripple.height() / 2;
+
+        ripple.css({ top: y+'px', left: x+'px' }).addClass('animated');
+
+        function removeElement() {
+            ripple.removeClass('animated');
+        }
+
+        $.support.transition ?
+            this.$element
+                .one('origamTransitionEnd', removeElement)
+                .emulateTransitionEnd(Ripple.TRANSITION_DURATION) :
+            removeElement()
+    };
+
+
+    // Ripple PLUGIN DEFINITION
+    // =======================
+
+    function Plugin(option) {
+        return this.each(function () {
+            var $this = $(this);
+            var data  = $this.data('origam.ripple');
+
+            if (!data) $this.data('origam.ripple', (data = new Ripple(this)));
+            if (typeof option == 'string') data[option].call($this)
+        })
+    }
+
+    var old = $.fn.ripple;
+
+    $.fn.ripple             = Plugin;
+    $.fn.ripple.Constructor = Ripple;
+
+
+    // Ripple NO CONFLICT
+    // =================
+
+    $.fn.ripple.noConflict = function () {
+        $.fn.ripple = old
+        return this
+    };
+
+
+    // Ripple DATA-API
+    // ==============
+
+    $(document).ready(function() {
+        $('[data-button="ripple"]').ripple();
+    });
+
+})(jQuery, window);
+
+
+/**
+ * Apply origamScrollbar
+ */
+
+
+/**
  * Apply origamSelect
+ */
+
+
+/**
+ * Apply origamSlider
+ */
+
+
+/**
+ * Apply origamSocialFeed
+ */
+/**
+ * Apply origamTabs
+ */
+
+
+/**
+ * Apply origamTextarea
  */
 
 (function ($, w) {
@@ -3747,193 +3940,6 @@
     });
 
 })(jQuery, window);
-/**
- * Apply origamFullScreen
- */
-/**
- * trigger a function when all images inside the set of matched elements are
- * loaded timeout is defined in case of broken images
- *
- * maj 21-11-2014: add a callback triggered when an image load fail,
- * we give the image as parameter to the callback function.
- * maj 01-09-2014: enhance image loading detection (probably do not work
- * at all before that :-\ ), tested on FF and IE8!
- *
- * @param  {function} callbackFct the function to call when all is loaded
- * @param  {obj} options     options of the plugin
- * @return {obj}             jquery object
- */
-
-(function ($, w) {
-    $.fn.extend({
-        origamImagesLoaded: function (callbackFct, options) {
-            var defaults = {
-                timeout: 3000,
-                callbackImageLoadFail: function (image) {
-                }
-            };
-            options = $.extend(defaults, options);
-
-            if (typeof(callbackFct) != 'function') return this;
-
-            return this.each(function () {
-                var o = options;
-                var el = this;
-                var $el = $(el);
-                var countImgLoaded = 0;
-                var $images = $("img", $el);
-                var countImg = $images.length;
-
-                /* trigger callback immediatly if no image */
-                if (countImg == 0 && typeof(callbackFct) == 'function') callbackFct(el, null);
-
-                var triggerBehavior = function () {
-                    if (typeof(callbackFct) == 'function') callbackFct(el, $images);
-                };
-
-                /* check of the image laod */
-                var checkLoad = function () {
-                    countImgLoaded++;
-                    if (countImgLoaded >= countImg) {
-                        triggerBehavior();
-                    }
-                };
-
-                $images.each(function () {
-                    var timeoutLoad;
-                    var image = this;
-                    var $image = $(image);
-
-                    // immediately check for cached image
-                    // source: http://stackoverflow.com/a/12905092
-                    if (image.complete || typeof image.complete === 'undefined') {
-                        image.onload = null;
-                        checkLoad();
-                    } else {
-                        // try to force image reload in case of caching
-                        $image.attr('data-src', image.src);
-                        image.src = '';
-
-                        // I use onload instead of bind('load'), because this last one does
-                        // not trigger at all!
-                        image.onload = function () {
-                            clearTimeout(timeoutLoad);
-                            checkLoad();
-                        };
-                        image.src = $image.attr('data-src');
-
-                        /* each image has a 'o.timeout' millisecond timeout, if missing */
-                        timeoutLoad = setTimeout(function () {
-                            image.onload = null;
-                            // trigger the callback on the image load failure
-                            o.callbackImageLoadFail(image);
-
-                            checkLoad();
-                        }, o.timeout);
-                    }
-                });
-            });
-        }
-    });
-})(jQuery, window);
-
-
-/**
- * Apply origamMask
- */
-
-(function ($, w) {
-    'use strict';
-
-    // MASK CLASS DEFINITION
-    // ======================
-
-    var Mask = function (element, options) {
-        this.type       = null;
-        this.options    = null;
-        this.$element   = null;
-
-        this.init('mask', element, options)
-    };
-
-    if (!$.fn.input) throw new Error('Notification requires input.js');
-
-    Mask.VERSION = '0.1.0';
-
-    Mask.TRANSITION_DURATION = 1000;
-
-    Mask.DEFAULTS = $.extend({}, $.fn.input.Constructor.DEFAULTS, {
-        definitions: {
-            "9": "[0-9]",
-            a: "[A-Za-z]",
-            "*": "[A-Za-z0-9]",
-            "~": "[+-]"
-        },
-        mask: "9999 9999 9999 9999"
-    });
-
-    Mask.prototype = $.extend({}, $.fn.input.Constructor.prototype);
-
-    Mask.prototype.constructor = Mask;
-
-    Mask.prototype.event = function (options) {
-        // Element collection
-        this.options    = this.getOptions(options);
-        this.mask     = this.options.mask;
-
-        this.$element.on('keyup input', $.proxy(this.keyEvent, this));
-    };
-
-    Mask.prototype.getDefaults = function () {
-        return Mask.DEFAULTS
-    };
-
-    Mask.prototype.keyEvent = function () {
-        this.val      = this.$element.val();
-
-
-    };
-
-    // MASK PLUGIN DEFINITION
-    // =======================
-
-    function Plugin(option) {
-        return this.each(function () {
-            var $this = $(this);
-            var data  = $this.data('origam.mask');
-
-            if (!data) $this.data('origam.mask', (data = new Mask(this)));
-            if (typeof option == 'string') data[option].call($this)
-        })
-    }
-
-    var old = $.fn.mask;
-
-    $.fn.mask             = Plugin;
-    $.fn.mask.Constructor = Mask;
-
-
-    // MASK NO CONFLICT
-    // =================
-
-    $.fn.mask.noConflict = function () {
-        $.fn.mask = old;
-        return this
-    };
-
-
-    // MASK DATA-API
-    // ==============
-
-    $(document).ready(function() {
-        $('[data-form="mask"]').mask();
-    });
-
-})(jQuery, window);
-
-/**
- * Apply origamSocialFeed
- */
 /**
  * Apply origamTransition
  */

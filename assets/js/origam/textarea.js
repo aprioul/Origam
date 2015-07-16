@@ -1,3 +1,8 @@
+
+/**
+ * Apply origamTextarea
+ */
+
 (function ($, w) {
 
     'use strict';

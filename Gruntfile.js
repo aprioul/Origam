@@ -7,8 +7,8 @@ module.exports = function(grunt) {
                 separator: "<%= current_file_name %>"
             },
             dist: {
-                src: [ 'assets/js/demo/demo.js'],
-                dest: 'dist/js/main.js'
+                src: [ 'assets/js/origam/input.js','assets/js/origam/mask.js','assets/js/origam/close.js','assets/js/origam/tooltip.js','assets/js/origam/*.js'],
+                dest: 'dist/js/src/<%= pkg.name %>.js'
             }
         },
 
@@ -30,6 +30,14 @@ module.exports = function(grunt) {
                         cwd: 'assets/fonts/',
                         src: '**',
                         dest: 'dist/fonts/',
+                        flatten: true,
+                        filter: 'isFile'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'assets/images/',
+                        src: '**',
+                        dest: 'dist/images/',
                         flatten: true,
                         filter: 'isFile'
                     },
@@ -81,7 +89,7 @@ module.exports = function(grunt) {
             // get the module name from the directory name
             var dirName = dir.substr(dir.lastIndexOf('/')+1);
 
-            if(dirName != 'demo') {
+            if(dirName != 'origam') {
 
                 // get the current concat object from initConfig
                 var concat = grunt.config.get('concat') || {};
