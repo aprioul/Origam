@@ -1025,9 +1025,11 @@
         wrapperFieldTemplate : '<div class="origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"></div></div>',
         labelFieldTemplate : '<div class="origam-colorpick--field_letter text-field--group__addons"></div>',
         fieldTemplate: '<input data-form="input" type="number" min="0" max="" />',
-        fieldClass : 'text-field--group__input',
         closeTemplate: '<div class="origam-colorpick--close" data-button="close"><i class="origamicon origamicon-close"></i></div>',
         overlayTemplate: '<div class="origam-colorpick--overlay" data-self="true" data-button="close"></div>',
+        colorElementTemplate: '<div class="text-field--color_current"></div>',
+        fieldClass : 'text-field--group__input',
+        parentClass : 'text-field--color',
         color: 'FF0000',
         livePreview: true,
         layout: 'full',
@@ -1147,7 +1149,13 @@
         this.$wrapper = this.addAddon();
         this.$wrapper.text(this.options.format);
 
-        this.$element.on(this.options.showEvent, $.proxy(this.show, this));
+        this.color = $(this.options.colorElementTemplate);
+
+        this.$element
+            .parents(this.$parent)
+            .on(this.options.showEvent, $.proxy(this.show, this))
+            .addClass(this.options.parentClass)
+            .prepend(this.color);
 
     };
 
@@ -1164,11 +1172,11 @@
 
     Color.prototype.change = function(field) {
 
-        if (field.parents('.text-field').attr('class').indexOf('--hex') > 0) {
+        if (field.parents(this.$parent).attr('class').indexOf('--hex') > 0) {
             this.options.color = hexToHsb(fixHex(field.value));
             this.fillRGBFields(this.options.color);
             this.fillHSBFields(this.options.color);
-        } else if (field.parents('.text-field').attr('class').indexOf('--hsb') > 0) {
+        } else if (field.parents(this.$parent).attr('class').indexOf('--hsb') > 0) {
             this.options.color = fixHSB({
                 h: this.field[3].val(),
                 s: this.field[5].val(),
@@ -1364,8 +1372,9 @@
         this.$element
             .val(formatColor)
             .parents(this.$parent)
-            .addClass(this.options.classes.active)
-        ;
+            .addClass(this.options.classes.active);
+
+        this.color.css('backgroundColor', '#' + hsbToHex(hsb));
     }
 
     Color.prototype.show = function () {
