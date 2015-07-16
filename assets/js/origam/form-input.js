@@ -47,11 +47,8 @@
 
         var event = this.event(this.options);
 
-        var eventIn  =  'focusin';
-        var eventOut =  'focusout';
-
-        this.$element.on(eventIn, $.proxy(this.startFocus, this));
-        this.$element.on(eventOut, $.proxy(this.endFocus, this));
+        this.$element.on('focusin', $.proxy(this.startFocus, this));
+        this.$element.on('focusout', $.proxy(this.endFocus, this));
     };
 
     Input.prototype.getDefaults = function () {
@@ -74,7 +71,7 @@
 
     Input.prototype.addAddon = function() {
         var classPosition = '';
-        this.options.placement === 'after' ? classPosition = this.options.classes.addonsRight : this.options.classes.addonsLeft;
+        classPosition = (this.options.placement === 'after') ? this.options.classes.addonsRight : this.options.classes.addonsLeft;
 
         this.$element.parents(this.$parent).addClass(classPosition);
 

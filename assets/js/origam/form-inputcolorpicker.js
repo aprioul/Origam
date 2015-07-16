@@ -125,17 +125,29 @@
 
     Color.DEFAULTS = $.extend({}, $.fn.input.Constructor.DEFAULTS, {
         showEvent: 'click',
-        template: '<div class="origam-colorpick"><div class="origam-colorpick--color"><div class="origam-colorpick--color_overlay1"><div class="origam-colorpick--color_overlay2"><div class="origam-colorpick--selector_outer"><div class="origam-colorpick--selector_inner"></div></div></div></div></div><div class="origam-colorpick--hue"><div class="origam-colorpick--hue_arrs"><div class="origam-colorpick--hue_larr"></div><div class="origam-colorpick--hue_rarr"></div></div></div><div class="origam-colorpick--form"><div class="origam-colorpick--new_color"></div><div class="origam-colorpick--current_color"></div><div class="origam-colorpick--hex_field text-field text-field--addons left"><div class="text-field--group"><div class="origam-colorpick--field_letter text-field--group__addons">#</div><input class="text-field--group__input" data-form="input" type="text" maxlength="6" size="6" /></div></div><div class="origam-colorpick--origin_field text-field text-field--addons left text-field--disabled"><div class="text-field--group"><div class="origam-colorpick--field_letter text-field--group__addons">#</div><div class="text-field--group__input"></div></div></div><div class="origam-colorpick--rgb_r origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"><div class="origam-colorpick--field_letter text-field--group__addons">R</div><input class="text-field--group__input" data-form="input" type="text" maxlength="3" size="3" /></div></div><div class="origam-colorpick--hsb_h origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"><div class="origam-colorpick--field_letter text-field--group__addons">H</div><input class="text-field--group__input" data-form="input" type="text" maxlength="3" size="3" /></div></div><div class="origam-colorpick--rgb_g origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"><div class="origam-colorpick--field_letter text-field--group__addons">G</div><input class="text-field--group__input" data-form="input" type="text" maxlength="3" size="3" /></div></div><div class="origam-colorpick--hsb_s origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"><div class="origam-colorpick--field_letter text-field--group__addons">S</div><input class="text-field--group__input" data-form="input" type="text" maxlength="3" size="3" /></div></div><div class="origam-colorpick--rgb_b origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"><div class="origam-colorpick--field_letter text-field--group__addons">B</div><input class="text-field--group__input" data-form="input" type="text" maxlength="3" size="3" /></div></div><div class="origam-colorpick--hsb_b origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"><div class="origam-colorpick--field_letter text-field--group__addons">B</div><input class="text-field--group__input" data-form="input" type="text" maxlength="3" size="3" /></div></div><div class="origam-colorpick--submit btn btn-primary" data-button="close"></div></div></div>',
+        wrapperTemplate: '<div class="origam-colorpick"></div>',
+        colorTemplate: '<div class="origam-colorpick--color"></div>',
+        colorSelectorTemplate: '<div class="origam-colorpick--selector_outer"><div class="origam-colorpick--selector_inner"></div></div>',
+        hueTemplate: '<div class="origam-colorpick--hue"></div>',
+        hueSelectorTemplate: '<div class="origam-colorpick--hue_arrs"><div class="origam-colorpick--hue_larr"></div><div class="origam-colorpick--hue_rarr"></div></div>',
+        formTemplate: '<div class="origam-colorpick--form"></div>',
+        submitTemplate: '<div class="origam-colorpick--submit btn btn-primary" data-button="close"></div>',
+        newColorTemplate: '<div class="origam-colorpick--new_color"></div>',
+        originColorTemplate: '<div class="origam-colorpick--current_color"></div>',
+        wrapperFieldTemplate : '<div class="origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"></div></div>',
+        labelFieldTemplate : '<div class="origam-colorpick--field_letter text-field--group__addons"></div>',
+        fieldTemplate: '<input data-form="input" type="number" min="0" max="" />',
+        fieldClass : 'text-field--group__input',
         closeTemplate: '<div class="origam-colorpick--close" data-button="close"><i class="origamicon origamicon-close"></i></div>',
         overlayTemplate: '<div class="origam-colorpick--overlay" data-self="true" data-button="close"></div>',
         color: 'FF0000',
         livePreview: true,
         layout: 'full',
-        submit: 1,
         submitText: 'OK',
         animate: true,
         animationIn: 'fadeInDown',
         animationOut: 'fadeOutUp',
+        format: '#',
         height: 276,
         onShow: function () {},
         onBeforeShow: function(){},
@@ -164,6 +176,51 @@
         this.options        = this.getOptions(options);
         this.id             = this.getUID(8);
         this.element        = this;
+        this.$element.data('origam-colorpickId', this.id);
+        this.field = new Array();
+        this.fields = {
+            'hex' : {
+                'class': 'origam-colorpick--hex_field',
+                'label': '#',
+                'type': 'text',
+                'maxlenght' : 6,
+                'size' : 6
+            },
+            'origin' : {
+                'class': 'origam-colorpick--origin_field',
+                'label': '#'
+            },
+            'rgb_r' : {
+                'class': 'origam-colorpick--rgb_r',
+                'label': 'R',
+                'max': '255'
+            },
+            'hsb_h' : {
+                'class': 'origam-colorpick--hsb_h',
+                'label': 'H',
+                'max': '360'
+            },
+            'rgb_g' : {
+                'class': 'origam-colorpick--rgb_g',
+                'label': 'G',
+                'max': '255'
+            },
+            'hsb_s' : {
+                'class': 'origam-colorpick--hsb_s',
+                'label': 'S',
+                'max': '100'
+            },
+            'rgb_b' : {
+                'class': 'origam-colorpick--rgb_b',
+                'label': 'B',
+                'max': '255'
+            },
+            'hsb_b' : {
+                'class': 'origam-colorpick--hsb_b',
+                'label': 'B',
+                'max': '100'
+            }
+        };
 
         if (typeof this.options.color == 'string') {
             this.options.color = hexToHsb(this.options.color);
@@ -177,77 +234,30 @@
 
         this.origColor = this.options.color;
 
-        this.$element.data('origam-colorpickId', this.id);
-        this.$overlay = $(this.options.overlayTemplate).attr('data-target', '#' + this.id);
-        this.colorpick = $(this.options.template).attr('id', this.id);
-        this.$close = $(this.options.closeTemplate).attr('data-target', '#' + this.id);
+        this.colorpick = $(this.options.wrapperTemplate)
+            .attr('id', this.id)
+            .addClass('origam-colorpick--'+this.options.layout);
 
-        this.colorpick
-            .addClass('origam-colorpick--'+this.options.layout)
-            .addClass(this.options.submit?'':' origam-colorpick--'+this.options.layout+'_ns')
-            .prepend(this.$close);
 
-        this.colorpick
-            .find('.origam-colorpick--submit')
-            .html(this.options.submitText)
-            .on("click", $.proxy(this.submit, this));
+        this.close = $(this.options.closeTemplate).attr('data-target', '#' + this.id);
+        this.submitField = $(this.options.submitTemplate).attr('data-target', '#' + this.id);
 
-        this.fields = this.colorpick
-            .find('input')
-            .on("change", $.proxy(this.change, this))
-            .on("blur", $.proxy(this.blur, this))
-            .on("focus", $.proxy(this.focus, this));
 
-        this.colorpick
-            .find('.origam-colorpick--field_arrs')
-            .on("mousedown", $.proxy(this.eventIncrement, this))
-            .end()
-            .find('.origam-colorpick--current_color')
-            .on("click", $.proxy(this.restoreOriginal, this));
+        this.form = $(this.options.formTemplate);
+        this.currentColor = $(this.options.originColorTemplate);
+        this.newColor = $(this.options.newColorTemplate);
 
-        this.selector = this.colorpick
-            .find('.origam-colorpick--color')
-            .on('mousedown touchstart', $.proxy(this.eventSelector, this));
 
-        this.selectorIndic = this.selector
-            .find('.origam-colorpick--selector_outer');
+        this.selector = $(this.options.colorTemplate);
+        this.selectorIndic = $(this.options.colorSelectorTemplate);
 
-        this.el = this;
-        this.hue = this.colorpick
-            .find('.origam-colorpick--hue_arrs');
 
-        var huebar = this.hue.parent();
-        var UA = navigator.userAgent.toLowerCase();
-        var isIE = navigator.appName === 'Microsoft Internet Explorer';
-        var IEver = isIE ? parseFloat( UA.match( /msie ([0-9]{1,}[\.0-9]{0,})/ )[1] ) : 0;
-        var ngIE = ( isIE && IEver < 10 );
-        var stops = ['#ff0000','#ff0080','#ff00ff','#8000ff','#0000ff','#0080ff','#00ffff','#00ff80','#00ff00','#80ff00','#ffff00','#ff8000','#ff0000'];
-        if(ngIE) {
-            var i;
-            for(i=0; i<=11; i++) {
-                $('<div>')
-                    .attr('style','height:8.333333%; filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='+stops[i]+', endColorstr='+stops[i+1]+'); -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='+stops[i]+', endColorstr='+stops[i+1]+')";')
-                    .appendTo(huebar);
-            }
-        } else {
-            var stopList = stops.join(',');
-            huebar.attr('style','background:-webkit-linear-gradient(top,'+stopList+'); background: -o-linear-gradient(top,'+stopList+'); background: -ms-linear-gradient(top,'+stopList+'); background:-moz-linear-gradient(top,'+stopList+'); -webkit-linear-gradient(top,'+stopList+'); background:linear-gradient(to bottom,'+stopList+'); ');
-        }
-        this.colorpick
-            .find('.origam-colorpick--hue')
-            .on('mousedown touchstart', $.proxy(this.eventHue, this));
+        this.hue = $(this.options.hueSelectorTemplate);
+        this.huebar = $(this.options.hueTemplate);
 
-        this.newColor = this.colorpick.find('.origam-colorpick--new_color');
-        this.currentColor = this.colorpick.find('.origam-colorpick--current_color');
-
-        this.fillRGBFields(this.options.color);
-        this.fillHSBFields(this.options.color);
-        this.fillHexFields(this.options.color);
-        this.setHue(this.options.color);
-        this.setSelector(this.options.color);
-        this.setCurrentColor(this.options.color);
-        this.setNewColor(this.options.color);
-        this.setOrigineFields(this.options.color);
+        this.options.placement = 'before';
+        this.$wrapper = this.addAddon();
+        this.$wrapper.text(this.options.format);
 
         this.$element.on(this.options.showEvent, $.proxy(this.show, this));
 
@@ -261,28 +271,28 @@
         this.origColor = this.options.color;
         this.setCurrentColor(this.options.color);
         this.setOrigineFields(this.options.color);
-        this.$element.val(hsbToHex(this.options.color));
+        this.setElement(this.options.color);
     };
 
     Color.prototype.change = function(field) {
 
         if (field.parents('.text-field').attr('class').indexOf('--hex') > 0) {
-            this.options.color = hexToHsb(fixHex(this.value));
+            this.options.color = hexToHsb(fixHex(field.value));
             this.fillRGBFields(this.options.color);
             this.fillHSBFields(this.options.color);
         } else if (field.parents('.text-field').attr('class').indexOf('--hsb') > 0) {
             this.options.color = fixHSB({
-                h: this.fields.eq(2).val(),
-                s: this.fields.eq(4).val(),
-                b: this.fields.eq(6).val()
+                h: this.field[3].val(),
+                s: this.field[5].val(),
+                b: this.field[7].val()
             });
             this.fillRGBFields(this.options.color);
             this.fillHexFields(this.options.color);
         } else {
             this.options.color= rgbToHsb(fixRGB({
-                r: this.fields.eq(1).val(),
-                g: this.fields.eq(3).val(),
-                b: this.fields.eq(5).val()
+                r: this.field[2].val(),
+                g: this.field[4].val(),
+                b: this.field[6].val()
             }));
             this.fillHexFields(this.options.color);
             this.fillHSBFields(this.options.color);
@@ -293,24 +303,8 @@
         this.setNewColor(this.options.color);
     };
 
-    Color.prototype.blur = function(e) {
-        $(this)
-            .parents(this.$parent)
-            .removeClass(this.options.classes.active);
-        $(this)
-            .parents(this.$parent)
-            .addClass(this.options.classes.focus);
-    };
-
-    Color.prototype.focus = function(e) {
-        $(this)
-            .parents(this.$parent)
-            .removeClass(this.options.classes.focus);
-        if($(this).val() != ''){
-            $(this)
-                .parents(this.$parent)
-                .addClass(this.options.classes.active);
-        }
+    Color.prototype.eventField = function (e){
+        this.change($(e.currentTarget));
     };
 
     Color.prototype.eventSelector = function (e) {
@@ -327,10 +321,10 @@
         $(document).on('mouseup touchend',offset, $.proxy(this.updateSelector, this));
         $(document).on('mousemove touchmove',offset, $.proxy(this.moveSelector, this));
 
-        this.fields.eq(4).val(parseInt(100*(Math.max(0,Math.min(this.options.height,(pageX - offset.left))))/this.options.height, 10));
-        this.fields.eq(6).val(parseInt(100*(this.options.height - Math.max(0,Math.min(this.options.height,(pageY - offset.top))))/this.options.height, 10));
+        this.field[5].val(parseInt(100*(Math.max(0,Math.min(this.options.height,(pageX - offset.left))))/this.options.height, 10));
+        this.field[7].val(parseInt(100*(this.options.height - Math.max(0,Math.min(this.options.height,(pageY - offset.top))))/this.options.height, 10));
 
-        this.change(this.fields.eq(4).end().eq(6));
+        this.change(this.field[5],this.field[7]);
 
         return false;
     };
@@ -346,10 +340,10 @@
             offset = $(e.target).parent().parent().offset();
         }
 
-        this.fields.eq(4).val(parseInt(100*(Math.max(0,Math.min(this.options.height,(pageX - offset.left))))/this.options.height, 10));
-        this.fields.eq(6).val(parseInt(100*(this.options.height - Math.max(0,Math.min(this.options.height,(pageY - offset.top))))/this.options.height, 10));
+        this.field[5].val(parseInt(100*(Math.max(0,Math.min(this.options.height,(pageX - offset.left))))/this.options.height, 10));
+        this.field[7].val(parseInt(100*(this.options.height - Math.max(0,Math.min(this.options.height,(pageY - offset.top))))/this.options.height, 10));
 
-        this.change(this.fields.eq(4).end().eq(6));
+        this.change(this.field[5],this.field[7]);
 
         return false;
     };
@@ -376,9 +370,9 @@
         $(document).on('mouseup touchend', offsetTop, $.proxy(this.updateHue, this));
         $(document).on('mousemove touchmove', offsetTop, $.proxy(this.moveHue, this));
 
-        this.fields.eq(2).val(parseInt(Math.round(360*(this.options.height - Math.max(0,Math.min(this.options.height,offset)))/this.options.height), 10));
+        this.field[3].val(parseInt(Math.round(360*(this.options.height - Math.max(0,Math.min(this.options.height,offset)))/this.options.height), 10));
 
-        this.change(this.fields.eq(2));
+        this.change(this.field[3]);
 
         return false;
     };
@@ -396,9 +390,9 @@
 
         offset =  pageY - offsetTop;
 
-        this.fields.eq(2).val(parseInt(Math.round(360*(this.options.height - Math.max(0,Math.min(this.options.height,offset)))/this.options.height), 10));
+        this.field[3].val(parseInt(Math.round(360*(this.options.height - Math.max(0,Math.min(this.options.height,offset)))/this.options.height), 10));
 
-        this.change(this.fields.eq(2));
+        this.change(this.field[3]);
 
         return false;
     };
@@ -424,21 +418,19 @@
 
     Color.prototype.fillRGBFields = function  (hsb) {
         var rgb = hsbToRgb(hsb);
-        this.fields
-            .eq(1).val(rgb.r).end()
-            .eq(3).val(rgb.g).end()
-            .eq(5).val(rgb.b).end();
+        this.field[2].val(rgb.r);
+        this.field[4].val(rgb.g);
+        this.field[6].val(rgb.b);
     };
 
     Color.prototype.fillHSBFields = function  (hsb) {
-        this.fields
-            .eq(2).val(Math.round(hsb.h)).end()
-            .eq(4).val(Math.round(hsb.s)).end()
-            .eq(6).val(Math.round(hsb.b)).end();
+        this.field[3].val(Math.round(hsb.h));
+        this.field[5].val(Math.round(hsb.s));
+        this.field[7].val(Math.round(hsb.b));
     };
 
     Color.prototype.fillHexFields = function (hsb) {
-        this.fields.eq(0).val(hsbToHex(hsb));
+        this.field[0].val(hsbToHex(hsb));
     };
 
     Color.prototype.setHue = function (hsb) {
@@ -462,15 +454,123 @@
     };
 
     Color.prototype.setOrigineFields = function (hsb) {
-        this.colorpick.find('.text-field--disabled').find('.text-field--group__input').text(hsbToHex(hsb));
+        this.field[1].text(hsbToHex(hsb));
     };
 
-    Color.prototype.show = function () {
+    Color.prototype.setElement = function (hsb) {
+        var formatColor,
+            rgb;
 
+        if (this.options.format === 'rgb'){
+            rgb = hsbToRgb(hsb)
+            formatColor = '( ' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ') ';
+        }
+        else if (this.options.format === 'hsb') {
+            formatColor = '( ' + hsb.h + ', ' + hsb.s + ', ' + hsb.b + ') ';
+        }
+        else {
+            formatColor = hsbToHex(hsb)
+        }
+
+
+        this.$element
+            .val(formatColor)
+            .parents(this.$parent)
+            .addClass(this.options.classes.active)
+        ;
+    }
+
+    Color.prototype.show = function () {
         var that            = this,
             $color          = that.colorpick,
             viewportHeight  = $(window).height(),
-            viewportWidtht  = $(window).width();
+            viewportWidtht  = $(window).width(),
+            count           = 0,
+            UA              = navigator.userAgent.toLowerCase(),
+            isIE            = navigator.appName === 'Microsoft Internet Explorer',
+            IEver           = isIE ? parseFloat( UA.match( /msie ([0-9]{1,}[\.0-9]{0,})/ )[1] ) : 0,
+            ngIE            = ( isIE && IEver < 10 ),
+            stops           = ['#ff0000','#ff0080','#ff00ff','#8000ff','#0000ff','#0080ff','#00ffff','#00ff80','#00ff00','#80ff00','#ffff00','#ff8000','#ff0000'];
+
+
+        this.selector
+            .html('')
+            .on('mousedown touchstart', $.proxy(this.eventSelector, this))
+            .append('<div class="origam-colorpick--color_overlay1"><div class="origam-colorpick--color_overlay2"></div></div>')
+            .children().children().append(this.selectorIndic);
+
+        if(ngIE) {
+            var i;
+            for(i=0; i<=11; i++) {
+                $('<div>')
+                    .attr('style','height:8.333333%; filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='+stops[i]+', endColorstr='+stops[i+1]+'); -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='+stops[i]+', endColorstr='+stops[i+1]+')";')
+                    .appendTo(this.huebar);
+            }
+        } else {
+            var stopList = stops.join(',');
+            this.huebar.attr('style','background:-webkit-linear-gradient(top,'+stopList+'); background: -o-linear-gradient(top,'+stopList+'); background: -ms-linear-gradient(top,'+stopList+'); background:-moz-linear-gradient(top,'+stopList+'); -webkit-linear-gradient(top,'+stopList+'); background:linear-gradient(to bottom,'+stopList+'); ');
+        }
+
+        this.huebar
+            .on('mousedown touchstart', $.proxy(this.eventHue, this))
+            .append(this.hue);
+
+        this.form
+            .html('')
+            .append(this.newColor);
+
+        this.currentColor
+            .on("click", $.proxy(this.restoreOriginal, this))
+            .appendTo(this.form);
+
+        for(var i in this.fields) {
+            var $wrapper         = $(this.options.wrapperFieldTemplate),
+                $label           = $(this.options.labelFieldTemplate),
+                $field           = $(this.options.fieldTemplate);
+
+            $label
+                .text(this.fields[i]['label'])
+                .appendTo($wrapper.children());
+
+            if(i === 'hex'){
+                $field
+                    .attr('type', this.fields[i]['type'])
+                    .attr('maxlenght', this.fields[i]['maxlenght'])
+                    .attr('size', this.fields[i]['size']);
+            }
+            else if(i === 'origin'){
+                $field = $('<div>');
+                $wrapper.addClass('text-field--disabled');
+            }
+            else {
+                $field
+                    .attr('max', this.fields[i]['max']);
+            }
+
+            this.field[count] = $field
+                .on('focusin', $.proxy(this.startFocus, this))
+                .on('focusout', $.proxy(this.endFocus, this))
+                .on('change', $.proxy(this.eventField, this))
+                .addClass(this.options.fieldClass)
+                .appendTo($wrapper.children());
+
+            $wrapper
+                .addClass(this.fields[i]['class'])
+                .appendTo(this.form);
+
+            count++;
+        }
+
+        this.submitField
+            .text(this.options.submitText)
+            .on("click", $.proxy(this.submit, this))
+            .appendTo(this.form);
+
+        this.colorpick
+            .append(this.close)
+            .append(this.selector)
+            .append(this.huebar)
+            .append(this.form);
 
         if(that.options.animate) {
             $color
@@ -481,12 +581,23 @@
             var animateClass = that.options.animationIn + ' animated';
         }
 
+        this.fillRGBFields(this.options.color);
+        this.fillHSBFields(this.options.color);
+        this.fillHexFields(this.options.color);
+        this.setHue(this.options.color);
+        this.setSelector(this.options.color);
+        this.setCurrentColor(this.options.color);
+        this.setNewColor(this.options.color);
+        this.setOrigineFields(this.options.color);
+
         this.colorpick
             .appendTo(document.body)
             .css({
                 'top':  (viewportHeight/2) - (this.colorpick.outerHeight()/2),
                 'left': (viewportWidtht/2) - (this.colorpick.outerWidth()/2)
             });
+
+
 
         var onShow = function () {
             if ($color.hasClass(animateClass))
