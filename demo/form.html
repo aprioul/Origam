@@ -6,9 +6,9 @@
     <link href="../dist/css/origam.min.css" rel="stylesheet"/>
     <link href="../dist/css/demo.min.css" rel="stylesheet"/>
     <script type="text/javascript" src="../dist/js/jquery.min.js"></script>
-    <script type="text/javascript" src="../dist/js/app.min.js"></script>
+    <script type="text/javascript" src="../dist/js/plugins.min.js"></script>
+    <script type="text/javascript" src="../dist/js/src/origam.js"></script>
     <script type="text/javascript" src="../dist/js/main.js"></script>
-    <script src="node_modules/grunt-contrib-watch/tasks/lib/livereload.js"></script>
 </head>
 <body>
 <div class="origam-grid">
@@ -39,7 +39,7 @@
             <div class="origam-grid__cell origam-size-1of1">
                 <div class="origam-example">
                     <div class="origam-grid">
-                        <div class="origam-wrapper">
+                        <div class="origam-wrformer">
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="checkbox">
@@ -85,7 +85,7 @@
             <div class="origam-grid__cell origam-size-1of1">
                 <div class="origam-example">
                     <div class="origam-grid">
-                        <div class="origam-wrapper">
+                        <div class="origam-wrformer">
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="radio-group">
@@ -157,7 +157,7 @@
             <div class="origam-grid__cell origam-size-1of1">
                 <div class="origam-example">
                     <div class="origam-grid">
-                        <div class="origam-wrapper">
+                        <div class="origam-wrformer">
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="switch">
@@ -203,7 +203,7 @@
             <div class="origam-grid__cell origam-size-1of1">
                 <div class="origam-example">
                     <div class="origam-grid">
-                        <div class="origam-wrapper">
+                        <div class="origam-wrformer">
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="select-group">
@@ -252,13 +252,51 @@
             <div class="origam-grid__cell origam-size-1of1">
                 <div class="origam-example">
                     <div class="origam-grid">
-                        <div class="origam-wrapper">
+                        <div class="origam-wrformer">
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="text-field">
                                         <label class="text-field--label" for="range">Range</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" type="range" min="0" max="5" id="range"/>
+                                            <input class="text-field--group__input" data-form="input" type="range" min="0" max="5" id="range"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="origam-section">
+            <div class="origam-grid__cell origam-size-1of1">
+                <h2 id="form-input-mask">
+                    Mask
+                    <a class="anchor-link" href="#form-input-mask">
+                        <span class="anchor-icon">
+                            <i class="origamicon origamicon-link2"></i>
+                        </span>
+                    </a>
+                </h2>
+            </div>
+            <div class="origam-grid__cell origam-size-1of1">
+                <div class="origam-example">
+                    <div class="origam-grid">
+                        <div class="origam-wrformer">
+                            <div class="origam-section">
+                                <div class="origam-grid__cell origam-size-1of1">
+                                    <div class="text-field">
+                                        <label class="text-field--label" for="mask">Mask</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" id="mask" data-form="mask" type="text"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of1">
+                                    <div class="text-field">
+                                        <label class="text-field--label" for="mask-tel">Mask Tel</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" data-form="mask" id="mask-tel" type="text" data-mask="(+33) 9 99 99 99 99"/>
                                         </div>
                                     </div>
                                 </div>
@@ -282,13 +320,29 @@
             <div class="origam-grid__cell origam-size-1of1">
                 <div class="origam-example">
                     <div class="origam-grid">
-                        <div class="origam-wrapper">
+                        <div class="origam-wrformer">
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="text-field">
-                                        <label class="text-field--label" for="color">Color</label>
+                                        <label class="text-field--label" for="color">Color Hex</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" data-type="color" type="text" id="color"/>
+                                            <input class="text-field--group__input" data-form="color" type="text" id="color"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of2">
+                                    <div class="text-field">
+                                        <label class="text-field--label" for="colorhsb">Color Hsb</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" data-form="color" data-format="hsb" type="text" id="colorhsb"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of2">
+                                    <div class="text-field">
+                                        <label class="text-field--label" for="colorrgb">Color Rgb</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" data-form="color" data-format="rgb" type="text" id="colorrgb"/>
                                         </div>
                                     </div>
                                 </div>
@@ -312,13 +366,13 @@
             <div class="origam-grid__cell origam-size-1of1">
                 <div class="origam-example">
                     <div class="origam-grid">
-                        <div class="origam-wrapper">
+                        <div class="origam-wrformer">
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="text-field">
                                         <label class="text-field--label" for="date">Date picker</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" type="text" id="date"/>
+                                            <input class="text-field--group__input" data-form="input" type="text" id="date"/>
                                         </div>
                                     </div>
                                 </div>
@@ -342,13 +396,13 @@
             <div class="origam-grid__cell origam-size-1of1">
                 <div class="origam-example">
                     <div class="origam-grid">
-                        <div class="origam-wrapper">
+                        <div class="origam-wrformer">
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of2">
                                     <div class="text-field">
                                         <label class="text-field--label" for="Text">Text</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" type="text" id="Text"/>
+                                            <input class="text-field--group__input" data-form="input" type="text" id="Text"/>
                                         </div>
                                     </div>
                                 </div>
@@ -356,7 +410,7 @@
                                     <div class="text-field text-field--disabled">
                                         <label class="text-field--label" for="disabled">Text disabled</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" type="text" id="disabled" disabled/>
+                                            <input class="text-field--group__input" data-form="input" type="text" id="disabled" disabled/>
                                         </div>
                                     </div>
                                 </div>
@@ -364,7 +418,7 @@
                                     <div class="text-field">
                                         <label class="text-field--label" for="help">Text with help</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" type="text" id="help"/>
+                                            <input class="text-field--group__input" data-form="input" type="text" id="help"/>
                                         </div>
                                         <span class="text-field--help">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere faucibus efficitur.</span>
                                     </div>
@@ -373,7 +427,7 @@
                                     <div class="text-field text-field--fixed">
                                         <label class="text-field--label" for="Fixed" data-fixed="true">Text Fixed</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" id="Fixed" type="text" />
+                                            <input class="text-field--group__input" data-form="input" id="Fixed" type="text" />
                                         </div>
                                     </div>
                                 </div>
@@ -384,7 +438,7 @@
                                             <div class="text-field--group__addons">
                                                 <i class="origamicon origamicon-lab"></i>
                                             </div>
-                                            <input class="text-field--group__input" id="icon" type="text" />
+                                            <input class="text-field--group__input" data-form="input" id="icon" type="text" />
                                         </div>
                                         <span class="text-field--help">With addons you can add icon or money type ($,£)</span>
                                     </div>
@@ -393,7 +447,7 @@
                                     <div class="text-field text-field--focused">
                                         <label class="text-field--label" for="focus">Text focus</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" id="focus" type="text" />
+                                            <input class="text-field--group__input" data-form="input" id="focus" type="text" />
                                         </div>
                                     </div>
                                 </div>
@@ -401,7 +455,7 @@
                                     <div class="text-field text-field--hidden">
                                         <label class="text-field--label" for="hidden">Text label hidden</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" id="hidden" type="text" />
+                                            <input class="text-field--group__input" data-form="input" id="hidden" type="text" />
                                         </div>
                                         <span class="text-field--help">Label is hidden</span>
                                     </div>
@@ -410,7 +464,7 @@
                                     <div class="text-field text-field--active">
                                         <label class="text-field--label" for="icon">Text active</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" id="active" type="text" />
+                                            <input class="text-field--group__input" data-form="input" id="active" type="text" />
                                         </div>
                                     </div>
                                 </div>
@@ -418,7 +472,7 @@
                                     <div class="text-field">
                                         <label class="text-field--label" for="area" >Text area</label>
                                         <div class="text-field--group">
-                                            <textarea class="text-field--group__input" id="area"></textarea>
+                                            <textarea class="text-field--group__input" data-form="textarea" id="area"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -442,13 +496,13 @@
             <div class="origam-grid__cell origam-size-1of1">
                 <div class="origam-example">
                     <div class="origam-grid">
-                        <div class="origam-wrapper">
+                        <div class="origam-wrformer">
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="text-field">
                                         <label class="text-field--label" for="number">Number</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" type="number" id="number" />
+                                            <input class="text-field--group__input" data-form="input" type="number" id="number" />
                                         </div>
                                     </div>
                                 </div>
@@ -472,13 +526,13 @@
             <div class="origam-grid__cell origam-size-1of1">
                 <div class="origam-example">
                     <div class="origam-grid">
-                        <div class="origam-wrapper">
+                        <div class="origam-wrformer">
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="text-field">
                                         <label class="text-field--label" for="phone1">Phone Number</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" type="phone" id="phone1" />
+                                            <input class="text-field--group__input" data-form="phone" type="phone" id="phone1" />
                                         </div>
                                     </div>
                                 </div>
@@ -486,7 +540,7 @@
                                     <div class="text-field">
                                         <label class="text-field--label" for="phone2">Phone Number</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" type="phone" id="phone2" />
+                                            <input class="text-field--group__input" data-form="phone" type="phone" id="phone2" />
                                         </div>
                                     </div>
                                 </div>
@@ -494,7 +548,7 @@
                                     <div class="text-field">
                                         <label class="text-field--label" for="phone3">Phone Number</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" type="phone" id="phone3" />
+                                            <input class="text-field--group__input" data-form="phone" type="phone" id="phone3" />
                                         </div>
                                     </div>
                                 </div>
@@ -518,13 +572,13 @@
             <div class="origam-grid__cell origam-size-1of1">
                 <div class="origam-example">
                     <div class="origam-grid">
-                        <div class="origam-wrapper">
+                        <div class="origam-wrformer">
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="text-field">
                                         <label class="text-field--label" for="email">Email</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" type="email" id="email" />
+                                            <input class="text-field--group__input" data-form="input" type="email" id="email" />
                                         </div>
                                     </div>
                                 </div>
@@ -548,13 +602,13 @@
             <div class="origam-grid__cell origam-size-1of1">
                 <div class="origam-example">
                     <div class="origam-grid">
-                        <div class="origam-wrapper">
+                        <div class="origam-wrformer">
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="text-field">
                                         <label class="text-field--label" for="url">Url</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" type="url" id="url" />
+                                            <input class="text-field--group__input" data-form="input" type="url" id="url" />
                                         </div>
                                     </div>
                                 </div>
@@ -578,13 +632,13 @@
             <div class="origam-grid__cell origam-size-1of1">
                 <div class="origam-example">
                     <div class="origam-grid">
-                        <div class="origam-wrapper">
+                        <div class="origam-wrformer">
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="text-field">
                                         <label class="text-field--label" for="password1">Password</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input password-strenght password-switch" type="password" id="password1" />
+                                            <input class="text-field--group__input" data-form="password" data-modules="switch strenght" type="password" id="password1" />
                                         </div>
                                     </div>
                                 </div>
@@ -592,7 +646,7 @@
                                     <div class="text-field">
                                         <label class="text-field--label" for="password2">Password</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input password-switch" type="password" id="password2" />
+                                            <input class="text-field--group__input" data-form="password" data-modules="switch" type="password" id="password2" />
                                         </div>
                                     </div>
                                 </div>
@@ -600,7 +654,7 @@
                                     <div class="text-field">
                                         <label class="text-field--label" for="password3">Password</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input password-strenght" type="password" id="password3" />
+                                            <input class="text-field--group__input" data-form="password" data-modules="strenght" type="password" id="password3" />
                                         </div>
                                     </div>
                                 </div>
@@ -624,13 +678,13 @@
             <div class="origam-grid__cell origam-size-1of1">
                 <div class="origam-example">
                     <div class="origam-grid">
-                        <div class="origam-wrapper">
+                        <div class="origam-wrformer">
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="text-field">
                                         <label class="text-field--label" for="file">File</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" type="file" id="file" />
+                                            <input class="text-field--group__input" data-form="input" type="file" id="file" />
                                         </div>
                                     </div>
                                 </div>
@@ -654,13 +708,13 @@
             <div class="origam-grid__cell origam-size-1of1">
                 <div class="origam-example">
                     <div class="origam-grid">
-                        <div class="origam-wrapper">
+                        <div class="origam-wrformer">
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of3">
                                     <div class="text-field text-field--success">
                                         <label class="text-field--label" for="success">success</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" type="text" id="success" />
+                                            <input class="text-field--group__input" data-form="input" type="text" id="success" />
                                         </div>
                                     </div>
                                 </div>
@@ -669,7 +723,7 @@
                                     <div class="text-field text-field--warning">
                                         <label class="text-field--label" for="warning">warning</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" type="text" id="warning" />
+                                            <input class="text-field--group__input" data-form="input" type="text" id="warning" />
                                         </div>
                                     </div>
                                 </div>
@@ -678,7 +732,7 @@
                                     <div class="text-field text-field--error">
                                         <label class="text-field--label" for="error">Error</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" type="text" id="error" />
+                                            <input class="text-field--group__input" data-form="input" type="text" id="error" />
                                         </div>
                                     </div>
                                 </div>

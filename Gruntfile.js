@@ -7,8 +7,8 @@ module.exports = function(grunt) {
                 separator: "<%= current_file_name %>"
             },
             dist: {
-                src: [ 'assets/js/demo/demo.js'],
-                dest: 'dist/js/main.js'
+                src: [ 'assets/js/origam/input.js','assets/js/origam/mask.js','assets/js/origam/close.js','assets/js/origam/tooltip.js','assets/js/origam/*.js'],
+                dest: 'dist/js/src/<%= pkg.name %>.js'
             }
         },
 
@@ -22,12 +22,59 @@ module.exports = function(grunt) {
             }
         },
 
+        copy: {
+            main: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'assets/fonts/',
+                        src: '**',
+                        dest: 'dist/fonts/',
+                        flatten: true,
+                        filter: 'isFile'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'assets/images/',
+                        src: '**',
+                        dest: 'dist/images/',
+                        flatten: true,
+                        filter: 'isFile'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'dist/js/cpr/',
+                        src: ['**/*.js'],
+                        dest: 'dist/js/',
+                        rename: function(dest, src) {
+                            return dest+src.replace('.js', '.min.js');
+                        }
+                    }
+                ]
+            }
+        },
+
+        uglify: {
+            build: {
+                files: [{
+                    expand: true,
+                    src: '**/*.js',
+                    dest: 'dist/js/cpr',
+                    cwd: 'dist/js/src/'
+                }]
+            }
+        },
+
+        clean: [
+            "dist/js/cpr"
+        ],
+
         watch: {
             options: {
                 livereload: true // Activons le livereload du navigateur
             },
             src: {
-                files: ['assets/js/*.js', 'assets/css/*.css', 'demo/*.html'], // Les fichiers à observer…
+                files: ['assets/js/origam/*.js', 'assets/css/*.css', 'demo/*.html'], // Les fichiers à observer…
                 tasks: ['default']  // … la commande à effectuer
             }
         }
@@ -42,7 +89,7 @@ module.exports = function(grunt) {
             // get the module name from the directory name
             var dirName = dir.substr(dir.lastIndexOf('/')+1);
 
-            if(dirName != 'demo') {
+            if(dirName != 'origam') {
 
                 // get the current concat object from initConfig
                 var concat = grunt.config.get('concat') || {};
@@ -51,7 +98,7 @@ module.exports = function(grunt) {
                 // and combine into a single js file per module
                 concat[dirName] = {
                     src: [dir + '/*.js'],
-                    dest: 'dist/js/' + dirName + '.min.js'
+                    dest: 'dist/js/src/' + dirName + '.js'
                 };
 
                 // add module subtasks to the concat task in initConfig
@@ -64,7 +111,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-csso');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-clean');
 
     // J'assigne ma tâche à la commande par défaut de Grunt
-    grunt.registerTask("default", ["csso", "prepareModules", "concat"]);
+    grunt.registerTask("default", ["csso", "prepareModules", "concat", "uglify", "copy", "clean"]);
 };

@@ -6,6 +6,7 @@
   @include position(relative, null, null, null, null);
   padding-top: $base-space * 4;
   padding-bottom: $base-space;
+  padding-right: $base-space;
 }
 
 .text-field--group {
@@ -27,6 +28,7 @@
     @include position(absolute, null, 0, $base-space - 2, 0);
     height: 2px;
     background-color: $primary-color-1;
+    z-index: 2;
     @include transform(scale(0));
     @include transition-property(transform);
     @include transition-duration(0.6s);
@@ -96,7 +98,9 @@
   @include transition-property(transform, color);
   @include transition-duration(0.4s);
   @include transition-timing-function(ease-out);
-
+  .text-field--color & {
+    @include position(absolute, initial, null, 30px, 0);
+  }
 }
 
 // Text field input
@@ -170,7 +174,7 @@ input[type="range"].text-field--group__input:after {
 }
 
 .text-field--group__addons {
-  @include position(absolute, 0, null, null, -68px);
+  @include position(absolute, 0, null, null, -55px);
   @include size(40px, 40px);
   line-height: 40px;
   @include font-size(24px);
@@ -182,7 +186,7 @@ input[type="range"].text-field--group__input:after {
 
   .text-field--group__input + &,
   .text-field.right &{
-    @include position(absolute, null, -68px, null, initial);
+    @include position(absolute, null, -55px, null, initial);
   }
 
   .text-field--group__switchpass{
@@ -222,10 +226,58 @@ input[type="range"].text-field--group__input:after {
   }
 }
 
+/**
+  * Color
+  */
+
+.text-field--color{
+  border: 1px solid $black-4;
+  padding-top: $base-space;
+  cursor: pointer;
+  @include transition-property(border);
+  @include transition-duration(0.6s);
+  @include transition-timing-function(ease-out);
+  &.text-field--active,
+  &.text-field--focused{
+    label {
+      display: none;
+    }
+  }
+  &.text-field--focused{
+    border-color:$primary-color-1;
+  }
+  .text-field--group {
+    padding: 0;
+    padding-top: 4px;
+    &:before,
+    &:after {
+      display: none;
+    }
+  }
+  .text-field--group__input{
+    cursor: pointer;
+  }
+}
+
+.text-field--color_current{
+  @include size(calc( 100% + 60px ),100px);
+  margin-left: -60px;
+  background-color: $black-4;
+}
+
+
+/**
+  * Progressbar
+  */
+
 .text-field--progressbar {
   @include position(absolute, null, null, $base-space - 2, null);
   min-height: 1px;
   border-top: 2px solid;
+  z-index: 3;
+  @include transition-property(all);
+  @include transition-duration(0.4s);
+  @include transition-timing-function(ease-out);
   &.text-field--progressbar__danger{
     border-color: $color-error;
   }

@@ -7,9 +7,8 @@
     <link href="../dist/css/demo.min.css" rel="stylesheet"/>
     <script type="text/javascript" src="../dist/js/jquery.min.js"></script>
     <script type="text/javascript" src="../dist/js/plugins.min.js"></script>
-    <script type="text/javascript" src="../dist/js/app.min.js"></script>
+    <script type="text/javascript" src="../dist/js/src/origam.js"></script>
     <script type="text/javascript" src="../dist/js/main.js"></script>
-    <script src="node_modules/grunt-contrib-watch/tasks/lib/livereload.js"></script>
 </head>
 <body>
 <div class="origam-grid">
@@ -47,7 +46,7 @@
                                         <div class="alert-main">
                                             Ghost message
                                         </div>
-                                        <div class="alert-close">
+                                        <div class="alert-close" data-button="close">
                                             <i class="origamicon origamicon-close"></i>
                                         </div>
                                     </div>
@@ -55,7 +54,7 @@
                                         <div class="alert-main">
                                             message primary
                                         </div>
-                                        <div class="alert-close">
+                                        <div class="alert-close" data-button="close">
                                             <i class="origamicon origamicon-close"></i>
                                         </div>
                                     </div>
@@ -63,7 +62,7 @@
                                         <div class="alert-main">
                                             message success
                                         </div>
-                                        <div class="alert-close">
+                                        <div class="alert-close" data-button="close">
                                             <i class="origamicon origamicon-close"></i>
                                         </div>
                                     </div>
@@ -71,7 +70,7 @@
                                         <div class="alert-main">
                                             message info
                                         </div>
-                                        <div class="alert-close">
+                                        <div class="alert-close" data-button="close">
                                             <i class="origamicon origamicon-close"></i>
                                         </div>
                                     </div>
@@ -79,7 +78,7 @@
                                         <div class="alert-main">
                                             message warning
                                         </div>
-                                        <div class="alert-close">
+                                        <div class="alert-close" data-button="close">
                                             <i class="origamicon origamicon-close"></i>
                                         </div>
                                     </div>
@@ -87,7 +86,7 @@
                                         <div class="alert-main">
                                             message error
                                         </div>
-                                        <div class="alert-close">
+                                        <div class="alert-close" data-button="close">
                                             <i class="origamicon origamicon-close"></i>
                                         </div>
                                     </div>
@@ -115,72 +114,114 @@
                         <div class="origam-wrapper">
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
-                                    <div class="alert alert-ghost alert-icon">
-                                        <div class="icon">
+                                    <div class="alert alert-ghost icon left" data-animate="true">
+                                        <div class="alert-icon">
                                             <i class="origamicon origamicon-message"></i>
                                         </div>
                                         <div class="alert-main">
                                             Ghost message
                                         </div>
-                                        <div class="alert-close">
+                                        <div class="alert-close" data-button="close">
                                             <i class="origamicon origamicon-close"></i>
                                         </div>
                                     </div>
-                                    <div class="alert alert-primary alert-icon">
-                                        <div class="icon">
+                                    <div class="alert alert-primary icon left" data-animate="true">
+                                        <div class="alert-icon">
                                             <i class="origamicon origamicon-evernote"></i>
                                         </div>
                                         <div class="alert-main">
                                             message primary
                                         </div>
-                                        <div class="alert-close">
+                                        <div class="alert-close" data-button="close">
                                             <i class="origamicon origamicon-close"></i>
                                         </div>
                                     </div>
-                                    <div class="alert alert-success alert-icon">
-                                        <div class="icon">
+                                    <div class="alert alert-success icon left" data-animate="true">
+                                        <div class="alert-icon">
                                             <i class="origamicon origamicon-check2"></i>
                                         </div>
                                         <div class="alert-main">
                                             message success
                                         </div>
-                                        <div class="alert-close">
+                                        <div class="alert-close" data-button="close">
                                             <i class="origamicon origamicon-close"></i>
                                         </div>
                                     </div>
-                                    <div class="alert alert-info alert-icon">
-                                        <div class="icon">
+                                    <div class="alert alert-info icon left" data-animate="true">
+                                        <div class="alert-icon">
                                             <i class="origamicon origamicon-information"></i>
                                         </div>
                                         <div class="alert-main">
                                             message info
                                         </div>
-                                        <div class="alert-close">
+                                        <div class="alert-close" data-button="close">
                                             <i class="origamicon origamicon-close"></i>
                                         </div>
                                     </div>
-                                    <div class="alert alert-warning alert-icon">
-                                        <div class="icon">
+                                    <div class="alert alert-warning icon left" data-animate="true">
+                                        <div class="alert-icon">
                                             <i class="origamicon origamicon-warning"></i>
                                         </div>
                                         <div class="alert-main">
                                             message warning
                                         </div>
-                                        <div class="alert-close">
+                                        <div class="alert-close" data-button="close">
                                             <i class="origamicon origamicon-close"></i>
                                         </div>
                                     </div>
-                                    <div class="alert alert-error alert-icon">
-                                        <div class="icon">
+                                    <div class="alert alert-error icon left" data-animate="true">
+                                        <div class="alert-icon">
                                             <i class="origamicon origamicon-emoticon-poop"></i>
                                         </div>
                                         <div class="alert-main">
                                             message error
                                         </div>
-                                        <div class="alert-close">
+                                        <div class="alert-close" data-button="close">
                                             <i class="origamicon origamicon-close"></i>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="origam-section">
+            <div class="origam-grid__cell origam-size-1of1">
+                <h2 id="message-notification">
+                    Notification
+                    <a class="anchor-link" href="#message-notification">
+                        <span class="anchor-icon">
+                            <i class="origamicon origamicon-link2"></i>
+                        </span>
+                    </a>
+                </h2>
+            </div>
+            <div class="origam-grid__cell origam-size-1of1">
+                <div class="origam-example">
+                    <div class="origam-grid">
+                        <div class="origam-wrapper">
+                            <div class="origam-section">
+                                <div class="origam-grid__cell origam-size-1of3">
+                                    <a class="btn btn-ghost" data-app="notification" data-button="ripple" title="Notification" data-content="Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum." href="#">
+                                        Notification
+                                    </a>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of3">
+                                    <a class="btn btn-primary" data-app="notification" data-button="ripple" data-type="primary" title="Notification" data-content="<p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>" href="#">
+                                        Notification no html
+                                    </a>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of3">
+                                    <a class="btn btn-success" data-app="notification" data-button="ripple" data-type="success" data-icon="true" data-html="true" title="Notification" data-content="<p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>" href="#">
+                                        Notification popup icon left
+                                    </a>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of3">
+                                    <a class="btn btn-error" data-app="notification" data-button="ripple" data-type="error" data-icon="true" data-direction="right" title="Notification" data-content="<p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>" href="#">
+                                        Notification popup icon right
+                                    </a>
                                 </div>
                             </div>
                         </div>
