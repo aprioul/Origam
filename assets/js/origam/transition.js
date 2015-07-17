@@ -10,14 +10,14 @@
     // ============================================================
 
     function transitionEnd() {
-        var el = document.createElement('origam')
+        var el = document.createElement('origam');
 
         var transEndEventNames = {
             WebkitTransition : 'webkitTransitionEnd',
             MozTransition    : 'transitionend',
             OTransition      : 'oTransitionEnd otransitionend',
             transition       : 'transitionend'
-        }
+        };
 
         for (var name in transEndEventNames) {
             if (el.style[name] !== undefined) {
@@ -25,23 +25,23 @@
             }
         }
 
-        return false // explicit for ie8 (  ._.)
+        return false;
     }
 
     // http://blog.alexmaccaw.com/css-transitions
     $.fn.emulateTransitionEnd = function (duration) {
-        var called = false
-        var $el = this
-        $(this).one('origamTransitionEnd', function () { called = true })
-        var callback = function () { if (!called) $($el).trigger($.support.transition.end) }
-        setTimeout(callback, duration)
+        var called = false;
+        var $el = this;
+        $(this).one('origamTransitionEnd', function () { called = true });
+        var callback = function () { if (!called) $($el).trigger($.support.transition.end) };
+        setTimeout(callback, duration);
         return this
-    }
+    };
 
     $(function () {
-        $.support.transition = transitionEnd()
+        $.support.transition = transitionEnd();
 
-        if (!$.support.transition) return
+        if (!$.support.transition) return;
 
         $.event.special.origamTransitionEnd = {
             bindType: $.support.transition.end,

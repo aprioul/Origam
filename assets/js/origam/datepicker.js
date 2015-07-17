@@ -18,7 +18,7 @@
         this.init('date', element, options)
     };
 
-    if (!$.fn.input) throw new Error('Date requires input.js');
+    if (!$.fn.input) throw new Error('Datepicker requires input.js');
 
     Date.VERSION  = '0.1.0';
 

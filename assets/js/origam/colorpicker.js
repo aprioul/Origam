@@ -117,7 +117,7 @@
             return hex;
         };
 
-    if (!$.fn.input) throw new Error('Color requires input.js');
+    if (!$.fn.input) throw new Error('Colorpicker requires input.js');
 
     Color.VERSION  = '0.1.0';
 

@@ -8,7 +8,7 @@
 
     'use strict';
 
-    // TOOLTIP PUBLIC CLASS DEFINITION
+    // INPUT PUBLIC CLASS DEFINITION
     // ===============================
 
     var Input = function (element, options) {
@@ -135,7 +135,7 @@
             .removeClass(this.options.classes.focus);
     };
 
-    // TOOLTIP PLUGIN DEFINITION
+    // INPUT PLUGIN DEFINITION
     // =========================
 
     function Plugin(option) {
@@ -156,7 +156,7 @@
     $.fn.input.Constructor = Input;
 
 
-    // TOOLTIP NO CONFLICT
+    // INPUT NO CONFLICT
     // ===================
 
     $.fn.input.noConflict = function () {
