@@ -35,7 +35,14 @@
         },
         parentNode: 'text-field',
         placement: 'after',
-        addon: '<div class="text-field--group__addons"></div>'
+        addon: '<div class="text-field--group__addons"></div>',
+        definitions: {
+            "9": "[0-9]",
+            a: "[A-Za-z]",
+            "*": "[A-Za-z0-9]",
+            "~": "[+-]"
+        },
+        mask: "9999 9999 9999 9999"
     };
 
     Input.prototype.init = function (type, element, options) {
@@ -45,7 +52,14 @@
         this.options   = this.getOptions(options);
         this.$parent   = '.' + this.options.parentNode;
 
-        var event = this.event(this.options);
+        if($(e.currentTarget).val() != ''){
+            $(e.currentTarget)
+                .parents(this.$parent)
+                .addClass(this.options.classes.active);
+        }
+
+        this.event(this.options);
+        this.mask(this.options);
 
         this.$element.on('focusin', $.proxy(this.startFocus, this));
         this.$element.on('focusout', $.proxy(this.endFocus, this));
@@ -63,6 +77,10 @@
 
     Input.prototype.event = function (options) {
         return null;
+    };
+
+    Input.prototype.mask = function (options) {
+        this.addplaceholder(this.options);
     };
 
     Input.prototype.addPlaceholder = function (options){
@@ -100,11 +118,6 @@
         $(e.currentTarget)
             .parents(this.$parent)
             .removeClass(this.options.classes.focus);
-        if($(e.currentTarget).val() != ''){
-            $(e.currentTarget)
-                .parents(this.$parent)
-                .addClass(this.options.classes.active);
-        }
     };
 
     // TOOLTIP PLUGIN DEFINITION
@@ -141,98 +154,6 @@
     });
 
 })(jQuery, window);
-/**
- * Apply origamMask
- */
-
-(function ($, w) {
-    'use strict';
-
-    // MASK CLASS DEFINITION
-    // ======================
-
-    var Mask = function (element, options) {
-        this.type       = null;
-        this.options    = null;
-        this.$element   = null;
-
-        this.init('mask', element, options)
-    };
-
-    if (!$.fn.input) throw new Error('Notification requires input.js');
-
-    Mask.VERSION = '0.1.0';
-
-    Mask.TRANSITION_DURATION = 1000;
-
-    Mask.DEFAULTS = $.extend({}, $.fn.input.Constructor.DEFAULTS, {
-        definitions: {
-            "9": "[0-9]",
-            a: "[A-Za-z]",
-            "*": "[A-Za-z0-9]",
-            "~": "[+-]"
-        },
-        mask: "9999 9999 9999 9999"
-    });
-
-    Mask.prototype = $.extend({}, $.fn.input.Constructor.prototype);
-
-    Mask.prototype.constructor = Mask;
-
-    Mask.prototype.event = function (options) {
-        // Element collection
-        this.options    = this.getOptions(options);
-        this.mask     = this.options.mask;
-
-        this.$element.on('keyup input', $.proxy(this.keyEvent, this));
-    };
-
-    Mask.prototype.getDefaults = function () {
-        return Mask.DEFAULTS
-    };
-
-    Mask.prototype.keyEvent = function () {
-        this.val      = this.$element.val();
-
-
-    };
-
-    // MASK PLUGIN DEFINITION
-    // =======================
-
-    function Plugin(option) {
-        return this.each(function () {
-            var $this = $(this);
-            var data  = $this.data('origam.mask');
-
-            if (!data) $this.data('origam.mask', (data = new Mask(this)));
-            if (typeof option == 'string') data[option].call($this)
-        })
-    }
-
-    var old = $.fn.mask;
-
-    $.fn.mask             = Plugin;
-    $.fn.mask.Constructor = Mask;
-
-
-    // MASK NO CONFLICT
-    // =================
-
-    $.fn.mask.noConflict = function () {
-        $.fn.mask = old;
-        return this
-    };
-
-
-    // MASK DATA-API
-    // ==============
-
-    $(document).ready(function() {
-        $('[data-form="mask"]').mask();
-    });
-
-})(jQuery, window);
 
 /**
  * Apply origamClose
@@ -241,7 +162,7 @@
 (function ($, w) {
     'use strict';
 
-    // Close CLASS DEFINITION
+    // CLOSE CLASS DEFINITION
     // ======================
 
     var app = '[data-button="close"]';
@@ -302,7 +223,7 @@
     };
 
 
-    // Close PLUGIN DEFINITION
+    // CLOSE PLUGIN DEFINITION
     // =======================
 
     function Plugin(option) {
@@ -321,7 +242,7 @@
     $.fn.close.Constructor = Close;
 
 
-    // Close NO CONFLICT
+    // CLOSE NO CONFLICT
     // =================
 
     $.fn.close.noConflict = function () {
@@ -330,7 +251,7 @@
     };
 
 
-    // Close DATA-API
+    // CLOSE DATA-API
     // ==============
 
     $(document).on('click.origam.Close.data-api', app, Close.prototype.close)
@@ -1681,6 +1602,73 @@
  * Apply origamFile
  */
 
+(function ($, w) {
+
+    'use strict';
+
+    // FILE PUBLIC CLASS DEFINITION
+    // ===============================
+
+    var File = function (element, options) {
+        this.type       = null;
+        this.options    = null;
+        this.$element   = null;
+
+        this.init('file', element, options)
+    };
+
+    if (!$.fn.input) throw new Error('File requires input.js');
+
+    File.VERSION  = '0.1.0';
+
+    File.TRANSITION_DURATION = 1000;
+
+    File.DEFAULTS = $.extend({}, $.fn.input.Constructor.DEFAULTS, {
+
+
+    });
+
+    File.prototype = $.extend({}, $.fn.input.Constructor.prototype);
+
+    File.prototype.constructor = File;
+
+    File.prototype.event = function (options) {
+
+    };
+
+    // FILE PLUGIN DEFINITION
+    // =========================
+
+    function Plugin(option) {
+        return this.each(function () {
+            var $this   = $(this);
+            var data    = $this.data('origam.file');
+            var options = typeof option == 'object' && option;
+
+            if (!data) $this.data('origam.file', (data = new File(this, options)));
+            if (typeof option == 'string') data[option]()
+        })
+    }
+
+    var old = $.fn.file;
+
+    $.fn.file             = Plugin;
+    $.fn.file.Constructor = File;
+
+
+    // FILE NO CONFLICT
+    // ===================
+
+    $.fn.input.noConflict = function () {
+        $.fn.file = old;
+        return this
+    };
+
+    $(document).ready(function() {
+        $('[data-form="file"]').file();
+    });
+
+})(jQuery, window);
 
 /**
  * follow the first link inside each element in the set of matched elements
@@ -3720,6 +3708,85 @@
     });
 
 })(jQuery, window);
+/**
+ * Apply origamTable
+ *
+ */
+
+(function ($, w) {
+
+    'use strict';
+
+    // TABLE PUBLIC CLASS DEFINITION
+    // ===============================
+
+    var Table = function (element, options) {
+        this.type       = null;
+        this.options    = null;
+        this.focus    = null;
+        this.blur    = null;
+        this.$element   = null;
+
+        this.init('table', element, options)
+    };
+
+    Table.VERSION  = '0.1.0';
+
+    Table.TRANSITION_DURATION = 1000;
+
+    Table.DEFAULTS = {
+        
+    };
+
+    Table.prototype.init = function (type, element, options) {
+        
+    };
+
+    Table.prototype.getDefaults = function () {
+        return Table.DEFAULTS
+    };
+
+    Table.prototype.getOptions = function (options) {
+        options = $.extend({}, this.getDefaults(), this.$element.data(), options);
+
+        return options
+    };
+
+    // TABLE PLUGIN DEFINITION
+    // =========================
+
+    function Plugin(option) {
+        return this.each(function () {
+            var $this   = $(this);
+            var data    = $this.data('origam.table');
+            var options = typeof option == 'object' && option;
+
+            if (!data && /destroy|hide/.test(option)) return;
+            if (!data) $this.data('origam.table', (data = new Table(this, options)));
+            if (typeof option == 'string') data[option]()
+        })
+    }
+
+    var old = $.fn.table;
+
+    $.fn.table             = Plugin;
+    $.fn.table.Constructor = Table;
+
+
+    // TABLE NO CONFLICT
+    // ===================
+
+    $.fn.table.noConflict = function () {
+        $.fn.table = old;
+        return this
+    };
+
+    $(document).ready(function() {
+        $('[data-form="table"]').table();
+    });
+
+})(jQuery, window);
+
 /**
  * Apply origamRipple
  */

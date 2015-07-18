@@ -6,7 +6,7 @@
 (function ($, w) {
     'use strict';
 
-    // Close CLASS DEFINITION
+    // CLOSE CLASS DEFINITION
     // ======================
 
     var app = '[data-button="close"]';
@@ -67,7 +67,7 @@
     };
 
 
-    // Close PLUGIN DEFINITION
+    // CLOSE PLUGIN DEFINITION
     // =======================
 
     function Plugin(option) {
@@ -86,7 +86,7 @@
     $.fn.close.Constructor = Close;
 
 
-    // Close NO CONFLICT
+    // CLOSE NO CONFLICT
     // =================
 
     $.fn.close.noConflict = function () {
@@ -95,7 +95,7 @@
     };
 
 
-    // Close DATA-API
+    // CLOSE DATA-API
     // ==============
 
     $(document).on('click.origam.Close.data-api', app, Close.prototype.close)

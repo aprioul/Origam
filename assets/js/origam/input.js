@@ -35,7 +35,14 @@
         },
         parentNode: 'text-field',
         placement: 'after',
-        addon: '<div class="text-field--group__addons"></div>'
+        addon: '<div class="text-field--group__addons"></div>',
+        definitions: {
+            "9": "[0-9]",
+            a: "[A-Za-z]",
+            "*": "[A-Za-z0-9]",
+            "~": "[+-]"
+        },
+        mask: "9999 9999 9999 9999"
     };
 
     Input.prototype.init = function (type, element, options) {
@@ -45,7 +52,14 @@
         this.options   = this.getOptions(options);
         this.$parent   = '.' + this.options.parentNode;
 
-        var event = this.event(this.options);
+        if($(e.currentTarget).val() != ''){
+            $(e.currentTarget)
+                .parents(this.$parent)
+                .addClass(this.options.classes.active);
+        }
+
+        this.event(this.options);
+        this.mask(this.options);
 
         this.$element.on('focusin', $.proxy(this.startFocus, this));
         this.$element.on('focusout', $.proxy(this.endFocus, this));
@@ -63,6 +77,10 @@
 
     Input.prototype.event = function (options) {
         return null;
+    };
+
+    Input.prototype.mask = function (options) {
+        this.addplaceholder(this.options);
     };
 
     Input.prototype.addPlaceholder = function (options){
@@ -100,11 +118,6 @@
         $(e.currentTarget)
             .parents(this.$parent)
             .removeClass(this.options.classes.focus);
-        if($(e.currentTarget).val() != ''){
-            $(e.currentTarget)
-                .parents(this.$parent)
-                .addClass(this.options.classes.active);
-        }
     };
 
     // TOOLTIP PLUGIN DEFINITION
