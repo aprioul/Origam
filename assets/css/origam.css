@@ -13764,7 +13764,7 @@ Copyright (c) 2015 Daniel Eden
   clear: both;
 }
 
-.checkbox-help, .radio-button--help, .switch-help {
+.checkbox-help, .radio-button--help, .select-help, .switch-help {
   font-size: 12px;
   font-size: 0.75rem;
   font-weight: 400;
@@ -20441,8 +20441,10 @@ input[type="range"].text-field--group__input:after {
   position: absolute;
   top: 0;
   left: -55px;
-  width: 40px;
-  height: 40px;
+  width: 100%;
+  height: 100%;
+  max-width: 40px;
+  max-height: 40px;
   line-height: 40px;
   font-size: 24px;
   font-size: 1.5rem;
@@ -20544,7 +20546,52 @@ input[type="range"].text-field--group__input:after {
 }
 
 /**
-  * Progressbar
+  * File
+  */
+.text-field--file.text-field--addons.left {
+  padding-left: 118px;
+}
+.text-field--file.text-field--addons.left label {
+  position: absolute;
+  top: initial;
+  bottom: 40px;
+  left: 118px;
+}
+.text-field--file .text-field--group {
+  height: 90px;
+}
+.text-field--file .text-field--group__addons {
+  max-width: 90px;
+  max-height: 90px;
+  left: -105px;
+}
+.text-field--file .text-field--file_current {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  font-size: 14px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding: 5px;
+}
+.text-field--file .text-field--file_current .text-field--file_current__close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  line-height: initial;
+  cursor: pointer;
+}
+.text-field--file .text-field--file_current .text-field--file_current__file {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.12);
+}
+.text-field--file .text-field--group__input {
+  position: absolute;
+  bottom: 10px;
+}
+
+/**
+  * Password
   */
 .text-field--progressbar {
   position: absolute;
@@ -20697,13 +20744,9 @@ input[type="range"].text-field--group__input:after {
   * Select base styles
   */
 .select-help {
-  height: 32px;
-  padding: 0 16px;
-  font-size: 16px;
-  font-size: 1rem;
-  color: rgba(0, 0, 0, 0.26);
-  line-height: 32px;
-  white-space: nowrap;
+  display: block;
+  color: rgba(0, 0, 0, 0.54);
+  text-align: left;
 }
 
 /**

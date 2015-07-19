@@ -266,7 +266,6 @@
         this.$element
             .parents(this.$parent)
             .on(this.options.showEvent, $.proxy(this.show, this))
-            .addClass(this.options.parentClass)
             .prepend(this.color);
 
     };
@@ -284,8 +283,11 @@
 
     Color.prototype.change = function(field) {
 
+        console.log(field);
+        console.log(field.parents(this.$parent));
+
         if (field.parents(this.$parent).attr('class').indexOf('--hex') > 0) {
-            this.options.color = hexToHsb(fixHex(field.value));
+            this.options.color = hexToHsb(fixHex(this.field[0].val()));
             this.fillRGBFields(this.options.color);
             this.fillHSBFields(this.options.color);
         } else if (field.parents(this.$parent).attr('class').indexOf('--hsb') > 0) {

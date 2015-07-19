@@ -35,6 +35,7 @@
         },
         parentNode: 'text-field',
         placement: 'after',
+        parentClass : '',
         addon: '<div class="text-field--group__addons"></div>',
         definitions: {
             "9": "[0-9]",
@@ -52,17 +53,21 @@
         this.options   = this.getOptions(options);
         this.$parent   = '.' + this.options.parentNode;
 
-        if($(e.currentTarget).val() != ''){
-            $(e.currentTarget)
-                .parents(this.$parent)
-                .addClass(this.options.classes.active);
-        }
+        this.$element
+            .parents(this.$parent)
+            .addClass(this.options.parentClass);
 
         this.event(this.options);
         this.mask(this.options);
 
-        this.$element.on('focusin', $.proxy(this.startFocus, this));
-        this.$element.on('focusout', $.proxy(this.endFocus, this));
+        if(this.options.placeholder){
+            this.placeholder(this.options.placeholder);
+        }
+
+        this.$element
+            .on('focusin', $.proxy(this.startFocus, this))
+            .on('focusout', $.proxy(this.endFocus, this))
+            .on('change', $.proxy(this.valChange, this));
     };
 
     Input.prototype.getDefaults = function () {
@@ -80,10 +85,12 @@
     };
 
     Input.prototype.mask = function (options) {
-        this.addplaceholder(this.options);
+        var placeholder;
+
+        this.addPlaceholder(placeholder);
     };
 
-    Input.prototype.addPlaceholder = function (options){
+    Input.prototype.addPlaceholder = function (placeholder){
 
     };
 
@@ -102,6 +109,14 @@
         else{
             this.$element.before(wrapper);
             return (this.$element.prev());
+        }
+    };
+
+    Input.prototype.valChange = function (e) {
+        if($(e.currentTarget).val() != ''){
+            $(e.currentTarget)
+                .parents(this.$parent)
+                .addClass(this.options.classes.active);
         }
     };
 
@@ -1075,7 +1090,6 @@
         this.$element
             .parents(this.$parent)
             .on(this.options.showEvent, $.proxy(this.show, this))
-            .addClass(this.options.parentClass)
             .prepend(this.color);
 
     };
@@ -1093,8 +1107,11 @@
 
     Color.prototype.change = function(field) {
 
+        console.log(field);
+        console.log(field.parents(this.$parent));
+
         if (field.parents(this.$parent).attr('class').indexOf('--hex') > 0) {
-            this.options.color = hexToHsb(fixHex(field.value));
+            this.options.color = hexToHsb(fixHex(this.field[0].val()));
             this.fillRGBFields(this.options.color);
             this.fillHSBFields(this.options.color);
         } else if (field.parents(this.$parent).attr('class').indexOf('--hsb') > 0) {
@@ -1624,8 +1641,11 @@
     File.TRANSITION_DURATION = 1000;
 
     File.DEFAULTS = $.extend({}, $.fn.input.Constructor.DEFAULTS, {
-
-
+        livePreview: true,
+        parentClass : 'text-field--file',
+        wrapperTemplate: '<div class="text-field--file_current"></div>',
+        fileTemplate: '<div class="text-field--file_current__file"></div>',
+        closeTemplate: '<div class="text-field--file_current__close" data-button="close"><i class="origamicon origamicon-close"></i></div>'
     });
 
     File.prototype = $.extend({}, $.fn.input.Constructor.prototype);
@@ -1633,7 +1653,23 @@
     File.prototype.constructor = File;
 
     File.prototype.event = function (options) {
+        this.options        = this.getOptions(options);
+        this.$container     = $(this.options.wrapperTemplate);
+        this.$file          = $(this.options.fileTemplate);
+        this.$close         = $(this.options.closeTemplate);
 
+        this.options.placement = 'before';
+        this.$wrapper = this.addAddon();
+
+        this.$container
+            .append(this.$file)
+            .append(this.$close);
+        this.$wrapper.append(this.$container);
+
+    };
+
+    File.prototype.getDefaults = function () {
+        return File.DEFAULTS
     };
 
     // FILE PLUGIN DEFINITION
@@ -3735,11 +3771,14 @@
     Table.TRANSITION_DURATION = 1000;
 
     Table.DEFAULTS = {
-        
+
     };
 
     Table.prototype.init = function (type, element, options) {
-        
+        this.type      = type;
+        this.element   = element;
+        this.$element  = $(element);
+        this.options   = this.getOptions(options);
     };
 
     Table.prototype.getDefaults = function () {

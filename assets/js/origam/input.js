@@ -35,6 +35,7 @@
         },
         parentNode: 'text-field',
         placement: 'after',
+        parentClass : '',
         addon: '<div class="text-field--group__addons"></div>',
         definitions: {
             "9": "[0-9]",
@@ -52,17 +53,21 @@
         this.options   = this.getOptions(options);
         this.$parent   = '.' + this.options.parentNode;
 
-        if($(e.currentTarget).val() != ''){
-            $(e.currentTarget)
-                .parents(this.$parent)
-                .addClass(this.options.classes.active);
-        }
+        this.$element
+            .parents(this.$parent)
+            .addClass(this.options.parentClass);
 
         this.event(this.options);
         this.mask(this.options);
 
-        this.$element.on('focusin', $.proxy(this.startFocus, this));
-        this.$element.on('focusout', $.proxy(this.endFocus, this));
+        if(this.options.placeholder){
+            this.placeholder(this.options.placeholder);
+        }
+
+        this.$element
+            .on('focusin', $.proxy(this.startFocus, this))
+            .on('focusout', $.proxy(this.endFocus, this))
+            .on('change', $.proxy(this.valChange, this));
     };
 
     Input.prototype.getDefaults = function () {
@@ -80,10 +85,12 @@
     };
 
     Input.prototype.mask = function (options) {
-        this.addplaceholder(this.options);
+        var placeholder;
+
+        this.addPlaceholder(placeholder);
     };
 
-    Input.prototype.addPlaceholder = function (options){
+    Input.prototype.addPlaceholder = function (placeholder){
 
     };
 
@@ -102,6 +109,14 @@
         else{
             this.$element.before(wrapper);
             return (this.$element.prev());
+        }
+    };
+
+    Input.prototype.valChange = function (e) {
+        if($(e.currentTarget).val() != ''){
+            $(e.currentTarget)
+                .parents(this.$parent)
+                .addClass(this.options.classes.active);
         }
     };
 

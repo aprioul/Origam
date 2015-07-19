@@ -61,3 +61,97 @@
         box-shadow: none;
     }
 }
+
+#brandbar {
+    position: fixed;
+    width: 100%;
+    z-index: 9999;
+    text-align: center;
+    overflow: hidden;
+    top:0;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    border-bottom: 5px solid #0196d1;
+}
+
+#brandbar h1 {
+    font-size: 30px;
+    margin:0;
+    line-height:inherit !important;
+}
+
+#brandbar-logo {
+    position:absolute;
+    left:10px;
+    top:0;
+}
+
+#brandbar-logo a img {
+    border:none;
+}
+
+#brandbar-content:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -0.25em; /* Adjusts for spacing */
+}
+
+#brandbar-content {
+    display:inline;
+    text-align: center;
+    height: 100%;
+}
+
+#brandbar-buttons {
+    position: absolute;
+    right:0;
+    top:0;
+    font-size:0;
+    overflow: hidden;
+    height: 100%;
+}
+
+#brandbar-buttons span {
+    display:inline-block;
+    cursor: pointer;
+    width: 32px;
+    font-size: 20px;
+    height: 100%;
+    line-height: 50px;
+}
+
+#brandbar-buttons span:hover {
+    background-color: rgba(1,150,209,0.75);
+}
+
+#brandbar-menu {
+    padding:5px 5px 5px 15px;
+    color: black;
+    border:none;
+}
+
+#brandbar-iframe {
+    display:block;
+}
+
+@media only screen and (max-width : 768px) {
+    #brandbar-buttons span {
+        padding:0 6px;
+        width: 20px;
+        font-size: 14px;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    #brandbar-buttons {
+        display: none;
+    }
+
+    #brandbar-content {
+        position: absolute;
+        right:10px;
+        top:0;
+    }
+}

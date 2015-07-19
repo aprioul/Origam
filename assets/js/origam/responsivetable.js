@@ -26,11 +26,14 @@
     Table.TRANSITION_DURATION = 1000;
 
     Table.DEFAULTS = {
-        
+
     };
 
     Table.prototype.init = function (type, element, options) {
-        
+        this.type      = type;
+        this.element   = element;
+        this.$element  = $(element);
+        this.options   = this.getOptions(options);
     };
 
     Table.prototype.getDefaults = function () {

@@ -175,7 +175,9 @@ input[type="range"].text-field--group__input:after {
 
 .text-field--group__addons {
   @include position(absolute, 0, null, null, -55px);
-  @include size(40px, 40px);
+  @include size(100%, 100%);
+  max-width: 40px;
+  max-height: 40px;
   line-height: 40px;
   @include font-size(24px);
   color: $black-2;
@@ -265,9 +267,49 @@ input[type="range"].text-field--group__input:after {
   background-color: $black-4;
 }
 
+/**
+  * File
+  */
+
+.text-field--file{
+  &.text-field--addons.left{
+    padding-left: 118px;
+    label {
+      @include position(absolute, initial, null, 40px, 118px);
+    }
+  }
+  .text-field--group {
+    height: 90px;
+  }
+  .text-field--group__addons {
+    max-width: 90px;
+    max-height: 90px;
+    left: -105px;
+  }
+  .text-field--file_current {
+    border: 1px solid $black-4;
+    font-size: 14px;
+    @include size(100%, 100%);
+    @include position(relative);
+    padding: 5px;
+    .text-field--file_current__close {
+      @include position(absolute, 5px, 5px);
+      line-height: initial;
+      cursor: pointer;
+    }
+    .text-field--file_current__file {
+      @include size(100%, 100%);
+      background-color: $black-4;
+    }
+  }
+  .text-field--group__input {
+   @include position(absolute, null, null, 10px);
+  }
+}
+
 
 /**
-  * Progressbar
+  * Password
   */
 
 .text-field--progressbar {

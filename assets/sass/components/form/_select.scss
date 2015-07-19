@@ -7,10 +7,8 @@
 }
 
 .select-help {
-  height: $base-space * 4;
-  padding: 0 $base-space * 2;
-  @include font-size($base-font-size);
-  color: $black-3;
-  line-height: $base-space * 4;
-  white-space: nowrap;
+  display: block;
+  @extend %fts-caption;
+  color: $black-2;
+  text-align: left;
 }
