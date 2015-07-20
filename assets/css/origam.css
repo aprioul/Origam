@@ -20861,6 +20861,9 @@ figure.effect {
   overflow: hidden;
   text-align: center;
 }
+figure.effect .media {
+  background: none;
+}
 figure.effect img {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
   opacity: 0.8;
@@ -21234,10 +21237,10 @@ figure.effect-hera p a:hover, figure.effect-hera p a:focus {
 }
 figure.effect-hera figcaption:before {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 200px;
-  height: 200px;
+  top: 25%;
+  left: 60%;
+  width: 50%;
+  height: 50%;
   border: 2px solid #FFFFFF;
   content: '';
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);

@@ -25,6 +25,10 @@ figure.effect{
   overflow: hidden;
   text-align: center;
 
+  .media{
+    background: none;
+  }
+
   img{
     @include opacity(0.8);
   }
@@ -342,9 +346,8 @@ figure.effect-hera {
 
   figcaption{
     &:before {
-      @include position(absolute,50%, null, null , 50%);
-      width: 200px;
-      height: 200px;
+      @include position(absolute,25%, null, null , 60%);
+      @include size(50%,50%);
       border: 2px solid $white;
       content: '';
       @include opacity(0);
