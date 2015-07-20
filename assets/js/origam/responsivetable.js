@@ -34,6 +34,9 @@
         this.element   = element;
         this.$element  = $(element);
         this.options   = this.getOptions(options);
+
+
+
     };
 
     Table.prototype.getDefaults = function () {

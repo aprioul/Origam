@@ -8,7 +8,7 @@
 
     'use strict';
 
-    // TOOLTIP PUBLIC CLASS DEFINITION
+    // INPUT PUBLIC CLASS DEFINITION
     // ===============================
 
     var Input = function (element, options) {
@@ -135,7 +135,7 @@
             .removeClass(this.options.classes.focus);
     };
 
-    // TOOLTIP PLUGIN DEFINITION
+    // INPUT PLUGIN DEFINITION
     // =========================
 
     function Plugin(option) {
@@ -156,7 +156,7 @@
     $.fn.input.Constructor = Input;
 
 
-    // TOOLTIP NO CONFLICT
+    // INPUT NO CONFLICT
     // ===================
 
     $.fn.input.noConflict = function () {
@@ -941,7 +941,7 @@
             return hex;
         };
 
-    if (!$.fn.input) throw new Error('Color requires input.js');
+    if (!$.fn.input) throw new Error('Colorpicker requires input.js');
 
     Color.VERSION  = '0.1.0';
 
@@ -1502,7 +1502,7 @@
         this.init('date', element, options)
     };
 
-    if (!$.fn.input) throw new Error('Date requires input.js');
+    if (!$.fn.input) throw new Error('Datepicker requires input.js');
 
     Date.VERSION  = '0.1.0';
 
@@ -3779,6 +3779,9 @@
         this.element   = element;
         this.$element  = $(element);
         this.options   = this.getOptions(options);
+
+
+
     };
 
     Table.prototype.getDefaults = function () {
@@ -3833,7 +3836,7 @@
 (function ($, w) {
     'use strict';
 
-    // Ripple CLASS DEFINITION
+    // RIPPLE CLASS DEFINITION
     // ======================
 
     var Ripple   = function (element, options) {
@@ -3906,7 +3909,7 @@
     };
 
 
-    // Ripple PLUGIN DEFINITION
+    // RIPPLE PLUGIN DEFINITION
     // =======================
 
     function Plugin(option) {
@@ -3925,7 +3928,7 @@
     $.fn.ripple.Constructor = Ripple;
 
 
-    // Ripple NO CONFLICT
+    // RIPPLE NO CONFLICT
     // =================
 
     $.fn.ripple.noConflict = function () {
@@ -3934,7 +3937,7 @@
     };
 
 
-    // Ripple DATA-API
+    // RIPPLE DATA-API
     // ==============
 
     $(document).ready(function() {
@@ -3986,7 +3989,7 @@
         this.init('textarea', element, options)
     };
 
-    if (!$.fn.input) throw new Error('Notification requires input.js');
+    if (!$.fn.input) throw new Error('Textarea requires input.js');
 
     Textarea.VERSION  = '0.1.0';
 
@@ -4066,14 +4069,14 @@
     // ============================================================
 
     function transitionEnd() {
-        var el = document.createElement('origam')
+        var el = document.createElement('origam');
 
         var transEndEventNames = {
             WebkitTransition : 'webkitTransitionEnd',
             MozTransition    : 'transitionend',
             OTransition      : 'oTransitionEnd otransitionend',
             transition       : 'transitionend'
-        }
+        };
 
         for (var name in transEndEventNames) {
             if (el.style[name] !== undefined) {
@@ -4081,23 +4084,23 @@
             }
         }
 
-        return false // explicit for ie8 (  ._.)
+        return false;
     }
 
     // http://blog.alexmaccaw.com/css-transitions
     $.fn.emulateTransitionEnd = function (duration) {
-        var called = false
-        var $el = this
-        $(this).one('origamTransitionEnd', function () { called = true })
-        var callback = function () { if (!called) $($el).trigger($.support.transition.end) }
-        setTimeout(callback, duration)
+        var called = false;
+        var $el = this;
+        $(this).one('origamTransitionEnd', function () { called = true });
+        var callback = function () { if (!called) $($el).trigger($.support.transition.end) };
+        setTimeout(callback, duration);
         return this
-    }
+    };
 
     $(function () {
-        $.support.transition = transitionEnd()
+        $.support.transition = transitionEnd();
 
-        if (!$.support.transition) return
+        if (!$.support.transition) return;
 
         $.event.special.origamTransitionEnd = {
             bindType: $.support.transition.end,
