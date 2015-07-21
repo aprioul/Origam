@@ -5,7 +5,7 @@
 figure {
   margin: 0;
   padding: $padding-large-horizontal;
-  border: 1px solid $white-3;
+  border: 1px solid $black-3;
 
   figcaption {
     text-align: center;
@@ -21,7 +21,6 @@ figure {
 
 figure.effect{
   padding: 0;
-  border: none;
   overflow: hidden;
   text-align: center;
 

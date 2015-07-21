@@ -20842,7 +20842,7 @@ input[type="range"].text-field--group__input:after {
 figure {
   margin: 0;
   padding: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.26);
 }
 figure figcaption {
   text-align: center;
@@ -20857,7 +20857,6 @@ figure figcaption:before, figure figcaption:after {
 
 figure.effect {
   padding: 0;
-  border: none;
   overflow: hidden;
   text-align: center;
 }
