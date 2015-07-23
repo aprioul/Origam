@@ -39,7 +39,7 @@
         },
         modules: 'responsive sort sticky',
         addRowToggle: true,
-        toggleSelector: ' > tbody > tr:not(.footable-row-detail)',
+        toggleSelector: ' > tbody > tr:not(.responsivetable-row-detail)',
         columnDataSelector: '> thead > tr:last-child > th, > thead > tr:last-child > td',
         detailSeparator: '',
         toggleTemplate: '<span class="origamicon origamicon-eye"></span>',
@@ -193,7 +193,7 @@
         data.width += priorityWidth;
 
         if (data.group !== null) {
-            var $group = this.$element.find('> thead > tr.footable-group-row > th[data-group="' + data.group + '"], > thead > tr.footable-group-row > td[data-group="' + data.group + '"]').first();
+            var $group = this.$element.find('> thead > tr.responsivetable-group-row > th[data-group="' + data.group + '"], > thead > tr.responsivetable-group-row > td[data-group="' + data.group + '"]').first();
             data.groupName = this.parse($group, { 'type': 'alpha' });
         }
 
@@ -253,21 +253,28 @@
 
     Table.prototype.calculateWidth = function () {
         var maxWidth    = this.$parent.width(),
-            affWidth    = 0;
+            affWidth    = 0,
+            colSort = this.columnsData,
+            sortable = [];
 
         $('th', this.$element).not('[data-priority="' + this.options.priorityMin + '"]').attr('data-hide', 'true');
         $('td, th', this.$element).css('display', 'table-cell');
 
-        for (var curCol in this.columnsData){
-            var curColWidth = this.columnsData[curCol].width;
+        for (var col in colSort)
+            sortable.push([col, colSort[col]])
+        sortable.sort(function(a, b) {return a[1].priority - b[1].priority});
+
+        for (var curCol in sortable){
+            var colIndex = sortable[curCol][1].index;
+            var curColWidth = this.columnsData[colIndex].width;
             if(affWidth + curColWidth < maxWidth && maxWidth > this.columnsData[this.options.priorityMin].width ) {
                 affWidth += curColWidth;
-                var curPriority = this.columnsData[curCol].priority;
+                var curPriority = this.columnsData[colIndex].priority;
                 this.$element.find('[data-priority="' + curPriority + '"]').removeAttr('data-hide');
-                this.columnsData[curCol].hide = false;
+                this.columnsData[colIndex].hide = false;
             } else {
                 this.$element.addClass(this.classes.active);
-                this.columnsData[curCol].hide = true;
+                this.columnsData[colIndex].hide = true;
                 break;
             }
         }
@@ -312,12 +319,12 @@
                     selector += ', > thead > tr[data-group-row="true"] > th[data-group="' + data.group + '"]';
                     var $column = that.$element.find(selector).add(this);
 
-                    if (data.hide === false) $column.addClass('footable-visible').show();
-                    else $column.removeClass('footable-visible').hide();
+                    if (data.hide === false) $column.addClass('responsivetable-visible').show();
+                    else $column.removeClass('responsivetable-visible').hide();
 
-                    if (that.$element.find('> thead > tr.footable-group-row').length === 1) {
+                    if (that.$element.find('> thead > tr.responsivetable-group-row').length === 1) {
                         var $groupcols = that.$element.find('> thead > tr:last-child > th[data-group="' + data.group + '"]:visible, > thead > tr:last-child > th[data-group="' + data.group + '"]:visible'),
-                            $group = that.$element.find('> thead > tr.footable-group-row > th[data-group="' + data.group + '"], > thead > tr.footable-group-row > td[data-group="' + data.group + '"]'),
+                            $group = that.$element.find('> thead > tr.responsivetable-group-row > th[data-group="' + data.group + '"], > thead > tr.responsivetable-group-row > td[data-group="' + data.group + '"]'),
                             groupspan = 0;
 
                         $.each($groupcols, function () {
@@ -341,14 +348,14 @@
             }
         });
 
-        this.$element.find('> thead > tr > th.footable-last-column, > tbody > tr > td.footable-last-column').removeClass('footable-last-column');
-        this.$element.find('> thead > tr > th.footable-first-column, > tbody > tr > td.footable-first-column').removeClass('footable-first-column');
+        this.$element.find('> thead > tr > th.responsivetable-last-column, > tbody > tr > td.responsivetable-last-column').removeClass('responsivetable-last-column');
+        this.$element.find('> thead > tr > th.responsivetable-first-column, > tbody > tr > td.responsivetable-first-column').removeClass('responsivetable-first-column');
         this.$element.find('> thead > tr, > tbody > tr')
-            .find('> th.footable-visible:last, > td.footable-visible:last')
-            .addClass('footable-last-column')
+            .find('> th.responsivetable-visible:last, > td.responsivetable-visible:last')
+            .addClass('responsivetable-last-column')
             .end()
-            .find('> th.footable-visible:first, > td.footable-visible:first')
-            .addClass('footable-first-column');
+            .find('> th.responsivetable-visible:first, > td.responsivetable-visible:first')
+            .addClass('responsivetable-first-column');
     };
 
     Table.prototype.setOrUpdateDetailRow = function (actualRow) {
