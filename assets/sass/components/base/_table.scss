@@ -121,3 +121,54 @@ th {
     background-color: $table-bg-hover;
   }
 }
+
+/**
+  * Responsive table
+  */
+
+.responsivetable-toggle{
+  color: $black-3;
+  cursor: pointer;
+  @include position(relative);
+  span {
+    @include size(100%, 100%);
+    @include position(absolute, 0, null, null, 0);
+    text-align: center;
+    line-height: 200%;
+  }
+
+  &:hover {
+    color: $black-2;
+  }
+}
+
+.responsivetable-row-detail-cell{
+  background-color: $table-bg-hover;
+  overflow: hidden;
+}
+
+.responsivetable-row-detail-inner {
+  display: table;
+}
+
+.responsivetable-row-detail-row {
+  display: table-row;
+  line-height: 1.5em;
+}
+
+.responsivetable-row-detail-group {
+  display: block;
+  line-height: 2em;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.responsivetable-row-detail-name {
+  display: table-cell;
+  font-weight: bold;
+  padding-right: 0.5em;
+}
+
+.responsivetable-row-detail-value {
+  display: table-cell;
+}

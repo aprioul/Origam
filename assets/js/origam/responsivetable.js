@@ -40,9 +40,58 @@
         addRowToggle: true,
         toggleSelector: ' > tbody > tr:not(.footable-row-detail)', //the selector to show/hide the detail row
         columnDataSelector: '> thead > tr:last-child > th, > thead > tr:last-child > td', //the selector used to find the column data in the thead
-        detailSeparator: ':', //the separator character used when building up the detail row
+        detailSeparator: '', //the separator character used when building up the detail row
         toggleTemplate: '<span class="origamicon origamicon-eye"></span>',
         priorityMin: 1,
+        animate: false,
+        animationIn: 'bounceInRight',
+        animationOut: 'bounceOutRight',
+        createGroupedDetail: function (data) {
+            var groups = { '_none': { 'name': null, 'data': [] } };
+            for (var i = 0; i < data.length; i++) {
+                var groupid = data[i].group;
+                if (groupid !== null) {
+                    if (!(groupid in groups))
+                        groups[groupid] = { 'name': data[i].groupName || data[i].group, 'data': [] };
+
+                    groups[groupid].data.push(data[i]);
+                } else {
+                    groups._none.data.push(data[i]);
+                }
+            }
+            return groups;
+        },
+        createDetail: function (element, data, createGroupedDetail, separatorChar, classes) {
+            /// <summary>This function is used by FooTable to generate the detail view seen when expanding a collapsed row.</summary>
+            /// <param name="element">This is the div that contains all the detail row information, anything could be added to it.</param>
+            /// <param name="data">
+            ///  This is an array of objects containing the cell information for the current row.
+            ///  These objects look like the below:
+            ///    obj = {
+            ///      'name': String, // The name of the column
+            ///      'value': Object, // The value parsed from the cell using the parsers. This could be a string, a number or whatever the parser outputs.
+            ///      'display': String, // This is the actual HTML from the cell, so if you have images etc you want moved this is the one to use and is the default value used.
+            ///      'group': String, // This is the identifier used in the data-group attribute of the column.
+            ///      'groupName': String // This is the actual name of the group the column belongs to.
+            ///    }
+            /// </param>
+            /// <param name="createGroupedDetail">The grouping function to group the data</param>
+            /// <param name="separatorChar">The separator charactor used</param>
+            /// <param name="classes">The array of class names used to build up the detail row</param>
+
+            var groups = createGroupedDetail(data);
+            for (var group in groups) {
+                if (groups[group].data.length === 0) continue;
+                if (group !== '_none') element.append('<div class="' + classes.detailInnerGroup + '">' + groups[group].name + '</div>');
+
+                for (var j = 0; j < groups[group].data.length; j++) {
+                    var separator = (groups[group].data[j].name) ? separatorChar : '';
+                    element.append($('<div></div>').addClass(classes.detailInnerRow).append($('<div></div>').addClass(classes.detailInnerName)
+                        .append(groups[group].data[j].name + separator)).append($('<div></div>').addClass(classes.detailInnerValue)
+                        .attr('data-bind-value', groups[group].data[j].bindName).append(groups[group].data[j].display)));
+                }
+            }
+        },
         classes: {
             main: 'responsivetable',
             loading: 'responsivetable-loading',
@@ -58,7 +107,8 @@
             detailInnerValue: 'responsivetable-row-detail-value',
             detailShow: 'responsivetable-detail-show',
             iconShow: 'origamicon-eye',
-            iconHide: 'origamicon-eye-blocked'
+            iconHide: 'origamicon-eye-blocked',
+            active: 'responsivetable-active'
         }
     };
 
@@ -69,7 +119,7 @@
         this.options        = this.getOptions(options);
         this.classes        = this.options.classes;
         this.$parent        = this.$element.parent();
-        this.max            = this.$element.find('> thead > tr:last-child > th[data-priority], > thead > tr:last-child > td[data-priority]').length + 1;
+        this.max            = this.$element.find('> thead > tr:last-child > th[data-priority], > thead > tr:last-child > td[data-priority]').length;
         this.indexOffset    = 0;
 
         var that = this,
@@ -89,13 +139,15 @@
 
         this.calculateWidth();
 
-        console.log(this.columnsData);
+        this.setColumn();
 
         //remove the loading class
         this.$element.removeClass(this.classes.loading);
 
         //add the FooTable and loaded class
         this.$element.addClass(this.classes.loaded).addClass(this.classes.main);
+
+        $(w).on('resize', $.proxy(this.tableResize, this));
 
     };
 
@@ -112,8 +164,6 @@
     Table.prototype.addRowToggle = function () {
         if (!this.options.addRowToggle) return;
 
-        var hasToggleColumn = false;
-
         this.toggle = $('<td>')
             .addClass(this.classes.toggle)
             .append(this.options.toggleTemplate);
@@ -121,37 +171,24 @@
         //first remove all toggle spans
         this.$element.find('.' + this.classes.toggle).remove();
 
-        for (var c in this.columnsData) {
-            var col = this.columnsData[c];
-            if (col.toggle) {
-                hasToggleColumn = true;
-                var selector = '> tbody > tr:not(.' + this.classes.detail + ',.' + this.classes.disabled + ') > td:nth-child(' + (parseInt(col.index, 10) + 1) + '),' +
-                    '> tbody > tr:not(.' + this.classes.detail + ',.' + this.classes.disabled + ') > th:nth-child(' + (parseInt(col.index, 10) + 1) + ')';
-                this.$element.find(selector).not('.' + this.classes.detailCell).prepend($(this.options.toggleHTMLElement).addClass(this.classes.toggle));
-                return;
-            }
-        }
-        //check if we have an toggle column. If not then add it to the first column just to be safe
-        if (!hasToggleColumn) {
-            this.$element
-                .find('> tbody > tr:not(.' + this.classes.detail + ',.' + this.classes.disabled + ')')
-                .not('.' + this.classes.detailCell)
-                .prepend(this.toggle);
-            this.$element
-                .find('> thead > tr')
-                .prepend($('<th>').addClass(this.classes.toggle));
+        this.$element
+            .find('> tbody > tr:not(.' + this.classes.detail + ',.' + this.classes.disabled + ')')
+            .not('.' + this.classes.detailCell)
+            .prepend(this.toggle);
+        this.$element
+            .find('> thead > tr')
+            .prepend($('<th>').addClass(this.classes.toggle));
 
-            var toggleWidth = this.$element
-                .find('th.' + this.classes.toggle)
-                .outerWidth();
+        var toggleWidth = this.$element
+            .find('th.' + this.classes.toggle)
+            .outerWidth();
 
-            this.$element
-                .find('th.' + this.classes.toggle)
-                .css('width', toggleWidth)
-                .attr('data-priority', this.options.priorityMin);
+        this.$element
+            .find('th.' + this.classes.toggle)
+            .css('width', toggleWidth)
+            .attr('data-priority', this.options.priorityMin);
 
-            this.columnsData[this.options.priorityMin].width += toggleWidth;
-        }
+        this.columnsData[1].width += toggleWidth;
     };
 
     Table.prototype.parse = function (cell, column) {
@@ -165,7 +202,7 @@
             index = $th.index();
         hide = hide || false;
         var data = {
-            'index': index,
+            'index': index + 1,
             'hide': hide,
             'type': $th.data('type') || 'alpha',
             'name': $th.data('name') || $.trim($th.text()),
@@ -182,6 +219,7 @@
         };
 
         if($.isEmptyObject($th.data())){
+            this.max = this.max + 1;
             $th.attr('data-priority', this.max);
         }
 
@@ -194,7 +232,7 @@
 
         if (data.group !== null) {
             var $group = this.$element.find('> thead > tr.footable-group-row > th[data-group="' + data.group + '"], > thead > tr.footable-group-row > td[data-group="' + data.group + '"]').first();
-            data.groupName = ft.parse($group, { 'type': 'alpha' });
+            data.groupName = this.parse($group, { 'type': 'alpha' });
         }
 
         var pcolspan = parseInt($th.prev().attr('colspan') || 0, 10);
@@ -217,52 +255,275 @@
     };
 
     Table.prototype.bindToggleSelector = function () {
+        var that = this;
 
+        that.$element.find(that.options.toggleSelector).unbind('toggleRow.origam.'+ that.type).bind('toggleRow.origam.'+ that.type, function (e) {
+            var $row = $(this).is('tr') ? $(this) : $(this).parents('tr:first');
+            that.toggleDetail($row);
+        });
+
+        that.$element.find(that.options.toggleSelector).unbind('click.origam.'+ that.type).bind('click.origam.'+ that.type, function (e) {
+            if ($(e.target).parent().is('td,th,.'+ that.classes.toggle)) {
+                $(e.target).hasClass(that.classes.iconShow) ? $(e.target).removeClass(that.classes.iconShow).addClass(that.classes.iconHide) : $(e.target).removeClass(that.classes.iconHide).addClass(that.classes.iconShow);
+                $(this).trigger('toggleRow.origam.'+ that.type);
+            }
+        });
     };
 
-    Table.prototype.setColumnClasses = function () {
+    Table.prototype.setColumn = function () {
+        var that = this;
 
+        that.bindToggleSelector();
+
+        for (var c in this.columnsData) {
+            var col = this.columnsData[c];
+            if (col.className !== null) {
+                var selector = '', first = true;
+                $.each(col.matches, function (m, match) { //support for colspans
+                    if (!first) selector += ', ';
+                    selector += '> tbody > tr:not(.' + that.classes.detail + ') > td:nth-child(' + (parseInt(match, 10) + 1) + ')';
+                    first = false;
+                });
+                //add the className to the cells specified by data-class="blah"
+                that.$element.find(selector).not('.' + that.classes.detailCell).addClass(col.className);
+            }
+        }
+
+        that.$element
+            .find('> tbody > tr:not(.' + that.classes.detail + ')').data('detail_created', false).end()
+            .find('> thead > tr:last-child > th')
+            .each(function () {
+                if($(this).index() !== 0 ) {
+                    var data = that.columnsData[$(this).index()], selector = '', first = true;
+
+                    console.log(data.matches);
+                    $.each(data.matches, function (m, match) {
+                        if (!first) {
+                            selector += ', ';
+                        }
+                        var count = match + 1;
+                        selector += '> tbody > tr:not(.' + that.classes.detail + ') > td:nth-child(' + count + ')';
+                        selector += ', > tfoot > tr:not(.' + that.classes.detail + ') > td:nth-child(' + count + ')';
+                        selector += ', > colgroup > col:nth-child(' + count + ')';
+                        first = false;
+                    });
+
+                    selector += ', > thead > tr[data-group-row="true"] > th[data-group="' + data.group + '"]';
+                    var $column = that.$element.find(selector).add(this);
+
+                    if (data.hide === false) $column.addClass('footable-visible').show();
+                    else $column.removeClass('footable-visible').hide();
+
+                    if (that.$element.find('> thead > tr.footable-group-row').length === 1) {
+                        var $groupcols = that.$element.find('> thead > tr:last-child > th[data-group="' + data.group + '"]:visible, > thead > tr:last-child > th[data-group="' + data.group + '"]:visible'),
+                            $group = that.$element.find('> thead > tr.footable-group-row > th[data-group="' + data.group + '"], > thead > tr.footable-group-row > td[data-group="' + data.group + '"]'),
+                            groupspan = 0;
+
+                        $.each($groupcols, function () {
+                            groupspan += parseInt($(this).attr('colspan') || 1, 10);
+                        });
+
+                        if (groupspan > 0) $group.attr('colspan', groupspan).show();
+                        else $group.hide();
+                    }
+                }
+            })
+            .end()
+            .find('> tbody > tr.' + that.classes.detailShow).each(function () {
+                that.setOrUpdateDetailRow(this);
+            });
+
+        that.$element.find('> tbody > tr.' + that.classes.detailShow + ':visible').each(function () {
+            var $next = $(this).next();
+            if ($next.hasClass(that.classes.detail)) {
+                 $next.show();
+            }
+        });
+
+        this.$element.find('> thead > tr > th.footable-last-column, > tbody > tr > td.footable-last-column').removeClass('footable-last-column');
+        this.$element.find('> thead > tr > th.footable-first-column, > tbody > tr > td.footable-first-column').removeClass('footable-first-column');
+        this.$element.find('> thead > tr, > tbody > tr')
+            .find('> th.footable-visible:last, > td.footable-visible:last')
+            .addClass('footable-last-column')
+            .end()
+            .find('> th.footable-visible:first, > td.footable-visible:first')
+            .addClass('footable-first-column');
     };
 
     Table.prototype.toggleDetail = function (row) {
+        var $row = (row.jquery) ? row : $(row),
+            $next = $row.next();
 
+        //check if the row is already expanded
+        if ($row.hasClass(this.classes.detailShow)) {
+            $row.removeClass(this.classes.detailShow);
+
+            //only hide the next row if it's a detail row
+            if ($next.hasClass(this.classes.detail))
+                this.eventHide($next);
+
+        } else {
+            this.setOrUpdateDetailRow($row[0]);
+            $next = $row.addClass(this.classes.detailShow)
+                .next();
+            this.eventShow($next);
+        }
     };
 
-    Table.prototype.setDetailRow = function () {
-
+    Table.prototype.getColumnFromTdIndex = function (index) {
+        /// <summary>Returns the correct column data for the supplied index taking into account colspans.</summary>
+        /// <param name="index">The index to retrieve the column data for.</param>
+        /// <returns type="json">A JSON object containing the column data for the supplied index.</returns>
+        var result = null;
+        for (var column in this.columnsData) {
+            if ($.inArray(index, this.columnsData[column].matches) >= 0) {
+                result = this.columnsData[column];
+                break;
+            }
+        }
+        return result;
     };
 
-    Table.prototype.tableResize = function () {
-        /*var maxWidth    = this.$parent.width(),
-            affWidth    = 0;
+    Table.prototype.setOrUpdateDetailRow = function (actualRow) {
+        var $row        = $(actualRow),
+            $next       = $row.next(),
+            that        = this,
+            $detail,
+            values      = [];
 
-        $('th', this.$element).not('[data-priority="' + this.options.priorityMin + '"]').attr('data-hide', 'true');
-        $('td, th', this.$element).css('display', 'table-cell');
+        if ($row.data('detail_created') === true) return true;
 
-        for (var curPriority in this.columns){
-            var curColWidth = this.columns[curPriority]["width"];
-            if(affWidth + curColWidth < maxWidth && maxWidth > this.columns[this.options.priorityMin]["width"] ) {
-                affWidth += curColWidth;
-                this.$element.find('[data-priority="' + curPriority + '"]').removeAttr('data-hide');
-            } else break;
-        }*/
+        if ($row.is(':hidden')) return false; //if the row is hidden for some reason (perhaps filtered) then get out of here
+
+        $row.find('> td:hidden').each(function () {
+            var index = $(this).index(),
+                column = that.getColumnFromTdIndex(index),
+                name = column.name;
+
+            if (column.ignore === true) return true;
+
+            if (index in column.names) name = column.names[index];
+
+            var bindName = $(this).attr("data-bind-name");
+            if (bindName != null && $(this).is(':empty')) {
+                var bindValue = $('.' + that.classes.detailInnerValue + '[' + 'data-bind-value="' + bindName + '"]');
+                $(this).html($(bindValue).contents().detach());
+            }
+            var display;
+            if (column.isEditable !== false && (column.isEditable || $(this).find(":input").length > 0)) {
+                if(bindName == null) {
+                    bindName = "bind-" + $.now() + "-" + index;
+                    $(this).attr("data-bind-name", bindName);
+                }
+                display = $(this).contents().detach();
+            }
+            if (!display) display = $(this).contents().clone(true, true);
+            values.push({ 'name': name, 'value': that.parse(this, column), 'display': display, 'group': column.group, 'groupName': column.groupName, 'bindName': bindName });
+            return true;
+        });
+        if (values.length === 0) return false;
+        var colspan = $row.find('> td:visible').length;
+        var exists = $next.hasClass(that.classes.detail);
+        if (!exists) {
+            $next = $('<tr class="' + that.classes.detail + '"><td class="' + that.classes.detailCell + '"><div class="' + that.classes.detailInner + '"></div></td></tr>');
+            $row.after($next);
+        }
+        $next.find('> td:first').attr('colspan', colspan);
+        $detail = $next.find('.' + that.classes.detailInner).empty();
+        that.options.createDetail($detail, values, that.options.createGroupedDetail, that.options.detailSeparator, that.classes);
+        $row.data('detail_created', true);
+        return !exists;
+
     };
 
     Table.prototype.calculateWidth = function () {
         var maxWidth    = this.$parent.width(),
             affWidth    = 0;
 
-        $('th', this.$element).not('[data-priority="' + this.options.priorityMin + '"]').attr('data-hide', 'true').data('hide', true);
+        $('th', this.$element).not('[data-priority="' + this.options.priorityMin + '"]').attr('data-hide', 'true');
         $('td, th', this.$element).css('display', 'table-cell');
 
-        for (var curPriority in this.columns){
-            var curColWidth = this.columns[curPriority].width;
-            if(affWidth + curColWidth < maxWidth && maxWidth > this.columns[this.options.priorityMin].width ) {
+        for (var curCol in this.columnsData){
+            var curColWidth = this.columnsData[curCol].width;
+            if(affWidth + curColWidth < maxWidth && maxWidth > this.columnsData[this.options.priorityMin].width ) {
                 affWidth += curColWidth;
+                var curPriority = this.columnsData[curCol].priority;
                 this.$element.find('[data-priority="' + curPriority + '"]').removeAttr('data-hide');
-                this.$element.find('[data-priority="' + curPriority + '"]').data('hide', false);
-            } else break;
+                this.columnsData[curCol].hide = false;
+            } else {
+                this.$element.addClass(this.classes.active);
+                this.columnsData[curCol].hide = true;
+                break;
+            }
         }
+    };
+
+    Table.prototype.tableResize = function () {
+        this.calculateWidth();
+        this.setColumn();
+    };
+
+    Table.prototype.eventShow = function ($next) {
+        var that = this;
+
+        if(that.options.animate) {
+            $next.find('.' + that.classes.detailInnerRow).each( function(){
+                    $(this)
+                        .addClass(that.options.animationIn)
+                        .addClass('animated');
+                });
+            var animateClass = that.options.animationIn + ' animated';
+        }
+
+        $next.show();
+
+        var onShow = function () {
+            $next.find('.' + that.classes.detailInnerRow).each( function() {
+                if ($(this).hasClass(animateClass))
+                    $(this).removeClass(animateClass);
+            });
+            $next.trigger('show.origam.' + that.type);
+        };
+
+        $.support.transition ?
+            $next
+                .one('origamTransitionEnd', onShow)
+                .emulateTransitionEnd(Table.TRANSITION_DURATION) :
+            onShow();
+
+        return false;
+
+    };
+
+    Table.prototype.eventHide = function ($next) {
+
+        var that = this;
+
+        $next.trigger($.Event('close.origam.' + that.type));
+
+        if(that.options.animate) {
+            $next.find('.' + that.classes.detailInnerRow).each( function() {
+                    $(this).addClass(that.options.animationOut);
+                    $(this).addClass('animated');
+                });
+            var animateClass = that.options.animationOut + ' animated';
+        }
+
+        function removeElement() {
+            $next.find('.' + that.classes.detailInnerRow).each( function() {
+                if ($(this).hasClass(animateClass))
+                    $(this).removeClass(animateClass);
+            });
+            $next
+                .trigger('closed.origam.' + that.type)
+                .hide();
+        }
+
+        $.support.transition ?
+            $next
+                .one('origamTransitionEnd', removeElement)
+                .emulateTransitionEnd(Table.TRANSITION_DURATION) :
+            removeElement()
 
     };
 

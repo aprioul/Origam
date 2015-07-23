@@ -283,9 +283,6 @@
 
     Color.prototype.change = function(field) {
 
-        console.log(field);
-        console.log(field.parents(this.$parent));
-
         if (field.parents(this.$parent).attr('class').indexOf('--hex') > 0) {
             this.options.color = hexToHsb(fixHex(this.field[0].val()));
             this.fillRGBFields(this.options.color);
