@@ -147,6 +147,10 @@
     Password.prototype.constructor = Password;
 
     Password.prototype.event = function (options) {
+        this.type           = type;
+        this.element        = element;
+        this.$element       = $(element);
+        this.options        = this.getOptions(options);
         this.inState   = { click: false, hover: false, focus: false };
         var modules    = this.options.modules.split(' ');
 
@@ -154,10 +158,10 @@
             var module = modules[i];
 
             if (module == 'switch') {
-                var toggleSee = this.switch(options);
+                var toggleSee = this.switch();
             }
             if (module == 'strenght') {
-                var strenght = this.strenght(options);
+                var strenght = this.strenght();
             }
         }
     };
@@ -166,10 +170,10 @@
         return Password.DEFAULTS
     };
 
-    Password.prototype.switch = function(options){
+    Password.prototype.switch = function(){
         this.$wrapper = this.addAddon();
 
-        this.$switch = options.templateSwitch;
+        this.$switch = this.options.templateSwitch;
 
         this.$wrapper.append(this.$switch);
         var $switch = this.$wrapper.children();
@@ -206,9 +210,9 @@
         }
     };
 
-    Password.prototype.strenght = function(options){
-        this.$strenght = options.templateStrenght;
-        this.charsets = options.charsets;
+    Password.prototype.strenght = function(){
+        this.$strenght = this.options.templateStrenght;
+        this.charsets = this.options.charsets;
 
         this.$element.on('keyup focus input propertychange mouseup', $.proxy(this.calculate, this));
     };
