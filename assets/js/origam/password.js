@@ -158,10 +158,10 @@
             var module = modules[i];
 
             if (module == 'switch') {
-                var toggleSee = this.switch();
+                this.switch();
             }
             if (module == 'strenght') {
-                var strenght = this.strenght();
+                this.strenght();
             }
         }
     };

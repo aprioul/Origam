@@ -37,7 +37,7 @@
                 return val;
             }
         },
-        modules: 'responsive sort',
+        modules: 'responsive sort sticky',
         addRowToggle: true,
         toggleSelector: ' > tbody > tr:not(.footable-row-detail)',
         columnDataSelector: '> thead > tr:last-child > th, > thead > tr:last-child > td',
@@ -111,10 +111,13 @@
             var module = modules[i];
 
             if (module == 'responsive') {
-                var toggleSee = this.responsiveTable();
+                this.responsiveTable();
             }
             if (module == 'sort') {
-                var strenght = this.sort();
+                this.sort();
+            }
+            if (module == 'sticky') {
+                this.stickyHeader();
             }
         }
     };
@@ -517,6 +520,10 @@
     };
 
     Table.prototype.sort = function () {
+
+    };
+
+    Table.prototype.stickyHeader = function () {
 
     };
 
