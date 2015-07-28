@@ -19516,6 +19516,23 @@ th {
   display: table-cell;
 }
 
+.responsivetable > thead > tr > th.responsivetable-sortable {
+  padding-right: 24px;
+  position: relative;
+}
+.responsivetable > thead > tr > th.responsivetable-sortable:hover {
+  cursor: pointer;
+}
+.responsivetable > thead > tr > th .responsivetable-sort-indicator {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
 .btn {
   display: inline-block;
   margin-bottom: 0;

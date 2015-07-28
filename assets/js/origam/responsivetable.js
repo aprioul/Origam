@@ -37,12 +37,26 @@
                 return val;
             }
         },
+        sorters: {
+            alpha: function (a, b) {
+                console.log('a ' + a);
+                console.log('b ' + b);
+                if (typeof(a) === 'string') { a = a.toLowerCase(); }
+                if (typeof(b) === 'string') { b = b.toLowerCase(); }
+                if (a === b) return 0;
+                if (a < b) return -1;
+                return 1;
+            },
+            numeric: function (a, b) {
+                return a - b;
+            }
+        },
         modules: 'responsive sort sticky',
-        addRowToggle: true,
         toggleSelector: ' > tbody > tr:not(.responsivetable-row-detail)',
         columnDataSelector: '> thead > tr:last-child > th, > thead > tr:last-child > td',
         detailSeparator: '',
         toggleTemplate: '<span class="origamicon origamicon-eye"></span>',
+        sortTemplate: '<span class="origamicon origamicon-sort"></span>',
         priorityMin: 1,
         animate: false,
         animationIn: 'bounceInRight',
@@ -63,7 +77,12 @@
             detailShow: 'responsivetable-detail-show',
             iconShow: 'origamicon-eye',
             iconHide: 'origamicon-eye-blocked',
-            active: 'responsivetable-active'
+            active: 'responsivetable-active',
+            sortable: 'responsivetable-sortable',
+            descending: 'origamicon-sort-desc',
+            ascending: 'origamicon-sort-asc',
+            sort: 'origamicon-sort',
+            indicator: 'responsivetable-sort-indicator'
         },
         createDetail: function (element, data, detailSeparator, classes) {
 
@@ -105,7 +124,16 @@
         this.indexOffset    = 0;
 
 
-        var modules    = this.options.modules.split(' ');
+        var modules    = this.options.modules.split(' '),
+            that = this,
+            colData = [];
+
+        this.$element.find(this.options.columnDataSelector).each(function (index, e) {
+            var data = that.getColumnData(e);
+            colData[data.index] = data;
+        });
+
+        this.columnsData = colData;
 
         for (var i = modules.length; i--;) {
             var module = modules[i];
@@ -132,32 +160,6 @@
         return options
     };
 
-    Table.prototype.responsiveTable = function() {
-        var that = this,
-            colData = [];
-
-        this.$element.addClass(this.classes.loading);
-
-        this.$element.find(this.options.columnDataSelector).each(function (index, e) {
-            var data = that.getColumnData(e);
-            colData[data.index] = data;
-        });
-
-        this.columnsData = colData;
-
-        this.addRowToggle();
-
-        this.calculateWidth();
-
-        this.setColumn();
-
-        this.$element.removeClass(this.classes.loading);
-
-        this.$element.addClass(this.classes.loaded).addClass(this.classes.main);
-
-        $(w).on('resize', $.proxy(this.tableResize, this));
-    };
-
     Table.prototype.getColumnData = function (e) {
         var $th = $(e),
             hide = $th.data('hide'),
@@ -169,6 +171,7 @@
             'type': $th.data('type') || 'alpha',
             'name': $th.data('name') || $.trim($th.text()),
             'ignore': $th.data('ignore') || false,
+            'sortIgnore': $th.data('sortignore') || false,
             'toggle': $th.data('toggle') || false,
             'className': $th.data('class') || null,
             'matches': [],
@@ -216,13 +219,28 @@
         return this.data.column.data;
     };
 
+    Table.prototype.responsiveTable = function() {
+        this.$element.addClass(this.classes.loading);
+
+        this.addRowToggle();
+
+        this.calculateWidth();
+
+        this.setColumn();
+
+        this.$element.removeClass(this.classes.loading);
+
+        this.$element.addClass(this.classes.loaded).addClass(this.classes.main);
+
+        $(w).on('resize', $.proxy(this.tableResize, this));
+    };
+
     Table.prototype.parse = function (cell, column) {
         var parser = this.options.parsers[column.type] || this.options.parsers.alpha;
         return parser(cell);
     };
 
     Table.prototype.addRowToggle = function () {
-        if (!this.options.addRowToggle) return;
 
         this.toggle = $('<td>')
             .addClass(this.classes.toggle)
@@ -527,7 +545,113 @@
     };
 
     Table.prototype.sort = function () {
+        var that = this;
 
+        that.$element.find('> thead > tr:last-child > th, > thead > tr:last-child > td').each(function (ec) {
+            var $th = $(this),
+                column = that.columnsData[$th.index()+1],
+                ignore = column.sortIgnore;
+
+            if (ignore !== true && !$th.hasClass(that.classes.sortable)) {
+                $th.addClass(that.classes.sortable);
+                $(that.options.sortTemplate).addClass(that.classes.indicator).appendTo($th);
+            }
+        });
+
+        that.$element.find('> thead > tr:last-child > th.' + that.classes.sortable + ', > thead > tr:last-child > td.' + that.classes.sortable).unbind('click.origam').bind('click.origam', function (ec) {
+            ec.preventDefault();
+            var $th = $(this);
+            var ascending = !$th.children('.' + that.classes.indicator).hasClass(that.classes.ascending);
+            that.toggleSort($th.index(), ascending);
+            return false;
+        });
+    };
+
+    Table.prototype.toggleSort = function (colIndex, ascending) {
+        console.log(colIndex);
+        console.log(ascending);
+
+        var $tbody = this.$element.find('> tbody'),
+            column = this.columnsData[colIndex],
+            $th = this.$element.find('> thead > tr:last-child > th:eq(' + colIndex + ')');
+
+        ascending = (ascending === undefined) ? $th.children('.' + this.classes.indicator).hasClass(this.classes.ascending) : (ascending === 'toggle') ? !$th.children('.' + this.classes.indicator).hasClass(this.classes.ascending) : ascending;
+
+        this.$element.data('sorted', column.index);
+
+        this.$element
+            .find('> thead > tr:last-child > th, > thead > tr:last-child > td')
+            .not($th)
+            .children('.' + this.classes.indicator)
+            .removeClass(this.classes.descending)
+            .removeClass(this.classes.sort)
+            .addClass(this.classes.sort);
+
+        if (ascending === undefined) {
+            ascending = $thchildren('.' + this.classes.indicator).hasClass(this.classes.ascending);
+        }
+
+        if (ascending) {
+            $th
+                .children('.' + this.classes.indicator)
+                .removeClass(this.classes.sort)
+                .removeClass(this.classes.descending)
+                .addClass(this.classes.ascending);
+        } else {
+            $th
+                .children('.' + this.classes.indicator)
+                .removeClass(this.classes.sort)
+                .removeClass(this.classes.ascending)
+                .addClass(this.classes.descending);
+        }
+
+        this.doSort($tbody, column, ascending);
+    };
+
+    Table.prototype.doSort = function (tbody, column, ascending) {
+        var rows = this.rows(tbody, column),
+            sorter = this.options.sorters[column.type] || this.options.sorters.alpha;
+
+        console.log(rows);
+
+        rows.sort(function (a, b) {
+            if (ascending) {
+                return sorter(a.value, b.value);
+            } else {
+                return sorter(b.value, a.value);
+            }
+        });
+
+        for (var j = 0; j < rows.length; j++) {
+            tbody.append(rows[j].row);
+            if (rows[j].detail !== null) {
+                tbody.append(rows[j].detail);
+            }
+        }
+    };
+
+    Table.prototype.rows = function (tbody, column) {
+        var rows = [],
+            that = this;
+
+        tbody.find('> tr').each(function (i) {
+            var $row = $(this),
+                $next = null;
+
+            if ($row.hasClass(that.classes.detail)) return true;
+            if ($row.next().hasClass(that.classes.detail)) {
+                $next = $row.next().get(0);
+            }
+            var row = { 'row': $row, 'detail': $next };
+            if (column !== undefined) {
+                console.log(column);
+                row.value = that.parse($(this).get(0).cells[column.index], column);
+                console.log(row.value);
+            }
+            rows.push(row);
+            return true;
+        }).detach();
+        return rows;
     };
 
     Table.prototype.stickyHeader = function () {

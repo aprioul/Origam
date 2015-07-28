@@ -172,3 +172,20 @@ th {
 .responsivetable-row-detail-value {
   display: table-cell;
 }
+
+.responsivetable > thead > tr {
+  & > th {
+    &.responsivetable-sortable{
+      padding-right: 24px;
+      @include position(relative);
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    .responsivetable-sort-indicator {
+      @include position(absolute,50%, 8px, null, null);
+      @include translateY(-50%);
+    }
+  }
+}
