@@ -4358,8 +4358,6 @@
         var rows = this.rows(tbody, column),
             sorter = this.options.sorters[column.type] || this.options.sorters.alpha;
 
-        console.log(rows);
-
         rows.sort(function (a, b) {
             if (ascending) {
                 return sorter(a.value, b.value);
@@ -4390,9 +4388,7 @@
             }
             var row = { 'row': $row, 'detail': $next };
             if (column !== undefined) {
-                console.log(column);
                 row.value = that.parse($(this).get(0).cells[column.index], column);
-                console.log(row.value);
             }
             rows.push(row);
             return true;
