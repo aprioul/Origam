@@ -19516,12 +19516,21 @@ th {
   display: table-cell;
 }
 
+.responsivetable > thead > tr > th {
+  vertical-align: middle;
+}
 .responsivetable > thead > tr > th.responsivetable-sortable {
   padding-right: 24px;
   position: relative;
 }
+.responsivetable > thead > tr > th.responsivetable-sortable.responsivetable-sorted .responsivetable-sort-indicator {
+  color: rgba(0, 0, 0, 0.54);
+}
 .responsivetable > thead > tr > th.responsivetable-sortable:hover {
   cursor: pointer;
+}
+.responsivetable > thead > tr > th.responsivetable-sortable:hover .responsivetable-sort-indicator {
+  color: rgba(0, 0, 0, 0.87);
 }
 .responsivetable > thead > tr > th .responsivetable-sort-indicator {
   position: absolute;
@@ -19531,6 +19540,7 @@ th {
   -ms-transform: translateY(-50%);
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
+  color: rgba(0, 0, 0, 0.26);
 }
 
 .btn {

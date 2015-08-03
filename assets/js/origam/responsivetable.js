@@ -39,19 +39,31 @@
         },
         sorters: {
             alpha: function (a, b) {
-                console.log('a ' + a);
-                console.log('b ' + b);
-                if (typeof(a) === 'string') { a = a.toLowerCase(); }
-                if (typeof(b) === 'string') { b = b.toLowerCase(); }
-                if (a === b) return 0;
-                if (a < b) return -1;
+                if (typeof(a) === 'string') { var aa =  a.toLowerCase(); }
+                if (typeof(b) === 'string') { var bb = b.toLowerCase(); }
+                if (aa === bb) return 0;
+                if (aa < bb) return -1;
                 return 1;
             },
             numeric: function (a, b) {
-                return a - b;
+                var aa = parseFloat(a);
+                if (isNaN(aa)) aa = 0;
+                var bb = parseFloat(b);
+                if (isNaN(bb)) bb = 0;
+                return aa-bb;
+            },
+            currency: function (a, b) {
+                var aa = a.replace(/[^0-9.]/g,'');
+                var bb = b.replace(/[^0-9.]/g,'');
+                return parseFloat(aa) - parseFloat(bb);
+            },
+            date: function (a, b) {
+                var aa = new Date(a);
+                var bb = new Date(b);
+
+                return aa.getTime() - bb.getTime();
             }
         },
-        modules: 'responsive sort sticky',
         toggleSelector: ' > tbody > tr:not(.responsivetable-row-detail)',
         columnDataSelector: '> thead > tr:last-child > th, > thead > tr:last-child > td',
         detailSeparator: '',
@@ -61,6 +73,8 @@
         animate: false,
         animationIn: 'bounceInRight',
         animationOut: 'bounceOutRight',
+        sort: false,
+        sticky: false,
         classes: {
             main: 'responsivetable',
             loading: 'responsivetable-loading',
@@ -79,6 +93,7 @@
             iconHide: 'origamicon-eye-blocked',
             active: 'responsivetable-active',
             sortable: 'responsivetable-sortable',
+            sorted: 'responsivetable-sorted',
             descending: 'origamicon-sort-desc',
             ascending: 'origamicon-sort-asc',
             sort: 'origamicon-sort',
@@ -124,8 +139,7 @@
         this.indexOffset    = 0;
 
 
-        var modules    = this.options.modules.split(' '),
-            that = this,
+        var that = this,
             colData = [];
 
         this.$element.find(this.options.columnDataSelector).each(function (index, e) {
@@ -135,19 +149,28 @@
 
         this.columnsData = colData;
 
-        for (var i = modules.length; i--;) {
-            var module = modules[i];
+        this.$element.addClass(this.classes.loading);
 
-            if (module == 'responsive') {
-                this.responsiveTable();
-            }
-            if (module == 'sort') {
-                this.sort();
-            }
-            if (module == 'sticky') {
-                this.stickyHeader();
-            }
+        this.addRowToggle();
+
+        this.calculateWidth();
+
+        this.setColumn();
+
+        this.$element.removeClass(this.classes.loading);
+
+        this.$element.addClass(this.classes.loaded).addClass(this.classes.main);
+
+        $(w).on('resize', $.proxy(this.tableResize, this));
+
+        if(this.options.sort) {
+            this.sort();
         }
+
+        if(this.options.sticky) {
+            this.stickyHeader();
+        }
+
     };
 
     Table.prototype.getDefaults = function () {
@@ -164,11 +187,12 @@
         var $th = $(e),
             hide = $th.data('hide'),
             index = $th.index();
+
         hide = hide || false;
         var data = {
             'index': index + 1,
             'hide': hide,
-            'type': $th.data('type') || 'alpha',
+            'type': $th.data('type'),
             'name': $th.data('name') || $.trim($th.text()),
             'ignore': $th.data('ignore') || false,
             'sortIgnore': $th.data('sortignore') || false,
@@ -183,9 +207,10 @@
             'width' : 0
         };
 
-        if($.isEmptyObject($th.data())){
+        if(typeof $th.data('priority') === 'undefined'){
             this.max = this.max + 1;
             $th.attr('data-priority', this.max);
+
         }
 
         data.priority = parseInt($th.data('priority'), 10);
@@ -217,22 +242,6 @@
 
         this.data =  { 'column': { 'data': data, 'th': e } };
         return this.data.column.data;
-    };
-
-    Table.prototype.responsiveTable = function() {
-        this.$element.addClass(this.classes.loading);
-
-        this.addRowToggle();
-
-        this.calculateWidth();
-
-        this.setColumn();
-
-        this.$element.removeClass(this.classes.loading);
-
-        this.$element.addClass(this.classes.loaded).addClass(this.classes.main);
-
-        $(w).on('resize', $.proxy(this.tableResize, this));
     };
 
     Table.prototype.parse = function (cell, column) {
@@ -548,13 +557,17 @@
         var that = this;
 
         that.$element.find('> thead > tr:last-child > th, > thead > tr:last-child > td').each(function (ec) {
-            var $th = $(this),
-                column = that.columnsData[$th.index()+1],
-                ignore = column.sortIgnore;
+            var $th     = $(this),
+                index   = $th.index();
 
-            if (ignore !== true && !$th.hasClass(that.classes.sortable)) {
-                $th.addClass(that.classes.sortable);
-                $(that.options.sortTemplate).addClass(that.classes.indicator).appendTo($th);
+            if(index !== 0){
+                var column = that.columnsData[index],
+                    ignore = column.sortIgnore;
+
+                if (ignore !== true && !$th.hasClass(that.classes.sortable)) {
+                    $th.addClass(that.classes.sortable);
+                    $(that.options.sortTemplate).addClass(that.classes.indicator).appendTo($th);
+                }
             }
         });
 
@@ -568,12 +581,10 @@
     };
 
     Table.prototype.toggleSort = function (colIndex, ascending) {
-        console.log(colIndex);
-        console.log(ascending);
-
         var $tbody = this.$element.find('> tbody'),
             column = this.columnsData[colIndex],
-            $th = this.$element.find('> thead > tr:last-child > th:eq(' + colIndex + ')');
+            $th = this.$element.find('> thead > tr:last-child > th:eq(' + colIndex + ')'),
+            $thead = this.$element.find('> thead');
 
         ascending = (ascending === undefined) ? $th.children('.' + this.classes.indicator).hasClass(this.classes.ascending) : (ascending === 'toggle') ? !$th.children('.' + this.classes.indicator).hasClass(this.classes.ascending) : ascending;
 
@@ -581,9 +592,11 @@
 
         this.$element
             .find('> thead > tr:last-child > th, > thead > tr:last-child > td')
+            .removeClass(this.classes.sorted)
             .not($th)
             .children('.' + this.classes.indicator)
             .removeClass(this.classes.descending)
+            .removeClass(this.classes.ascending)
             .removeClass(this.classes.sort)
             .addClass(this.classes.sort);
 
@@ -593,24 +606,48 @@
 
         if (ascending) {
             $th
+                .addClass(this.classes.sorted)
                 .children('.' + this.classes.indicator)
                 .removeClass(this.classes.sort)
                 .removeClass(this.classes.descending)
                 .addClass(this.classes.ascending);
         } else {
             $th
+                .addClass(this.classes.sorted)
                 .children('.' + this.classes.indicator)
                 .removeClass(this.classes.sort)
                 .removeClass(this.classes.ascending)
                 .addClass(this.classes.descending);
         }
 
-        this.doSort($tbody, column, ascending);
+        this.doSort($tbody, $thead, column, ascending);
     };
 
-    Table.prototype.doSort = function (tbody, column, ascending) {
+    Table.prototype.doSort = function (tbody, thead, column, ascending) {
         var rows = this.rows(tbody, column),
-            sorter = this.options.sorters[column.type] || this.options.sorters.alpha;
+            sorter = this.options.sorters[column.type],
+            itm = rows[1].value,
+            sorted = false;
+
+        if(typeof(sorter) === 'undefined') {
+            sorter = this.options.sorters.alpha;
+            if (itm.match(/^[\d\.]+$/)) {
+                sorter = this.options.sorters.numeric;
+                sorted = true;
+            }
+
+            if (itm.match(/^[�$]/)) {
+                sorter = this.options.sorters.currency;
+                sorted = true;
+            }
+
+            if (!sorted) {
+                var date = new Date(itm);
+                if (!isNaN(date.getTime())) {
+                    sorter = this.options.sorters.date;
+                }
+            }
+        }
 
         rows.sort(function (a, b) {
             if (ascending) {
@@ -628,11 +665,11 @@
         }
     };
 
-    Table.prototype.rows = function (tbody, column) {
+    Table.prototype.rows = function (tgroup, column) {
         var rows = [],
             that = this;
 
-        tbody.find('> tr').each(function (i) {
+        tgroup.find('> tr').each(function (i) {
             var $row = $(this),
                 $next = null;
 
