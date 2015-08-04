@@ -126,7 +126,7 @@ th {
   * Responsive table
   */
 
-.responsivetable-toggle{
+.origamtable-toggle{
   color: $black-3;
   cursor: pointer;
   @include position(relative);
@@ -142,56 +142,56 @@ th {
   }
 }
 
-.responsivetable-row-detail-cell{
+.origamtable-row-detail-cell{
   background-color: $table-bg-hover;
   overflow: hidden;
 }
 
-.responsivetable-row-detail-inner {
+.origamtable-row-detail-inner {
   display: table;
 }
 
-.responsivetable-row-detail-row {
+.origamtable-row-detail-row {
   display: table-row;
   line-height: 1.5em;
 }
 
-.responsivetable-row-detail-group {
+.origamtable-row-detail-group {
   display: block;
   line-height: 2em;
   font-size: 1.2em;
   font-weight: bold;
 }
 
-.responsivetable-row-detail-name {
+.origamtable-row-detail-name {
   display: table-cell;
   font-weight: bold;
   padding-right: 0.5em;
 }
 
-.responsivetable-row-detail-value {
+.origamtable-row-detail-value {
   display: table-cell;
 }
 
-.responsivetable > thead > tr {
+.origamtable > thead > tr {
   & > th {
     vertical-align: middle;
-    &.responsivetable-sortable{
+    &.origamtable-sortable{
       padding-right: 24px;
       @include position(relative);
 
-      &.responsivetable-sorted .responsivetable-sort-indicator {
+      &.origamtable-sorted .origamtable-sort-indicator {
         color: $black-2;
       }
 
       &:hover {
         cursor: pointer;
-        .responsivetable-sort-indicator {
+        .origamtable-sort-indicator {
           color: $black-1;
         }
       }
     }
-    .responsivetable-sort-indicator {
+    .origamtable-sort-indicator {
       @include position(absolute,50%, 8px, null, null);
       @include translateY(-50%);
       color: $black-3;

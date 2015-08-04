@@ -819,6 +819,198 @@
 
 })(jQuery, window);
 /**
+ * Apply origamTable
+ *
+ */
+
+(function ($, w) {
+
+    'use strict';
+
+    // TABLE PUBLIC CLASS DEFINITION
+    // ===============================
+
+    var Table = function (element, options) {
+        this.type       = null;
+        this.options    = null;
+        this.focus    = null;
+        this.blur    = null;
+        this.$element   = null;
+
+        this.init('table', element, options)
+        };
+
+    Table.VERSION  = '0.1.0';
+
+    Table.TRANSITION_DURATION = 1000;
+
+    Table.DEFAULTS = {
+        parsers: {
+            alpha: function (cell) {
+                return $(cell).data('value') || $.trim($(cell).text());
+            },
+            numeric: function (cell) {
+                var val = $(cell).data('value') || $(cell).text().replace(/[^0-9.\-]/g, '');
+                val = parseFloat(val);
+                if (isNaN(val)) val = 0;
+                return val;
+            }
+        },
+        columnDataSelector: '> thead > tr:last-child > th, > thead > tr:last-child > td',
+        classes: {
+            main: 'origamtable',
+            loading: 'origamtable-loading',
+            loaded: 'origamtable-loaded'
+        }
+    };
+
+    Table.prototype.init = function (type, element, options) {
+        this.type           = type;
+        this.element        = element;
+        this.$element       = $(element);
+        this.options        = this.getOptions(options);
+        this.classes        = this.options.classes;
+        this.$parent        = this.$element.parent();
+        this.max            = this.$element.find('> thead > tr:last-child > th[data-priority], > thead > tr:last-child > td[data-priority]').length;
+        this.indexOffset    = 0;
+
+
+        var that = this,
+            colData = [];
+
+        this.$element.find(this.options.columnDataSelector).each(function (index, e) {
+            var data = that.getColumnData(e);
+            colData[data.index] = data;
+        });
+
+        this.columnsData = colData;
+
+        this.$element.addClass(this.classes.loading);
+
+        this.tableEvent();
+
+        this.$element.removeClass(this.classes.loading);
+
+        this.$element.addClass(this.classes.loaded).addClass(this.classes.main);
+
+    };
+
+    Table.prototype.getDefaults = function () {
+        return Table.DEFAULTS
+    };
+
+    Table.prototype.getOptions = function (options) {
+        options = $.extend({}, this.getDefaults(), this.$element.data(), options);
+
+        return options
+    };
+
+    Table.prototype.getColumnData = function (e) {
+        var $th = $(e),
+            hide = $th.data('hide'),
+            index = $th.index();
+
+        hide = hide || false;
+        var data = {
+            'index': index,
+            'hide': hide,
+            'type': $th.data('type'),
+            'name': $th.data('name') || $.trim($th.text()),
+            'ignore': $th.data('ignore') || false,
+            'sortIgnore': $th.data('sortignore') || false,
+            'toggle': $th.data('toggle') || false,
+            'className': $th.data('class') || null,
+            'matches': [],
+            'names': { },
+            'group': $th.data('group') || null,
+            'groupName': null,
+            'isEditable': $th.data('editable'),
+            'priority' : 'undefined',
+            'width' : 0
+        };
+
+        if(typeof $th.data('priority') === 'undefined'){
+            this.max = this.max + 1;
+            $th.attr('data-priority', this.max);
+
+        }
+
+        data.priority = parseInt($th.data('priority'), 10);
+
+        var priorityWidth = $th.outerWidth();
+        $th.css('width', priorityWidth);
+
+        data.width += priorityWidth;
+
+        if (data.group !== null) {
+            var $group = this.$element.find('> thead > tr.responsivetable-group-row > th[data-group="' + data.group + '"], > thead > tr.responsivetable-group-row > td[data-group="' + data.group + '"]').first();
+            data.groupName = this.parse($group, { 'type': 'alpha' });
+        }
+
+        var pcolspan = parseInt($th.prev().attr('colspan') || 0, 10);
+        this.indexOffset += pcolspan > 1 ? pcolspan - 1 : 0;
+        var colspan = parseInt($th.attr('colspan') || 0, 10), curindex = data.index + this.indexOffset;
+        if (colspan > 1) {
+            var names = $th.data('names');
+            names = names || '';
+            names = names.split(',');
+            for (var i = 0; i < colspan; i++) {
+                data.matches.push(i + curindex);
+                if (i < names.length) data.names[i + curindex] = names[i];
+            }
+        } else {
+            data.matches.push(curindex);
+        }
+
+        this.data =  { 'column': { 'data': data, 'th': e } };
+        return this.data.column.data;
+    };
+
+    Table.prototype.tableEvent = function () {
+        return null;
+    };
+
+    Table.prototype.parse = function (cell, column) {
+        var parser = this.options.parsers[column.type] || this.options.parsers.alpha;
+        return parser(cell);
+    };
+
+    // TABLE PLUGIN DEFINITION
+    // =========================
+
+    function Plugin(option) {
+        return this.each(function () {
+            var $this   = $(this);
+            var data    = $this.data('origam.table');
+            var options = typeof option == 'object' && option;
+
+            if (!data && /destroy|hide/.test(option)) return;
+            if (!data) $this.data('origam.table', (data = new Table(this, options)));
+            if (typeof option == 'string') data[option]()
+        })
+    }
+
+    var old = $.fn.table;
+
+    $.fn.table             = Plugin;
+    $.fn.table.Constructor = Table;
+
+
+    // TABLE NO CONFLICT
+    // ===================
+
+    $.fn.table.noConflict = function () {
+        $.fn.table = old;
+        return this
+    };
+
+    $(document).ready(function() {
+        $('[data-app="table"]').table();
+    });
+
+})(jQuery, window);
+
+/**
  * Apply origamCollapse
  */
 
@@ -3746,7 +3938,7 @@
 
 })(jQuery, window);
 /**
- * Apply origamTable
+ * Apply origamResponsiveTable
  *
  */
 
@@ -3754,96 +3946,45 @@
 
     'use strict';
 
-    // TABLE PUBLIC CLASS DEFINITION
+    // PASSWORD PUBLIC CLASS DEFINITION
     // ===============================
 
-    var Table = function (element, options) {
+    var ResponsiveTable = function (element, options) {
         this.type       = null;
         this.options    = null;
-        this.focus    = null;
-        this.blur    = null;
         this.$element   = null;
 
-        this.init('table', element, options)
-        };
+        this.init('responsiveTable', element, options)
+    };
 
-    Table.VERSION  = '0.1.0';
+    if (!$.fn.input) throw new Error('ResponsiveTable requires table.js');
 
-    Table.TRANSITION_DURATION = 1000;
+    ResponsiveTable.VERSION  = '0.1.0';
 
-    Table.DEFAULTS = {
-        parsers: {
-            alpha: function (cell) {
-                return $(cell).data('value') || $.trim($(cell).text());
-            },
-            numeric: function (cell) {
-                var val = $(cell).data('value') || $(cell).text().replace(/[^0-9.\-]/g, '');
-                val = parseFloat(val);
-                if (isNaN(val)) val = 0;
-                return val;
-            }
-        },
-        sorters: {
-            alpha: function (a, b) {
-                if (typeof(a) === 'string') { var aa =  a.toLowerCase(); }
-                if (typeof(b) === 'string') { var bb = b.toLowerCase(); }
-                if (aa === bb) return 0;
-                if (aa < bb) return -1;
-                return 1;
-            },
-            numeric: function (a, b) {
-                var aa = parseFloat(a);
-                if (isNaN(aa)) aa = 0;
-                var bb = parseFloat(b);
-                if (isNaN(bb)) bb = 0;
-                return aa-bb;
-            },
-            currency: function (a, b) {
-                var aa = a.replace(/[^0-9.]/g,'');
-                var bb = b.replace(/[^0-9.]/g,'');
-                return parseFloat(aa) - parseFloat(bb);
-            },
-            date: function (a, b) {
-                var aa = new Date(a);
-                var bb = new Date(b);
+    ResponsiveTable.TRANSITION_DURATION = 1000;
 
-                return aa.getTime() - bb.getTime();
-            }
-        },
+    ResponsiveTable.DEFAULTS = $.extend({}, $.fn.table.Constructor.DEFAULTS, {
         toggleSelector: ' > tbody > tr:not(.responsivetable-row-detail)',
-        columnDataSelector: '> thead > tr:last-child > th, > thead > tr:last-child > td',
         detailSeparator: '',
         toggleTemplate: '<span class="origamicon origamicon-eye"></span>',
-        sortTemplate: '<span class="origamicon origamicon-sort"></span>',
         priorityMin: 1,
         animate: false,
         animationIn: 'bounceInRight',
         animationOut: 'bounceOutRight',
-        sort: false,
-        sticky: false,
         classes: {
-            main: 'responsivetable',
-            loading: 'responsivetable-loading',
-            loaded: 'responsivetable-loaded',
-            toggle: 'responsivetable-toggle',
-            disabled: 'responsivetable-disabled',
-            detail: 'responsivetable-row-detail',
-            detailCell: 'responsivetable-row-detail-cell',
-            detailInner: 'responsivetable-row-detail-inner',
-            detailInnerRow: 'responsivetable-row-detail-row',
-            detailInnerGroup: 'responsivetable-row-detail-group',
-            detailInnerName: 'responsivetable-row-detail-name',
-            detailInnerValue: 'responsivetable-row-detail-value',
-            detailShow: 'responsivetable-detail-show',
+            toggle: 'origamtable-toggle',
+            disabled: 'origamtable-disabled',
+            detail: 'origamtable-row-detail',
+            detailCell: 'origamtable-row-detail-cell',
+            detailInner: 'origamtable-row-detail-inner',
+            detailInnerRow: 'origamtable-row-detail-row',
+            detailInnerGroup: 'origamtable-row-detail-group',
+            detailInnerName: 'origamtable-row-detail-name',
+            detailInnerValue: 'origamtable-row-detail-value',
+            detailShow: 'origamtable-detail-show',
             iconShow: 'origamicon-eye',
             iconHide: 'origamicon-eye-blocked',
-            active: 'responsivetable-active',
-            sortable: 'responsivetable-sortable',
-            sorted: 'responsivetable-sorted',
-            descending: 'origamicon-sort-desc',
-            ascending: 'origamicon-sort-asc',
-            sort: 'origamicon-sort',
-            indicator: 'responsivetable-sort-indicator'
+            active: 'origamtable-active'
         },
         createDetail: function (element, data, detailSeparator, classes) {
 
@@ -3872,130 +4013,27 @@
                 }
             }
         }
-    };
+    });
 
-    Table.prototype.init = function (type, element, options) {
-        this.type           = type;
-        this.element        = element;
-        this.$element       = $(element);
-        this.options        = this.getOptions(options);
-        this.classes        = this.options.classes;
-        this.$parent        = this.$element.parent();
-        this.max            = this.$element.find('> thead > tr:last-child > th[data-priority], > thead > tr:last-child > td[data-priority]').length;
-        this.indexOffset    = 0;
+    ResponsiveTable.prototype = $.extend({}, $.fn.table.Constructor.prototype);
 
+    ResponsiveTable.prototype.constructor = ResponsiveTable;
 
-        var that = this,
-            colData = [];
-
-        this.$element.find(this.options.columnDataSelector).each(function (index, e) {
-            var data = that.getColumnData(e);
-            colData[data.index] = data;
-        });
-
-        this.columnsData = colData;
-
-        this.$element.addClass(this.classes.loading);
-
+    ResponsiveTable.prototype.tableEvent = function (options) {
         this.addRowToggle();
 
         this.calculateWidth();
 
         this.setColumn();
 
-        this.$element.removeClass(this.classes.loading);
-
-        this.$element.addClass(this.classes.loaded).addClass(this.classes.main);
-
         $(w).on('resize', $.proxy(this.tableResize, this));
-
-        if(this.options.sort) {
-            this.sort();
-        }
-
-        if(this.options.sticky) {
-            this.stickyHeader();
-        }
-
     };
 
-    Table.prototype.getDefaults = function () {
-        return Table.DEFAULTS
+    ResponsiveTable.prototype.getDefaults = function () {
+        return ResponsiveTable.DEFAULTS
     };
 
-    Table.prototype.getOptions = function (options) {
-        options = $.extend({}, this.getDefaults(), this.$element.data(), options);
-
-        return options
-    };
-
-    Table.prototype.getColumnData = function (e) {
-        var $th = $(e),
-            hide = $th.data('hide'),
-            index = $th.index();
-
-        hide = hide || false;
-        var data = {
-            'index': index + 1,
-            'hide': hide,
-            'type': $th.data('type'),
-            'name': $th.data('name') || $.trim($th.text()),
-            'ignore': $th.data('ignore') || false,
-            'sortIgnore': $th.data('sortignore') || false,
-            'toggle': $th.data('toggle') || false,
-            'className': $th.data('class') || null,
-            'matches': [],
-            'names': { },
-            'group': $th.data('group') || null,
-            'groupName': null,
-            'isEditable': $th.data('editable'),
-            'priority' : 'undefined',
-            'width' : 0
-        };
-
-        if(typeof $th.data('priority') === 'undefined'){
-            this.max = this.max + 1;
-            $th.attr('data-priority', this.max);
-
-        }
-
-        data.priority = parseInt($th.data('priority'), 10);
-
-        var priorityWidth = $th.outerWidth();
-        $th.css('width', priorityWidth);
-
-        data.width += priorityWidth;
-
-        if (data.group !== null) {
-            var $group = this.$element.find('> thead > tr.responsivetable-group-row > th[data-group="' + data.group + '"], > thead > tr.responsivetable-group-row > td[data-group="' + data.group + '"]').first();
-            data.groupName = this.parse($group, { 'type': 'alpha' });
-        }
-
-        var pcolspan = parseInt($th.prev().attr('colspan') || 0, 10);
-        this.indexOffset += pcolspan > 1 ? pcolspan - 1 : 0;
-        var colspan = parseInt($th.attr('colspan') || 0, 10), curindex = data.index + this.indexOffset;
-        if (colspan > 1) {
-            var names = $th.data('names');
-            names = names || '';
-            names = names.split(',');
-            for (var i = 0; i < colspan; i++) {
-                data.matches.push(i + curindex);
-                if (i < names.length) data.names[i + curindex] = names[i];
-            }
-        } else {
-            data.matches.push(curindex);
-        }
-
-        this.data =  { 'column': { 'data': data, 'th': e } };
-        return this.data.column.data;
-    };
-
-    Table.prototype.parse = function (cell, column) {
-        var parser = this.options.parsers[column.type] || this.options.parsers.alpha;
-        return parser(cell);
-    };
-
-    Table.prototype.addRowToggle = function () {
+    ResponsiveTable.prototype.addRowToggle = function () {
 
         this.toggle = $('<td>')
             .addClass(this.classes.toggle)
@@ -4024,7 +4062,7 @@
         this.columnsData[1].width += toggleWidth;
     };
 
-    Table.prototype.calculateWidth = function () {
+    ResponsiveTable.prototype.calculateWidth = function () {
         var maxWidth    = this.$parent.width(),
             affWidth    = 0,
             colSort = this.columnsData,
@@ -4053,7 +4091,7 @@
         }
     };
 
-    Table.prototype.setColumn = function () {
+    ResponsiveTable.prototype.setColumn = function () {
         var that = this;
 
         that.bindToggleSelector();
@@ -4073,40 +4111,42 @@
 
         that.$element
             .find('> tbody > tr:not(.' + that.classes.detail + ')').data('detail_created', false).end()
-            .find('> thead > tr:last-child > th')
+            .find('> thead > tr:last-child > th:not(.' + that.classes.toggle + ')')
             .each(function () {
-                if($(this).index() !== 0 ) {
-                    var data = that.columnsData[$(this).index()], selector = '', first = true;
+                var index       = $(this).index() - 1,
+                    data        = that.columnsData[index],
+                    selector    = '',
+                    first       = true;
 
-                    $.each(data.matches, function (m, match) {
-                        if (!first) {
-                            selector += ', ';
-                        }
-                        var count = match + 1;
-                        selector += '> tbody > tr:not(.' + that.classes.detail + ') > td:nth-child(' + count + ')';
-                        selector += ', > tfoot > tr:not(.' + that.classes.detail + ') > td:nth-child(' + count + ')';
-                        selector += ', > colgroup > col:nth-child(' + count + ')';
-                        first = false;
+                $.each(data.matches, function (m, match) {
+                    if (!first) {
+                        selector += ', ';
+                    }
+
+                    var count = match + 2;
+                    selector += '> tbody > tr:not(.' + that.classes.detail + ') > td:nth-child(' + count + ')';
+                    selector += ', > tfoot > tr:not(.' + that.classes.detail + ') > td:nth-child(' + count + ')';
+                    selector += ', > colgroup > col:nth-child(' + count + ')';
+                    first = false;
+                });
+
+                selector += ', > thead > tr[data-group-row="true"] > th[data-group="' + data.group + '"]';
+                var $column = that.$element.find(selector).add(this);
+
+                if (data.hide === false) $column.addClass('responsivetable-visible').show();
+                else $column.removeClass('responsivetable-visible').hide();
+
+                if (that.$element.find('> thead > tr.responsivetable-group-row').length === 1) {
+                    var $groupcols = that.$element.find('> thead > tr:last-child > th[data-group="' + data.group + '"]:visible, > thead > tr:last-child > th[data-group="' + data.group + '"]:visible'),
+                        $group = that.$element.find('> thead > tr.responsivetable-group-row > th[data-group="' + data.group + '"], > thead > tr.responsivetable-group-row > td[data-group="' + data.group + '"]'),
+                        groupspan = 0;
+
+                    $.each($groupcols, function () {
+                        groupspan += parseInt($(this).attr('colspan') || 1, 10);
                     });
 
-                    selector += ', > thead > tr[data-group-row="true"] > th[data-group="' + data.group + '"]';
-                    var $column = that.$element.find(selector).add(this);
-
-                    if (data.hide === false) $column.addClass('responsivetable-visible').show();
-                    else $column.removeClass('responsivetable-visible').hide();
-
-                    if (that.$element.find('> thead > tr.responsivetable-group-row').length === 1) {
-                        var $groupcols = that.$element.find('> thead > tr:last-child > th[data-group="' + data.group + '"]:visible, > thead > tr:last-child > th[data-group="' + data.group + '"]:visible'),
-                            $group = that.$element.find('> thead > tr.responsivetable-group-row > th[data-group="' + data.group + '"], > thead > tr.responsivetable-group-row > td[data-group="' + data.group + '"]'),
-                            groupspan = 0;
-
-                        $.each($groupcols, function () {
-                            groupspan += parseInt($(this).attr('colspan') || 1, 10);
-                        });
-
-                        if (groupspan > 0) $group.attr('colspan', groupspan).show();
-                        else $group.hide();
-                    }
+                    if (groupspan > 0) $group.attr('colspan', groupspan).show();
+                    else $group.hide();
                 }
             })
             .end()
@@ -4117,7 +4157,7 @@
         that.$element.find('> tbody > tr.' + that.classes.detailShow + ':visible').each(function () {
             var $next = $(this).next();
             if ($next.hasClass(that.classes.detail)) {
-                 $next.show();
+                $next.show();
             }
         });
 
@@ -4131,7 +4171,7 @@
             .addClass('responsivetable-first-column');
     };
 
-    Table.prototype.setOrUpdateDetailRow = function (actualRow) {
+    ResponsiveTable.prototype.setOrUpdateDetailRow = function (actualRow) {
         var $row        = $(actualRow),
             $next       = $row.next(),
             that        = this,
@@ -4143,7 +4183,7 @@
         if ($row.is(':hidden')) return false;
 
         $row.find('> td:hidden').each(function () {
-            var index = $(this).index(),
+            var index = $(this).index() - 1,
                 column = that.getColumnFromTdIndex(index),
                 name = column.name;
 
@@ -4183,7 +4223,7 @@
 
     };
 
-    Table.prototype.getColumnFromTdIndex = function (index) {
+    ResponsiveTable.prototype.getColumnFromTdIndex = function (index) {
         var result = null;
         for (var column in this.columnsData) {
             if ($.inArray(index, this.columnsData[column].matches) >= 0) {
@@ -4194,7 +4234,7 @@
         return result;
     };
 
-    Table.prototype.bindToggleSelector = function () {
+    ResponsiveTable.prototype.bindToggleSelector = function () {
         var that = this;
 
         that.$element.find(that.options.toggleSelector).unbind('toggleRow.origam.'+ that.type).bind('toggleRow.origam.'+ that.type, function (e) {
@@ -4210,7 +4250,7 @@
         });
     };
 
-    Table.prototype.toggleDetail = function (row) {
+    ResponsiveTable.prototype.toggleDetail = function (row) {
         var $row = (row.jquery) ? row : $(row),
             $next = $row.next();
 
@@ -4230,7 +4270,7 @@
         }
     };
 
-    Table.prototype.eventShow = function ($next) {
+    ResponsiveTable.prototype.eventShow = function ($next) {
         var that = this;
 
         if(that.options.animate) {
@@ -4262,7 +4302,7 @@
 
     };
 
-    Table.prototype.eventHide = function ($next) {
+    ResponsiveTable.prototype.eventHide = function ($next) {
 
         var that = this;
 
@@ -4294,184 +4334,45 @@
 
     };
 
-    Table.prototype.tableResize = function () {
+    ResponsiveTable.prototype.tableResize = function () {
         this.calculateWidth();
         this.setColumn();
     };
 
-    Table.prototype.sort = function () {
-        var that = this;
-
-        that.$element.find('> thead > tr:last-child > th, > thead > tr:last-child > td').each(function (ec) {
-            var $th     = $(this),
-                index   = $th.index();
-
-            if(index !== 0){
-                var column = that.columnsData[index],
-                    ignore = column.sortIgnore;
-
-                if (ignore !== true && !$th.hasClass(that.classes.sortable)) {
-                    $th.addClass(that.classes.sortable);
-                    $(that.options.sortTemplate).addClass(that.classes.indicator).appendTo($th);
-                }
-            }
-        });
-
-        that.$element.find('> thead > tr:last-child > th.' + that.classes.sortable + ', > thead > tr:last-child > td.' + that.classes.sortable).unbind('click.origam').bind('click.origam', function (ec) {
-            ec.preventDefault();
-            var $th = $(this);
-            var ascending = !$th.children('.' + that.classes.indicator).hasClass(that.classes.ascending);
-            that.toggleSort($th.index(), ascending);
-            return false;
-        });
-    };
-
-    Table.prototype.toggleSort = function (colIndex, ascending) {
-        var $tbody = this.$element.find('> tbody'),
-            column = this.columnsData[colIndex],
-            $th = this.$element.find('> thead > tr:last-child > th:eq(' + colIndex + ')'),
-            $thead = this.$element.find('> thead');
-
-        ascending = (ascending === undefined) ? $th.children('.' + this.classes.indicator).hasClass(this.classes.ascending) : (ascending === 'toggle') ? !$th.children('.' + this.classes.indicator).hasClass(this.classes.ascending) : ascending;
-
-        this.$element.data('sorted', column.index);
-
-        this.$element
-            .find('> thead > tr:last-child > th, > thead > tr:last-child > td')
-            .removeClass(this.classes.sorted)
-            .not($th)
-            .children('.' + this.classes.indicator)
-            .removeClass(this.classes.descending)
-            .removeClass(this.classes.ascending)
-            .removeClass(this.classes.sort)
-            .addClass(this.classes.sort);
-
-        if (ascending === undefined) {
-            ascending = $thchildren('.' + this.classes.indicator).hasClass(this.classes.ascending);
-        }
-
-        if (ascending) {
-            $th
-                .addClass(this.classes.sorted)
-                .children('.' + this.classes.indicator)
-                .removeClass(this.classes.sort)
-                .removeClass(this.classes.descending)
-                .addClass(this.classes.ascending);
-        } else {
-            $th
-                .addClass(this.classes.sorted)
-                .children('.' + this.classes.indicator)
-                .removeClass(this.classes.sort)
-                .removeClass(this.classes.ascending)
-                .addClass(this.classes.descending);
-        }
-
-        this.doSort($tbody, $thead, column, ascending);
-    };
-
-    Table.prototype.doSort = function (tbody, thead, column, ascending) {
-        var rows = this.rows(tbody, column),
-            sorter = this.options.sorters[column.type],
-            itm = rows[1].value,
-            sorted = false;
-
-        if(typeof(sorter) === 'undefined') {
-            sorter = this.options.sorters.alpha;
-            if (itm.match(/^[\d\.]+$/)) {
-                sorter = this.options.sorters.numeric;
-                sorted = true;
-            }
-
-            if (itm.match(/^[�$]/)) {
-                sorter = this.options.sorters.currency;
-                sorted = true;
-            }
-
-            if (!sorted) {
-                var date = new Date(itm);
-                if (!isNaN(date.getTime())) {
-                    sorter = this.options.sorters.date;
-                }
-            }
-        }
-
-        rows.sort(function (a, b) {
-            if (ascending) {
-                return sorter(a.value, b.value);
-            } else {
-                return sorter(b.value, a.value);
-            }
-        });
-
-        for (var j = 0; j < rows.length; j++) {
-            tbody.append(rows[j].row);
-            if (rows[j].detail !== null) {
-                tbody.append(rows[j].detail);
-            }
-        }
-    };
-
-    Table.prototype.rows = function (tgroup, column) {
-        var rows = [],
-            that = this;
-
-        tgroup.find('> tr').each(function (i) {
-            var $row = $(this),
-                $next = null;
-
-            if ($row.hasClass(that.classes.detail)) return true;
-            if ($row.next().hasClass(that.classes.detail)) {
-                $next = $row.next().get(0);
-            }
-            var row = { 'row': $row, 'detail': $next };
-            if (column !== undefined) {
-                row.value = that.parse($(this).get(0).cells[column.index], column);
-            }
-            rows.push(row);
-            return true;
-        }).detach();
-        return rows;
-    };
-
-    Table.prototype.stickyHeader = function () {
-
-    };
-
-    // TABLE PLUGIN DEFINITION
+    // PASSWORD PLUGIN DEFINITION
     // =========================
 
     function Plugin(option) {
         return this.each(function () {
             var $this   = $(this);
-            var data    = $this.data('origam.table');
+            var data    = $this.data('origam.responsiveTable');
             var options = typeof option == 'object' && option;
 
-            if (!data && /destroy|hide/.test(option)) return;
-            if (!data) $this.data('origam.table', (data = new Table(this, options)));
+            if (!data) $this.data('origam.responsiveTable', (data = new ResponsiveTable(this, options)));
             if (typeof option == 'string') data[option]()
         })
     }
 
-    var old = $.fn.table;
+    var old = $.fn.responsiveTable;
 
-    $.fn.table             = Plugin;
-    $.fn.table.Constructor = Table;
+    $.fn.responsiveTable             = Plugin;
+    $.fn.responsiveTable.Constructor = ResponsiveTable;
 
 
-    // TABLE NO CONFLICT
+    // PASSWORD NO CONFLICT
     // ===================
 
     $.fn.table.noConflict = function () {
-        $.fn.table = old;
+        $.fn.responsiveTable = old;
         return this
-    };
+    }
 
     $(document).ready(function() {
-        $('[data-app="table"]').table();
+        $('[data-table="responsiveTable"]').responsiveTable();
+        $('[data-app="table"][data-responsive="true"]').responsiveTable();
     });
 
 })(jQuery, window);
-
 /**
  * Apply origamRipple
  */
@@ -4608,6 +4509,245 @@
 /**
  * Apply origamSocialFeed
  */
+/**
+ * Apply origamSortTable
+ *
+ */
+
+(function ($, w) {
+
+    'use strict';
+
+    // PASSWORD PUBLIC CLASS DEFINITION
+    // ===============================
+
+    var SortTable = function (element, options) {
+        this.type       = null;
+        this.options    = null;
+        this.$element   = null;
+
+        this.init('sortTable', element, options)
+    };
+
+    if (!$.fn.input) throw new Error('SortTable requires table.js');
+
+    SortTable.VERSION  = '0.1.0';
+
+    SortTable.TRANSITION_DURATION = 1000;
+
+    SortTable.DEFAULTS = $.extend({}, $.fn.table.Constructor.DEFAULTS, {
+        sorters: {
+            alpha: function (a, b) {
+                if (typeof(a) === 'string') { var aa =  a.toLowerCase(); }
+                if (typeof(b) === 'string') { var bb = b.toLowerCase(); }
+                if (aa === bb) return 0;
+                if (aa < bb) return -1;
+                return 1;
+            },
+            numeric: function (a, b) {
+                var aa = parseFloat(a);
+                if (isNaN(aa)) aa = 0;
+                var bb = parseFloat(b);
+                if (isNaN(bb)) bb = 0;
+                return aa-bb;
+            },
+            currency: function (a, b) {
+                var aa = a.replace(/[^0-9.]/g,'');
+                var bb = b.replace(/[^0-9.]/g,'');
+                return parseFloat(aa) - parseFloat(bb);
+            },
+            date: function (a, b) {
+                var aa = new Date(a);
+                var bb = new Date(b);
+
+                return aa.getTime() - bb.getTime();
+            }
+        },
+        sortTemplate: '<span class="origamicon origamicon-sort"></span>',
+        classes : {
+            toggle: 'origamtable-toggle',
+            sortable: 'origamtable-sortable',
+            sorted: 'origamtable-sorted',
+            descending: 'origamicon-sort-desc',
+            ascending: 'origamicon-sort-asc',
+            sort: 'origamicon-sort',
+            indicator: 'origamtable-sort-indicator'
+        }
+    });
+
+    SortTable.prototype = $.extend({}, $.fn.table.Constructor.prototype);
+
+    SortTable.prototype.constructor = SortTable;
+
+    SortTable.prototype.tableEvent = function (options) {
+        var that = this;
+
+        that.$element.find('> thead > tr:last-child > th:not(.' + that.classes.toggle + '), > thead > tr:last-child > td:not(.' + that.classes.toggle + ')').each(function () {
+            var $th     = $(this),
+                index = $th.index(),
+                column = that.columnsData[index],
+                ignore = column.sortIgnore;
+
+            if (ignore !== true && !$th.hasClass(that.classes.sortable)) {
+                $th.addClass(that.classes.sortable);
+                $(that.options.sortTemplate).addClass(that.classes.indicator).appendTo($th);
+            }
+        });
+
+        that.$element.find('> thead > tr:last-child > th.' + that.classes.sortable + ', > thead > tr:last-child > td.' + that.classes.sortable).unbind('click.origam').bind('click.origam', function (ec) {
+            ec.preventDefault();
+            var $th = $(this);
+            var ascending = !$th.children('.' + that.classes.indicator).hasClass(that.classes.ascending);
+            that.toggleSort($th.index(), ascending);
+            return false;
+        });
+    };
+
+    SortTable.prototype.getDefaults = function () {
+        return SortTable.DEFAULTS
+    };
+
+    SortTable.prototype.toggleSort = function (colIndex, ascending) {
+        var $tbody = this.$element.find('> tbody'),
+            column = this.columnsData[colIndex],
+            $th = this.$element.find('> thead > tr:last-child > th:eq(' + colIndex + ')'),
+            $thead = this.$element.find('> thead');
+
+        ascending = (ascending === undefined) ? $th.children('.' + this.classes.indicator).hasClass(this.classes.ascending) : (ascending === 'toggle') ? !$th.children('.' + this.classes.indicator).hasClass(this.classes.ascending) : ascending;
+
+        this.$element.data('sorted', column.index);
+
+        this.$element
+            .find('> thead > tr:last-child > th:not(.' + this.classes.toggle + '), > thead > tr:last-child > td:not(.' + this.classes.toggle + ')')
+            .removeClass(this.classes.sorted)
+            .not($th)
+            .children('.' + this.classes.indicator)
+            .removeClass(this.classes.descending)
+            .removeClass(this.classes.ascending)
+            .removeClass(this.classes.sort)
+            .addClass(this.classes.sort);
+
+        if (ascending === undefined) {
+            ascending = $thchildren('.' + this.classes.indicator).hasClass(this.classes.ascending);
+        }
+
+        if (ascending) {
+            $th
+                .addClass(this.classes.sorted)
+                .children('.' + this.classes.indicator)
+                .removeClass(this.classes.sort)
+                .removeClass(this.classes.descending)
+                .addClass(this.classes.ascending);
+        } else {
+            $th
+                .addClass(this.classes.sorted)
+                .children('.' + this.classes.indicator)
+                .removeClass(this.classes.sort)
+                .removeClass(this.classes.ascending)
+                .addClass(this.classes.descending);
+        }
+
+        this.doSort($tbody, $thead, column, ascending);
+    };
+
+    SortTable.prototype.doSort = function (tbody, thead, column, ascending) {
+        var rows = this.rows(tbody, column),
+            sorter = this.options.sorters[column.type],
+            itm = rows[1].value,
+            sorted = false;
+
+        if(typeof(sorter) === 'undefined') {
+            sorter = this.options.sorters.alpha;
+            if (itm.match(/^[\d\.]+$/)) {
+                sorter = this.options.sorters.numeric;
+                sorted = true;
+            }
+
+            if (itm.match(/^[�$]/)) {
+                sorter = this.options.sorters.currency;
+                sorted = true;
+            }
+
+            if (!sorted) {
+                var date = new Date(itm);
+                if (!isNaN(date.getTime())) {
+                    sorter = this.options.sorters.date;
+                }
+            }
+        }
+
+        rows.sort(function (a, b) {
+            if (ascending) {
+                return sorter(a.value, b.value);
+            } else {
+                return sorter(b.value, a.value);
+            }
+        });
+
+        for (var j = 0; j < rows.length; j++) {
+            tbody.append(rows[j].row);
+            if (rows[j].detail !== null) {
+                tbody.append(rows[j].detail);
+            }
+        }
+    };
+
+    SortTable.prototype.rows = function (tgroup, column) {
+        var rows = [],
+            that = this;
+
+        tgroup.find('> tr').each(function (i) {
+            var $row = $(this),
+                $next = null;
+
+            if ($row.hasClass(that.classes.detail)) return true;
+            if ($row.next().hasClass(that.classes.detail)) {
+                $next = $row.next().get(0);
+            }
+            var row = { 'row': $row, 'detail': $next };
+            if (column !== undefined) {
+                row.value = that.parse($(this).get(0).cells[column.index], column);
+            }
+            rows.push(row);
+            return true;
+        }).detach();
+        return rows;
+    };
+
+    // PASSWORD PLUGIN DEFINITION
+    // =========================
+
+    function Plugin(option) {
+        return this.each(function () {
+            var $this   = $(this);
+            var data    = $this.data('origam.sortTable');
+            var options = typeof option == 'object' && option;
+
+            if (!data) $this.data('origam.sortTable', (data = new SortTable(this, options)));
+            if (typeof option == 'string') data[option]()
+        })
+    }
+
+    var old = $.fn.sortTable;
+
+    $.fn.sortTable             = Plugin;
+    $.fn.sortTable.Constructor = SortTable;
+
+
+    // PASSWORD NO CONFLICT
+    // ===================
+
+    $.fn.table.noConflict = function () {
+        $.fn.sortTable = old;
+        return this
+    }
+
+    $(document).ready(function() {
+        $('[data-table="sortTable"]').sortTable();
+        $('[data-app="table"][data-sort="true"]').sortTable();
+    });
+
+})(jQuery, window);
 /**
  * Apply origamTabs
  */
