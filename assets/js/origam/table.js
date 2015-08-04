@@ -35,6 +35,18 @@
                 val = parseFloat(val);
                 if (isNaN(val)) val = 0;
                 return val;
+            },
+            currency: function (cell) {
+                var val = $(cell).data('value') || $(cell).text().replace(/[^0-9\.]+/g, '');
+                val = parseFloat(val);
+                if (isNaN(val)) val = 0;
+                return val;
+            },
+            date: function (cell) {
+                var val = $(cell).data('value') || $(cell).text();
+                val = new Date(val);
+                val = Date.parse(val);
+                return val;
             }
         },
         columnDataSelector: '> thead > tr:last-child > th, > thead > tr:last-child > td',

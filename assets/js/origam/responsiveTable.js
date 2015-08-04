@@ -148,7 +148,6 @@
             } else {
                 this.$element.addClass(this.classes.active);
                 this.columnsData[colIndex].hide = true;
-                break;
             }
         }
     };
