@@ -356,7 +356,7 @@
         $.support.transition && that.options.animate ?
             $next
                 .one('origamTransitionEnd', onShow)
-                .emulateTransitionEnd(Table.TRANSITION_DURATION) :
+                .emulateTransitionEnd(ResponsiveTable.TRANSITION_DURATION) :
             onShow();
 
         return false;
@@ -390,7 +390,7 @@
         $.support.transition && that.options.animate ?
             $next
                 .one('origamTransitionEnd', removeElement)
-                .emulateTransitionEnd(Table.TRANSITION_DURATION) :
+                .emulateTransitionEnd(ResponsiveTable.TRANSITION_DURATION) :
             removeElement()
 
     };
