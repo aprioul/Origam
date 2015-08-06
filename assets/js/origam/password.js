@@ -187,12 +187,12 @@
         return false
     };
 
-    Password.prototype.show = function(e){
+    Password.prototype.show = function(){
         this.$element.attr('type', 'text');
         this.$wrapper.children().removeClass(this.options.show).addClass(this.options.hide);
     };
 
-    Password.prototype.hide = function(e){
+    Password.prototype.hide = function(){
         this.$element.attr('type', 'password');
         this.$wrapper.children().removeClass(this.options.hide).addClass(this.options.show);
     };
@@ -214,7 +214,7 @@
         this.$element.on('keyup focus input propertychange mouseup', $.proxy(this.calculate, this));
     };
 
-    Password.prototype.calculate = function(e){
+    Password.prototype.calculate = function(){
         var password    = this.$element.val();
         var complexity  = 0, valid = false;
         var $progress   = '.' + this.options.progress;
@@ -289,7 +289,7 @@
     $.fn.input.noConflict = function () {
         $.fn.password = old;
         return this
-    }
+    };
 
     $(document).ready(function() {
         $('[data-form="password"]').password();
