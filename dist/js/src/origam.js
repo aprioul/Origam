@@ -2411,9 +2411,6 @@
     Password.prototype.constructor = Password;
 
     Password.prototype.event = function (options) {
-        this.type           = type;
-        this.element        = element;
-        this.$element       = $(element);
         this.options        = this.getOptions(options);
         this.inState   = { click: false, hover: false, focus: false };
         var modules    = this.options.modules.split(' ');
