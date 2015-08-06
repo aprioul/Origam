@@ -243,7 +243,6 @@
         $progressBar.toggleClass(this.options.danger, !valid);
 
         $progressBar.css({
-            'left': Math.max(0, ((this.$element.parent().width() - $progressBar.outerWidth()) / 2) + this.$element.parent().scrollLeft()) + "px",
             'width': complexity + '%'
         });
 
