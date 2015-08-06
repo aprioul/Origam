@@ -128,10 +128,12 @@
         var maxWidth    = this.$parent.width(),
             affWidth    = 0,
             colSort = this.columnsData,
-            sortable = [];
+            sortable = [],
+            active = false;
 
+        this.$element.removeClass(this.classes.active);
         $('th', this.$element).not('[data-priority="' + this.options.priorityMin + '"]').attr('data-hide', 'true');
-        $('td, th', this.$element).css('display', 'table-cell');
+        $('td, th', this.$element).not('.' + this.classes.toggle).css('display', 'table-cell');
 
         for (var col in colSort)
             sortable.push([col, colSort[col]])
@@ -141,14 +143,18 @@
             var colIndex = sortable[curCol][1].index;
             var curColWidth = this.columnsData[colIndex].width;
             if(affWidth + curColWidth < maxWidth && maxWidth > this.columnsData[this.options.priorityMin].width ) {
-                affWidth += curColWidth;
                 var curPriority = this.columnsData[colIndex].priority;
                 this.$element.find('[data-priority="' + curPriority + '"]').removeAttr('data-hide');
                 this.columnsData[colIndex].hide = false;
             } else {
-                this.$element.addClass(this.classes.active);
                 this.columnsData[colIndex].hide = true;
+                active = true;
             }
+            affWidth += curColWidth;
+        }
+
+        if(active){
+            this.$element.addClass(this.classes.active);
         }
     };
 

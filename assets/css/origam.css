@@ -19420,6 +19420,11 @@ th {
   vertical-align: bottom;
   border-bottom: 2px solid #ddd;
 }
+.table > caption + thead > tr:first-child,
+.table > colgroup + thead > tr:first-child,
+.table > thead:first-child > tr:first-child {
+  background-color: white;
+}
 .table > caption + thead > tr:first-child > th,
 .table > caption + thead > tr:first-child > td,
 .table > colgroup + thead > tr:first-child > th,
@@ -19471,6 +19476,10 @@ th {
   color: rgba(0, 0, 0, 0.26);
   cursor: pointer;
   position: relative;
+  display: none;
+}
+.origamtable-active .origamtable-toggle {
+  display: table-cell;
 }
 .origamtable-toggle span {
   width: 100%;
@@ -19541,6 +19550,52 @@ th {
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
   color: rgba(0, 0, 0, 0.26);
+}
+
+.origamtable-sticky-wrap {
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+.origamtable-sticky-wrap .origamtable-sticky-thead,
+.origamtable-sticky-wrap .origamtable-sticky-col,
+.origamtable-sticky-wrap .origamtable-sticky-intersect {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -moz-transition: all, 0.125s, ease-in-out;
+  -o-transition: all, 0.125s, ease-in-out;
+  -webkit-transition: all, 0.125s, ease-in-out;
+  transition: all, 0.125s, ease-in-out;
+  z-index: 50;
+  width: auto;
+  height: auto;
+}
+.origamtable-sticky-wrap .origamtable-sticky-thead {
+  z-index: 100;
+  width: 100%;
+  height: auto;
+}
+.origamtable-sticky-wrap .origamtable-sticky-intersect {
+  filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
+  opacity: 1;
+  z-index: 150;
+}
+.origamtable-sticky-wrap .origamtable-sticky-intersect th {
+  background-color: #666;
+  color: #eee;
+}
+.origamtable-sticky-wrap td,
+.origamtable-sticky-wrap th {
+  box-sizing: border-box;
+}
+.origamtable-sticky-wrap.overflow-y {
+  overflow-y: auto;
+  max-height: 50vh;
 }
 
 .btn {

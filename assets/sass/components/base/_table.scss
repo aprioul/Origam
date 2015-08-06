@@ -53,6 +53,7 @@ th {
   > colgroup + thead,
   > thead:first-child {
     > tr:first-child {
+      background-color: white;
       > th,
       > td {
         border-top: 0;
@@ -127,9 +128,16 @@ th {
   */
 
 .origamtable-toggle{
+
   color: $black-3;
   cursor: pointer;
   @include position(relative);
+  display: none;
+
+  .origamtable-active &{
+    display: table-cell;
+  }
+
   span {
     @include size(100%, 100%);
     @include position(absolute, 0, null, null, 0);
@@ -140,6 +148,7 @@ th {
   &:hover {
     color: $black-2;
   }
+
 }
 
 .origamtable-row-detail-cell{
@@ -197,4 +206,49 @@ th {
       color: $black-3;
     }
   }
+}
+
+.origamtable-sticky-wrap {
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+  @include size(100%);
+
+  .origamtable-sticky-thead,
+  .origamtable-sticky-col,
+  .origamtable-sticky-intersect {
+    @include opacity(0);
+    @include position(absolute,0,null,null,0);
+    @include transition(all, .125s, ease-in-out);
+    z-index: 50;
+    @include size(auto);
+  }
+
+  .origamtable-sticky-thead {
+    @include box-shadow(0 0.25em 0.1em -0.1em rgba(0,0,0,.125));
+    z-index: 100;
+    @include size(100%);
+  }
+
+  .origamtable-sticky-intersect {
+    @include opacity(1);
+    z-index: 150;
+
+    th {
+      background-color: #666;
+      color: #eee;
+    }
+
+  }
+
+  td,
+  th {
+    box-sizing: border-box;
+  }
+
+  &.overflow-y {
+    overflow-y: auto;
+    max-height: 50vh;
+  }
+
 }
