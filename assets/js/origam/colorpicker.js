@@ -125,21 +125,21 @@
 
     Color.DEFAULTS = $.extend({}, $.fn.input.Constructor.DEFAULTS, {
         showEvent: 'click',
-        wrapperTemplate: '<div class="origam-colorpick"></div>',
-        colorTemplate: '<div class="origam-colorpick--color"></div>',
-        colorSelectorTemplate: '<div class="origam-colorpick--selector_outer"><div class="origam-colorpick--selector_inner"></div></div>',
-        hueTemplate: '<div class="origam-colorpick--hue"></div>',
-        hueSelectorTemplate: '<div class="origam-colorpick--hue_arrs"><div class="origam-colorpick--hue_larr"></div><div class="origam-colorpick--hue_rarr"></div></div>',
-        formTemplate: '<div class="origam-colorpick--form"></div>',
-        submitTemplate: '<div class="origam-colorpick--submit btn btn-primary" data-button="close"></div>',
-        newColorTemplate: '<div class="origam-colorpick--new_color"></div>',
-        originColorTemplate: '<div class="origam-colorpick--current_color"></div>',
-        wrapperFieldTemplate : '<div class="origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"></div></div>',
-        labelFieldTemplate : '<div class="origam-colorpick--field_letter text-field--group__addons"></div>',
-        fieldTemplate: '<input data-form="input" type="number" min="0" max="" />',
-        closeTemplate: '<div class="origam-colorpick--close" data-button="close"><i class="origamicon origamicon-close"></i></div>',
-        overlayTemplate: '<div class="origam-colorpick--overlay" data-self="true" data-button="close"></div>',
-        colorElementTemplate: '<div class="text-field--color_current"></div>',
+        templateWrapper: '<div class="origam-colorpick"></div>',
+        templateColor: '<div class="origam-colorpick--color"></div>',
+        templateColorSelector: '<div class="origam-colorpick--selector_outer"><div class="origam-colorpick--selector_inner"></div></div>',
+        templateHue: '<div class="origam-colorpick--hue"></div>',
+        templateHueSelector: '<div class="origam-colorpick--hue_arrs"><div class="origam-colorpick--hue_larr"></div><div class="origam-colorpick--hue_rarr"></div></div>',
+        templateForm: '<div class="origam-colorpick--form"></div>',
+        templateSubmit: '<div class="origam-colorpick--submit btn btn-primary" data-button="close"></div>',
+        templateNewColor: '<div class="origam-colorpick--new_color"></div>',
+        templateOriginColor: '<div class="origam-colorpick--current_color"></div>',
+        templateWrapperField : '<div class="origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"></div></div>',
+        templateLabelField : '<div class="origam-colorpick--field_letter text-field--group__addons"></div>',
+        templateField: '<input data-form="input" type="number" min="0" max="" />',
+        templateClose: '<div class="origam-colorpick--close" data-button="close"><i class="origamicon origamicon-close"></i></div>',
+        templateOverlay: '<div class="origam-colorpick--overlay" data-type="overlay" data-button="close"></div>',
+        templateColorElement: '<div class="text-field--color_current"></div>',
         fieldClass : 'text-field--group__input',
         parentClass : 'text-field--color',
         color: 'FF0000',
@@ -224,32 +224,33 @@
 
         this.origColor = this.options.color;
 
-        this.colorpick = $(this.options.wrapperTemplate)
+        this.colorpick = $(this.options.templateWrapper)
             .attr('id', this.id)
             .addClass('origam-colorpick--'+this.options.layout);
 
 
-        this.close = $(this.options.closeTemplate).attr('data-target', '#' + this.id);
-        this.submitField = $(this.options.submitTemplate).attr('data-target', '#' + this.id);
+        this.close = $(this.options.templateClose).attr('data-target', '#' + this.id);
+        this.overlay = $(this.options.templateOverlay).attr('data-target', '#' + this.id);
+        this.submitField = $(this.options.templateSubmit).attr('data-target', '#' + this.id);
 
 
-        this.form = $(this.options.formTemplate);
-        this.currentColor = $(this.options.originColorTemplate);
-        this.newColor = $(this.options.newColorTemplate);
+        this.form = $(this.options.templateForm);
+        this.currentColor = $(this.options.templateOriginColor);
+        this.newColor = $(this.options.templateNewColor);
 
 
-        this.selector = $(this.options.colorTemplate);
-        this.selectorIndic = $(this.options.colorSelectorTemplate);
+        this.selector = $(this.options.templateColor);
+        this.selectorIndic = $(this.options.templateColorSelector);
 
 
-        this.hue = $(this.options.hueSelectorTemplate);
-        this.huebar = $(this.options.hueTemplate);
+        this.hue = $(this.options.templateHueSelector);
+        this.huebar = $(this.options.templateHue);
 
         this.options.placement = 'before';
         this.$wrapper = this.addAddon();
         this.$wrapper.text(this.options.format);
 
-        this.color = $(this.options.colorElementTemplate);
+        this.color = $(this.options.templateColorElement);
 
         this.$element
             .parents(this.$parent)
@@ -520,9 +521,9 @@
             .appendTo(this.form);
 
         for(var i in this.fields) {
-            var $wrapper         = $(this.options.wrapperFieldTemplate),
-                $label           = $(this.options.labelFieldTemplate),
-                $field           = $(this.options.fieldTemplate);
+            var $wrapper         = $(this.options.templateWrapperField),
+                $label           = $(this.options.templateLabelField),
+                $field           = $(this.options.templateField);
 
             $label
                 .text(this.fields[i]['label'])
@@ -586,14 +587,13 @@
         this.setNewColor(this.options.color);
         this.setOrigineFields(this.options.color);
 
+        this.overlay.appendTo(document.body);
         this.colorpick
             .appendTo(document.body)
             .css({
                 'top':  (viewportHeight/2) - (this.colorpick.outerHeight()/2),
                 'left': (viewportWidtht/2) - (this.colorpick.outerWidth()/2)
             });
-
-
 
         var onShow = function () {
             if ($color.hasClass(animateClass))

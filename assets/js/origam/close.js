@@ -20,8 +20,10 @@
 
     Close.prototype.close = function (e) {
 
-        var $this    = $(this);
-        var selector = $this.attr('data-target');
+        var $this    = $(this),
+            selector = $this.attr('data-target'),
+            type = $this.attr('data-type'),
+            overlay = false;
 
         if (!selector) {
             selector = $this.attr('href');
@@ -33,7 +35,19 @@
         if (e) e.preventDefault();
 
         if (!$parent.length) {
-            $parent = $this.closest('.alert')
+            $parent = $this.closest('.alert');
+        } else {
+            if(typeof type !== 'undefined' && type === 'overlay'){
+                overlay = true;
+                $overlay = $this;
+            } else {
+                var $overlay = $('body').find('[data-type="overlay"]');
+                if ($overlay.length) {
+                    if(typeof selector !== 'undefined' && selector == $overlay.attr('data-target')) {
+                        overlay = true;
+                    }
+                }
+            }
         }
 
         $parent.trigger(e = $.Event('close.origam.close'));
@@ -57,6 +71,11 @@
                 .detach()
                 .trigger('closed.origam.close')
                 .remove();
+            if(overlay) {
+                $overlay
+                    .detach()
+                    .remove();
+            }
         }
 
         $.support.transition ?
