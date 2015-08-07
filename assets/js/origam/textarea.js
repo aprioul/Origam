@@ -52,7 +52,7 @@
         var offset = this.element.offsetHeight - this.element.clientHeight;
 
         return offset;
-    }
+    };
 
     // TEXTAREA PLUGIN DEFINITION
     // =========================

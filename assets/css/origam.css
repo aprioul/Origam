@@ -20423,7 +20423,7 @@ th {
   font-size: 0.875rem;
 }
 
-.text-field--focused:not(.text-field--password) .text-field--group:after {
+.text-field--focused:not(.text-field--password) .text-field--group:after, .text-field--focused:not(.text-field--select) .text-field--group:after {
   width: 100%;
   height: 2px;
 }
@@ -20449,6 +20449,8 @@ th {
   padding-top: 8px;
 }
 .text-field--fixed .text-field--label {
+  font-size: 16px;
+  font-size: 1rem;
   -moz-transform: none;
   -ms-transform: none;
   -webkit-transform: none;
@@ -20456,6 +20458,11 @@ th {
 }
 .text-field--fixed.text-field--focused .text-field--label {
   color: rgba(0, 0, 0, 0.26);
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+}
+.text-field--fixed.text-field--active .text-field--label {
+  display: none;
 }
 
 .text-field--hidden .text-field--label {
@@ -20470,6 +20477,8 @@ th {
   color: rgba(0, 0, 0, 0.26);
   line-height: 32px;
   pointer-events: none;
+  filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
+  opacity: 1;
   -moz-transform: translateY(24px);
   -ms-transform: translateY(24px);
   -webkit-transform: translateY(24px);

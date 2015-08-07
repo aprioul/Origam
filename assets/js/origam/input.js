@@ -80,6 +80,18 @@
         return options
     };
 
+    Input.prototype.getUID = function (length){
+        var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split('');
+        if (!length) {
+            length = Math.floor(Math.random() * chars.length);
+        }
+        var str = '';
+        for (var i = 0; i < length; i++) {
+            str += chars[Math.floor(Math.random() * chars.length)];
+        }
+        return str;
+    };
+
     Input.prototype.event = function (options) {
         return null;
     };
@@ -94,21 +106,25 @@
 
     };
 
-    Input.prototype.addAddon = function() {
+    Input.prototype.addAddon = function(element) {
+        if(typeof element === 'undefined'){
+            element = this.$element;
+        }
+
         var classPosition = '';
         classPosition = (this.options.placement === 'after') ? this.options.classes.addonsRight : this.options.classes.addonsLeft;
 
-        this.$element.parents(this.$parent).addClass(classPosition);
+        element.parents(this.$parent).addClass(classPosition);
 
         var wrapper = this.options.addon;
 
         if(this.options.placement === 'after') {
-            this.$element.after(wrapper);
-            return (this.$element.next());
+            element.after(wrapper);
+            return (element.next());
         }
         else{
-            this.$element.before(wrapper);
-            return (this.$element.prev());
+            element.before(wrapper);
+            return (element.prev());
         }
     };
 

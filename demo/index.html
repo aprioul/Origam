@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Demo</title>
+    <link href="../dist/css/origam.min.css" rel="stylesheet"/>
+    <link href="../dist/css/demo.min.css" rel="stylesheet"/>
+    <script type="text/javascript" src="../dist/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../dist/js/plugins.min.js"></script>
+    <script type="text/javascript" src="../dist/js/src/origam.js"></script>
+    <script type="text/javascript" src="../dist/js/main.min.js"></script>
+</head>
+<body>
+<div id="brandbar" style="height:50px;">
+    <div id="brandbar-logo">
+
+    </div>
+    <div id="brandbar-content">
+        Origam Demo:
+        <select id="brandbar-menu" data-behaviour="open">
+            <option value="">--select demo--</option>
+            <option value="button.html">Button</option>
+            <option value="card.html">Card</option>
+            <option value="form.html">Form</option>
+            <option value="grid.html">Grid</option>
+            <option value="icon.html">Icon</option>
+            <option value="media.html">Media</option>
+            <option value="message.html">Message</option>
+            <option value="pager.html">Pager</option>
+            <option value="popover.html">Popover</option>
+            <option value="table.html">Table</option>
+            <option value="tooltip.html">Tooltip</option>
+            <option value="typography.html">Typography</option>
+        </select>
+    </div>
+    <div id="brandbar-buttons">
+        <span data-width="full" title="Resize to full width" class="brandbar-resize origamicon origamicon-desktop"></span>
+        <span data-width="768px" title="Resize to tablet width" class="brandbar-resize origamicon origamicon-tablet"></span>
+        <span data-width="320px" title="Resize to phone width" class="brandbar-resize origamicon origamicon-mobile"></span>
+    </div>
+</div>
+<iframe id="brandbar-iframe" frameborder="0" src=""></iframe>
+<script type="text/javascript">
+    BRANDBAR.breakout();
+
+    (function (BRANDBAR, $, undefined) {
+        BRANDBAR.url = 'demo.html';
+    }(window.BRANDBAR = window.BRANDBAR || {}, jQuery));
+
+
+    jQuery(function () {
+        BRANDBAR.init();
+    });
+</script>
+</body>
+</html>

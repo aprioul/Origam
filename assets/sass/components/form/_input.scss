@@ -43,7 +43,8 @@
 }
 
 .text-field--focused {
-  &:not(.text-field--password) {
+  &:not(.text-field--password),
+  &:not(.text-field--select){
     .text-field--group:after {
       @include size(100%, 2px);
     }
@@ -71,12 +72,20 @@
   padding-top: $base-space;
 
   .text-field--label {
+    @include font-size($font-size-base);
     @include transform(none);
   }
 
   &.text-field--focused {
     .text-field--label {
       color: $black-3;
+      @include opacity(0);
+    }
+  }
+
+  &.text-field--active {
+    .text-field--label {
+      display: none;
     }
   }
 }
@@ -94,6 +103,7 @@
   color: $black-3;
   line-height: 32px;
   pointer-events: none;
+  @include opacity(1);
   @include transform(translateY($base-space * 3));
   @include transform-origin(bottom left);
   @include transition-property(all);

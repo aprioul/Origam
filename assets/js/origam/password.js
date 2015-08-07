@@ -188,12 +188,16 @@
     };
 
     Password.prototype.show = function(){
-        this.$element.attr('type', 'text');
+        this.$element
+            .focus()
+            .attr('type', 'text');
         this.$wrapper.children().removeClass(this.options.show).addClass(this.options.hide);
     };
 
     Password.prototype.hide = function(){
-        this.$element.attr('type', 'password');
+        this.$element
+            .focus()
+            .attr('type', 'password');
         this.$wrapper.children().removeClass(this.options.hide).addClass(this.options.show);
     };
 
