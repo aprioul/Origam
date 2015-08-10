@@ -20151,19 +20151,6 @@ th {
 }
 
 /**
-  * Overlay
-  */
-.origam-colorpick--overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.12);
-  z-index: 2;
-}
-
-/**
   * Close
   */
 .origam-colorpick--close {
@@ -20890,6 +20877,19 @@ input[type="range"].text-field--group__input:after {
   display: block;
   color: rgba(0, 0, 0, 0.54);
   text-align: left;
+}
+
+.text-field--selectlist {
+  width: 100%;
+  background-color: #FFFFFF;
+  position: absolute;
+  top: 8px;
+  left: 0;
+  z-index: 3;
+}
+.text-field--selectlist .text-field {
+  padding: 0;
+  padding-right: 68px;
 }
 
 /**
@@ -22023,6 +22023,19 @@ a .badge:hover, a .badge:focus {
 }
 .back-to-top:hover {
   background: #0184b8;
+}
+
+/**
+  * Overlay
+  */
+.origam-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.12);
+  z-index: 2;
 }
 
 /**

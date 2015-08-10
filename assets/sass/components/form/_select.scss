@@ -12,3 +12,15 @@
   color: $black-2;
   text-align: left;
 }
+
+.text-field--selectlist {
+  @include size(100%, null);
+  background-color: $white;
+  @include position(absolute, 8px, null, null, 0);
+  z-index: 3;
+
+  .text-field {
+    padding: 0;
+    padding-right: 68px;
+  }
+}

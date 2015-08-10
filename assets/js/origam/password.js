@@ -148,7 +148,6 @@
 
     Password.prototype.event = function (options) {
         this.options        = this.getOptions(options);
-        this.inState   = { click: false, hover: false, focus: false };
         var modules    = this.options.modules.split(' ');
 
         for (var i = modules.length; i--;) {
@@ -179,36 +178,18 @@
 
     };
 
-    Password.prototype.isInStateTrue = function () {
-        for (var key in this.inState) {
-            if (this.inState[key]) return true
-        }
-
-        return false
-    };
-
-    Password.prototype.show = function(){
+    Password.prototype.show = function(e){
         this.$element
             .focus()
             .attr('type', 'text');
         this.$wrapper.children().removeClass(this.options.show).addClass(this.options.hide);
     };
 
-    Password.prototype.hide = function(){
+    Password.prototype.hide = function(e){
         this.$element
             .focus()
             .attr('type', 'password');
         this.$wrapper.children().removeClass(this.options.hide).addClass(this.options.show);
-    };
-
-    Password.prototype.toggle = function(e){
-        var self = this;
-
-        if(e){
-            self.inState.click = !self.inState.click;
-            if (self.isInStateTrue()) self.show(e);
-            else self.hide(e);
-        }
     };
 
     Password.prototype.strenght = function(){

@@ -52,6 +52,7 @@
         this.$element  = $(element);
         this.options   = this.getOptions(options);
         this.$parent   = '.' + this.options.parentNode;
+        this.inState   = { click: false, hover: false, focus: false };
 
         this.$element
             .parents(this.$parent)
@@ -90,6 +91,32 @@
             str += chars[Math.floor(Math.random() * chars.length)];
         }
         return str;
+    };
+
+    Input.prototype.isInStateTrue = function () {
+        for (var key in this.inState) {
+            if (this.inState[key]) return true
+        }
+
+        return false
+    };
+
+    Input.prototype.toggle = function(e){
+        var self = this;
+
+        if(e){
+            self.inState.click = !self.inState.click;
+            if (self.isInStateTrue()) self.show(e);
+            else self.hide(e);
+        }
+    };
+
+    Input.prototype.show = function(e){
+        return null;
+    };
+
+    Input.prototype.hide = function(e){
+        return null;
     };
 
     Input.prototype.event = function (options) {
@@ -138,10 +165,10 @@
 
     Input.prototype.startFocus = function (e) {
         $(e.currentTarget)
-            .parents(this.$parent)
+            .closest(this.$parent)
             .removeClass(this.options.classes.active);
         $(e.currentTarget)
-            .parents(this.$parent)
+            .closest(this.$parent)
             .addClass(this.options.classes.focus);
     };
 
@@ -1201,7 +1228,7 @@
         templateLabelField : '<div class="origam-colorpick--field_letter text-field--group__addons"></div>',
         templateField: '<input data-form="input" type="number" min="0" max="" />',
         templateClose: '<div class="origam-colorpick--close" data-button="close"><i class="origamicon origamicon-close"></i></div>',
-        templateOverlay: '<div class="origam-colorpick--overlay" data-type="overlay" data-button="close"></div>',
+        templateOverlay: '<div class="origam-overlay" data-type="overlay" data-button="close"></div>',
         templateColorElement: '<div class="text-field--color_current"></div>',
         fieldClass : 'text-field--group__input',
         parentClass : 'text-field--color',
@@ -2435,7 +2462,6 @@
 
     Password.prototype.event = function (options) {
         this.options        = this.getOptions(options);
-        this.inState   = { click: false, hover: false, focus: false };
         var modules    = this.options.modules.split(' ');
 
         for (var i = modules.length; i--;) {
@@ -2466,36 +2492,18 @@
 
     };
 
-    Password.prototype.isInStateTrue = function () {
-        for (var key in this.inState) {
-            if (this.inState[key]) return true
-        }
-
-        return false
-    };
-
-    Password.prototype.show = function(){
+    Password.prototype.show = function(e){
         this.$element
             .focus()
             .attr('type', 'text');
         this.$wrapper.children().removeClass(this.options.show).addClass(this.options.hide);
     };
 
-    Password.prototype.hide = function(){
+    Password.prototype.hide = function(e){
         this.$element
             .focus()
             .attr('type', 'password');
         this.$wrapper.children().removeClass(this.options.hide).addClass(this.options.show);
-    };
-
-    Password.prototype.toggle = function(e){
-        var self = this;
-
-        if(e){
-            self.inState.click = !self.inState.click;
-            if (self.isInStateTrue()) self.show(e);
-            else self.hide(e);
-        }
     };
 
     Password.prototype.strenght = function(){
@@ -4568,6 +4576,10 @@
         templateList: '<div class="text-field--selectlist"></div>',
         templateSearch: '<div class="text-field"><div class="text-field--group"><input class="text-field--group__input" data-form="input" type="text"/></div></div>',
         templateSearchIcon: '<span class="text-field--group__search origamicon origamicon-search"></span>',
+        templateOverlay: '<div class="origam-overlay" data-type="overlay" data-button="close"></div>',
+        animate: true,
+        animationIn: 'fadeInUp',
+        animationOut: 'fadeOutDown',
         classes: {
             focus: 'text-field--focused',
             active: 'text-field--active',
@@ -4587,16 +4599,19 @@
     Select.prototype.event = function (options) {
         this.id = this.getUID(8);
         this.classes = this.options.classes;
-        this.$element.hide();
+        this.inState   = { click: false};
 
         var that = this;
 
-        this.$element.after(this.options.templateSelect);
+        this.$element
+            .attr('data-id', this.id)
+            .hide()
+            .after(this.options.templateSelect);
+
         this.$select = this.$element.next();
 
         this.$select
             .attr('data-id', this.id)
-            .addClass(this.classes.select)
             .addClass(this.classes.fixed);
 
         this.$label = this.$select.find('label');
@@ -4606,10 +4621,12 @@
 
         this.$input = this.$select.find('input');
         this.$input
+            .on('click', $.proxy(this.toggle, this))
             .on('change', $.proxy(this.valChange, this));
 
+        this.overlay = $(this.options.templateOverlay).attr('data-target', '#' + this.id);
+
         this.addDropdown();
-        this.addSearch();
 
     };
 
@@ -4624,28 +4641,24 @@
         $wrapper.append(dropdown);
         var $dropdown = $wrapper.children();
 
-        $dropdown.on('click', $.proxy(this.startFocus, this));
+        $dropdown.on('click', $.proxy(this.toggle, this));
     };
 
     Select.prototype.addSearch = function () {
-        this.$select.append(this.options.templateList);
-        this.$list = this.$select.children(':last-child');
-
         var $search = $('<div/>', {
                 class: this.classes.search
-            }),
-            $options = $('<div/>', {
-                class: this.classes.options
             });
 
-        this.$list
-            .append($search)
-            .append($options);
+        this.$list.append($search);
 
         $search.append(this.options.templateSearch);
         $search.children().addClass(this.options.fixed);
 
         this.$search = $search.find('input');
+        this.$search
+            .on('focusin', $.proxy(this.startFocus, this))
+            .on('focusout', $.proxy(this.endFocus, this))
+            .on('change', $.proxy(this.valChange, this));
 
         var $wrapper = this.addAddon(this.$search);
 
@@ -4654,30 +4667,59 @@
         $wrapper.append(this.$searchIcon);
     };
 
+    Select.prototype.addList = function () {
+        var $options = $('<div/>', {
+            class: this.classes.options
+        });
 
-    Select.prototype.selectFocus = function (e) {
-        $(e.currentTarget)
-            .parents(this.$parent)
-            .removeClass(this.classes.active);
-        $(e.currentTarget)
-            .parents(this.$parent)
-            .addClass(this.classes.focus);
-
-        this.$input.focus();
+        this.$list.append($options);
     };
 
-    Select.prototype.unselectFocus = function (e) {
-        $(e.currentTarget)
-            .parents(this.$parent)
-            .removeClass(this.options.classes.focus);
-    };
+    Select.prototype.show = function (e) {
+        var that = this;
 
-    Select.prototype.valChange = function (e) {
-        if($(e.currentTarget).val() != ''){
-            $(e.currentTarget)
-                .parents(this.$parent)
-                .addClass(this.options.classes.active);
+        this.$list = $(this.options.templateList);
+        this.$list
+            .attr('id', this.id)
+            .appendTo(this.$select);
+
+        this.addSearch();
+        this.addList();
+
+        if(this.options.animate) {
+            this.$list
+                .attr('data-animate', 'true')
+                .attr('data-animation', this.options.animationOut)
+                .addClass(this.options.animationIn)
+                .addClass('animated');
+            var animateClass = this.options.animationIn + ' animated';
         }
+
+        this.overlay.appendTo(document.body);
+
+        this.overlay.on('click', function(){
+            that.inState   = { click: false};
+        });
+
+        var onShow = function () {
+            if (that.$list.hasClass(animateClass))
+                that.$list.removeClass(animateClass);
+            that.$select.addClass(that.classes.select);
+            that.$list.trigger('show.origam.' + that.type);
+            that.$search.focus();
+        };
+
+        $.support.transition && this.$list.hasClass(animateClass) ?
+            this.$list
+                .one('origamTransitionEnd', onShow)
+                .emulateTransitionEnd(Select.TRANSITION_DURATION) :
+            onShow();
+
+        return false;
+    };
+
+    Select.prototype.hide = function (e) {
+
     };
 
     // SELECT PLUGIN DEFINITION

@@ -52,6 +52,7 @@
         this.$element  = $(element);
         this.options   = this.getOptions(options);
         this.$parent   = '.' + this.options.parentNode;
+        this.inState   = { click: false, hover: false, focus: false };
 
         this.$element
             .parents(this.$parent)
@@ -90,6 +91,32 @@
             str += chars[Math.floor(Math.random() * chars.length)];
         }
         return str;
+    };
+
+    Input.prototype.isInStateTrue = function () {
+        for (var key in this.inState) {
+            if (this.inState[key]) return true
+        }
+
+        return false
+    };
+
+    Input.prototype.toggle = function(e){
+        var self = this;
+
+        if(e){
+            self.inState.click = !self.inState.click;
+            if (self.isInStateTrue()) self.show(e);
+            else self.hide(e);
+        }
+    };
+
+    Input.prototype.show = function(e){
+        return null;
+    };
+
+    Input.prototype.hide = function(e){
+        return null;
     };
 
     Input.prototype.event = function (options) {
@@ -138,10 +165,10 @@
 
     Input.prototype.startFocus = function (e) {
         $(e.currentTarget)
-            .parents(this.$parent)
+            .closest(this.$parent)
             .removeClass(this.options.classes.active);
         $(e.currentTarget)
-            .parents(this.$parent)
+            .closest(this.$parent)
             .addClass(this.options.classes.focus);
     };
 

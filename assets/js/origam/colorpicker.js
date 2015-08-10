@@ -138,7 +138,7 @@
         templateLabelField : '<div class="origam-colorpick--field_letter text-field--group__addons"></div>',
         templateField: '<input data-form="input" type="number" min="0" max="" />',
         templateClose: '<div class="origam-colorpick--close" data-button="close"><i class="origamicon origamicon-close"></i></div>',
-        templateOverlay: '<div class="origam-colorpick--overlay" data-type="overlay" data-button="close"></div>',
+        templateOverlay: '<div class="origam-overlay" data-type="overlay" data-button="close"></div>',
         templateColorElement: '<div class="text-field--color_current"></div>',
         fieldClass : 'text-field--group__input',
         parentClass : 'text-field--color',
