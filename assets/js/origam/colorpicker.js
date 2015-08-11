@@ -147,8 +147,6 @@
         layout: 'full',
         submitText: 'OK',
         animate: true,
-        animationIn: 'fadeInDown',
-        animationOut: 'fadeOutUp',
         format: '#',
         height: 276,
         onShow: function () {},
@@ -475,7 +473,7 @@
             .addClass(this.options.classes.active);
 
         this.color.css('backgroundColor', '#' + hsbToHex(hsb));
-    }
+    };
 
     Color.prototype.show = function () {
         var that            = this,

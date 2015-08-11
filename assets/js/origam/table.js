@@ -111,7 +111,6 @@
             'name': $th.data('name') || $.trim($th.text()),
             'ignore': $th.data('ignore') || false,
             'sortIgnore': $th.data('sortignore') || false,
-            'toggle': $th.data('toggle') || false,
             'className': $th.data('class') || null,
             'matches': [],
             'names': { },

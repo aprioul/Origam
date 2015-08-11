@@ -37,6 +37,9 @@
         placement: 'after',
         parentClass : '',
         addon: '<div class="text-field--group__addons"></div>',
+        animate: false,
+        animationIn: 'fadeInUp',
+        animationOut: 'fadeOutDown',
         definitions: {
             "9": "[0-9]",
             a: "[A-Za-z]",
@@ -53,6 +56,7 @@
         this.options   = this.getOptions(options);
         this.$parent   = '.' + this.options.parentNode;
         this.inState   = { click: false, hover: false, focus: false };
+        this.classes   = this.options.classes;
 
         this.$element
             .parents(this.$parent)
@@ -138,10 +142,9 @@
             element = this.$element;
         }
 
-        var classPosition = '';
-        classPosition = (this.options.placement === 'after') ? this.options.classes.addonsRight : this.options.classes.addonsLeft;
+        this.classPosition = (this.options.placement === 'after') ? this.options.classes.addonsRight : this.options.classes.addonsLeft;
 
-        element.parents(this.$parent).addClass(classPosition);
+        element.parents(this.$parent).addClass(this.classPosition);
 
         var wrapper = this.options.addon;
 
@@ -155,26 +158,40 @@
         }
     };
 
+    Input.prototype.removeAddon = function(element) {
+        if(typeof element === 'undefined'){
+            element = this.$element;
+        }
+
+        element.parents(this.$parent).removeClass(this.classPosition);
+
+        if(this.options.placement === 'after') {
+            element.next().detach().remove();
+        } else {
+            element.prev().detach().remove();
+        }
+
+
+    };
+
     Input.prototype.valChange = function (e) {
         if($(e.currentTarget).val() != ''){
             $(e.currentTarget)
-                .parents(this.$parent)
-                .addClass(this.options.classes.active);
+                .closest(this.$parent)
+                .addClass(this.classes.active);
         }
     };
 
     Input.prototype.startFocus = function (e) {
         $(e.currentTarget)
             .closest(this.$parent)
-            .removeClass(this.options.classes.active);
-        $(e.currentTarget)
-            .closest(this.$parent)
+            .removeClass(this.options.classes.active)
             .addClass(this.options.classes.focus);
     };
 
     Input.prototype.endFocus = function (e) {
         $(e.currentTarget)
-            .parents(this.$parent)
+            .closest(this.$parent)
             .removeClass(this.options.classes.focus);
     };
 

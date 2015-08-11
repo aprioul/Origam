@@ -20879,6 +20879,12 @@ input[type="range"].text-field--group__input:after {
   text-align: left;
 }
 
+.text-field--select .text-field--group__input {
+  cursor: pointer;
+  height: 32px;
+  line-height: 32px;
+}
+
 .text-field--selectlist {
   width: 100%;
   background-color: #FFFFFF;
@@ -20886,10 +20892,57 @@ input[type="range"].text-field--group__input:after {
   top: 8px;
   left: 0;
   z-index: 3;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-top: none;
 }
 .text-field--selectlist .text-field {
   padding: 0;
-  padding-right: 68px;
+}
+.text-field--selectlist .text-field--group__input {
+  padding-right: 38px;
+  padding-left: 12px;
+}
+.text-field--selectlist .text-field.right .text-field--group__addons {
+  font-size: 20px;
+  font-size: 1.25rem;
+  position: absolute;
+  right: 0;
+  left: initial;
+}
+
+.text-field--selectlist__select {
+  margin-top: -8px;
+}
+
+.selectlist-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.selectlist-list .selectlist-list--option {
+  padding: 6px 12px;
+  cursor: pointer;
+  color: #000000;
+}
+.selectlist-list .selectlist-list--option:hover, .selectlist-list .selectlist-list--option.selectlist-list--option__active {
+  background-color: #0196d1;
+  color: #FFFFFF;
+}
+
+.selectlist-list--option__group {
+  padding: 6px 12px;
+  color: rgba(0, 0, 0, 0.26);
+  font-size: 14px;
+  font-size: 0.875rem;
+}
+.selectlist-list--option__group .selectlist-list {
+  margin-top: 6px;
+}
+.selectlist-list--option__group .selectlist-list--option {
+  font-size: 16px;
+  font-size: 1rem;
+  margin: 0 -12px;
+  padding: 6px 24px;
 }
 
 /**

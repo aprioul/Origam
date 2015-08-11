@@ -13,14 +13,69 @@
   text-align: left;
 }
 
+.text-field--select {
+  .text-field--group__input {
+    cursor: pointer;
+    height: 32px;
+    line-height: 32px;
+  }
+}
+
 .text-field--selectlist {
   @include size(100%, null);
   background-color: $white;
   @include position(absolute, 8px, null, null, 0);
   z-index: 3;
+  border: 1px solid rgba(0,0,0,.12);
+  border-top: none;
 
   .text-field {
     padding: 0;
-    padding-right: 68px;
+  }
+
+  .text-field--group__input {
+    padding-right: 38px;
+    padding-left: $padding-base-horizontal;
+  }
+
+  .text-field.right {
+    .text-field--group__addons {
+      @include font-size($font-size-large);
+      @include position(absolute, null, 0, null, initial);
+    }
+  }
+}
+
+.text-field--selectlist__select {
+  margin-top: -8px;
+}
+
+.selectlist-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  .selectlist-list--option{
+    padding: $padding-base-vertical $padding-base-horizontal;
+    cursor: pointer;
+    color: $black;
+    &:hover,
+    &.selectlist-list--option__active{
+      background-color: $primary-color-1;
+      color: $white;
+    }
+  }
+}
+
+.selectlist-list--option__group {
+  padding: $padding-base-vertical $padding-base-horizontal;
+  color: $black-3;
+  @include font-size($font-size-small);
+  .selectlist-list {
+    margin-top: $padding-base-vertical;
+  }
+  .selectlist-list--option {
+    @include font-size($font-size-base);
+    margin: 0 (-$padding-base-horizontal);
+    padding: $padding-base-vertical ($padding-base-horizontal * 2);
   }
 }

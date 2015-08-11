@@ -78,7 +78,7 @@
             }
         }
 
-        $.support.transition ?
+        $.support.transition && $parent.hasClass(animateClass)?
             $parent
                 .one('origamTransitionEnd', removeElement)
                 .emulateTransitionEnd(Close.TRANSITION_DURATION) :

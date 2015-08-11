@@ -161,7 +161,7 @@
     ResponsiveTable.prototype.setColumn = function () {
         var that = this;
 
-        that.bindToggleSelector();
+        this.bindToggleSelector();
 
         for (var c in this.columnsData) {
             var col = this.columnsData[c];
@@ -176,9 +176,9 @@
             }
         }
 
-        that.$element
-            .find('> tbody > tr:not(.' + that.classes.detail + ')').data('detail_created', false).end()
-            .find('> thead > tr:last-child > th:not(.' + that.classes.toggle + ')')
+        this.$element
+            .find('> tbody > tr:not(.' + this.classes.detail + ')').data('detail_created', false).end()
+            .find('> thead > tr:last-child > th:not(.' + this.classes.toggle + ')')
             .each(function () {
                 var index       = $(this).index() - 1,
                     data        = that.columnsData[index],
@@ -217,11 +217,11 @@
                 }
             })
             .end()
-            .find('> tbody > tr.' + that.classes.detailShow).each(function () {
+            .find('> tbody > tr.' + this.classes.detailShow).each(function () {
                 that.setOrUpdateDetailRow(this);
             });
 
-        that.$element.find('> tbody > tr.' + that.classes.detailShow + ':visible').each(function () {
+        this.$element.find('> tbody > tr.' + that.classes.detailShow + ':visible').each(function () {
             var $next = $(this).next();
             if ($next.hasClass(that.classes.detail)) {
                 $next.show();
@@ -304,12 +304,12 @@
     ResponsiveTable.prototype.bindToggleSelector = function () {
         var that = this;
 
-        that.$element.find(that.options.toggleSelector).unbind('toggleRow.origam.'+ that.type).bind('toggleRow.origam.'+ that.type, function (e) {
+        this.$element.find(this.options.toggleSelector).unbind('toggleRow.origam.'+ this.type).bind('toggleRow.origam.'+ this.type, function (e) {
             var $row = $(this).is('tr') ? $(this) : $(this).parents('tr:first');
             that.toggleDetail($row);
         });
 
-        that.$element.find(that.options.toggleSelector).unbind('click.origam.'+ that.type).bind('click.origam.'+ that.type, function (e) {
+        this.$element.find(this.options.toggleSelector).unbind('click.origam.'+ this.type).bind('click.origam.'+ this.type, function (e) {
             if ($(e.target).parent().is('td,th,.'+ that.classes.toggle)) {
                 $(e.target).hasClass(that.classes.iconShow) ? $(e.target).removeClass(that.classes.iconShow).addClass(that.classes.iconHide) : $(e.target).removeClass(that.classes.iconHide).addClass(that.classes.iconShow);
                 $(this).trigger('toggleRow.origam.'+ that.type);
@@ -340,8 +340,8 @@
     ResponsiveTable.prototype.eventShow = function ($next) {
         var that = this;
 
-        if(that.options.animate) {
-            $next.find('.' + that.classes.detailInnerRow).each( function(){
+        if(this.options.animate) {
+            $next.find('.' + this.classes.detailInnerRow).each( function(){
                 $(this)
                     .addClass(that.options.animationIn)
                     .addClass('animated');
@@ -359,7 +359,7 @@
             $next.trigger('show.origam.' + that.type);
         };
 
-        $.support.transition && that.options.animate ?
+        $.support.transition && this.options.animate ?
             $next
                 .one('origamTransitionEnd', onShow)
                 .emulateTransitionEnd(ResponsiveTable.TRANSITION_DURATION) :
@@ -373,14 +373,14 @@
 
         var that = this;
 
-        $next.trigger($.Event('close.origam.' + that.type));
+        $next.trigger($.Event('close.origam.' + this.type));
 
-        if(that.options.animate) {
-            $next.find('.' + that.classes.detailInnerRow).each( function() {
+        if(this.options.animate) {
+            $next.find('.' + this.classes.detailInnerRow).each( function() {
                 $(this).addClass(that.options.animationOut);
                 $(this).addClass('animated');
             });
-            var animateClass = that.options.animationOut + ' animated';
+            var animateClass = this.options.animationOut + ' animated';
         }
 
         function removeElement() {
@@ -393,7 +393,7 @@
                 .hide();
         }
 
-        $.support.transition && that.options.animate ?
+        $.support.transition && this.options.animate ?
             $next
                 .one('origamTransitionEnd', removeElement)
                 .emulateTransitionEnd(ResponsiveTable.TRANSITION_DURATION) :

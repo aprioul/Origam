@@ -37,6 +37,9 @@
         placement: 'after',
         parentClass : '',
         addon: '<div class="text-field--group__addons"></div>',
+        animate: false,
+        animationIn: 'fadeInUp',
+        animationOut: 'fadeOutDown',
         definitions: {
             "9": "[0-9]",
             a: "[A-Za-z]",
@@ -53,6 +56,7 @@
         this.options   = this.getOptions(options);
         this.$parent   = '.' + this.options.parentNode;
         this.inState   = { click: false, hover: false, focus: false };
+        this.classes   = this.options.classes;
 
         this.$element
             .parents(this.$parent)
@@ -138,10 +142,9 @@
             element = this.$element;
         }
 
-        var classPosition = '';
-        classPosition = (this.options.placement === 'after') ? this.options.classes.addonsRight : this.options.classes.addonsLeft;
+        this.classPosition = (this.options.placement === 'after') ? this.options.classes.addonsRight : this.options.classes.addonsLeft;
 
-        element.parents(this.$parent).addClass(classPosition);
+        element.parents(this.$parent).addClass(this.classPosition);
 
         var wrapper = this.options.addon;
 
@@ -155,26 +158,40 @@
         }
     };
 
+    Input.prototype.removeAddon = function(element) {
+        if(typeof element === 'undefined'){
+            element = this.$element;
+        }
+
+        element.parents(this.$parent).removeClass(this.classPosition);
+
+        if(this.options.placement === 'after') {
+            element.next().detach().remove();
+        } else {
+            element.prev().detach().remove();
+        }
+
+
+    };
+
     Input.prototype.valChange = function (e) {
         if($(e.currentTarget).val() != ''){
             $(e.currentTarget)
-                .parents(this.$parent)
-                .addClass(this.options.classes.active);
+                .closest(this.$parent)
+                .addClass(this.classes.active);
         }
     };
 
     Input.prototype.startFocus = function (e) {
         $(e.currentTarget)
             .closest(this.$parent)
-            .removeClass(this.options.classes.active);
-        $(e.currentTarget)
-            .closest(this.$parent)
+            .removeClass(this.options.classes.active)
             .addClass(this.options.classes.focus);
     };
 
     Input.prototype.endFocus = function (e) {
         $(e.currentTarget)
-            .parents(this.$parent)
+            .closest(this.$parent)
             .removeClass(this.options.classes.focus);
     };
 
@@ -292,7 +309,7 @@
             }
         }
 
-        $.support.transition ?
+        $.support.transition && $parent.hasClass(animateClass)?
             $parent
                 .one('origamTransitionEnd', removeElement)
                 .emulateTransitionEnd(Close.TRANSITION_DURATION) :
@@ -992,7 +1009,6 @@
             'name': $th.data('name') || $.trim($th.text()),
             'ignore': $th.data('ignore') || false,
             'sortIgnore': $th.data('sortignore') || false,
-            'toggle': $th.data('toggle') || false,
             'className': $th.data('class') || null,
             'matches': [],
             'names': { },
@@ -1237,8 +1253,6 @@
         layout: 'full',
         submitText: 'OK',
         animate: true,
-        animationIn: 'fadeInDown',
-        animationOut: 'fadeOutUp',
         format: '#',
         height: 276,
         onShow: function () {},
@@ -1565,7 +1579,7 @@
             .addClass(this.options.classes.active);
 
         this.color.css('backgroundColor', '#' + hsbToHex(hsb));
-    }
+    };
 
     Color.prototype.show = function () {
         var that            = this,
@@ -4142,7 +4156,7 @@
     ResponsiveTable.prototype.setColumn = function () {
         var that = this;
 
-        that.bindToggleSelector();
+        this.bindToggleSelector();
 
         for (var c in this.columnsData) {
             var col = this.columnsData[c];
@@ -4157,9 +4171,9 @@
             }
         }
 
-        that.$element
-            .find('> tbody > tr:not(.' + that.classes.detail + ')').data('detail_created', false).end()
-            .find('> thead > tr:last-child > th:not(.' + that.classes.toggle + ')')
+        this.$element
+            .find('> tbody > tr:not(.' + this.classes.detail + ')').data('detail_created', false).end()
+            .find('> thead > tr:last-child > th:not(.' + this.classes.toggle + ')')
             .each(function () {
                 var index       = $(this).index() - 1,
                     data        = that.columnsData[index],
@@ -4198,11 +4212,11 @@
                 }
             })
             .end()
-            .find('> tbody > tr.' + that.classes.detailShow).each(function () {
+            .find('> tbody > tr.' + this.classes.detailShow).each(function () {
                 that.setOrUpdateDetailRow(this);
             });
 
-        that.$element.find('> tbody > tr.' + that.classes.detailShow + ':visible').each(function () {
+        this.$element.find('> tbody > tr.' + that.classes.detailShow + ':visible').each(function () {
             var $next = $(this).next();
             if ($next.hasClass(that.classes.detail)) {
                 $next.show();
@@ -4285,12 +4299,12 @@
     ResponsiveTable.prototype.bindToggleSelector = function () {
         var that = this;
 
-        that.$element.find(that.options.toggleSelector).unbind('toggleRow.origam.'+ that.type).bind('toggleRow.origam.'+ that.type, function (e) {
+        this.$element.find(this.options.toggleSelector).unbind('toggleRow.origam.'+ this.type).bind('toggleRow.origam.'+ this.type, function (e) {
             var $row = $(this).is('tr') ? $(this) : $(this).parents('tr:first');
             that.toggleDetail($row);
         });
 
-        that.$element.find(that.options.toggleSelector).unbind('click.origam.'+ that.type).bind('click.origam.'+ that.type, function (e) {
+        this.$element.find(this.options.toggleSelector).unbind('click.origam.'+ this.type).bind('click.origam.'+ this.type, function (e) {
             if ($(e.target).parent().is('td,th,.'+ that.classes.toggle)) {
                 $(e.target).hasClass(that.classes.iconShow) ? $(e.target).removeClass(that.classes.iconShow).addClass(that.classes.iconHide) : $(e.target).removeClass(that.classes.iconHide).addClass(that.classes.iconShow);
                 $(this).trigger('toggleRow.origam.'+ that.type);
@@ -4321,8 +4335,8 @@
     ResponsiveTable.prototype.eventShow = function ($next) {
         var that = this;
 
-        if(that.options.animate) {
-            $next.find('.' + that.classes.detailInnerRow).each( function(){
+        if(this.options.animate) {
+            $next.find('.' + this.classes.detailInnerRow).each( function(){
                 $(this)
                     .addClass(that.options.animationIn)
                     .addClass('animated');
@@ -4340,7 +4354,7 @@
             $next.trigger('show.origam.' + that.type);
         };
 
-        $.support.transition && that.options.animate ?
+        $.support.transition && this.options.animate ?
             $next
                 .one('origamTransitionEnd', onShow)
                 .emulateTransitionEnd(ResponsiveTable.TRANSITION_DURATION) :
@@ -4354,14 +4368,14 @@
 
         var that = this;
 
-        $next.trigger($.Event('close.origam.' + that.type));
+        $next.trigger($.Event('close.origam.' + this.type));
 
-        if(that.options.animate) {
-            $next.find('.' + that.classes.detailInnerRow).each( function() {
+        if(this.options.animate) {
+            $next.find('.' + this.classes.detailInnerRow).each( function() {
                 $(this).addClass(that.options.animationOut);
                 $(this).addClass('animated');
             });
-            var animateClass = that.options.animationOut + ' animated';
+            var animateClass = this.options.animationOut + ' animated';
         }
 
         function removeElement() {
@@ -4374,7 +4388,7 @@
                 .hide();
         }
 
-        $.support.transition && that.options.animate ?
+        $.support.transition && this.options.animate ?
             $next
                 .one('origamTransitionEnd', removeElement)
                 .emulateTransitionEnd(ResponsiveTable.TRANSITION_DURATION) :
@@ -4571,15 +4585,10 @@
 
     Select.DEFAULTS = $.extend({}, $.fn.input.Constructor.DEFAULTS, {
         label: '-- Select --',
-        templateSelect: '<div class="text-field"><label class="text-field--label"></label><div class="text-field--group"><input class="text-field--group__input" type="text"/></div></div>',
+        templateSelect: '<div class="text-field"><label class="text-field--label"></label><div class="text-field--group"><div class="text-field--group__input" type="text"/></div></div>',
         templateDropdown: '<span class="text-field--group__dropdown origamicon origamicon-angle-down"></span>',
-        templateList: '<div class="text-field--selectlist"></div>',
         templateSearch: '<div class="text-field"><div class="text-field--group"><input class="text-field--group__input" data-form="input" type="text"/></div></div>',
         templateSearchIcon: '<span class="text-field--group__search origamicon origamicon-search"></span>',
-        templateOverlay: '<div class="origam-overlay" data-type="overlay" data-button="close"></div>',
-        animate: true,
-        animationIn: 'fadeInUp',
-        animationOut: 'fadeOutDown',
         classes: {
             focus: 'text-field--focused',
             active: 'text-field--active',
@@ -4587,8 +4596,12 @@
             addonsRight: 'text-field--addons right',
             select: 'text-field--select',
             fixed: 'text-field--fixed',
+            list: 'text-field--selectlist',
             search: 'text-field--selectlist__search',
-            options: 'text-field--selectlist__options'
+            options: 'text-field--selectlist__select',
+            selectList: 'selectlist-list',
+            selectOption: 'selectlist-list--option',
+            selectOptionGroup: 'selectlist-list--option__group'
         }
     });
 
@@ -4597,9 +4610,12 @@
     Select.prototype.constructor = Select;
 
     Select.prototype.event = function (options) {
-        this.id = this.getUID(8);
-        this.classes = this.options.classes;
-        this.inState   = { click: false};
+        this.id                 = this.getUID(8);
+        this.inState            = {click: false};
+        this.mouse_on_container = false;
+        this.activate           = false;
+        this.multiple           = this.$element.attr('multiple') ? true : false;
+        this.size               = this.$element.attr('size') || this.$element.attr('data-size') || null;
 
         var that = this;
 
@@ -4608,26 +4624,30 @@
             .hide()
             .after(this.options.templateSelect);
 
-        this.$select = this.$element.next();
+        this.$container = this.$element.next();
 
-        this.$select
+        this.$container
             .attr('data-id', this.id)
+            .addClass(that.classes.select)
             .addClass(this.classes.fixed);
 
-        this.$label = this.$select.find('label');
+        this.$label = this.$container.find('label');
         this.$label
             .text(this.options.label)
             .attr('for', this.id);
 
-        this.$input = this.$select.find('input');
-        this.$input
-            .on('click', $.proxy(this.toggle, this))
-            .on('change', $.proxy(this.valChange, this));
-
-        this.overlay = $(this.options.templateOverlay).attr('data-target', '#' + this.id);
+        this.$input = this.$container.find('.text-field--group__input');
 
         this.addDropdown();
 
+        this.$list = $('<div/>', {
+            class: this.classes.list,
+            id: this.id
+        });
+
+        this.addSearch();
+        this.addList();
+        this.bindSelector();
     };
 
     Select.prototype.getDefaults = function () {
@@ -4641,7 +4661,11 @@
         $wrapper.append(dropdown);
         var $dropdown = $wrapper.children();
 
-        $dropdown.on('click', $.proxy(this.toggle, this));
+        $dropdown.on('click', $.proxy(this.show, this));
+    };
+
+    Select.prototype.removeDropdown = function () {
+        this.removeAddon(this.$input);
     };
 
     Select.prototype.addSearch = function () {
@@ -4658,7 +4682,7 @@
         this.$search
             .on('focusin', $.proxy(this.startFocus, this))
             .on('focusout', $.proxy(this.endFocus, this))
-            .on('change', $.proxy(this.valChange, this));
+            .on('keydown input', $.proxy(this.keydown_checker, this));
 
         var $wrapper = this.addAddon(this.$search);
 
@@ -4667,24 +4691,180 @@
         $wrapper.append(this.$searchIcon);
     };
 
+    Select.prototype.keydown_checker = function (e) {
+        var stroke, ref;
+        stroke = (ref = e.which) != null ? _ref : e.keyCode;
+
+        console.log(stroke);
+
+        switch (stroke) {
+            default:
+                return this.resultsSearch();
+        }
+
+    };
+
+    Select.prototype.resultsSearch = function () {
+
+    };
+
+    Select.prototype.resultsShow = function() {
+
+    };
+
     Select.prototype.addList = function () {
-        var $options = $('<div/>', {
-            class: this.classes.options
+        var $list = $('<div/>', {
+                class: this.classes.options
+            }),
+            $options = $('<ul/>', {
+                class: this.classes.selectList
+            }),
+            that = this,
+            optdata = [],
+            groupIndex = null;
+
+        this.$options = this.$element.find('option');
+
+        this.$options.each(function(index, element) {
+            var $this = $(element),
+                $listOption = $('<li/>', {
+                    class: that.classes.selectOption
+                }),
+                data = that.getOptionsData(element, index);
+
+            optdata[data.index] = data;
+
+            $listOption
+                .text($this.text());
+
+            if(data.group !== null){
+                if(data.groupIndex !== groupIndex){
+                    var $groupOption = $('<li/>', {
+                            class: that.classes.selectOptionGroup
+                        }),
+                        $group = $('<ul/>', {
+                            class: that.classes.selectList
+                        });
+
+                    groupIndex = data.groupIndex;
+                    $groupOption
+                        .text(data.groupName)
+                        .append($group)
+                        .appendTo($options);
+                }
+                $group = $options.find('li:last-child ul');
+
+                $listOption.appendTo($group);
+            } else {
+                $listOption.appendTo($options);
+            }
+
         });
 
-        this.$list.append($options);
+        this.optionData = optdata;
+
+        $list
+            .append($options)
+            .appendTo(this.$list);
+    };
+
+    Select.prototype.getOptionsData = function (e, index) {
+        var $option = $(e),
+            selected = $option.attr('selected')? true : false,
+            value = $option.val(),
+            group = e.parentNode.nodeName.toLowerCase() === 'optgroup'? true : null;
+
+        var data = {
+            'index': index,
+            'selected': selected,
+            'name': $option.data('name') || $.trim($option.text()),
+            'className': $option.data('class') || null,
+            'value': value,
+            'optIndex': $option.index(),
+            'group': group,
+            'groupName': null,
+            'groupIndex': null
+        };
+
+        if(group) {
+            var $optgroup = $(e.parentNode);
+            data.groupIndex = $optgroup.index();
+            data.groupName = $optgroup.attr('label');
+        }
+
+        this.data =  { 'option': { 'data': data, 'html': e } };
+        return this.data.option.data;
+    };
+
+    Select.prototype.setValue = function (element, group) {
+        var that = this,
+            dataIndex = null,
+            thisData = null;
+
+        if(group){
+            var optIndex = $(element).index(),
+                optGroupIndex = $(element).parents('.' + that.classes.selectOptionGroup).index();
+
+            this.$list.find('.' + this.classes.selectOption).each(function(index, e) {
+                if($(e).index() === optIndex && $(e).parents('.' + that.classes.selectOptionGroup).index() === optGroupIndex)
+                    dataIndex = index;
+            });
+
+        } else {
+            dataIndex = $(element).index();
+        }
+
+        thisData = this.optionData[dataIndex];
+        this.$element.val(thisData.value);
+        this.$input.text(thisData.value);
+
+        this.inState.click = !this.inState.click;
+
+        this.$container.addClass(this.classes.active);
+
+        this.hide();
+    };
+
+    Select.prototype.bindSelector = function () {
+        var that = this;
+
+        this.$container.bind('mouseenter.origam.'+ this.type, function(e) {
+            that.mouse_enter();
+        });
+        this.$container.bind('mouseleave.origam.'+ this.type, function(e) {
+            that.mouse_leave();
+        });
+        $(this.$container[0].ownerDocument).bind('click.origam.'+ this.type, function (e) {
+            if(!that.mouse_on_container && that.activate){
+                that.hide(e);
+            } else if( that.mouse_on_container && !that.activate) {
+                that.show(e);
+            } else if( that.mouse_on_container && that.activate){
+                var element = e.target;
+                var group = $(element).parents('.' + that.classes.selectOptionGroup).length !== 0 ? true : false;
+                that.setValue(element, group);
+            }
+        });
+    };
+
+    Select.prototype.mouse_enter = function() {
+        return this.mouse_on_container = true;
+    };
+
+    Select.prototype.mouse_leave = function() {
+        return this.mouse_on_container = false;
     };
 
     Select.prototype.show = function (e) {
+        this.activate = true;
+
         var that = this;
 
-        this.$list = $(this.options.templateList);
-        this.$list
-            .attr('id', this.id)
-            .appendTo(this.$select);
+        this.$list.appendTo(this.$container);
 
-        this.addSearch();
-        this.addList();
+        if(this.size !== null){
+            console.log(this.size);
+        }
 
         if(this.options.animate) {
             this.$list
@@ -4695,18 +4875,12 @@
             var animateClass = this.options.animationIn + ' animated';
         }
 
-        this.overlay.appendTo(document.body);
-
-        this.overlay.on('click', function(){
-            that.inState   = { click: false};
-        });
-
         var onShow = function () {
             if (that.$list.hasClass(animateClass))
                 that.$list.removeClass(animateClass);
-            that.$select.addClass(that.classes.select);
             that.$list.trigger('show.origam.' + that.type);
             that.$search.focus();
+            that.removeDropdown();
         };
 
         $.support.transition && this.$list.hasClass(animateClass) ?
@@ -4719,6 +4893,43 @@
     };
 
     Select.prototype.hide = function (e) {
+        var that = this,
+            selector = '#' + this.id,
+            $select = $(selector);
+
+        this.activate = false;
+
+        if (e) e.preventDefault();
+
+        $select.trigger(e = $.Event('close.origam.' + this.type));
+
+        var animate = $select.attr('data-animate');
+        var animation = $select.attr('data-animation');
+
+        if (animate) {
+            if(animation){$select.addClass(animation);}
+            else{$select.addClass('fadeOut');}
+            $select.addClass('animated');
+            var animateClass = animation + ' animated';
+        }
+
+        if (e.isDefaultPrevented()) return;
+
+        function removeElement() {
+            if ($select.hasClass(animateClass))
+                $select.removeClass(animateClass);
+            $select
+                .detach()
+                .trigger('closed.origam.' + that.type)
+                .remove();
+            that.addDropdown();
+        }
+
+        $.support.transition && $select.hasClass(animateClass)?
+            $select
+                .one('origamTransitionEnd', removeElement)
+                .emulateTransitionEnd(Select.TRANSITION_DURATION) :
+            removeElement()
 
     };
 
