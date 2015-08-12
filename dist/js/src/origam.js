@@ -4581,14 +4581,19 @@
 
     Select.VERSION  = '0.1.0';
 
-    Select.TRANSITION_DURATION = 1000;
+    Select.TRANSITION_DURATION = 450;
 
     Select.DEFAULTS = $.extend({}, $.fn.input.Constructor.DEFAULTS, {
         label: '-- Select --',
         templateSelect: '<div class="text-field"><label class="text-field--label"></label><div class="text-field--group"><div class="text-field--group__input" type="text"/></div></div>',
         templateDropdown: '<span class="text-field--group__dropdown origamicon origamicon-angle-down"></span>',
-        templateSearch: '<div class="text-field"><div class="text-field--group"><input class="text-field--group__input" data-form="input" type="text"/></div></div>',
+        templateSearch: '<div class="text-field"><div class="text-field--group"></div></div>',
+        templateSearchInput: '<input class="text-field--group__input" data-form="input" type="text"/>',
         templateSearchIcon: '<span class="text-field--group__search origamicon origamicon-search"></span>',
+        selectorToggle: 'text-field--group__input',
+        selectorSearch: '.text-field > .text-field--group',
+        animate: true,
+        maxSelected: '',
         classes: {
             focus: 'text-field--focused',
             active: 'text-field--active',
@@ -4601,7 +4606,8 @@
             options: 'text-field--selectlist__select',
             selectList: 'selectlist-list',
             selectOption: 'selectlist-list--option',
-            selectOptionGroup: 'selectlist-list--option__group'
+            selectOptionGroup: 'selectlist-list--option__group',
+            selected: 'selectlist-list--option__active'
         }
     });
 
@@ -4616,7 +4622,30 @@
         this.activate           = false;
         this.multiple           = this.$element.attr('multiple') ? true : false;
         this.size               = this.$element.attr('size') || this.$element.attr('data-size') || null;
-
+        this.maxSelected        = this.options.maxSelected || Infinity;
+        this.keys               = {
+            BACKSPACE: 8,
+            TAB: 9,
+            ENTER: 13,
+            SHIFT: 16,
+            CTRL: 17,
+            ALT: 18,
+            ESC: 27,
+            SPACE: 32,
+            PAGE_UP: 33,
+            PAGE_DOWN: 34,
+            END: 35,
+            HOME: 36,
+            LEFT: 37,
+            UP: 38,
+            RIGHT: 39,
+            DOWN: 40,
+            DELETE: 46
+        };
+        this.field              = new Array();
+        this.height             = 0;
+        
+        
         var that = this;
 
         this.$element
@@ -4639,14 +4668,6 @@
         this.$input = this.$container.find('.text-field--group__input');
 
         this.addDropdown();
-
-        this.$list = $('<div/>', {
-            class: this.classes.list,
-            id: this.id
-        });
-
-        this.addSearch();
-        this.addList();
         this.bindSelector();
     };
 
@@ -4669,46 +4690,31 @@
     };
 
     Select.prototype.addSearch = function () {
-        var $search = $('<div/>', {
+        var $searchWrapper = $('<div/>', {
                 class: this.classes.search
             });
 
-        this.$list.append($search);
+        this.$list.append($searchWrapper);
 
-        $search.append(this.options.templateSearch);
-        $search.children().addClass(this.options.fixed);
-
-        this.$search = $search.find('input');
+        this.$search = $(this.options.templateSearchInput);
         this.$search
+            .text('')
             .on('focusin', $.proxy(this.startFocus, this))
             .on('focusout', $.proxy(this.endFocus, this))
-            .on('keydown input', $.proxy(this.keydown_checker, this));
+            .on('keydown', $.proxy(this.keydownChecker, this))
+            .on('keyup', $.proxy(this.handleSearch, this));
+
+        $searchWrapper.append(this.options.templateSearch);
+        $searchWrapper.find(this.options.selectorSearch).append(this.$search);
+        $searchWrapper.children().addClass(this.options.fixed);
 
         var $wrapper = this.addAddon(this.$search);
 
         this.$searchIcon = this.options.templateSearchIcon;
 
         $wrapper.append(this.$searchIcon);
-    };
 
-    Select.prototype.keydown_checker = function (e) {
-        var stroke, ref;
-        stroke = (ref = e.which) != null ? _ref : e.keyCode;
-
-        console.log(stroke);
-
-        switch (stroke) {
-            default:
-                return this.resultsSearch();
-        }
-
-    };
-
-    Select.prototype.resultsSearch = function () {
-
-    };
-
-    Select.prototype.resultsShow = function() {
+        this.$searchContainer = $searchWrapper;
 
     };
 
@@ -4727,14 +4733,15 @@
 
         this.$options.each(function(index, element) {
             var $this = $(element),
-                $listOption = $('<li/>', {
-                    class: that.classes.selectOption
-                }),
                 data = that.getOptionsData(element, index);
+
+            that.field[index] = $('<li/>', {
+                class: that.classes.selectOption
+            });
 
             optdata[data.index] = data;
 
-            $listOption
+            that.field[index]
                 .text($this.text());
 
             if(data.group !== null){
@@ -4754,10 +4761,13 @@
                 }
                 $group = $options.find('li:last-child ul');
 
-                $listOption.appendTo($group);
+                that.field[index].appendTo($group);
             } else {
-                $listOption.appendTo($options);
+                that.field[index].appendTo($options);
             }
+
+            if(optdata[data.index].active)
+                that.field[index].addClass(that.classes.selected);
 
         });
 
@@ -4783,13 +4793,18 @@
             'optIndex': $option.index(),
             'group': group,
             'groupName': null,
-            'groupIndex': null
+            'groupIndex': null,
+            'active' : false
         };
 
         if(group) {
             var $optgroup = $(e.parentNode);
             data.groupIndex = $optgroup.index();
             data.groupName = $optgroup.attr('label');
+        }
+
+        if(this.$input.text() ===  data.name){
+            data.active = true;
         }
 
         this.data =  { 'option': { 'data': data, 'html': e } };
@@ -4814,9 +4829,11 @@
             dataIndex = $(element).index();
         }
 
+        this.field[dataIndex].addClass(this.classes.selected);
+
         thisData = this.optionData[dataIndex];
         this.$element.val(thisData.value);
-        this.$input.text(thisData.value);
+        this.$input.text(thisData.name);
 
         this.inState.click = !this.inState.click;
 
@@ -4835,15 +4852,68 @@
             that.mouse_leave();
         });
         $(this.$container[0].ownerDocument).bind('click.origam.'+ this.type, function (e) {
-            if(!that.mouse_on_container && that.activate){
-                that.hide(e);
-            } else if( that.mouse_on_container && !that.activate) {
-                that.show(e);
-            } else if( that.mouse_on_container && that.activate){
-                var element = e.target;
-                var group = $(element).parents('.' + that.classes.selectOptionGroup).length !== 0 ? true : false;
-                that.setValue(element, group);
+            that.action(e);
+        });
+    };
+
+    Select.prototype.keydownChecker = function (e) {
+        e.stopPropagation();
+
+        var key = e.which;
+
+        if (key === this.keys.ESC || key === this.keys.TAB ||
+            (key === this.keys.UP && e.altKey)) {
+            this.toggle(e);
+
+            e.preventDefault();
+        } else if (key === this.keys.ENTER) {
+            this.$container.trigger('results:select');
+
+            e.preventDefault();
+        } else if ((key === this.keys.SPACE && e.ctrlKey)) {
+            this.$container.trigger('results:toggle');
+
+            e.preventDefault();
+        } else if (key === this.keys.UP) {
+            this.$container.trigger('results:previous');
+
+            e.preventDefault();
+        } else if (key === this.keys.DOWN) {
+            this.$container.trigger('results:next');
+
+            e.preventDefault();
+        }
+    };
+
+    Select.prototype.handleSearch = function (e) {
+        var input = this.$search.val();
+        this.query(input);
+    };
+
+    Select.prototype.query = function (params) {
+        var that = this;
+
+        $.each( this.optionData, function(index) {
+            if (this.name.toLowerCase().indexOf(params) >= 0){
+                that.field[index].show();
+            } else {
+                that.field[index].hide();
             }
+        });
+
+        if(that.options.animate) {
+            that.height = 0;
+            that.calculHeight();
+            that.$list.height(that.height);
+        }
+    };
+
+    Select.prototype.calculHeight = function() {
+        var that = this;
+
+        this.$list.children().each(function () {
+            var thisHeight = $(this).height();
+            that.height = that.height + thisHeight;
         });
     };
 
@@ -4855,10 +4925,34 @@
         return this.mouse_on_container = false;
     };
 
+    Select.prototype.action = function(e){
+        if (!this.mouse_on_container && this.activate){
+            this.toggle(e);
+        } else if( this.mouse_on_container && !this.activate) {
+            this.toggle(e);
+        } else if( this.mouse_on_container && this.activate){
+            var element = e.target;
+            var group = $(element).parents('.' + this.classes.selectOptionGroup).length !== 0 ? true : false;
+            if($(element).hasClass(this.classes.selectOption))
+                this.setValue(element, group);
+            if($(element).hasClass(this.options.selectorToggle) && $(element).is('div'))
+                this.toggle(e);
+        }
+    };
+
     Select.prototype.show = function (e) {
         this.activate = true;
+        this.height = 0;
 
         var that = this;
+
+        this.$list = $('<div/>', {
+            class: this.classes.list,
+            id: this.id
+        });
+
+        this.addSearch();
+        this.addList();
 
         this.$list.appendTo(this.$container);
 
@@ -4866,24 +4960,22 @@
             console.log(this.size);
         }
 
-        if(this.options.animate) {
-            this.$list
-                .attr('data-animate', 'true')
-                .attr('data-animation', this.options.animationOut)
-                .addClass(this.options.animationIn)
-                .addClass('animated');
-            var animateClass = this.options.animationIn + ' animated';
+        that.$container.addClass('open');
+
+        if(that.options.animate) {
+            this.calculHeight();
+        } else {
+            this.height = 'auto';
         }
 
+        that.removeDropdown();
+
         var onShow = function () {
-            if (that.$list.hasClass(animateClass))
-                that.$list.removeClass(animateClass);
             that.$list.trigger('show.origam.' + that.type);
-            that.$search.focus();
-            that.removeDropdown();
+            that.$list.height(that.height);
         };
 
-        $.support.transition && this.$list.hasClass(animateClass) ?
+        $.support.transition && this.options.animate?
             this.$list
                 .one('origamTransitionEnd', onShow)
                 .emulateTransitionEnd(Select.TRANSITION_DURATION) :
@@ -4903,21 +4995,14 @@
 
         $select.trigger(e = $.Event('close.origam.' + this.type));
 
-        var animate = $select.attr('data-animate');
-        var animation = $select.attr('data-animation');
-
-        if (animate) {
-            if(animation){$select.addClass(animation);}
-            else{$select.addClass('fadeOut');}
-            $select.addClass('animated');
-            var animateClass = animation + ' animated';
+        if(this.options.animate) {
+            $select.removeAttr( "style" );
         }
 
         if (e.isDefaultPrevented()) return;
 
         function removeElement() {
-            if ($select.hasClass(animateClass))
-                $select.removeClass(animateClass);
+            that.$container.removeClass('open');
             $select
                 .detach()
                 .trigger('closed.origam.' + that.type)
@@ -4925,7 +5010,7 @@
             that.addDropdown();
         }
 
-        $.support.transition && $select.hasClass(animateClass)?
+        $.support.transition && this.options.animate ?
             $select
                 .one('origamTransitionEnd', removeElement)
                 .emulateTransitionEnd(Select.TRANSITION_DURATION) :

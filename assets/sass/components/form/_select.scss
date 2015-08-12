@@ -14,20 +14,60 @@
 }
 
 .text-field--select {
-  .text-field--group__input {
+  border: 1px solid transparent;
+
+  &:after,
+  &:before {
+    content: '';
+    background-color: $black-4;
+    @include size(1px, 0);
+    @include transition-property(all);
+    @include transition-duration(.5s);
+    @include transition-timing-function(ease-out);
+  }
+
+  &:after {
+    @include position(absolute, 0, 0, null, null);
+  }
+
+  &:before {
+    @include position(absolute, 0, null, null, 0);
+  }
+
+  &.open {
+    padding-right: 0;
+    padding-bottom: 0;
+    @include box-sizing(border-box);
+
+    &:after,
+    &:before {
+      @include size(1px, 100%);
+    }
+  }
+
+  .text-field--label {
+    left: 12px;
+  }
+
+  div.text-field--group__input {
     cursor: pointer;
     height: 32px;
     line-height: 32px;
+    padding: 0 $padding-base-horizontal;
   }
 }
 
 .text-field--selectlist {
-  @include size(100%, null);
+  @include size(100%, 0px);
   background-color: $white;
-  @include position(absolute, 8px, null, null, 0);
+  @include position(absolute, 100%, null, null, 0);
+  @include translateY(-$base-space);
   z-index: 3;
-  border: 1px solid rgba(0,0,0,.12);
-  border-top: none;
+  border: 1px solid $black-4;
+  overflow: hidden;
+  @include transition-property(height);
+  @include transition-duration(.6s);
+  @include transition-timing-function(ease-out);
 
   .text-field {
     padding: 0;
@@ -36,24 +76,23 @@
   .text-field--group__input {
     padding-right: 38px;
     padding-left: $padding-base-horizontal;
+    height: 40px;
+    line-height: 40px;
   }
 
   .text-field.right {
     .text-field--group__addons {
       @include font-size($font-size-large);
-      @include position(absolute, null, 0, null, initial);
+      @include position(absolute, 0, 0, null, initial);
     }
   }
-}
-
-.text-field--selectlist__select {
-  margin-top: -8px;
 }
 
 .selectlist-list {
   margin: 0;
   padding: 0;
   list-style: none;
+  padding-bottom: $base-space;
   .selectlist-list--option{
     padding: $padding-base-vertical $padding-base-horizontal;
     cursor: pointer;
@@ -62,6 +101,8 @@
     &.selectlist-list--option__active{
       background-color: $primary-color-1;
       color: $white;
+      @include box-sizing(border-box);
+      border-top: 1px solid $white-2;
     }
   }
 }

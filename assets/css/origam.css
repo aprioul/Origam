@@ -20359,7 +20359,6 @@ th {
   position: relative;
   padding-top: 32px;
   padding-bottom: 8px;
-  padding-right: 8px;
 }
 
 .text-field--group {
@@ -20879,21 +20878,84 @@ input[type="range"].text-field--group__input:after {
   text-align: left;
 }
 
-.text-field--select .text-field--group__input {
+.text-field--select {
+  border: 1px solid transparent;
+}
+.text-field--select:after, .text-field--select:before {
+  content: '';
+  background-color: rgba(0, 0, 0, 0.12);
+  width: 1px;
+  height: 0;
+  -moz-transition-property: all;
+  -o-transition-property: all;
+  -webkit-transition-property: all;
+  transition-property: all;
+  -moz-transition-duration: 0.5s;
+  -o-transition-duration: 0.5s;
+  -webkit-transition-duration: 0.5s;
+  transition-duration: 0.5s;
+  -moz-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.text-field--select:after {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.text-field--select:before {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.text-field--select.open {
+  padding-right: 0;
+  padding-bottom: 0;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.text-field--select.open:after, .text-field--select.open:before {
+  width: 1px;
+  height: 100%;
+}
+.text-field--select .text-field--label {
+  left: 12px;
+}
+.text-field--select div.text-field--group__input {
   cursor: pointer;
   height: 32px;
   line-height: 32px;
+  padding: 0 12px;
 }
 
 .text-field--selectlist {
   width: 100%;
+  height: 0px;
   background-color: #FFFFFF;
   position: absolute;
-  top: 8px;
+  top: 100%;
   left: 0;
+  -moz-transform: translateY(-8px);
+  -ms-transform: translateY(-8px);
+  -webkit-transform: translateY(-8px);
+  transform: translateY(-8px);
   z-index: 3;
   border: 1px solid rgba(0, 0, 0, 0.12);
-  border-top: none;
+  overflow: hidden;
+  -moz-transition-property: height;
+  -o-transition-property: height;
+  -webkit-transition-property: height;
+  transition-property: height;
+  -moz-transition-duration: 0.6s;
+  -o-transition-duration: 0.6s;
+  -webkit-transition-duration: 0.6s;
+  transition-duration: 0.6s;
+  -moz-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
 }
 .text-field--selectlist .text-field {
   padding: 0;
@@ -20901,23 +20963,23 @@ input[type="range"].text-field--group__input:after {
 .text-field--selectlist .text-field--group__input {
   padding-right: 38px;
   padding-left: 12px;
+  height: 40px;
+  line-height: 40px;
 }
 .text-field--selectlist .text-field.right .text-field--group__addons {
   font-size: 20px;
   font-size: 1.25rem;
   position: absolute;
+  top: 0;
   right: 0;
   left: initial;
-}
-
-.text-field--selectlist__select {
-  margin-top: -8px;
 }
 
 .selectlist-list {
   margin: 0;
   padding: 0;
   list-style: none;
+  padding-bottom: 8px;
 }
 .selectlist-list .selectlist-list--option {
   padding: 6px 12px;
@@ -20927,6 +20989,10 @@ input[type="range"].text-field--group__input:after {
 .selectlist-list .selectlist-list--option:hover, .selectlist-list .selectlist-list--option.selectlist-list--option__active {
   background-color: #0196d1;
   color: #FFFFFF;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border-top: 1px solid rgba(255, 255, 255, 0.7);
 }
 
 .selectlist-list--option__group {
