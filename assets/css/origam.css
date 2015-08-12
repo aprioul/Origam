@@ -20878,6 +20878,13 @@ input[type="range"].text-field--group__input:after {
   text-align: left;
 }
 
+[data-animate="false"] + .text-field--select:after, [data-animate="false"] + .text-field--select:before {
+  -moz-transition-property: none;
+  -o-transition-property: none;
+  -webkit-transition-property: none;
+  transition-property: none;
+}
+
 .text-field--select {
   border: 1px solid transparent;
 }

@@ -13,6 +13,15 @@
   text-align: left;
 }
 
+[data-animate="false"]{
+  & + .text-field--select{
+    &:after,
+    &:before{
+      @include transition-property(none);
+    }
+  }
+}
+
 .text-field--select {
   border: 1px solid transparent;
 
