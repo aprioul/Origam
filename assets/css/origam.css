@@ -20911,7 +20911,6 @@ input[type="range"].text-field--group__input:after {
 }
 .text-field--select.open {
   padding-right: 0;
-  padding-bottom: 0;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -20937,10 +20936,10 @@ input[type="range"].text-field--group__input:after {
   position: absolute;
   top: 100%;
   left: 0;
-  -moz-transform: translateY(-8px);
-  -ms-transform: translateY(-8px);
-  -webkit-transform: translateY(-8px);
-  transform: translateY(-8px);
+  -moz-transform: translateY(-16px);
+  -ms-transform: translateY(-16px);
+  -webkit-transform: translateY(-16px);
+  transform: translateY(-16px);
   z-index: 3;
   border: 1px solid rgba(0, 0, 0, 0.12);
   overflow: hidden;
@@ -20985,14 +20984,15 @@ input[type="range"].text-field--group__input:after {
   padding: 6px 12px;
   cursor: pointer;
   color: #000000;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border-top: 1px solid transparent;
 }
 .selectlist-list .selectlist-list--option:hover, .selectlist-list .selectlist-list--option.selectlist-list--option__active {
   background-color: #0196d1;
   color: #FFFFFF;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  border-top: 1px solid rgba(255, 255, 255, 0.7);
+  border-top-color: rgba(255, 255, 255, 0.7);
 }
 
 .selectlist-list--option__group {
