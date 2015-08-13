@@ -62,7 +62,7 @@
         this.mouse_on_container = false;
         this.activate           = false;
         this.multiple           = this.$element.attr('multiple') ? true : false;
-        this.size               = this.$element.attr('size') || this.$element.attr('data-size') || null;
+        this.size               = parseInt(this.$element.attr('size')) || parseInt(this.$element.attr('data-size')) || 10;
         this.maxSelected        = this.options.maxSelected || Infinity;
         this.keys               = {
             BACKSPACE: 8,
@@ -85,7 +85,6 @@
         };
         this.field              = new Array();
         this.height             = 0;
-        
         
         var that = this;
 
@@ -344,16 +343,19 @@
 
         if(that.options.animate) {
             that.height = 0;
-            that.calculHeight();
+            that.calculHeight(this.size);
             that.$list.height(that.height);
         }
     };
 
-    Select.prototype.calculHeight = function() {
+    Select.prototype.calculHeight = function(maxSize) {
         var that = this;
 
-        this.$list.children().each(function () {
+        this.$list.children().each(function (index) {
             var thisHeight = $(this).height();
+            if(index <= maxSize) {
+                that.maxHeight = that.maxHeight + thisHeight;
+            }
             that.height = that.height + thisHeight;
         });
     };
@@ -396,24 +398,20 @@
         this.addList();
 
         this.$list.appendTo(this.$container);
+        this.$container.addClass('open');
 
-        if(this.size !== null){
-            console.log(this.size);
-        }
+        this.calculHeight(this.size);
 
-        that.$container.addClass('open');
-
-        if(that.options.animate) {
-            this.calculHeight();
-        } else {
+        if(!this.options.animate) {
             this.height = 'auto';
         }
 
-        that.removeDropdown();
+        this.removeDropdown();
 
         var onShow = function () {
             that.$list.trigger('show.origam.' + that.type);
             that.$list.height(that.height);
+            that.$list.css('max-height', that.maxHeight + 'px');
         };
 
         $.support.transition && this.options.animate?
