@@ -4772,7 +4772,9 @@
 
         this.optionData = optdata;
 
-        $list
+        this.$listOptions = $list;
+
+        this.$listOptions
             .append($options)
             .appendTo(this.$list);
     };
@@ -4902,21 +4904,33 @@
 
         if(that.options.animate) {
             that.height = 0;
-            that.calculHeight(this.size);
+            that.calculHeight();
             that.$list.height(that.height);
         }
     };
 
-    Select.prototype.calculHeight = function(maxSize) {
+    Select.prototype.calculHeight = function() {
         var that = this;
 
         this.$list.children().each(function (index) {
-            var thisHeight = $(this).height();
-            if(index <= maxSize) {
-                that.maxHeight = that.maxHeight + thisHeight;
-            }
+            var thisHeight = $(this).outerHeight();
             that.height = that.height + thisHeight;
         });
+
+        var maxHeight = this.maxSize();
+
+        if(that.height > maxHeight)
+            that.height = maxHeight;
+    };
+
+    Select.prototype.maxSize = function () {
+        var fieldHeight = this.field[0].outerHeight(),
+            fieldsHeight = fieldHeight * this.size,
+            seatchHeight = this.$searchContainer.outerHeight(),
+            maxHeight = fieldsHeight + seatchHeight;
+
+        this.$listOptions.height(fieldsHeight);
+        return maxHeight;
     };
 
     Select.prototype.mouse_enter = function() {
@@ -4959,7 +4973,8 @@
         this.$list.appendTo(this.$container);
         this.$container.addClass('open');
 
-        this.calculHeight(this.size);
+        this.calculHeight();
+        this.maxSize();
 
         if(!this.options.animate) {
             this.height = 'auto';
@@ -4970,7 +4985,6 @@
         var onShow = function () {
             that.$list.trigger('show.origam.' + that.type);
             that.$list.height(that.height);
-            that.$list.css('max-height', that.maxHeight + 'px');
         };
 
         $.support.transition && this.options.animate?

@@ -20966,6 +20966,12 @@ input[type="range"].text-field--group__input:after {
 .text-field--selectlist .text-field {
   padding: 0;
 }
+.text-field--selectlist .text-field--group {
+  padding-bottom: 0;
+}
+.text-field--selectlist .text-field--group:before, .text-field--selectlist .text-field--group:after {
+  bottom: 0;
+}
 .text-field--selectlist .text-field--group__input {
   padding-right: 38px;
   padding-left: 12px;
@@ -20981,11 +20987,14 @@ input[type="range"].text-field--group__input:after {
   left: initial;
 }
 
+.text-field--selectlist__select {
+  overflow: auto;
+}
+
 .selectlist-list {
   margin: 0;
   padding: 0;
   list-style: none;
-  padding-bottom: 8px;
 }
 .selectlist-list .selectlist-list--option {
   padding: 6px 12px;

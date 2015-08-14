@@ -81,6 +81,14 @@
     padding: 0;
   }
 
+  .text-field--group{
+    padding-bottom: 0;
+    &:before,
+    &:after {
+      bottom: 0;
+    }
+  }
+
   .text-field--group__input {
     padding-right: 38px;
     padding-left: $padding-base-horizontal;
@@ -96,11 +104,14 @@
   }
 }
 
+.text-field--selectlist__select {
+  overflow: auto;
+}
+
 .selectlist-list {
   margin: 0;
   padding: 0;
   list-style: none;
-  padding-bottom: $base-space;
   .selectlist-list--option{
     padding: $padding-base-vertical $padding-base-horizontal;
     cursor: pointer;
