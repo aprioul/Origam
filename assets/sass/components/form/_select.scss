@@ -124,6 +124,12 @@
       color: $white;
       border-top-color: $white-2;
     }
+
+    .selectlist-list--option__content{
+      font-style: normal;
+      text-decoration: underline;
+    }
+
   }
 }
 

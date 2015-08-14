@@ -21010,6 +21010,10 @@ input[type="range"].text-field--group__input:after {
   color: #FFFFFF;
   border-top-color: rgba(255, 255, 255, 0.7);
 }
+.selectlist-list .selectlist-list--option .selectlist-list--option__content {
+  font-style: normal;
+  text-decoration: underline;
+}
 
 .selectlist-list--option__group {
   padding: 6px 12px;

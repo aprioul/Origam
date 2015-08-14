@@ -48,7 +48,10 @@
             selectList: 'selectlist-list',
             selectOption: 'selectlist-list--option',
             selectOptionGroup: 'selectlist-list--option__group',
-            selected: 'selectlist-list--option__active'
+            selected: 'selectlist-list--option__active',
+            hightLightStart: 'selectlist-list--option__prefix',
+            hightLightContent: 'selectlist-list--option__content',
+            hightLightEnd: 'selectlist-list--option__suffix'
         }
     });
 
@@ -142,7 +145,7 @@
             .on('focusin', $.proxy(this.startFocus, this))
             .on('focusout', $.proxy(this.endFocus, this))
             .on('keydown', $.proxy(this.keydownChecker, this))
-            .on('keyup', $.proxy(this.handleSearch, this));
+            .on('keyup', $.proxy(this.keyupChecker, this));
 
         $searchWrapper.append(this.options.templateSearch);
         $searchWrapper.find(this.options.selectorSearch).append(this.$search);
@@ -227,8 +230,7 @@
         var data = {
             'index': index,
             'selected': selected,
-            'name': $option.data('name') || $.trim($option.text()),
-            'className': $option.data('class') || null,
+            'name': $option.text(),
             'value': value,
             'optIndex': $option.index(),
             'group': group,
@@ -243,7 +245,7 @@
             data.groupName = $optgroup.attr('label');
         }
 
-        if(this.$input.text() ===  data.name){
+        if(this.$input.text() ===  data.name || data.selected){
             data.active = true;
         }
 
@@ -325,7 +327,7 @@
         }
     };
 
-    Select.prototype.handleSearch = function (e) {
+    Select.prototype.keyupChecker = function (e) {
         var input = this.$search.val();
         this.query(input);
     };
@@ -336,6 +338,7 @@
         $.each( this.optionData, function(index) {
             if (this.name.toLowerCase().indexOf(params) >= 0){
                 that.field[index].show();
+                    that.hightLight(index, params);
             } else {
                 that.field[index].hide();
             }
@@ -348,29 +351,50 @@
         }
     };
 
+    Select.prototype.hightLight = function (index, params){
+        var that = this,
+            hightLightSplit = [],
+            str = this.optionData[index].name;
+
+        if(params.length != 0) {
+
+            console.log(params);
+            console.log(str);
+
+            //$.each(['hightLightStart', 'hightLightEnd', 'hightLightContent'], function (i, v) {
+            //    that[v] = $('<span/>', {
+            //        class: that.classes[v]
+            //    }).empty();
+            //
+            //    that[v].text(hightLightSplit[i]);
+            //});
+        }
+    };
+
     Select.prototype.calculHeight = function() {
         var that = this;
+
+        this.$listContainer.height('auto');
 
         this.$list.children().each(function (index) {
             var thisHeight = $(this).outerHeight();
             that.height = that.height + thisHeight;
         });
 
-        var maxHeight = this.maxSize();
-
-        if(that.height > maxHeight)
-            that.height = maxHeight;
+        if(this.options.animate) {
+            if (this.height > this.maxHeight) {
+                this.height = this.maxHeight;
+                this.$listContainer.height(this.fieldsHeight);
+            }
+        }
     };
 
-    Select.prototype.maxSize = function () {
-        var fieldHeight = this.field[0].outerHeight(),
-            fieldsHeight = fieldHeight * this.size,
-            seatchHeight = this.$searchContainer.outerHeight(),
-            maxHeight = fieldsHeight + seatchHeight;
-
-        this.$listContainer.height(fieldsHeight);
-        return maxHeight;
-    };
+    Select.prototype.maxHeight = function() {
+        this.fieldHeight        = this.field[0].outerHeight();
+        this.fieldsHeight       = this.fieldHeight * this.size;
+        this.searchHeight       = this.$searchContainer.outerHeight();
+        this.maxHeight          = this.fieldsHeight + this.searchHeight;
+    }
 
     Select.prototype.mouse_enter = function() {
         return this.mouse_on_container = true;
@@ -412,14 +436,13 @@
         this.$list.appendTo(this.$container);
         this.$container.addClass('open');
 
+        this.removeDropdown();
+        this.maxHeight();
         this.calculHeight();
-        this.maxSize();
 
         if(!this.options.animate) {
             this.height = 'auto';
         }
-
-        this.removeDropdown();
 
         var onShow = function () {
             that.$list.trigger('show.origam.' + that.type);
