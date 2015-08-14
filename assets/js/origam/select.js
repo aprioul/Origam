@@ -159,16 +159,16 @@
     };
 
     Select.prototype.addList = function () {
-        var $list = $('<div/>', {
-                class: this.classes.options
-            }),
-            $options = $('<ul/>', {
+        var $options = $('<ul/>', {
                 class: this.classes.selectList
             }),
             that = this,
             optdata = [],
             groupIndex = null;
 
+        this.$listContainer = $('<div/>', {
+            class: this.classes.options
+        });
         this.$options = this.$element.find('option');
 
         this.$options.each(function(index, element) {
@@ -213,9 +213,7 @@
 
         this.optionData = optdata;
 
-        this.$listOptions = $list;
-
-        this.$listOptions
+        this.$listContainer
             .append($options)
             .appendTo(this.$list);
     };
@@ -370,7 +368,7 @@
             seatchHeight = this.$searchContainer.outerHeight(),
             maxHeight = fieldsHeight + seatchHeight;
 
-        this.$listOptions.height(fieldsHeight);
+        this.$listContainer.height(fieldsHeight);
         return maxHeight;
     };
 
