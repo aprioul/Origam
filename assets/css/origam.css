@@ -20931,7 +20931,7 @@ input[type="range"].text-field--group__input:after {
 }
 .text-field--select div.text-field--group__input {
   cursor: pointer;
-  height: 32px;
+  min-height: 32px;
   line-height: 32px;
   padding: 0 12px;
 }
@@ -20982,8 +20982,9 @@ input[type="range"].text-field--group__input:after {
   font-size: 20px;
   font-size: 1.25rem;
   position: absolute;
-  top: 0;
+  top: initial;
   right: 0;
+  bottom: 0;
   left: initial;
 }
 
@@ -21029,6 +21030,28 @@ input[type="range"].text-field--group__input:after {
   font-size: 1rem;
   margin: 0 -12px;
   padding: 6px 24px;
+}
+
+.text-field--select__multiple .select-result {
+  display: inline-block;
+  background-color: #0196d1;
+  color: #FFFFFF;
+  padding: 1px 5px;
+  cursor: default;
+  margin-right: 0.5em;
+  line-height: 24px;
+  font-size: 14px;
+  font-size: 0.875rem;
+}
+.text-field--select__multiple .select-result:hover {
+  background-color: #01729e;
+}
+.text-field--select__multiple .select-result .select-result--content {
+  margin-right: 0.5em;
+}
+.text-field--select__multiple .select-result .select-close {
+  display: inline;
+  cursor: pointer;
 }
 
 /**

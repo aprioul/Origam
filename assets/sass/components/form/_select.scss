@@ -59,7 +59,7 @@
 
   div.text-field--group__input {
     cursor: pointer;
-    height: 32px;
+    min-height: 32px;
     line-height: 32px;
     padding: 0 $padding-base-horizontal;
   }
@@ -99,7 +99,7 @@
   .text-field.right {
     .text-field--group__addons {
       @include font-size($font-size-large);
-      @include position(absolute, 0, 0, null, initial);
+      @include position(absolute, initial, 0, 0, initial);
     }
   }
 }
@@ -123,6 +123,7 @@
       background-color: $primary-color-1;
       color: $white;
       border-top-color: $white-2;
+      cursor: default;
     }
 
     .selectlist-list--option__content{
@@ -144,5 +145,32 @@
     @include font-size($font-size-base);
     margin: 0 (-$padding-base-horizontal);
     padding: $padding-base-vertical ($padding-base-horizontal * 2);
+  }
+}
+
+.text-field--select__multiple {
+  .select-result {
+    display: inline-block;
+    background-color: $primary-color-1;
+    color: $white;
+    padding: $padding-xs-vertical $padding-xs-horizontal;
+    cursor: default;
+    margin-right: 0.5em;
+    line-height: 24px;
+    @include font-size($font-size-small);
+
+    &:hover{
+      background-color: darken($primary-color-1, 10%);
+    }
+
+    .select-result--content {
+      margin-right: 0.5em;
+    }
+
+    .select-close {
+      display: inline;
+      cursor: pointer;
+    }
+
   }
 }

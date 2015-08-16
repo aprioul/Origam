@@ -4590,6 +4590,7 @@
         templateSearch: '<div class="text-field"><div class="text-field--group"></div></div>',
         templateSearchInput: '<input class="text-field--group__input" data-form="input" type="text"/>',
         templateSearchIcon: '<span class="text-field--group__search origamicon origamicon-search"></span>',
+        templateClose: '<div class="select-close"><i class="origamicon origamicon-close"></i></div>',
         selectorToggle: 'text-field--group__input',
         selectorSearch: '.text-field > .text-field--group',
         animate: true,
@@ -4608,9 +4609,10 @@
             selectOption: 'selectlist-list--option',
             selectOptionGroup: 'selectlist-list--option__group',
             selected: 'selectlist-list--option__active',
-            hightLightStart: 'selectlist-list--option__prefix',
             hightLightContent: 'selectlist-list--option__content',
-            hightLightEnd: 'selectlist-list--option__suffix'
+            multiple : 'text-field--select__multiple',
+            resultContainer: 'select-result',
+            resultContent: 'select-result--content'
         }
     });
 
@@ -4646,9 +4648,12 @@
             DELETE: 46
         };
         this.field              = new Array();
+        this.$group             = new Array();
         this.height             = 0;
         
-        var that = this;
+        var that = this,
+            $options = this.$element.find('option'),
+            optData = [];
 
         this.$element
             .attr('data-id', this.id)
@@ -4669,12 +4674,52 @@
 
         this.$input = this.$container.find('.text-field--group__input');
 
+        $options.each(function(index, element) {
+            var data = that.getOptionsData(element, index);
+            optData[index] = data;
+        });
+
+        this.optionData = optData;
+        
         this.addDropdown();
         this.bindSelector();
     };
 
     Select.prototype.getDefaults = function () {
         return Select.DEFAULTS
+    };
+
+    Select.prototype.getOptionsData = function (e, index) {
+        var $option = $(e),
+            selected = $option.attr('selected')? true : false,
+            value = $option.val(),
+            group = e.parentNode.nodeName.toLowerCase() === 'optgroup'? true : null;
+
+        var data = {
+            'index': index,
+            'selected': selected,
+            'name': $option.text(),
+            'value': value,
+            'optIndex': $option.index(),
+            'group': group,
+            'groupName': null,
+            'groupIndex': null,
+            'active' : false,
+            'hide' : false
+        };
+
+        if(group) {
+            var $optgroup = $(e.parentNode);
+            data.groupIndex = $optgroup.index();
+            data.groupName = $optgroup.attr('label');
+        }
+
+        if((this.$input.get(0).innerText.indexOf(data.name) >= 0) || data.selected){
+            data.active = true;
+        }
+
+        this.data =  { 'option': { 'data': data, 'html': e } };
+        return this.data.option.data;
     };
 
     Select.prototype.addDropdown = function () {
@@ -4721,101 +4766,81 @@
     };
 
     Select.prototype.addList = function () {
-        var $options = $('<ul/>', {
-                class: this.classes.selectList
-            }),
-            that = this,
-            optdata = [],
-            groupIndex = null;
-
         this.$listContainer = $('<div/>', {
             class: this.classes.options
-        });
-        this.$options = this.$element.find('option');
+        }).appendTo(this.$list);
 
-        this.$options.each(function(index, element) {
-            var $this = $(element),
-                data = that.getOptionsData(element, index);
-
-            that.field[index] = $('<li/>', {
-                class: that.classes.selectOption
-            });
-
-            optdata[data.index] = data;
-
-            that.field[index]
-                .text($this.text());
-
-            if(data.group !== null){
-                if(data.groupIndex !== groupIndex){
-                    var $groupOption = $('<li/>', {
-                            class: that.classes.selectOptionGroup
-                        }),
-                        $group = $('<ul/>', {
-                            class: that.classes.selectList
-                        });
-
-                    groupIndex = data.groupIndex;
-                    $groupOption
-                        .text(data.groupName)
-                        .append($group)
-                        .appendTo($options);
-                }
-                $group = $options.find('li:last-child ul');
-
-                that.field[index].appendTo($group);
-            } else {
-                that.field[index].appendTo($options);
-            }
-
-            if(optdata[data.index].active)
-                that.field[index].addClass(that.classes.selected);
-
+        this.$fields = $('<ul/>', {
+            class: this.classes.selectList
         });
 
-        this.optionData = optdata;
+        var $options = this.$element.find('option'),
+            that = this;
 
-        this.$listContainer
-            .append($options)
-            .appendTo(this.$list);
+        this.groupIndex = null;
+
+        $options.each(function(index, element) {
+            that.addGroups(index);
+            that.addFields(index);
+        });
+
+        this.$fields.appendTo(this.$listContainer);
     };
 
-    Select.prototype.getOptionsData = function (e, index) {
-        var $option = $(e),
-            selected = $option.attr('selected')? true : false,
-            value = $option.val(),
-            group = e.parentNode.nodeName.toLowerCase() === 'optgroup'? true : null;
+    Select.prototype.addGroups = function (index) {
+        if (this.optionData[index].group !== null) {
+            if (this.optionData[index].groupIndex !== this.groupIndex) {
+                this.$groupField = $('<li/>', {
+                    class: this.classes.selectOptionGroup
+                });
+                this.$group[this.optionData[index].groupIndex] = $('<ul/>', {
+                    class: this.classes.selectList
+                });
 
-        var data = {
-            'index': index,
-            'selected': selected,
-            'name': $option.text(),
-            'value': value,
-            'optIndex': $option.index(),
-            'group': group,
-            'groupName': null,
-            'groupIndex': null,
-            'active' : false
-        };
+                this.groupIndex = this.optionData[index].groupIndex;
 
-        if(group) {
-            var $optgroup = $(e.parentNode);
-            data.groupIndex = $optgroup.index();
-            data.groupName = $optgroup.attr('label');
+                this.$groupField
+                    .text(this.optionData[index].groupName)
+                    .append(this.$group[this.optionData[index].groupIndex])
+                    .appendTo(this.$fields);
+            }
         }
+    };
 
-        if(this.$input.text() ===  data.name || data.selected){
-            data.active = true;
+    Select.prototype.addFields = function (index) {
+        if(this.optionData[index].group !== null){
+            this.addField(this.optionData[index].optIndex, index, this.$group[this.optionData[index].groupIndex]);
+        } else {
+            this.addField(index, index, this.$fields);
         }
+    };
 
-        this.data =  { 'option': { 'data': data, 'html': e } };
-        return this.data.option.data;
+    Select.prototype.addField = function (gptindex, index, $parent) {
+        this.field[index] = $('<li/>', {
+            class: this.classes.selectOption
+        }).text(this.optionData[index].name);
+
+        if(this.optionData[index].active)
+            this.field[index].addClass(this.classes.selected);
+
+        if(typeof $parent.get(0).children[gptindex] === 'undefined') {
+            $parent.append(this.field[index]);
+        } else {
+            $($parent.get(0).children[gptindex]).before(this.field[index]);
+        }
     };
 
     Select.prototype.setValue = function (element, group) {
         var that = this,
             dataIndex = null,
-            thisData = null;
+            thisData = null,
+            $resultContainer = $('<div/>', {
+                class : this.classes.resultContainer
+            }),
+            $resultContent = $('<span/>', {
+                class : this.classes.resultContent
+            }),
+            $close = $(this.options.templateClose);
 
         if(group){
             var optIndex = $(element).index(),
@@ -4833,14 +4858,52 @@
         this.field[dataIndex].addClass(this.classes.selected);
 
         thisData = this.optionData[dataIndex];
+        thisData.active = true;
+
         this.$element.val(thisData.value);
-        this.$input.text(thisData.name);
+        $resultContent.text(thisData.name);
+
+        $resultContainer
+            .attr('data-index', dataIndex)
+            .append($resultContent);
+
+        if(!this.multiple) {
+            this.$input.html($resultContainer);
+        } else {
+            this.$container.addClass(this.classes.multiple);
+            $resultContainer.append($close);
+            this.$input.append($resultContainer);
+            $close.on('click', $.proxy(this.closeResult, this));
+        }
 
         this.inState.click = !this.inState.click;
 
         this.$container.addClass(this.classes.active);
 
         this.hide();
+    };
+
+    Select.prototype.closeResult = function(e) {
+        var $this    = $(e.target),
+            selector = '.' + this.classes.resultContainer;
+
+        if (e) e.preventDefault();
+
+        var $parent = $this.closest(selector);
+
+        $parent.trigger(e = $.Event('close.origam.' + this.type));
+
+        var index = $parent.attr('data-index');
+
+        this.optionData[index].active = false;
+        this.field[index].removeClass(this.classes.selected);
+
+        if (e.isDefaultPrevented()) return;
+
+        $parent
+            .detach()
+            .trigger('closed.origam.' + this.type)
+            .remove();
     };
 
     Select.prototype.bindSelector = function () {
@@ -4896,10 +4959,17 @@
 
         $.each( this.optionData, function(index) {
             if (this.name.toLowerCase().indexOf(params) >= 0){
-                that.field[index].show();
-                    that.hightLight(index, params);
+                if(that.optionData[index].hide) {
+                    that.addFields(index);
+                    that.optionData[index].hide = false;
+                }
+                that.hightLight(index, params);
             } else {
-                that.field[index].hide();
+                that.field[index]
+                    .detach()
+                    .trigger('removeField.origam.' + that.type)
+                    .remove();
+                that.optionData[index].hide = true;
             }
         });
 
@@ -4912,22 +4982,16 @@
 
     Select.prototype.hightLight = function (index, params){
         var that = this,
-            hightLightSplit = [],
-            str = this.optionData[index].name;
+            str = this.optionData[index].name,
+            start = str.toLowerCase().indexOf(params),
+            end = start + params.length,
+            hightLightText = str.slice(start, end);
 
-        if(params.length != 0) {
+        this.hightLightContent = $('<span/>', {
+            class: that.classes.hightLightContent
+        }).text(hightLightText);
 
-            console.log(params);
-            console.log(str);
-
-            //$.each(['hightLightStart', 'hightLightEnd', 'hightLightContent'], function (i, v) {
-            //    that[v] = $('<span/>', {
-            //        class: that.classes[v]
-            //    }).empty();
-            //
-            //    that[v].text(hightLightSplit[i]);
-            //});
-        }
+        this.field[index].html(str.replace(hightLightText, this.hightLightContent.get(0).outerHTML));
     };
 
     Select.prototype.calculHeight = function() {
@@ -4948,12 +5012,12 @@
         }
     };
 
-    Select.prototype.maxHeight = function() {
+    Select.prototype.initHeight = function() {
         this.fieldHeight        = this.field[0].outerHeight();
         this.fieldsHeight       = this.fieldHeight * this.size;
         this.searchHeight       = this.$searchContainer.outerHeight();
         this.maxHeight          = this.fieldsHeight + this.searchHeight;
-    }
+    };
 
     Select.prototype.mouse_enter = function() {
         return this.mouse_on_container = true;
@@ -4971,7 +5035,7 @@
         } else if( this.mouse_on_container && this.activate){
             var element = e.target;
             var group = $(element).parents('.' + this.classes.selectOptionGroup).length !== 0 ? true : false;
-            if($(element).hasClass(this.classes.selectOption))
+            if($(element).not('.' + this.classes.selected).hasClass(this.classes.selectOption))
                 this.setValue(element, group);
             if($(element).hasClass(this.options.selectorToggle) && $(element).is('div'))
                 this.toggle(e);
@@ -4996,7 +5060,7 @@
         this.$container.addClass('open');
 
         this.removeDropdown();
-        this.maxHeight();
+        this.initHeight();
         this.calculHeight();
 
         if(!this.options.animate) {
@@ -5006,6 +5070,7 @@
         var onShow = function () {
             that.$list.trigger('show.origam.' + that.type);
             that.$list.height(that.height);
+            that.$search.focus();
         };
 
         $.support.transition && this.options.animate?
