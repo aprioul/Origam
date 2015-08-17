@@ -4593,7 +4593,7 @@
         templateClose: '<div class="select-close"><i class="origamicon origamicon-close"></i></div>',
         selectorToggle: 'text-field--group__input',
         selectorSearch: '.text-field > .text-field--group',
-        animate: true,
+        animate: false,
         maxSelected: '',
         classes: {
             focus: 'text-field--focused',
@@ -4623,7 +4623,7 @@
     Select.prototype.event = function (options) {
         this.id                 = this.getUID(8);
         this.inState            = {click: false};
-        this.mouse_on_container = false;
+        this.mouseOnContainer   = false;
         this.activate           = false;
         this.multiple           = this.$element.attr('multiple') ? true : false;
         this.size               = parseInt(this.$element.attr('size')) || parseInt(this.$element.attr('data-size')) || 10;
@@ -4648,8 +4648,11 @@
             DELETE: 46
         };
         this.field              = new Array();
-        this.$group             = new Array();
+        this.group              = new Array();
+        this.groupField         = new Array();
+        this.groupHidden        = new Array();
         this.height             = 0;
+        this.selectedValue      = this.$element.map(function(){ return this.value }).get();
         
         var that = this,
             $options = this.$element.find('option'),
@@ -4790,26 +4793,36 @@
     Select.prototype.addGroups = function (index) {
         if (this.optionData[index].group !== null) {
             if (this.optionData[index].groupIndex !== this.groupIndex) {
-                this.$groupField = $('<li/>', {
+                this.groupField[this.optionData[index].groupIndex] = $('<li/>', {
                     class: this.classes.selectOptionGroup
                 });
-                this.$group[this.optionData[index].groupIndex] = $('<ul/>', {
+                this.group[this.optionData[index].groupIndex] = $('<ul/>', {
                     class: this.classes.selectList
                 });
 
                 this.groupIndex = this.optionData[index].groupIndex;
 
-                this.$groupField
+                this.groupField[this.optionData[index].groupIndex]
                     .text(this.optionData[index].groupName)
-                    .append(this.$group[this.optionData[index].groupIndex])
-                    .appendTo(this.$fields);
+                    .append(this.group[this.optionData[index].groupIndex]);
+
+                this.addGroup(this.optionData[index].groupIndex);
             }
         }
     };
 
+    Select.prototype.addGroup = function (index) {
+        if(typeof this.$fields.get(0).children[index] === 'undefined') {
+            this.$fields.append(this.groupField[index]);
+        } else {
+            $(this.$fields.get(0).children[index]).before(this.groupField[index]);
+        }
+        this.groupHidden[index] = false;
+    };
+
     Select.prototype.addFields = function (index) {
         if(this.optionData[index].group !== null){
-            this.addField(this.optionData[index].optIndex, index, this.$group[this.optionData[index].groupIndex]);
+            this.addField(this.optionData[index].optIndex, index, this.group[this.optionData[index].groupIndex]);
         } else {
             this.addField(index, index, this.$fields);
         }
@@ -4822,6 +4835,7 @@
 
         if(this.optionData[index].active)
             this.field[index].addClass(this.classes.selected);
+
 
         if(typeof $parent.get(0).children[gptindex] === 'undefined') {
             $parent.append(this.field[index]);
@@ -4860,16 +4874,25 @@
         thisData = this.optionData[dataIndex];
         thisData.active = true;
 
-        this.$element.val(thisData.value);
         $resultContent.text(thisData.name);
-
         $resultContainer
             .attr('data-index', dataIndex)
             .append($resultContent);
 
         if(!this.multiple) {
+            if(this.$input.html().length !== 0) {
+                var oldValue = this.$input
+                    .find('.' + this.classes.resultContainer)
+                    .attr('data-index');
+                this.field[oldValue].removeClass(this.classes.selected);
+                this.optionData[oldValue].active = false;
+            }
+            this.$element.val(thisData.value);
             this.$input.html($resultContainer);
         } else {
+            this.selectedValue.push(thisData.value);
+            this.$element.val(this.selectedValue);
+
             this.$container.addClass(this.classes.multiple);
             $resultContainer.append($close);
             this.$input.append($resultContainer);
@@ -4893,10 +4916,14 @@
 
         $parent.trigger(e = $.Event('close.origam.' + this.type));
 
-        var index = $parent.attr('data-index');
+        var dataIndex = $parent.attr('data-index');
+        var index = $parent.index() + 1;
 
-        this.optionData[index].active = false;
-        this.field[index].removeClass(this.classes.selected);
+        this.selectedValue.splice(index, 1);
+        this.$element.val(this.selectedValue);
+
+        this.optionData[dataIndex].active = false;
+        this.field[dataIndex].removeClass(this.classes.selected);
 
         if (e.isDefaultPrevented()) return;
 
@@ -4904,20 +4931,9 @@
             .detach()
             .trigger('closed.origam.' + this.type)
             .remove();
-    };
 
-    Select.prototype.bindSelector = function () {
-        var that = this;
-
-        this.$container.bind('mouseenter.origam.'+ this.type, function(e) {
-            that.mouse_enter();
-        });
-        this.$container.bind('mouseleave.origam.'+ this.type, function(e) {
-            that.mouse_leave();
-        });
-        $(this.$container[0].ownerDocument).bind('click.origam.'+ this.type, function (e) {
-            that.action(e);
-        });
+        if($(this.$input.get(0).childNodes).length === 0)
+            this.$container.removeClass(this.classes.active);
     };
 
     Select.prototype.keydownChecker = function (e) {
@@ -4958,10 +4974,15 @@
         var that = this;
 
         $.each( this.optionData, function(index) {
+            if(that.groupHidden[this.groupIndex]){
+                that.groupIndex = null;
+                that.addGroups(index);
+            }
             if (this.name.toLowerCase().indexOf(params) >= 0){
-                if(that.optionData[index].hide) {
+                if(this.hide) {
+                    console.log('show Field');
                     that.addFields(index);
-                    that.optionData[index].hide = false;
+                    this.hide = false;
                 }
                 that.hightLight(index, params);
             } else {
@@ -4969,14 +4990,23 @@
                     .detach()
                     .trigger('removeField.origam.' + that.type)
                     .remove();
-                that.optionData[index].hide = true;
+                this.hide = true;
+            }
+
+            if($(that.group[this.groupIndex].get(0).childNodes).length === 0){
+                that.groupField[this.groupIndex]
+                    .detach()
+                    .trigger('removeGroup.origam.' + that.type)
+                    .remove();
+                that.groupHidden[this.groupIndex] = true;
             }
         });
 
-        if(that.options.animate) {
-            that.height = 0;
-            that.calculHeight();
-            that.$list.height(that.height);
+        this.calculHeight();
+
+        if(this.options.animate) {
+            this.height = 0;
+            this.$list.height(this.height);
         }
     };
 
@@ -4998,16 +5028,20 @@
         var that = this;
 
         this.$listContainer.height('auto');
+        this.height = 0;
 
         this.$list.children().each(function (index) {
             var thisHeight = $(this).outerHeight();
             that.height = that.height + thisHeight;
         });
 
+        if (this.height > this.maxHeight) {
+            this.$listContainer.height(this.fieldsHeight);
+        }
+
         if(this.options.animate) {
             if (this.height > this.maxHeight) {
                 this.height = this.maxHeight;
-                this.$listContainer.height(this.fieldsHeight);
             }
         }
     };
@@ -5019,26 +5053,51 @@
         this.maxHeight          = this.fieldsHeight + this.searchHeight;
     };
 
+    Select.prototype.bindSelector = function () {
+        var that = this;
+
+        this.$container.bind('mouseenter.origam.'+ this.type, function(e) {
+            that.mouse_enter();
+        });
+        this.$container.bind('mouseleave.origam.'+ this.type, function(e) {
+            that.mouse_leave();
+        });
+        $(this.$container[0].ownerDocument).bind('click.origam.'+ this.type, function (e) {
+            that.action(e);
+        });
+    };
+
     Select.prototype.mouse_enter = function() {
-        return this.mouse_on_container = true;
+        return this.mouseOnContainer = true;
     };
 
     Select.prototype.mouse_leave = function() {
-        return this.mouse_on_container = false;
+        return this.mouseOnContainer = false;
     };
 
     Select.prototype.action = function(e){
-        if (!this.mouse_on_container && this.activate){
+        var element = e.target,
+            group = $(element).parents('.' + this.classes.selectOptionGroup).length !== 0 ? true : false,
+            selector = '.' + this.classes.resultContainer,
+            $parent = $(element).closest(selector);
+
+        if (!this.mouseOnContainer && this.activate){
             this.toggle(e);
-        } else if( this.mouse_on_container && !this.activate) {
-            this.toggle(e);
-        } else if( this.mouse_on_container && this.activate){
-            var element = e.target;
-            var group = $(element).parents('.' + this.classes.selectOptionGroup).length !== 0 ? true : false;
-            if($(element).not('.' + this.classes.selected).hasClass(this.classes.selectOption))
-                this.setValue(element, group);
-            if($(element).hasClass(this.options.selectorToggle) && $(element).is('div'))
+        } else if( this.mouseOnContainer && !this.activate) {
+            if(this.multiple) {
+                if ($(element).hasClass(this.options.selectorToggle) && $(element).is('div')) {
+                    this.toggle(e);
+                }
+            } else {
                 this.toggle(e);
+            }
+        } else if( this.mouseOnContainer && this.activate){
+            if($(element).not('.' + this.classes.selected).hasClass(this.classes.selectOption)) {
+                this.setValue(element, group);
+            }
+            if($(element).hasClass(this.options.selectorToggle) && $(element).is('div')) {
+                this.toggle(e);
+            }
         }
     };
 
@@ -5057,15 +5116,18 @@
         this.addList();
 
         this.$list.appendTo(this.$container);
-        this.$container.addClass('open');
+        this.$container
+            .addClass('open');
 
         this.removeDropdown();
         this.initHeight();
         this.calculHeight();
 
-        if(!this.options.animate) {
+        if(!this.options.animate)
             this.height = 'auto';
-        }
+        else
+            this.$container.addClass('animate');
+
 
         var onShow = function () {
             that.$list.trigger('show.origam.' + that.type);
@@ -5093,14 +5155,15 @@
 
         $select.trigger(e = $.Event('close.origam.' + this.type));
 
-        if(this.options.animate) {
+        if(this.options.animate)
             $select.removeAttr( "style" );
-        }
 
         if (e.isDefaultPrevented()) return;
 
         function removeElement() {
             that.$container.removeClass('open');
+            if(that.options.animate)
+                that.$container.removeClass('animate');
             $select
                 .detach()
                 .trigger('closed.origam.' + that.type)

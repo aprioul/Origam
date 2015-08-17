@@ -25,14 +25,20 @@
 .text-field--select {
   border: 1px solid transparent;
 
+  &.animate{
+    &:after,
+    &:before {
+      @include transition-property(all);
+      @include transition-duration(.5s);
+      @include transition-timing-function(ease-out);
+    }
+  }
+
   &:after,
   &:before {
     content: '';
     background-color: $black-4;
     @include size(1px, 0);
-    @include transition-property(all);
-    @include transition-duration(.5s);
-    @include transition-timing-function(ease-out);
   }
 
   &:after {

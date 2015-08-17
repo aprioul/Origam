@@ -20888,11 +20888,7 @@ input[type="range"].text-field--group__input:after {
 .text-field--select {
   border: 1px solid transparent;
 }
-.text-field--select:after, .text-field--select:before {
-  content: '';
-  background-color: rgba(0, 0, 0, 0.12);
-  width: 1px;
-  height: 0;
+.text-field--select.animate:after, .text-field--select.animate:before {
   -moz-transition-property: all;
   -o-transition-property: all;
   -webkit-transition-property: all;
@@ -20905,6 +20901,12 @@ input[type="range"].text-field--group__input:after {
   -o-transition-timing-function: ease-out;
   -webkit-transition-timing-function: ease-out;
   transition-timing-function: ease-out;
+}
+.text-field--select:after, .text-field--select:before {
+  content: '';
+  background-color: rgba(0, 0, 0, 0.12);
+  width: 1px;
+  height: 0;
 }
 .text-field--select:after {
   position: absolute;
@@ -21010,6 +21012,7 @@ input[type="range"].text-field--group__input:after {
   background-color: #0196d1;
   color: #FFFFFF;
   border-top-color: rgba(255, 255, 255, 0.7);
+  cursor: default;
 }
 .selectlist-list .selectlist-list--option .selectlist-list--option__content {
   font-style: normal;
