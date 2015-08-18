@@ -4980,7 +4980,6 @@
             }
             if (this.name.toLowerCase().indexOf(params) >= 0){
                 if(this.hide) {
-                    console.log('show Field');
                     that.addFields(index);
                     this.hide = false;
                 }
@@ -4993,19 +4992,20 @@
                 this.hide = true;
             }
 
-            if($(that.group[this.groupIndex].get(0).childNodes).length === 0){
-                that.groupField[this.groupIndex]
-                    .detach()
-                    .trigger('removeGroup.origam.' + that.type)
-                    .remove();
-                that.groupHidden[this.groupIndex] = true;
+            if (this.group !== null) {
+                if ($(that.group[this.groupIndex].get(0).childNodes).length === 0) {
+                    that.groupField[this.groupIndex]
+                        .detach()
+                        .trigger('removeGroup.origam.' + that.type)
+                        .remove();
+                    that.groupHidden[this.groupIndex] = true;
+                }
             }
         });
 
         this.calculHeight();
 
         if(this.options.animate) {
-            this.height = 0;
             this.$list.height(this.height);
         }
     };
@@ -5107,6 +5107,9 @@
 
         var that = this;
 
+        if(this.options.animate)
+            this.$container.addClass('animate');
+
         this.$list = $('<div/>', {
             class: this.classes.list,
             id: this.id
@@ -5125,9 +5128,6 @@
 
         if(!this.options.animate)
             this.height = 'auto';
-        else
-            this.$container.addClass('animate');
-
 
         var onShow = function () {
             that.$list.trigger('show.origam.' + that.type);
@@ -5162,13 +5162,15 @@
 
         function removeElement() {
             that.$container.removeClass('open');
-            if(that.options.animate)
-                that.$container.removeClass('animate');
             $select
                 .detach()
                 .trigger('closed.origam.' + that.type)
                 .remove();
             that.addDropdown();
+            setTimeout(function(){
+                if(that.options.animate)
+                    that.$container.removeClass('animate');
+            }, Select.TRANSITION_DURATION);
         }
 
         $.support.transition && this.options.animate ?
