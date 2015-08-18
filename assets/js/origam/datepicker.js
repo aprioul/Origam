@@ -25,8 +25,13 @@
     Date.TRANSITION_DURATION = 1000;
 
     Date.DEFAULTS = $.extend({}, $.fn.input.Constructor.DEFAULTS, {
-        
-    
+        templateWrapper: '<div class="origam-datepick"></div>',
+        templateview: '<div class="origam-datepick--view"></div>',
+        templatecalendar: '<div class="origam-datepick--calendar"></div>',
+        templateSubmit: '<div class="origam-colorpick--submit btn btn-ghost"></div>',
+        timeDefined: false,
+        max: '',
+        min: ''
     });
 
     Date.prototype = $.extend({}, $.fn.input.Constructor.prototype);

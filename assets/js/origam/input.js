@@ -46,7 +46,12 @@
             "*": "[A-Za-z0-9]",
             "~": "[+-]"
         },
-        mask: "9999 9999 9999 9999"
+        mask: "9999 9999 9999 9999",
+        onShow: function () {},
+        onBeforeShow: function(){},
+        onHide: function () {},
+        onChange: function () {},
+        onSubmit: function () {}
     };
 
     Input.prototype.init = function (type, element, options) {

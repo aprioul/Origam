@@ -20262,7 +20262,7 @@ th {
   */
 .origam-colorpick--form {
   display: block;
-  margin: 6px 0;
+  margin: 0;
   min-width: 273px;
   max-width: 275px;
   vertical-align: top;
@@ -20276,6 +20276,7 @@ th {
 @media (min-width: 769px) {
   .origam-colorpick--form {
     display: inline-block;
+    margin: 6px 0;
   }
 }
 
@@ -20321,8 +20322,13 @@ th {
   * Submit/Select button
   */
 .origam-colorpick--submit {
-  margin: 0 6px;
+  margin: 0;
   display: block;
+}
+@media (min-width: 769px) {
+  .origam-colorpick--submit {
+    margin: 0 6px;
+  }
 }
 
 /**
@@ -20655,6 +20661,21 @@ input[type="range"].text-field--group__input:after {
 }
 .text-field--color .text-field--group__input {
   cursor: pointer;
+}
+.text-field--color input {
+  display: none;
+}
+.text-field--color input[type=color],
+.text-field--color div[type=color],
+.text-field--color output[type=color] {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+}
+.text-field--color input.text-field--group__input,
+.text-field--color div.text-field--group__input,
+.text-field--color output.text-field--group__input {
+  height: 32px;
+  line-height: 32px;
 }
 
 .text-field--color_current {

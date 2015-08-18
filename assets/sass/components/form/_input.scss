@@ -251,7 +251,7 @@ input[type="range"].text-field--group__input:after {
   @include transition-timing-function(ease-out);
   &.text-field--active,
   &.text-field--focused{
-    label {
+    label{
       display: none;
     }
   }
@@ -268,6 +268,22 @@ input[type="range"].text-field--group__input:after {
   }
   .text-field--group__input{
     cursor: pointer;
+  }
+
+  input{
+    display: none;
+  }
+
+  input,
+  div,
+  output{
+    &[type=color]{
+      @include opacity(0);
+    }
+    &.text-field--group__input {
+      height: 32px;
+      line-height: 32px;
+    }
   }
 }
 

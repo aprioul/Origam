@@ -130,7 +130,7 @@
         templateHue: '<div class="origam-colorpick--hue"></div>',
         templateHueSelector: '<div class="origam-colorpick--hue_arrs"><div class="origam-colorpick--hue_larr"></div><div class="origam-colorpick--hue_rarr"></div></div>',
         templateForm: '<div class="origam-colorpick--form"></div>',
-        templateSubmit: '<div class="origam-colorpick--submit btn btn-primary"></div>',
+        templateSubmit: '<div class="origam-colorpick--submit btn btn-ghost"></div>',
         templateNewColor: '<div class="origam-colorpick--new_color"></div>',
         templateOriginColor: '<div class="origam-colorpick--current_color"></div>',
         templateWrapperField : '<div class="origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"></div></div>',
@@ -144,14 +144,8 @@
         livePreview: true,
         layout: 'full',
         submitText: 'OK',
-        animate: true,
         format: '#',
-        height: 230,
-        onShow: function () {},
-        onBeforeShow: function(){},
-        onHide: function () {},
-        onChange: function () {},
-        onSubmit: function () {}
+        height: 230
     });
 
     Color.prototype = $.extend({}, $.fn.input.Constructor.prototype);
@@ -247,12 +241,17 @@
         this.$wrapper = this.addAddon();
         this.$wrapper.text(this.options.format);
 
-        this.color = $(this.options.templateColorElement);
+        this.$color = $(this.options.templateColorElement);
+
+        this.$output = $('<div/>', {
+            class: this.options.fieldClass
+        });
 
         this.$element
+            .after(this.$output)
             .parents(this.$parent)
             .on('click', $.proxy(this.show, this))
-            .prepend(this.color);
+            .prepend(this.$color);
 
         $(w).on('resize', $.proxy(this.moveColorpick, this));
     };
@@ -455,24 +454,29 @@
         var formatColor,
             rgb;
 
-        if (this.options.$format === 'rgb'){
-            rgb = hsbToRgb(hsb)
+        if (this.options.format === 'rgb'){
+            rgb = hsbToRgb(hsb);
             formatColor = '( ' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ') ';
         }
-        else if (this.options.$format === 'hsb') {
+        else if (this.options.format === 'hsb') {
             formatColor = '( ' + hsb.h + ', ' + hsb.s + ', ' + hsb.b + ') ';
         }
         else {
             formatColor = hsbToHex(hsb)
         }
 
+        this.$output.text(formatColor);
+
+        if(this.$element.attr('type') == 'color'){
+            formatColor = '#' + hsbToHex(hsb)
+        }
 
         this.$element
             .val(formatColor)
             .parents(this.$parent)
             .addClass(this.options.classes.active);
 
-        this.color.css('backgroundColor', '#' + hsbToHex(hsb));
+        this.$color.css('backgroundColor', '#' + hsbToHex(hsb));
 
         this.hide();
     };
@@ -726,6 +730,7 @@
 
     $(document).ready(function() {
         $('[data-form="color"]').color();
+        $('[type="color"]').color();
     });
 
 })(jQuery, window);
