@@ -7,7 +7,6 @@
   background-color: $white;
   border-color: darken($white, 17%);
   @include user-select(none);
-  padding-right: ($padding-base-vertical*3);
   z-index: 2;
   .origam-colorpick--close{
     color: darken($white, 34%);
@@ -18,20 +17,10 @@
 }
 
 /**
-  * Close
-  */
-
-.origam-colorpick--close {
-  @include position(absolute, $padding-base-vertical, $padding-base-vertical, null, null);
-  cursor: pointer;
-}
-
-/**
   * Color selection box with gradients
   */
 .origam-colorpick--color {
   @include position(relative);
-  @include size(276px,276px);
   overflow: hidden;
   outline: none;
   cursor: crosshair;
@@ -77,7 +66,7 @@
 
 .origam-colorpick--hue {
   @include position(relative);
-  @include size(19px,276px);
+  @include size(19px);
   cursor: n-resize;
   display: inline-block;
   margin: $padding-base-vertical;
@@ -114,15 +103,20 @@
   */
 
 .origam-colorpick--form {
-  display: inline-block;
+  display: block;
   margin: $padding-base-vertical 0;
-  @include size( 400px, 276px);
+  min-width: 273px;
+  max-width: 275px;
   vertical-align: top;
   word-spacing: -0.43em;
   > *{
     letter-spacing: normal;
     word-spacing: normal;
     text-rendering: auto;
+  }
+
+  @media (min-width: 769px) {
+    display: inline-block;
   }
 }
 
@@ -139,7 +133,6 @@
     width: calc( 50% - 12px);
     padding: 0;
     margin: 0 $padding-base-vertical;
-    margin-bottom: $padding-base-vertical;
   }
   &.text-field--addons.left{
     padding-left: 32px;
@@ -166,10 +159,6 @@
   display: block;
 }
 
-.origam-colorpick--submit:hover {
-
-}
-
 /**
   * New color box
   * Current color box
@@ -178,9 +167,8 @@
 .origam-colorpick--new_color,
 .origam-colorpick--current_color{
   display: inline-block;
-  margin: $padding-base-vertical;
-  margin-top: 0;
-  @include size( calc( 50% - 12px), 47px);
+  margin: 0 $padding-base-vertical;
+  @include size( calc( 50% - 12px), 30px);
   background-color: $grey;
 }
 

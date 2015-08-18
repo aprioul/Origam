@@ -20140,7 +20140,6 @@ th {
   -ms-user-select: none;
   -webkit-user-select: none;
   user-select: none;
-  padding-right: 18px;
   z-index: 2;
 }
 .origam-colorpick .origam-colorpick--close {
@@ -20151,22 +20150,10 @@ th {
 }
 
 /**
-  * Close
-  */
-.origam-colorpick--close {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  cursor: pointer;
-}
-
-/**
   * Color selection box with gradients
   */
 .origam-colorpick--color {
   position: relative;
-  width: 276px;
-  height: 276px;
   overflow: hidden;
   outline: none;
   cursor: crosshair;
@@ -20234,7 +20221,7 @@ th {
 .origam-colorpick--hue {
   position: relative;
   width: 19px;
-  height: 276px;
+  height: auto;
   cursor: n-resize;
   display: inline-block;
   margin: 6px;
@@ -20274,10 +20261,10 @@ th {
   * Form
   */
 .origam-colorpick--form {
-  display: inline-block;
+  display: block;
   margin: 6px 0;
-  width: 400px;
-  height: 276px;
+  min-width: 273px;
+  max-width: 275px;
   vertical-align: top;
   word-spacing: -0.43em;
 }
@@ -20285,6 +20272,11 @@ th {
   letter-spacing: normal;
   word-spacing: normal;
   text-rendering: auto;
+}
+@media (min-width: 769px) {
+  .origam-colorpick--form {
+    display: inline-block;
+  }
 }
 
 /**
@@ -20302,7 +20294,6 @@ th {
   width: calc( 50% - 12px);
   padding: 0;
   margin: 0 6px;
-  margin-bottom: 6px;
 }
 .origam-colorpick--field.text-field--addons.left,
 .origam-colorpick--hex_field.text-field--addons.left,
@@ -20341,10 +20332,9 @@ th {
 .origam-colorpick--new_color,
 .origam-colorpick--current_color {
   display: inline-block;
-  margin: 6px;
-  margin-top: 0;
+  margin: 0 6px;
   width: calc( 50% - 12px);
-  height: 47px;
+  height: 30px;
   background-color: #9E9E9E;
 }
 
@@ -20635,7 +20625,7 @@ input[type="range"].text-field--group__input:after {
   */
 .text-field--color {
   border: 1px solid rgba(0, 0, 0, 0.12);
-  padding-top: 8px;
+  padding: 8px;
   cursor: pointer;
   -moz-transition-property: border;
   -o-transition-property: border;

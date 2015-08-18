@@ -252,9 +252,7 @@
     Close.prototype.close = function (e) {
 
         var $this    = $(this),
-            selector = $this.attr('data-target'),
-            type = $this.attr('data-type'),
-            overlay = false;
+            selector = $this.attr('data-target');
 
         if (!selector) {
             selector = $this.attr('href');
@@ -267,18 +265,6 @@
 
         if (!$parent.length) {
             $parent = $this.closest('.alert');
-        } else {
-            if(typeof type !== 'undefined' && type === 'overlay'){
-                overlay = true;
-                $overlay = $this;
-            } else {
-                var $overlay = $('body').find('[data-type="overlay"]');
-                if ($overlay.length) {
-                    if(typeof selector !== 'undefined' && selector == $overlay.attr('data-target')) {
-                        overlay = true;
-                    }
-                }
-            }
         }
 
         $parent.trigger(e = $.Event('close.origam.close'));
@@ -302,11 +288,6 @@
                 .detach()
                 .trigger('closed.origam.close')
                 .remove();
-            if(overlay) {
-                $overlay
-                    .detach()
-                    .remove();
-            }
         }
 
         $.support.transition && $parent.hasClass(animateClass)?
@@ -1230,22 +1211,20 @@
     Color.TRANSITION_DURATION = 1000;
 
     Color.DEFAULTS = $.extend({}, $.fn.input.Constructor.DEFAULTS, {
-        showEvent: 'click',
         templateWrapper: '<div class="origam-colorpick"></div>',
         templateColor: '<div class="origam-colorpick--color"></div>',
         templateColorSelector: '<div class="origam-colorpick--selector_outer"><div class="origam-colorpick--selector_inner"></div></div>',
         templateHue: '<div class="origam-colorpick--hue"></div>',
         templateHueSelector: '<div class="origam-colorpick--hue_arrs"><div class="origam-colorpick--hue_larr"></div><div class="origam-colorpick--hue_rarr"></div></div>',
         templateForm: '<div class="origam-colorpick--form"></div>',
-        templateSubmit: '<div class="origam-colorpick--submit btn btn-primary" data-button="close"></div>',
+        templateSubmit: '<div class="origam-colorpick--submit btn btn-primary"></div>',
         templateNewColor: '<div class="origam-colorpick--new_color"></div>',
         templateOriginColor: '<div class="origam-colorpick--current_color"></div>',
         templateWrapperField : '<div class="origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"></div></div>',
         templateLabelField : '<div class="origam-colorpick--field_letter text-field--group__addons"></div>',
         templateField: '<input data-form="input" type="number" min="0" max="" />',
-        templateClose: '<div class="origam-colorpick--close" data-button="close"><i class="origamicon origamicon-close"></i></div>',
-        templateOverlay: '<div class="origam-overlay" data-type="overlay" data-button="close"></div>',
         templateColorElement: '<div class="text-field--color_current"></div>',
+        templateOverlay: '<div class="origam-overlay" data-type="overlay" data-button="close"></div>',
         fieldClass : 'text-field--group__input',
         parentClass : 'text-field--color',
         color: 'FF0000',
@@ -1254,7 +1233,7 @@
         submitText: 'OK',
         animate: true,
         format: '#',
-        height: 276,
+        height: 230,
         onShow: function () {},
         onBeforeShow: function(){},
         onHide: function () {},
@@ -1267,54 +1246,57 @@
     Color.prototype.constructor = Color;
 
     Color.prototype.event = function (options) {
-        this.options        = this.getOptions(options);
-        this.id             = this.getUID(8);
-        this.element        = this;
+        this.options            = this.getOptions(options);
+        this.id                 = this.getUID(8);
+        this.element            = this;
+        this.field              = new Array();
+        this.fields             = {
+                                'hex' : {
+                                    'class': 'origam-colorpick--hex_field',
+                                    'label': '#',
+                                    'type': 'text',
+                                    'maxlenght' : 6,
+                                    'size' : 6
+                                },
+                                'origin' : {
+                                    'class': 'origam-colorpick--origin_field',
+                                    'label': '#'
+                                },
+                                'rgb_r' : {
+                                    'class': 'origam-colorpick--rgb_r',
+                                    'label': 'R',
+                                    'max': '255'
+                                },
+                                'hsb_h' : {
+                                    'class': 'origam-colorpick--hsb_h',
+                                    'label': 'H',
+                                    'max': '360'
+                                },
+                                'rgb_g' : {
+                                    'class': 'origam-colorpick--rgb_g',
+                                    'label': 'G',
+                                    'max': '255'
+                                },
+                                'hsb_s' : {
+                                    'class': 'origam-colorpick--hsb_s',
+                                    'label': 'S',
+                                    'max': '100'
+                                },
+                                'rgb_b' : {
+                                    'class': 'origam-colorpick--rgb_b',
+                                    'label': 'B',
+                                    'max': '255'
+                                },
+                                'hsb_b' : {
+                                    'class': 'origam-colorpick--hsb_b',
+                                    'label': 'B',
+                                    'max': '100'
+                                }
+                            };
+        this.mouseOnContainer   = false;
+        this.activate           = false;
+
         this.$element.data('origam-colorpickId', this.id);
-        this.field = new Array();
-        this.fields = {
-            'hex' : {
-                'class': 'origam-colorpick--hex_field',
-                'label': '#',
-                'type': 'text',
-                'maxlenght' : 6,
-                'size' : 6
-            },
-            'origin' : {
-                'class': 'origam-colorpick--origin_field',
-                'label': '#'
-            },
-            'rgb_r' : {
-                'class': 'origam-colorpick--rgb_r',
-                'label': 'R',
-                'max': '255'
-            },
-            'hsb_h' : {
-                'class': 'origam-colorpick--hsb_h',
-                'label': 'H',
-                'max': '360'
-            },
-            'rgb_g' : {
-                'class': 'origam-colorpick--rgb_g',
-                'label': 'G',
-                'max': '255'
-            },
-            'hsb_s' : {
-                'class': 'origam-colorpick--hsb_s',
-                'label': 'S',
-                'max': '100'
-            },
-            'rgb_b' : {
-                'class': 'origam-colorpick--rgb_b',
-                'label': 'B',
-                'max': '255'
-            },
-            'hsb_b' : {
-                'class': 'origam-colorpick--hsb_b',
-                'label': 'B',
-                'max': '100'
-            }
-        };
 
         if (typeof this.options.color == 'string') {
             this.options.color = hexToHsb(this.options.color);
@@ -1326,29 +1308,27 @@
             return this;
         }
 
+        this.$overlay = $(this.options.templateOverlay);
         this.origColor = this.options.color;
 
-        this.colorpick = $(this.options.templateWrapper)
+        this.$colorpick = $(this.options.templateWrapper)
             .attr('id', this.id)
             .addClass('origam-colorpick--'+this.options.layout);
 
+        this.$submitField = $(this.options.templateSubmit).attr('data-target', '#' + this.id);
 
-        this.close = $(this.options.templateClose).attr('data-target', '#' + this.id);
-        this.overlay = $(this.options.templateOverlay).attr('data-target', '#' + this.id);
-        this.submitField = $(this.options.templateSubmit).attr('data-target', '#' + this.id);
+        this.$form = $(this.options.templateForm);
+        this.$currentColor = $(this.options.templateOriginColor);
+        this.$newColor = $(this.options.templateNewColor);
 
+        this.$selector = $(this.options.templateColor).css({
+            'height' : this.options.height,
+            'width' : this.options.height
+        });
+        this.$selectorIndic = $(this.options.templateColorSelector);
 
-        this.form = $(this.options.templateForm);
-        this.currentColor = $(this.options.templateOriginColor);
-        this.newColor = $(this.options.templateNewColor);
-
-
-        this.selector = $(this.options.templateColor);
-        this.selectorIndic = $(this.options.templateColorSelector);
-
-
-        this.hue = $(this.options.templateHueSelector);
-        this.huebar = $(this.options.templateHue);
+        this.$hue = $(this.options.templateHueSelector);
+        this.$huebar = $(this.options.templateHue);
 
         this.options.placement = 'before';
         this.$wrapper = this.addAddon();
@@ -1358,9 +1338,10 @@
 
         this.$element
             .parents(this.$parent)
-            .on(this.options.showEvent, $.proxy(this.show, this))
+            .on('click', $.proxy(this.show, this))
             .prepend(this.color);
 
+        $(w).on('resize', $.proxy(this.moveColorpick, this));
     };
 
     Color.prototype.getDefaults = function () {
@@ -1534,23 +1515,23 @@
     };
 
     Color.prototype.setHue = function (hsb) {
-        this.hue.css('top', parseInt(this.options.height - this.options.height * hsb.h/360, 10));
+        this.$hue.css('top', parseInt(this.options.height - this.options.height * hsb.h/360, 10));
     };
 
     Color.prototype.setSelector = function (hsb) {
-        this.selector.css('backgroundColor', '#' + hsbToHex({h: hsb.h, s: 100, b: 100}));
-        this.selectorIndic.css({
+        this.$selector.css('backgroundColor', '#' + hsbToHex({h: hsb.h, s: 100, b: 100}));
+        this.$selectorIndic.css({
             left: parseInt(this.options.height * hsb.s/100, 10),
             top: parseInt(this.options.height * (100-hsb.b)/100, 10)
         });
     };
 
     Color.prototype.setCurrentColor = function (hsb) {
-        this.currentColor.css('backgroundColor', '#' + hsbToHex(hsb));
+        this.$currentColor.css('backgroundColor', '#' + hsbToHex(hsb));
     };
 
     Color.prototype.setNewColor = function (hsb) {
-        this.newColor.css('backgroundColor', '#' + hsbToHex(hsb));
+        this.$newColor.css('backgroundColor', '#' + hsbToHex(hsb));
     };
 
     Color.prototype.setOrigineFields = function (hsb) {
@@ -1561,11 +1542,11 @@
         var formatColor,
             rgb;
 
-        if (this.options.format === 'rgb'){
+        if (this.options.$format === 'rgb'){
             rgb = hsbToRgb(hsb)
             formatColor = '( ' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ') ';
         }
-        else if (this.options.format === 'hsb') {
+        else if (this.options.$format === 'hsb') {
             formatColor = '( ' + hsb.h + ', ' + hsb.s + ', ' + hsb.b + ') ';
         }
         else {
@@ -1579,11 +1560,54 @@
             .addClass(this.options.classes.active);
 
         this.color.css('backgroundColor', '#' + hsbToHex(hsb));
+
+        this.hide();
     };
 
-    Color.prototype.show = function () {
+    Color.prototype.bindSelector = function () {
+        var that = this;
+
+        this.$colorpick.bind('mouseenter.origam.'+ this.type, function(e) {
+            that.mouseEnter();
+        });
+
+        this.$colorpick.bind('mouseleave.origam.'+ this.type, function(e) {
+            that.mouseLeave();
+        });
+
+        $(this.$colorpick[0].ownerDocument).bind('click.origam.'+ this.type, function (e) {
+            that.action(e);
+        });
+    };
+
+    Color.prototype.mouseEnter = function() {
+        return this.mouseOnContainer = true;
+    };
+
+    Color.prototype.mouseLeave = function() {
+        return this.mouseOnContainer = false;
+    };
+
+    Color.prototype.action = function(e){
+        if (!this.mouseOnContainer && this.activate){
+            this.hide();
+        }
+    };
+
+    Color.prototype.moveColorpick = function (e) {
+        var viewportHeight  = $(window).height(),
+            viewportWidtht  = $(window).width();
+
+        this.$colorpick
+            .css({
+                'top':  (viewportHeight/2) - (this.$colorpick.outerHeight()/2),
+                'left': (viewportWidtht/2) - (this.$colorpick.outerWidth()/2)
+            });
+    };
+
+    Color.prototype.show = function (e) {
         var that            = this,
-            $color          = that.colorpick,
+            $color          = that.$colorpick,
             viewportHeight  = $(window).height(),
             viewportWidtht  = $(window).width(),
             count           = 0,
@@ -1593,36 +1617,39 @@
             ngIE            = ( isIE && IEver < 10 ),
             stops           = ['#ff0000','#ff0080','#ff00ff','#8000ff','#0000ff','#0080ff','#00ffff','#00ff80','#00ff00','#80ff00','#ffff00','#ff8000','#ff0000'];
 
+        this.activate = true;
+        this.$element.off('click', $.proxy(this.show, this));
 
-        this.selector
+        this.$selector
             .html('')
             .on('mousedown touchstart', $.proxy(this.eventSelector, this))
             .append('<div class="origam-colorpick--color_overlay1"><div class="origam-colorpick--color_overlay2"></div></div>')
-            .children().children().append(this.selectorIndic);
+            .children().children().append(this.$selectorIndic);
 
         if(ngIE) {
             var i;
             for(i=0; i<=11; i++) {
                 $('<div>')
                     .attr('style','height:8.333333%; filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='+stops[i]+', endColorstr='+stops[i+1]+'); -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='+stops[i]+', endColorstr='+stops[i+1]+')";')
-                    .appendTo(this.huebar);
+                    .appendTo(this.$huebar);
             }
         } else {
             var stopList = stops.join(',');
-            this.huebar.attr('style','background:-webkit-linear-gradient(top,'+stopList+'); background: -o-linear-gradient(top,'+stopList+'); background: -ms-linear-gradient(top,'+stopList+'); background:-moz-linear-gradient(top,'+stopList+'); -webkit-linear-gradient(top,'+stopList+'); background:linear-gradient(to bottom,'+stopList+'); ');
+            this.$huebar.attr('style','background:-webkit-linear-gradient(top,'+stopList+'); background: -o-linear-gradient(top,'+stopList+'); background: -ms-linear-gradient(top,'+stopList+'); background:-moz-linear-gradient(top,'+stopList+'); -webkit-linear-gradient(top,'+stopList+'); background:linear-gradient(to bottom,'+stopList+'); ');
         }
 
-        this.huebar
+        this.$huebar
             .on('mousedown touchstart', $.proxy(this.eventHue, this))
-            .append(this.hue);
+            .height(this.options.height)
+            .append(this.$hue);
 
-        this.form
+        this.$form
             .html('')
-            .append(this.newColor);
+            .append(this.$newColor);
 
-        this.currentColor
+        this.$currentColor
             .on("click", $.proxy(this.restoreOriginal, this))
-            .appendTo(this.form);
+            .appendTo(this.$form);
 
         for(var i in this.fields) {
             var $wrapper         = $(this.options.templateWrapperField),
@@ -1657,21 +1684,20 @@
 
             $wrapper
                 .addClass(this.fields[i]['class'])
-                .appendTo(this.form);
+                .appendTo(this.$form);
 
             count++;
         }
 
-        this.submitField
+        this.$submitField
             .text(this.options.submitText)
             .on("click", $.proxy(this.submit, this))
-            .appendTo(this.form);
+            .appendTo(this.$form);
 
-        this.colorpick
-            .append(this.close)
-            .append(this.selector)
-            .append(this.huebar)
-            .append(this.form);
+        this.$colorpick
+            .append(this.$selector)
+            .append(this.$huebar)
+            .append(this.$form);
 
         if(that.options.animate) {
             $color
@@ -1691,13 +1717,15 @@
         this.setNewColor(this.options.color);
         this.setOrigineFields(this.options.color);
 
-        this.overlay.appendTo(document.body);
-        this.colorpick
+        this.$overlay.appendTo(document.body);
+        this.$colorpick
             .appendTo(document.body)
             .css({
-                'top':  (viewportHeight/2) - (this.colorpick.outerHeight()/2),
-                'left': (viewportWidtht/2) - (this.colorpick.outerWidth()/2)
+                'top':  (viewportHeight/2) - (this.$colorpick.outerHeight()/2),
+                'left': (viewportWidtht/2) - (this.$colorpick.outerWidth()/2)
             });
+
+        this.bindSelector();
 
         var onShow = function () {
             if ($color.hasClass(animateClass))
@@ -1713,6 +1741,46 @@
 
         return false;
         
+    };
+
+    Color.prototype.hide = function (e) {
+        var that = this;
+
+        this.activate = false;
+
+        if (e) e.preventDefault();
+
+        this.$colorpick.trigger(e = $.Event('close.origam.' + this.type));
+
+        var animate = this.$colorpick.attr('data-animate');
+        var animation = this.$colorpick.attr('data-animation');
+
+        if (animate) {
+            if(animation){this.$colorpick.addClass(animation);}
+            else{this.$colorpick.addClass('fadeOut');}
+            this.$colorpick.addClass('animated');
+            var animateClass = animation + ' animated';
+        }
+
+
+        if (e.isDefaultPrevented()) return;
+
+        function removeElement() {
+            if (that.$colorpick.hasClass(animateClass))
+                that.$colorpick.removeClass(animateClass);
+            that.$overlay.remove();
+            that.$colorpick
+                .detach()
+                .trigger('closed.origam.' + that.type)
+                .remove();
+        }
+
+        $.support.transition && this.$colorpick.hasClass(animateClass)?
+            this.$colorpick
+                .one('origamTransitionEnd', removeElement)
+                .emulateTransitionEnd(Color.TRANSITION_DURATION) :
+            removeElement()
+
     };
 
     // COLOR PLUGIN DEFINITION
@@ -4584,7 +4652,7 @@
     Select.TRANSITION_DURATION = 450;
 
     Select.DEFAULTS = $.extend({}, $.fn.input.Constructor.DEFAULTS, {
-        label: '-- Select --',
+        label: 'Select',
         templateSelect: '<div class="text-field"><label class="text-field--label"></label><div class="text-field--group"><div class="text-field--group__input" type="text"/></div></div>',
         templateDropdown: '<span class="text-field--group__dropdown origamicon origamicon-angle-down"></span>',
         templateSearch: '<div class="text-field"><div class="text-field--group"></div></div>',
@@ -4593,8 +4661,6 @@
         templateClose: '<div class="select-close"><i class="origamicon origamicon-close"></i></div>',
         selectorToggle: 'text-field--group__input',
         selectorSearch: '.text-field > .text-field--group',
-        animate: false,
-        maxSelected: '',
         classes: {
             focus: 'text-field--focused',
             active: 'text-field--active',
@@ -4627,7 +4693,6 @@
         this.activate           = false;
         this.multiple           = this.$element.attr('multiple') ? true : false;
         this.size               = parseInt(this.$element.attr('size')) || parseInt(this.$element.attr('data-size')) || 10;
-        this.maxSelected        = this.options.maxSelected || Infinity;
         this.keys               = {
             BACKSPACE: 8,
             TAB: 9,
@@ -5057,21 +5122,21 @@
         var that = this;
 
         this.$container.bind('mouseenter.origam.'+ this.type, function(e) {
-            that.mouse_enter();
+            that.mouseEnter();
         });
         this.$container.bind('mouseleave.origam.'+ this.type, function(e) {
-            that.mouse_leave();
+            that.mouseLeave();
         });
         $(this.$container[0].ownerDocument).bind('click.origam.'+ this.type, function (e) {
             that.action(e);
         });
     };
 
-    Select.prototype.mouse_enter = function() {
+    Select.prototype.mouseEnter = function() {
         return this.mouseOnContainer = true;
     };
 
-    Select.prototype.mouse_leave = function() {
+    Select.prototype.mouseLeave = function() {
         return this.mouseOnContainer = false;
     };
 
@@ -5145,24 +5210,22 @@
     };
 
     Select.prototype.hide = function (e) {
-        var that = this,
-            selector = '#' + this.id,
-            $select = $(selector);
+        var that = this;
 
         this.activate = false;
 
         if (e) e.preventDefault();
 
-        $select.trigger(e = $.Event('close.origam.' + this.type));
+        this.$list.trigger(e = $.Event('close.origam.' + this.type));
 
         if(this.options.animate)
-            $select.removeAttr( "style" );
+            this.$list.removeAttr( "style" );
 
         if (e.isDefaultPrevented()) return;
 
         function removeElement() {
             that.$container.removeClass('open');
-            $select
+            that.$list
                 .detach()
                 .trigger('closed.origam.' + that.type)
                 .remove();
@@ -5174,7 +5237,7 @@
         }
 
         $.support.transition && this.options.animate ?
-            $select
+            this.$list
                 .one('origamTransitionEnd', removeElement)
                 .emulateTransitionEnd(Select.TRANSITION_DURATION) :
             removeElement()

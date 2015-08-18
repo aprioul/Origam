@@ -25,7 +25,7 @@
     Select.TRANSITION_DURATION = 450;
 
     Select.DEFAULTS = $.extend({}, $.fn.input.Constructor.DEFAULTS, {
-        label: '-- Select --',
+        label: 'Select',
         templateSelect: '<div class="text-field"><label class="text-field--label"></label><div class="text-field--group"><div class="text-field--group__input" type="text"/></div></div>',
         templateDropdown: '<span class="text-field--group__dropdown origamicon origamicon-angle-down"></span>',
         templateSearch: '<div class="text-field"><div class="text-field--group"></div></div>',
@@ -34,8 +34,6 @@
         templateClose: '<div class="select-close"><i class="origamicon origamicon-close"></i></div>',
         selectorToggle: 'text-field--group__input',
         selectorSearch: '.text-field > .text-field--group',
-        animate: false,
-        maxSelected: '',
         classes: {
             focus: 'text-field--focused',
             active: 'text-field--active',
@@ -68,7 +66,6 @@
         this.activate           = false;
         this.multiple           = this.$element.attr('multiple') ? true : false;
         this.size               = parseInt(this.$element.attr('size')) || parseInt(this.$element.attr('data-size')) || 10;
-        this.maxSelected        = this.options.maxSelected || Infinity;
         this.keys               = {
             BACKSPACE: 8,
             TAB: 9,
@@ -498,21 +495,21 @@
         var that = this;
 
         this.$container.bind('mouseenter.origam.'+ this.type, function(e) {
-            that.mouse_enter();
+            that.mouseEnter();
         });
         this.$container.bind('mouseleave.origam.'+ this.type, function(e) {
-            that.mouse_leave();
+            that.mouseLeave();
         });
         $(this.$container[0].ownerDocument).bind('click.origam.'+ this.type, function (e) {
             that.action(e);
         });
     };
 
-    Select.prototype.mouse_enter = function() {
+    Select.prototype.mouseEnter = function() {
         return this.mouseOnContainer = true;
     };
 
-    Select.prototype.mouse_leave = function() {
+    Select.prototype.mouseLeave = function() {
         return this.mouseOnContainer = false;
     };
 
@@ -586,24 +583,22 @@
     };
 
     Select.prototype.hide = function (e) {
-        var that = this,
-            selector = '#' + this.id,
-            $select = $(selector);
+        var that = this;
 
         this.activate = false;
 
         if (e) e.preventDefault();
 
-        $select.trigger(e = $.Event('close.origam.' + this.type));
+        this.$list.trigger(e = $.Event('close.origam.' + this.type));
 
         if(this.options.animate)
-            $select.removeAttr( "style" );
+            this.$list.removeAttr( "style" );
 
         if (e.isDefaultPrevented()) return;
 
         function removeElement() {
             that.$container.removeClass('open');
-            $select
+            that.$list
                 .detach()
                 .trigger('closed.origam.' + that.type)
                 .remove();
@@ -615,7 +610,7 @@
         }
 
         $.support.transition && this.options.animate ?
-            $select
+            this.$list
                 .one('origamTransitionEnd', removeElement)
                 .emulateTransitionEnd(Select.TRANSITION_DURATION) :
             removeElement()
