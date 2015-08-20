@@ -4,6 +4,15 @@
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 /**
+ *
+ */
+*, ::after, ::before {
+  -moz-box-sizing: inherit;
+  -webkit-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+/**
  * 1. Set default font family to sans-serif.
  * 2. Prevent iOS and IE text size adjust after device orientation change,
  *    without disabling user zoom.
@@ -12220,16 +12229,6 @@ Copyright (c) 2015 Daniel Eden
   }
 }
 /**
- *
- */
-* {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-/**
  * 1. Remove inter-unit whitespace that appears between `inline-block` child
  * elements. Work for all non-monospace font-families. If you're using a
  * monospace base font, you will need to set the `Grid` font-family to
@@ -12319,6 +12318,9 @@ Copyright (c) 2015 Daniel Eden
   letter-spacing: normal;
   word-spacing: normal;
   text-rendering: auto;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /**
@@ -17421,6 +17423,15 @@ h1.h-comic.bottom.right:before, h2.h-comic.bottom.right:before, h3.h-comic.botto
 
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 /**
+ *
+ */
+*, ::after, ::before {
+  -moz-box-sizing: inherit;
+  -webkit-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+/**
  * 1. Set default font family to sans-serif.
  * 2. Prevent iOS and IE text size adjust after device orientation change,
  *    without disabling user zoom.
@@ -19280,16 +19291,12 @@ blockquote.pull-right .small:after {
   text-align: center;
 }
 .blockquote-quote:before, .blockquote-quote:after {
-  font-family: origamicon;
-  font-weight: 400;
-  font-style: normal;
-  speak: none;
-  text-decoration: inherit;
-  text-transform: none;
-  text-rendering: optimizeLegibility;
+  display: inline-block;
+  font: normal normal normal 24px/1 origamicon;
+  font-size: inherit;
+  text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  display: inline-block;
   color: #E0E0E0;
   position: absolute;
   font-size: 200%;
@@ -20042,6 +20049,11 @@ th {
 /**
   * Checkbox base styles
   */
+.checkbox {
+  min-width: 24px;
+  min-height: 24px;
+}
+
 .checkbox-input:not(:checked) + .checkbox-label:before {
   -moz-transform: scale(1);
   -ms-transform: scale(1);
@@ -20086,23 +20098,18 @@ th {
   user-select: none;
 }
 .checkbox-label:before, .checkbox-label:after {
-  font-family: origamicon;
-  font-weight: 400;
-  font-style: normal;
-  speak: none;
-  text-decoration: inherit;
-  text-transform: none;
-  text-rendering: optimizeLegibility;
+  display: inline-block;
+  font: normal normal normal 24px/1 origamicon;
+  font-size: inherit;
+  text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  display: inline-block;
   position: absolute;
   top: 0;
   left: 0;
   font-size: 18px;
   font-size: 1.125rem;
   line-height: 18px;
-  height: 100%;
   -moz-transition-property: -moz-transform;
   -o-transition-property: -o-transform;
   -webkit-transition-property: -webkit-transform;
@@ -20451,6 +20458,9 @@ th {
   display: none;
 }
 
+/**
+  * Text field label
+  */
 .text-field--label {
   display: block;
   position: absolute;
@@ -20489,6 +20499,9 @@ th {
   left: 0;
 }
 
+/**
+  * Text field input
+  */
 .text-field--group__input {
   display: block;
   width: 100%;
@@ -20523,30 +20536,9 @@ textarea.text-field--group__input {
   box-sizing: border-box;
 }
 
-input[type="range"].text-field--group__input {
-  position: relative;
-  overflow: visible;
-  cursor: pointer;
-  margin-bottom: 2em;
-}
-
-input[type="range"].text-field--group__input:after,
-input[type="range"].text-field--group__input:before {
-  position: absolute;
-  top: 2em;
-  color: #aaa;
-}
-
-input[type="range"].text-field--group__input:before {
-  left: 0em;
-  content: attr(min);
-}
-
-input[type="range"].text-field--group__input:after {
-  right: 0em;
-  content: attr(max);
-}
-
+/**
+  *  Text field addons
+  */
 .text-field--addons.left {
   padding-left: 68px;
 }
@@ -20591,26 +20583,7 @@ input[type="range"].text-field--group__input:after {
 .text-field--group__input + .text-field--group__addons, .text-field.right .text-field--group__addons {
   position: absolute;
   right: -55px;
-  left: initial;
-}
-.text-field--group__addons .text-field--group__switchpass {
-  color: rgba(0, 0, 0, 0.26);
-  cursor: pointer;
-}
-.text-field--group__addons .text-field--group__selectcountry {
-  color: rgba(0, 0, 0, 0.26);
-  cursor: pointer;
-  position: relative;
-  font-size: 16px;
-  font-size: 1rem;
-  width: 100%;
-  height: 100%;
-}
-.text-field--group__addons .text-field--group__selectcountry:before {
-  position: absolute;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
+  left: auto;
 }
 .text-field--group__addons:hover .text-field--group__switchpass,
 .text-field--group__addons:hover .text-field--group__selectcountry {
@@ -20759,6 +20732,37 @@ input[type="range"].text-field--group__input:after {
   border-color: #9CCC65;
 }
 
+.text-field--group__switchpass {
+  color: rgba(0, 0, 0, 0.26);
+  cursor: pointer;
+}
+
+/**
+  * Range
+  */
+input[type="range"].text-field--group__input {
+  position: relative;
+  overflow: visible;
+  cursor: pointer;
+  margin-bottom: 2em;
+}
+input[type="range"].text-field--group__input:after, input[type="range"].text-field--group__input:before {
+  position: absolute;
+  top: 2em;
+  color: rgba(0, 0, 0, 0.54);
+}
+input[type="range"].text-field--group__input:before {
+  left: 0em;
+  content: attr(min);
+}
+input[type="range"].text-field--group__input:after {
+  right: 0em;
+  content: attr(max);
+}
+
+/**
+  * Validation
+  */
 .text-field--error .text-field--group:after {
   background-color: #EF5350;
   -moz-transform: scale(1);
@@ -20839,16 +20843,12 @@ input[type="range"].text-field--group__input:after {
   cursor: pointer;
 }
 .radio-button--label:before, .radio-button--label:after {
-  font-family: origamicon;
-  font-weight: 400;
-  font-style: normal;
-  speak: none;
-  text-decoration: inherit;
-  text-transform: none;
-  text-rendering: optimizeLegibility;
+  display: inline-block;
+  font: normal normal normal 24px/1 origamicon;
+  font-size: inherit;
+  text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  display: inline-block;
   position: absolute;
   top: 0;
   left: 0;

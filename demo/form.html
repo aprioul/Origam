@@ -217,7 +217,7 @@
                                         <select class="select" data-form="select" size="5">
                                             <option value="Option 1">Option 1</option>
                                             <option value="Option 2">Option 2</option>
-                                            <option value="Option 3">Option 3</option>
+                                            <option value="Option 3" selected>Option 3</option>
                                             <option value="Option 4">Option 4</option>
                                             <option value="Option 5">Option 5</option>
                                             <option value="Option 6">Option 6</option>
@@ -346,17 +346,17 @@
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="text-field">
-                                        <label class="text-field--label" for="color">Color Hex</label>
+                                        <label class="text-field--label" for="colorinputtext">Color input text</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" data-form="color" type="text" id="color"/>
+                                            <input class="text-field--group__input" data-form="color" type="text" id="colorinputtext"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="text-field">
-                                        <label class="text-field--label" for="colortype">Color Hex</label>
+                                        <label class="text-field--label" for="colorhex">Color Hex</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" type="color" type="text" id="colortype"/>
+                                            <input class="text-field--group__input" type="color" id="colorhex"/>
                                         </div>
                                     </div>
                                 </div>
@@ -364,7 +364,7 @@
                                     <div class="text-field">
                                         <label class="text-field--label" for="colorhsb">Color Hsb</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" data-form="color" data-format="hsb" type="text" id="colorhsb"/>
+                                            <input class="text-field--group__input" data-format="hsb" type="color" id="colorhsb"/>
                                         </div>
                                     </div>
                                 </div>
@@ -372,7 +372,7 @@
                                     <div class="text-field">
                                         <label class="text-field--label" for="colorrgb">Color Rgb</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" data-form="color" data-format="rgb" type="text" id="colorrgb"/>
+                                            <input class="text-field--group__input" data-format="rgb" type="color" id="colorrgb"/>
                                         </div>
                                     </div>
                                 </div>
@@ -400,9 +400,49 @@
                             <div class="origam-section">
                                 <div class="origam-grid__cell origam-size-1of1">
                                     <div class="text-field">
+                                        <label class="text-field--label" for="dateinputtext">Date input text picker</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" data-form="date" type="text" id="dateinputtext"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of1">
+                                    <div class="text-field">
                                         <label class="text-field--label" for="date">Date picker</label>
                                         <div class="text-field--group">
-                                            <input class="text-field--group__input" data-form="input" type="text" id="date"/>
+                                            <input class="text-field--group__input" type="date" id="date"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of2 origam-size-1of1--small">
+                                    <div class="text-field">
+                                        <label class="text-field--label" for="month">month picker</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" type="month" id="month"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of2 origam-size-1of1--small">
+                                    <div class="text-field">
+                                        <label class="text-field--label" for="week">week picker</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" type="week" id="week"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of2 origam-size-1of1--small">
+                                    <div class="text-field">
+                                        <label class="text-field--label" for="time">time picker</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" type="time" id="time"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="origam-grid__cell origam-size-1of2 origam-size-1of1--small">
+                                    <div class="text-field">
+                                        <label class="text-field--label" for="date&time">date&time picker</label>
+                                        <div class="text-field--group">
+                                            <input class="text-field--group__input" type="datetime" id="date&time"/>
                                         </div>
                                     </div>
                                 </div>

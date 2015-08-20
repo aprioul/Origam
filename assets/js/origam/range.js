@@ -29,7 +29,9 @@
         templateHueSelector: '<div class="range-hue--arrs"></div>',
         templateHueSelectorLeft: '<div class="range-hue--larr"></div>',
         templateHueSelectorRight: '<div class="range-hue--rarr"></div>',
-        type: "single"
+        type: "single",
+        circle: false,
+        editable: true
     });
 
     Range.prototype = $.extend({}, $.fn.input.Constructor.prototype);

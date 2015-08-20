@@ -95,7 +95,10 @@
   }
 }
 
-// Text field label
+/**
+  * Text field label
+  */
+
 .text-field--label {
   display: block;
   @include position(absolute, $base-space, null, null, 0);
@@ -113,7 +116,10 @@
   }
 }
 
-// Text field input
+/**
+  * Text field input
+  */
+
 .text-field--group__input {
   display: block;
   width: 100%;
@@ -146,28 +152,10 @@ textarea.text-field--group__input {
   @include box-sizing(border-box);
 }
 
-input[type="range"].text-field--group__input {
-  position: relative;
-  overflow: visible;
-  cursor: pointer;
-  margin-bottom: 2em;
-}
-input[type="range"].text-field--group__input:after,
-input[type="range"].text-field--group__input:before {
-  position: absolute;
-  top: 2em;
-  color: #aaa;
-}
-input[type="range"].text-field--group__input:before {
-  left:0em;
-  content: attr(min);
-}
-input[type="range"].text-field--group__input:after {
-  right: 0em;
-  content: attr(max);
-}
+/**
+  *  Text field addons
+  */
 
-// Text field addons
 .text-field--addons{
   &.left {
     padding-left: 68px;
@@ -198,24 +186,7 @@ input[type="range"].text-field--group__input:after {
 
   .text-field--group__input + &,
   .text-field.right &{
-    @include position(absolute, null, -55px, null, initial);
-  }
-
-  .text-field--group__switchpass{
-    color: $black-3;
-    cursor: pointer;
-  }
-
-  .text-field--group__selectcountry{
-    color: $black-3;
-    cursor: pointer;
-    @include position(relative,null,null,null,null);
-    @include font-size($font-size-base);
-    @include size(100%, 100%);
-    &:before {
-      @include position(absolute,50%,0,null,null);
-      transform: translateY(-50%);
-    }
+    @include position(absolute, null, -55px, null, auto);
   }
 
   &:hover {
@@ -353,6 +324,43 @@ input[type="range"].text-field--group__input:after {
     border-color: $color-success;
   }
 }
+
+.text-field--group__switchpass{
+  color: $black-3;
+  cursor: pointer;
+}
+
+/**
+  * Range
+  */
+
+input[type="range"].text-field--group__input {
+  @include position(relative);
+  overflow: visible;
+  cursor: pointer;
+  margin-bottom: 2em;
+
+  &:after,
+  &:before {
+    @include position(absolute, 2em);
+    color: $black-2;
+  }
+
+  &:before {
+    left: 0em;
+    content: attr(min);
+  }
+
+  &:after {
+    right: 0em;
+    content: attr(max);
+  }
+}
+
+
+/**
+  * Validation
+  */
 
 .text-field--error {
   .text-field--group:after {

@@ -4107,7 +4107,9 @@
         templateHueSelector: '<div class="range-hue--arrs"></div>',
         templateHueSelectorLeft: '<div class="range-hue--larr"></div>',
         templateHueSelectorRight: '<div class="range-hue--rarr"></div>',
-        type: "single"
+        type: "single",
+        circle: false,
+        editable: true
     });
 
     Range.prototype = $.extend({}, $.fn.input.Constructor.prototype);
@@ -4872,8 +4874,9 @@
             data.groupName = $optgroup.attr('label');
         }
 
-        if((this.$input.get(0).innerText.indexOf(data.name) >= 0) || data.selected){
+        if(data.selected){
             data.active = true;
+            this.addValue(data, index);
         }
 
         this.data =  { 'option': { 'data': data, 'html': e } };
@@ -4988,9 +4991,9 @@
             class: this.classes.selectOption
         }).text(this.optionData[index].name);
 
-        if(this.optionData[index].active)
+        if(this.optionData[index].active) {
             this.field[index].addClass(this.classes.selected);
-
+        }
 
         if(typeof $parent.get(0).children[gptindex] === 'undefined') {
             $parent.append(this.field[index]);
@@ -5002,14 +5005,7 @@
     Select.prototype.setValue = function (element, group) {
         var that = this,
             dataIndex = null,
-            thisData = null,
-            $resultContainer = $('<div/>', {
-                class : this.classes.resultContainer
-            }),
-            $resultContent = $('<span/>', {
-                class : this.classes.resultContent
-            }),
-            $close = $(this.options.templateClose);
+            thisData = null;
 
         if(group){
             var optIndex = $(element).index(),
@@ -5029,9 +5025,25 @@
         thisData = this.optionData[dataIndex];
         thisData.active = true;
 
-        $resultContent.text(thisData.name);
+        this.addValue(thisData, dataIndex);
+
+        this.inState.click = !this.inState.click;
+
+        this.hide();
+    };
+
+    Select.prototype.addValue = function(data, index) {
+        var $resultContainer = $('<div/>', {
+                class : this.classes.resultContainer
+            }),
+            $resultContent = $('<span/>', {
+                class : this.classes.resultContent
+            }),
+            $close = $(this.options.templateClose);
+
+        $resultContent.text(data.name);
         $resultContainer
-            .attr('data-index', dataIndex)
+            .attr('data-index', index)
             .append($resultContent);
 
         if(!this.multiple) {
@@ -5042,10 +5054,10 @@
                 this.field[oldValue].removeClass(this.classes.selected);
                 this.optionData[oldValue].active = false;
             }
-            this.$element.val(thisData.value);
+            this.$element.val(data.value);
             this.$input.html($resultContainer);
         } else {
-            this.selectedValue.push(thisData.value);
+            this.selectedValue.push(data.value);
             this.$element.val(this.selectedValue);
 
             this.$container.addClass(this.classes.multiple);
@@ -5054,11 +5066,8 @@
             $close.on('click', $.proxy(this.closeResult, this));
         }
 
-        this.inState.click = !this.inState.click;
-
         this.$container.addClass(this.classes.active);
 
-        this.hide();
     };
 
     Select.prototype.closeResult = function(e) {
