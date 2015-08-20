@@ -5,7 +5,7 @@
  *
  */
 *, ::after, ::before {
-  @include box-sizing(inherit);
+  @include box-sizing(border-box);
 }
 
 /**

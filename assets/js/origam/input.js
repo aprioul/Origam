@@ -62,6 +62,8 @@
         this.$parent   = '.' + this.options.parentNode;
         this.inState   = { click: false, hover: false, focus: false };
         this.classes   = this.options.classes;
+        this.mouseOnContainer   = false;
+        this.activate           = false;
 
         this.$element
             .parents(this.$parent)
@@ -118,6 +120,18 @@
             if (self.isInStateTrue()) self.show(e);
             else self.hide(e);
         }
+    };
+
+    Input.prototype.mouseEnter = function() {
+        return this.mouseOnContainer = true;
+    };
+
+    Input.prototype.mouseLeave = function() {
+        return this.mouseOnContainer = false;
+    };
+
+    Input.prototype.action = function(e){
+        return null;
     };
 
     Input.prototype.show = function(e){

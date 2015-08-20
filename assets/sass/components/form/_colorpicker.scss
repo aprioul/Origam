@@ -8,12 +8,6 @@
   border-color: darken($white, 17%);
   @include user-select(none);
   z-index: 2;
-  .origam-colorpick--close{
-    color: darken($white, 34%);
-    &:hover{
-      color: darken($white, 48%);
-    }
-  }
 }
 
 /**

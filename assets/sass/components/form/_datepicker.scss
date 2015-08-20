@@ -1,0 +1,11 @@
+.origam-datepick{
+  @include position(fixed, null, null, null, null);
+  font-family: Arial, Helvetica, sans-serif;
+  background-image: none;
+  border: 10px solid transparent;
+  color: $black;
+  background-color: $white;
+  border-color: darken($white, 17%);
+  @include user-select(none);
+  z-index: 2;
+}

@@ -62,8 +62,6 @@
     Select.prototype.event = function (options) {
         this.id                 = this.getUID(8);
         this.inState            = {click: false};
-        this.mouseOnContainer   = false;
-        this.activate           = false;
         this.multiple           = this.$element.attr('multiple') ? true : false;
         this.size               = parseInt(this.$element.attr('size')) || parseInt(this.$element.attr('data-size')) || 10;
         this.keys               = {
@@ -510,14 +508,6 @@
         $(this.$container[0].ownerDocument).bind('click.origam.'+ this.type, function (e) {
             that.action(e);
         });
-    };
-
-    Select.prototype.mouseEnter = function() {
-        return this.mouseOnContainer = true;
-    };
-
-    Select.prototype.mouseLeave = function() {
-        return this.mouseOnContainer = false;
     };
 
     Select.prototype.action = function(e){

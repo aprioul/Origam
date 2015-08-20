@@ -7,9 +7,9 @@
  *
  */
 *, ::after, ::before {
-  -moz-box-sizing: inherit;
-  -webkit-box-sizing: inherit;
-  box-sizing: inherit;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /**
@@ -17426,9 +17426,9 @@ h1.h-comic.bottom.right:before, h2.h-comic.bottom.right:before, h3.h-comic.botto
  *
  */
 *, ::after, ::before {
-  -moz-box-sizing: inherit;
-  -webkit-box-sizing: inherit;
-  box-sizing: inherit;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /**

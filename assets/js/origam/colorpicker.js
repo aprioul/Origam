@@ -137,7 +137,7 @@
         templateLabelField : '<div class="origam-colorpick--field_letter text-field--group__addons"></div>',
         templateField: '<input data-form="input" type="number" min="0" max="" />',
         templateColorElement: '<div class="text-field--color_current"></div>',
-        templateOverlay: '<div class="origam-overlay" data-type="overlay" data-button="close"></div>',
+        templateOverlay: '<div class="origam-overlay"></div>',
         fieldClass : 'text-field--group__input',
         parentClass : 'text-field--color',
         color: 'FF0000',
@@ -200,8 +200,6 @@
                                     'max': '100'
                                 }
                             };
-        this.mouseOnContainer   = false;
-        this.activate           = false;
 
         this.$element.data('origam-colorpickId', this.id);
 
@@ -497,14 +495,6 @@
         });
     };
 
-    Color.prototype.mouseEnter = function() {
-        return this.mouseOnContainer = true;
-    };
-
-    Color.prototype.mouseLeave = function() {
-        return this.mouseOnContainer = false;
-    };
-
     Color.prototype.action = function(e){
         if (!this.mouseOnContainer && this.activate){
             this.hide();
@@ -524,7 +514,6 @@
 
     Color.prototype.show = function (e) {
         var that            = this,
-            $color          = that.$colorpick,
             viewportHeight  = $(window).height(),
             viewportWidtht  = $(window).width(),
             count           = 0,
@@ -616,13 +605,13 @@
             .append(this.$huebar)
             .append(this.$form);
 
-        if(that.options.animate) {
-            $color
+        if(this.options.animate) {
+            this.$colorpick
                 .attr('data-animate', 'true')
                 .attr('data-animation', that.options.animationOut)
                 .addClass(that.options.animationIn)
                 .addClass('animated');
-            var animateClass = that.options.animationIn + ' animated';
+            var animateClass = this.options.animationIn + ' animated';
         }
 
         this.fillRGBFields(this.options.color);
@@ -645,13 +634,13 @@
         this.bindSelector();
 
         var onShow = function () {
-            if ($color.hasClass(animateClass))
-                $color.removeClass(animateClass);
-            $color.trigger('show.origam.' + that.type);
+            if (that.$colorpick.hasClass(animateClass))
+                that.$colorpick.removeClass(animateClass);
+            that.$colorpick.trigger('show.origam.' + that.type);
         };
 
-        $.support.transition && $color.hasClass(animateClass) ?
-            $color
+        $.support.transition && this.$colorpick.hasClass(animateClass) ?
+            this.$colorpick
                 .one('origamTransitionEnd', onShow)
                 .emulateTransitionEnd(Color.TRANSITION_DURATION) :
             onShow();
