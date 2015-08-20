@@ -55,15 +55,16 @@
     };
 
     Input.prototype.init = function (type, element, options) {
-        this.type      = type;
-        this.element   = element;
-        this.$element  = $(element);
-        this.options   = this.getOptions(options);
-        this.$parent   = '.' + this.options.parentNode;
-        this.inState   = { click: false, hover: false, focus: false };
-        this.classes   = this.options.classes;
+        this.type               = type;
+        this.element            = element;
+        this.$element           = $(element);
+        this.options            = this.getOptions(options);
+        this.$parent            = '.' + this.options.parentNode;
+        this.inState            = { click: false, hover: false, focus: false };
+        this.classes            = this.options.classes;
         this.mouseOnContainer   = false;
         this.activate           = false;
+        this.id                 = this.getUID(8);
 
         this.$element
             .parents(this.$parent)

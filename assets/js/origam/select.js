@@ -60,8 +60,6 @@
     Select.prototype.constructor = Select;
 
     Select.prototype.event = function (options) {
-        this.id                 = this.getUID(8);
-        this.inState            = {click: false};
         this.multiple           = this.$element.attr('multiple') ? true : false;
         this.size               = parseInt(this.$element.attr('size')) || parseInt(this.$element.attr('data-size')) || 10;
         this.keys               = {

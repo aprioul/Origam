@@ -55,15 +55,16 @@
     };
 
     Input.prototype.init = function (type, element, options) {
-        this.type      = type;
-        this.element   = element;
-        this.$element  = $(element);
-        this.options   = this.getOptions(options);
-        this.$parent   = '.' + this.options.parentNode;
-        this.inState   = { click: false, hover: false, focus: false };
-        this.classes   = this.options.classes;
+        this.type               = type;
+        this.element            = element;
+        this.$element           = $(element);
+        this.options            = this.getOptions(options);
+        this.$parent            = '.' + this.options.parentNode;
+        this.inState            = { click: false, hover: false, focus: false };
+        this.classes            = this.options.classes;
         this.mouseOnContainer   = false;
         this.activate           = false;
+        this.id                 = this.getUID(8);
 
         this.$element
             .parents(this.$parent)
@@ -1260,8 +1261,6 @@
 
     Color.prototype.event = function (options) {
         this.options            = this.getOptions(options);
-        this.id                 = this.getUID(8);
-        this.element            = this;
         this.field              = new Array();
         this.fields             = {
                                 'hex' : {
@@ -1870,8 +1869,6 @@
 
     Date.prototype.event = function (options) {
         this.options            = this.getOptions(options);
-        this.id                 = this.getUID(8);
-        this.element            = this;
         this.field              = new Array();
         this.options.type       = this.$element.attr('type') ? this.$element.attr('type') : this.options.type;
 
@@ -1896,7 +1893,7 @@
         return Date.DEFAULTS
     };
 
-    Color.prototype.submit = function(e) {
+    Date.prototype.submit = function(e) {
 
     };
 
@@ -4920,8 +4917,6 @@
     Select.prototype.constructor = Select;
 
     Select.prototype.event = function (options) {
-        this.id                 = this.getUID(8);
-        this.inState            = {click: false};
         this.multiple           = this.$element.attr('multiple') ? true : false;
         this.size               = parseInt(this.$element.attr('size')) || parseInt(this.$element.attr('data-size')) || 10;
         this.keys               = {

@@ -40,8 +40,6 @@
 
     Date.prototype.event = function (options) {
         this.options            = this.getOptions(options);
-        this.id                 = this.getUID(8);
-        this.element            = this;
         this.field              = new Array();
         this.options.type       = this.$element.attr('type') ? this.$element.attr('type') : this.options.type;
 
@@ -66,7 +64,7 @@
         return Date.DEFAULTS
     };
 
-    Color.prototype.submit = function(e) {
+    Date.prototype.submit = function(e) {
 
     };
 

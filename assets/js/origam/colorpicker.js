@@ -154,8 +154,6 @@
 
     Color.prototype.event = function (options) {
         this.options            = this.getOptions(options);
-        this.id                 = this.getUID(8);
-        this.element            = this;
         this.field              = new Array();
         this.fields             = {
                                 'hex' : {
