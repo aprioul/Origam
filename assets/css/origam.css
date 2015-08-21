@@ -19425,7 +19425,7 @@ th {
 }
 .table > thead > tr > th {
   vertical-align: bottom;
-  border-bottom: 2px solid #ddd;
+  border-bottom: 2px solid #0196d1;
 }
 .table > caption + thead > tr:first-child,
 .table > colgroup + thead > tr:first-child,
@@ -20149,12 +20149,6 @@ th {
   user-select: none;
   z-index: 2;
 }
-.origam-colorpick .origam-colorpick--close {
-  color: #a8a8a8;
-}
-.origam-colorpick .origam-colorpick--close:hover {
-  color: #858585;
-}
 
 /**
   * Color selection box with gradients
@@ -20353,6 +20347,63 @@ th {
 
 .origam-colorpick--current_color {
   cursor: pointer;
+}
+
+.origam-datepick {
+  position: fixed;
+  font-family: Arial, Helvetica, sans-serif;
+  background-image: none;
+  border: 10px solid transparent;
+  color: #000000;
+  background-color: #FFFFFF;
+  border-color: #d4d4d4;
+  -moz-user-select: -moz-none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  z-index: 2;
+}
+
+/**
+  * Date View
+  */
+.origam-datepick--view {
+  position: relative;
+  overflow: hidden;
+  outline: none;
+  display: inline-block;
+  margin: 0;
+  background-color: #0196d1;
+  min-width: 273px;
+  max-width: 275px;
+  text-align: center;
+  color: white;
+  margin-bottom: -4px;
+}
+.origam-datepick--view > * {
+  padding: 6px 12px;
+}
+.origam-datepick--view > .origam-datepick--view__dayL {
+  background-color: rgba(0, 0, 0, 0.26);
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-size: 0.875rem;
+}
+.origam-datepick--view > .origam-datepick--view__dayN {
+  font-size: 56px;
+  font-size: 3.5rem;
+  padding: 0;
+}
+.origam-datepick--view > .origam-datepick--view__month {
+  font-size: 20px;
+  font-size: 1.25rem;
+  padding-bottom: 0;
+}
+.origam-datepick--view > .origam-datepick--view__year {
+  font-size: 14px;
+  font-size: 0.875rem;
+  padding-top: 0;
+  color: rgba(255, 255, 255, 0.3);
 }
 
 /**
@@ -20765,10 +20816,8 @@ input[type="range"].text-field--group__input:after {
   */
 .text-field--error .text-field--group:after {
   background-color: #EF5350;
-  -moz-transform: scale(1);
-  -ms-transform: scale(1);
-  -webkit-transform: scale(1);
-  transform: scale(1);
+  width: 100%;
+  height: auto;
 }
 .text-field--error .text-field--label {
   color: #EF5350;
@@ -20779,10 +20828,8 @@ input[type="range"].text-field--group__input:after {
 }
 .text-field--success .text-field--group:after {
   background-color: #9CCC65;
-  -moz-transform: scale(1);
-  -ms-transform: scale(1);
-  -webkit-transform: scale(1);
-  transform: scale(1);
+  width: 100%;
+  height: auto;
 }
 
 .text-field--warning .text-field--label {
@@ -20790,10 +20837,8 @@ input[type="range"].text-field--group__input:after {
 }
 .text-field--warning .text-field--group:after {
   background-color: #FFA726;
-  -moz-transform: scale(1);
-  -ms-transform: scale(1);
-  -webkit-transform: scale(1);
-  transform: scale(1);
+  width: 100%;
+  height: auto;
 }
 
 /**

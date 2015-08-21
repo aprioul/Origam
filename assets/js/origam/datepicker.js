@@ -1,47 +1,105 @@
 
 /**
- * Apply origamDatePicker
+ * Apply origamDatepickerPicker
  */
 
 (function ($, w) {
 
     'use strict';
 
-    // DATE PUBLIC CLASS DEFINITION
+    // DATEPICKER PUBLIC CLASS DEFINITION
     // ===============================
 
-    var Date = function (element, options) {
+    var Datepicker = function (element, options) {
         this.type       = null;
         this.options    = null;
         this.$element   = null;
 
-        this.init('date', element, options)
+        this.init('datepicker', element, options)
     };
 
     if (!$.fn.input) throw new Error('Datepicker requires input.js');
 
-    Date.VERSION  = '0.1.0';
+    Datepicker.VERSION  = '0.1.0';
 
-    Date.TRANSITION_DURATION = 1000;
+    Datepicker.TRANSITION_DURATION = 1000;
 
-    Date.DEFAULTS = $.extend({}, $.fn.input.Constructor.DEFAULTS, {
+    Datepicker.DEFAULTS = $.extend({}, $.fn.input.Constructor.DEFAULTS, {
         templateWrapper: '<div class="origam-datepick"></div>',
         templateView: '<div class="origam-datepick--view"></div>',
-        templateCalendar: '<div class="origam-datepick--calendar"></div>',
+        templateDayL: '<div class="origam-datepick--view__dayL"></div>',
+        templateDayN: '<div class="origam-datepick--view__dayN"></div>',
+        templateMonth: '<div class="origam-datepick--view__month"></div>',
+        templateYear: '<div class="origam-datepick--view__year"></div>',
+        templateForm: '<div class="origam-datepick--form"></div>',
+        templateCalendarWrapper: '<div class="origam-datepick--calendar"></div>',
+        templateCalendarHeader: '<div class="origam-datepick--calendar__header"></div>',
         templateSubmit: '<div class="origam-datepick--submit btn btn-ghost"></div>',
         templateOverlay: '<div class="origam-overlay"></div>',
-        submitText: 'OK',
-        type: 'date'
+        templateLeft: '<span class="calendar-header--left origamicon origamicon-angle-left"></span>',
+        templateRight: '<span class="calendar-header--right origamicon origamicon-angle-right"></span>',
+        classes: {
+            focus: 'text-field--focused',
+            active: 'text-field--active',
+            addonsLeft: 'text-field--addons left',
+            addonsRight: 'text-field--addons right',
+            calendarTitle: 'calendar-header--title'
+        },
+        submittext: 'OK',
+        startdate: '',
+        enddate: '',
+        weekday: {
+            0: "Sunday",
+            1: "Monday",
+            2: "Tuesday",
+            3: "Wednesday",
+            4: "Thursday",
+            5: "Friday",
+            6: "Saturday"
+        },
+        month: {
+            0: "January",
+            1: "February",
+            2: "March",
+            3: "April",
+            4: "May",
+            5: "June",
+            6: "July",
+            7: "August",
+            8: "September",
+            9: "October",
+            10: "November",
+            11: "December"
+        },
+        type: 'date',
+        createView: function ($dayLetter, $dayNumber, $month, $year, $container, options, date) {
+            $dayLetter.text(options.weekday[date.getDay()]);
+            $dayNumber.text(date.getDate());
+            $month.text(options.month[date.getMonth()]);
+            $year.text(date.getFullYear());
+
+            $container.html('');
+            $container
+                .append($dayLetter)
+                .append($month)
+                .append($dayNumber)
+                .append($year);
+        }
     });
 
-    Date.prototype = $.extend({}, $.fn.input.Constructor.prototype);
+    Datepicker.prototype = $.extend({}, $.fn.input.Constructor.prototype);
 
-    Date.prototype.constructor = Date;
+    Datepicker.prototype.constructor = Datepicker;
 
-    Date.prototype.event = function (options) {
+    Datepicker.prototype.event = function (options) {
         this.options            = this.getOptions(options);
         this.field              = new Array();
-        this.options.type       = this.$element.attr('type') ? this.$element.attr('type') : this.options.type;
+        this.options.type       = this.$element.attr('type') && this.$element.attr('type')!== 'text' ? this.$element.attr('type') : this.options.type;
+        this.lang               = navigator.language || navigator.userLanguage;
+        this.date               = this.options.startdate.length !== 0 ? new Date(this.options.startdate) : new Date();
+        this.seconds            = this.date.getSeconds();
+        this.minutes            = this.date.getMinutes();
+        this.hours              = this.date.getHours();
 
         this.$overlay = $(this.options.templateOverlay);
         this.$element.data('origam-'+ this.options.type +'pickId', this.id);
@@ -53,50 +111,60 @@
         this.$submitField = $(this.options.templateSubmit).attr('data-target', '#' + this.id);
 
         this.$view = $(this.options.templateView);
-        this.$calendar = $(this.options.templateCalendar);
+        this.$form = $(this.options.templateForm);
 
         this.$element
             .parents(this.$parent)
             .on('click', $.proxy(this.show, this));
     };
 
-    Date.prototype.getDefaults = function () {
-        return Date.DEFAULTS
+    Datepicker.prototype.getDefaults = function () {
+        return Datepicker.DEFAULTS
     };
 
-    Date.prototype.submit = function(e) {
+    Datepicker.prototype.submit = function(e) {
 
     };
 
-    Date.prototype.bindSelector = function () {
-        var that = this;
+    Datepicker.prototype.createOrUpdateView = function(container, date){
+        this.$viewDayL = $(this.options.templateDayL);
+        this.$viewDayN = $(this.options.templateDayN);
+        this.$viewMonth = $(this.options.templateMonth);
+        this.$viewYear = $(this.options.templateYear);
 
-        this.$colorpick.bind('mouseenter.origam.'+ this.type, function(e) {
-            that.mouseEnter();
-        });
-
-        this.$colorpick.bind('mouseleave.origam.'+ this.type, function(e) {
-            that.mouseLeave();
-        });
-
-        $(this.$colorpick[0].ownerDocument).bind('click.origam.'+ this.type, function (e) {
-            that.action(e);
-        });
+        this.options.createView(this.$viewDayL, this.$viewDayN, this.$viewMonth, this.$viewYear, container, this.options, date);
     };
 
-    Date.prototype.action = function(e){
+    Datepicker.prototype.createForm = function(){
+        this.$header = $(this.options.templateCalendarHeader);
+        this.$right = $(this.options.templateRight);
+        this.$left = $(this.options.templateLeft);
+        this.$title = $('<span/>', {
+            class: this.classes.calendarTitle
+        });
+
+    };
+
+    Datepicker.prototype.action = function(e){
         if (!this.mouseOnContainer && this.activate){
             this.hide();
         }
     };
 
-    Date.prototype.show = function (e) {
+    Datepicker.prototype.show = function (e) {
         var that            = this,
             viewportHeight  = $(window).height(),
             viewportWidtht  = $(window).width();
 
         this.activate = true;
         this.$element.off('click', $.proxy(this.show, this));
+
+        this.createOrUpdateView(this.$view, this.date);
+        this.createForm();
+
+        this.$datepick
+            .append(this.$view)
+            .append(this.$form);
 
         if(this.options.animate) {
             this.$datepick
@@ -108,7 +176,7 @@
         }
 
         this.$submitField
-            .text(this.options.submitText)
+            .text(this.options.submittext)
             .on("click", $.proxy(this.submit, this))
             .appendTo(this.$calendar);
 
@@ -120,7 +188,7 @@
                 'left': (viewportWidtht/2) - (this.$datepick.outerWidth()/2)
             });
 
-        this.bindSelector();
+        this.bindSelector(this.$datepick);
 
         var onShow = function () {
             if (that.$datepick.hasClass(animateClass))
@@ -131,14 +199,14 @@
         $.support.transition && this.$datepick.hasClass(animateClass) ?
             this.$datepick
                 .one('origamTransitionEnd', onShow)
-                .emulateTransitionEnd(Date.TRANSITION_DURATION) :
+                .emulateTransitionEnd(Datepicker.TRANSITION_DURATION) :
             onShow();
 
         return false;
 
     };
 
-    Date.prototype.hide = function (e) {
+    Datepicker.prototype.hide = function (e) {
         var that = this;
 
         this.activate = false;
@@ -173,41 +241,46 @@
         $.support.transition && this.$datepick.hasClass(animateClass)?
             this.$datepick
                 .one('origamTransitionEnd', removeElement)
-                .emulateTransitionEnd(Date.TRANSITION_DURATION) :
+                .emulateTransitionEnd(Datepicker.TRANSITION_DURATION) :
             removeElement()
 
     };
 
-    // DATE PLUGIN DEFINITION
+    // DATEPICKER PLUGIN DEFINITION
     // =========================
 
     function Plugin(option) {
         return this.each(function () {
             var $this   = $(this);
-            var data    = $this.data('origam.date');
+            var data    = $this.data('origam.datepicker');
             var options = typeof option == 'object' && option;
 
-            if (!data) $this.data('origam.date', (data = new Date(this, options)));
+            if (!data) $this.data('origam.datepicker', (data = new Datepicker(this, options)));
             if (typeof option == 'string') data[option]()
         })
     }
 
-    var old = $.fn.date;
+    var old = $.fn.datepicker;
 
-    $.fn.date             = Plugin;
-    $.fn.date.Constructor = Date;
+    $.fn.datepicker             = Plugin;
+    $.fn.datepicker.Constructor = Datepicker;
 
 
-    // DATE NO CONFLICT
+    // DATEPICKER NO CONFLICT
     // ===================
 
     $.fn.input.noConflict = function () {
-        $.fn.date = old;
+        $.fn.datepicker = old;
         return this
     };
 
     $(document).ready(function() {
-        $('[data-form="date"]').date();
+        $('[data-form="date"]').datepicker();
+        $('[type="date"]').datepicker();
+        $('[type="month"]').datepicker();
+        $('[type="week"]').datepicker();
+        $('[type="time"]').datepicker();
+        $('[type="datetime"]').datepicker();
     });
 
 })(jQuery, window);

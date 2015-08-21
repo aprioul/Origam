@@ -71,11 +71,6 @@
             .addClass(this.options.parentClass);
 
         this.event(this.options);
-        this.mask(this.options);
-
-        if(this.options.placeholder){
-            this.placeholder(this.options.placeholder);
-        }
 
         this.$element
             .on('focusin', $.proxy(this.startFocus, this))
@@ -131,30 +126,24 @@
         return this.mouseOnContainer = false;
     };
 
-    Input.prototype.action = function(e){
-        return null;
-    };
+    Input.prototype.bindSelector = function (element) {
+        var that = this;
 
-    Input.prototype.show = function(e){
-        return null;
-    };
+        element.bind('mouseenter.origam.'+ this.type, function(e) {
+            that.mouseEnter();
+        });
 
-    Input.prototype.hide = function(e){
-        return null;
+        element.bind('mouseleave.origam.'+ this.type, function(e) {
+            that.mouseLeave();
+        });
+
+        $(element[0].ownerDocument).bind('click.origam.'+ this.type, function (e) {
+            that.action(e);
+        });
     };
 
     Input.prototype.event = function (options) {
         return null;
-    };
-
-    Input.prototype.mask = function (options) {
-        var placeholder;
-
-        this.addPlaceholder(placeholder);
-    };
-
-    Input.prototype.addPlaceholder = function (placeholder){
-
     };
 
     Input.prototype.addAddon = function(element) {

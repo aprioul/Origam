@@ -71,11 +71,6 @@
             .addClass(this.options.parentClass);
 
         this.event(this.options);
-        this.mask(this.options);
-
-        if(this.options.placeholder){
-            this.placeholder(this.options.placeholder);
-        }
 
         this.$element
             .on('focusin', $.proxy(this.startFocus, this))
@@ -131,30 +126,24 @@
         return this.mouseOnContainer = false;
     };
 
-    Input.prototype.action = function(e){
-        return null;
-    };
+    Input.prototype.bindSelector = function (element) {
+        var that = this;
 
-    Input.prototype.show = function(e){
-        return null;
-    };
+        element.bind('mouseenter.origam.'+ this.type, function(e) {
+            that.mouseEnter();
+        });
 
-    Input.prototype.hide = function(e){
-        return null;
+        element.bind('mouseleave.origam.'+ this.type, function(e) {
+            that.mouseLeave();
+        });
+
+        $(element[0].ownerDocument).bind('click.origam.'+ this.type, function (e) {
+            that.action(e);
+        });
     };
 
     Input.prototype.event = function (options) {
         return null;
-    };
-
-    Input.prototype.mask = function (options) {
-        var placeholder;
-
-        this.addPlaceholder(placeholder);
-    };
-
-    Input.prototype.addPlaceholder = function (placeholder){
-
     };
 
     Input.prototype.addAddon = function(element) {
@@ -1114,21 +1103,25 @@
 
     'use strict';
 
-    // COLOR PUBLIC CLASS DEFINITION
+    // COLORPICKER PUBLIC CLASS DEFINITION
     // ===============================
 
-    var Color = function (element, options) {
-        this.type       = null;
-        this.options    = null;
-        this.$element   = null;
+    var Colorpicker = function (element, options) {
+        this.type = null;
+        this.options = null;
+        this.$element = null;
 
-        this.init('color', element, options)
+        this.init('colorpicker', element, options)
     };
 
     //Color space convertions
     var hexToRgb = function (hex) {
             var hex = parseInt(((hex.indexOf('#') > -1) ? hex.substring(1) : hex), 16);
-            return {r: hex >> 16, g: (hex & 0x00FF00) >> 8, b: (hex & 0x0000FF)};
+            return {
+                r: hex >> 16,
+                g: (hex & 0x00FF00) >> 8,
+                b: (hex & 0x0000FF)
+            };
         },
 
         hsbToHex = function (hsb) {
@@ -1139,7 +1132,7 @@
             return rgbToHsb(hexToRgb(hex));
         },
 
-            rgbToHsb = function (rgb) {
+        rgbToHsb = function (rgb) {
             var hsb = {h: 0, s: 0, b: 0};
             var min = Math.min(rgb.r, rgb.g, rgb.b);
             var max = Math.max(rgb.r, rgb.g, rgb.b);
@@ -1153,32 +1146,64 @@
             } else hsb.h = -1;
             hsb.h *= 60;
             if (hsb.h < 0) hsb.h += 360;
-            hsb.s *= 100/255;
-            hsb.b *= 100/255;
+            hsb.s *= 100 / 255;
+            hsb.b *= 100 / 255;
             return hsb;
         },
 
         hsbToRgb = function (hsb) {
             var rgb = {};
             var h = hsb.h;
-            var s = hsb.s*255/100;
-            var v = hsb.b*255/100;
-            if(s == 0) {
+            var s = hsb.s * 255 / 100;
+            var v = hsb.b * 255 / 100;
+            if (s == 0) {
                 rgb.r = rgb.g = rgb.b = v;
             } else {
                 var t1 = v;
-                var t2 = (255-s)*v/255;
-                var t3 = (t1-t2)*(h%60)/60;
-                if(h==360) h = 0;
-                if(h<60) {rgb.r=t1;	rgb.b=t2; rgb.g=t2+t3}
-                else if(h<120) {rgb.g=t1; rgb.b=t2;	rgb.r=t1-t3}
-                else if(h<180) {rgb.g=t1; rgb.r=t2;	rgb.b=t2+t3}
-                else if(h<240) {rgb.b=t1; rgb.r=t2;	rgb.g=t1-t3}
-                else if(h<300) {rgb.b=t1; rgb.g=t2;	rgb.r=t2+t3}
-                else if(h<360) {rgb.r=t1; rgb.g=t2;	rgb.b=t1-t3}
-                else {rgb.r=0; rgb.g=0;	rgb.b=0}
+                var t2 = (255 - s) * v / 255;
+                var t3 = (t1 - t2) * (h % 60) / 60;
+                if (h == 360) h = 0;
+                if (h < 60) {
+                    rgb.r = t1;
+                    rgb.b = t2;
+                    rgb.g = t2 + t3
+                }
+                else if (h < 120) {
+                    rgb.g = t1;
+                    rgb.b = t2;
+                    rgb.r = t1 - t3
+                }
+                else if (h < 180) {
+                    rgb.g = t1;
+                    rgb.r = t2;
+                    rgb.b = t2 + t3
+                }
+                else if (h < 240) {
+                    rgb.b = t1;
+                    rgb.r = t2;
+                    rgb.g = t1 - t3
+                }
+                else if (h < 300) {
+                    rgb.b = t1;
+                    rgb.g = t2;
+                    rgb.r = t2 + t3
+                }
+                else if (h < 360) {
+                    rgb.r = t1;
+                    rgb.g = t2;
+                    rgb.b = t1 - t3
+                }
+                else {
+                    rgb.r = 0;
+                    rgb.g = 0;
+                    rgb.b = 0
+                }
             }
-            return {r:Math.round(rgb.r), g:Math.round(rgb.g), b:Math.round(rgb.b)};
+            return {
+                r: Math.round(rgb.r),
+                g: Math.round(rgb.g),
+                b: Math.round(rgb.b)
+            };
         },
 
         rgbToHex = function (rgb) {
@@ -1215,7 +1240,7 @@
             var len = 6 - hex.length;
             if (len > 0) {
                 var o = [];
-                for (var i=0; i<len; i++) {
+                for (var i = 0; i < len; i++) {
                     o.push('0');
                 }
                 o.push(hex);
@@ -1226,11 +1251,11 @@
 
     if (!$.fn.input) throw new Error('Colorpicker requires input.js');
 
-    Color.VERSION  = '0.1.0';
+    Colorpicker.VERSION = '0.1.0';
 
-    Color.TRANSITION_DURATION = 1000;
+    Colorpicker.TRANSITION_DURATION = 1000;
 
-    Color.DEFAULTS = $.extend({}, $.fn.input.Constructor.DEFAULTS, {
+    Colorpicker.DEFAULTS = $.extend({}, $.fn.input.Constructor.DEFAULTS, {
         templateWrapper: '<div class="origam-colorpick"></div>',
         templateColor: '<div class="origam-colorpick--color"></div>',
         templateColorSelector: '<div class="origam-colorpick--selector_outer"><div class="origam-colorpick--selector_inner"></div></div>',
@@ -1240,71 +1265,77 @@
         templateSubmit: '<div class="origam-colorpick--submit btn btn-ghost"></div>',
         templateNewColor: '<div class="origam-colorpick--new_color"></div>',
         templateOriginColor: '<div class="origam-colorpick--current_color"></div>',
-        templateWrapperField : '<div class="origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"></div></div>',
-        templateLabelField : '<div class="origam-colorpick--field_letter text-field--group__addons"></div>',
+        templateWrapperField: '<div class="origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"></div></div>',
+        templateLabelField: '<div class="origam-colorpick--field_letter text-field--group__addons"></div>',
         templateField: '<input data-form="input" type="number" min="0" max="" />',
         templateColorElement: '<div class="text-field--color_current"></div>',
         templateOverlay: '<div class="origam-overlay"></div>',
-        fieldClass : 'text-field--group__input',
-        parentClass : 'text-field--color',
+        classes: {
+            focus: 'text-field--focused',
+            active: 'text-field--active',
+            addonsLeft: 'text-field--addons left',
+            addonsRight: 'text-field--addons right',
+            field: 'text-field--group__input',
+            parent: 'text-field--color'
+        },
         color: 'FF0000',
-        livePreview: true,
+        livepreview: true,
         layout: 'full',
-        submitText: 'OK',
+        submittext: 'OK',
         format: '#',
         height: 230
     });
 
-    Color.prototype = $.extend({}, $.fn.input.Constructor.prototype);
+    Colorpicker.prototype = $.extend({}, $.fn.input.Constructor.prototype);
 
-    Color.prototype.constructor = Color;
+    Colorpicker.prototype.constructor = Colorpicker;
 
-    Color.prototype.event = function (options) {
-        this.options            = this.getOptions(options);
-        this.field              = new Array();
-        this.fields             = {
-                                'hex' : {
-                                    'class': 'origam-colorpick--hex_field',
-                                    'label': '#',
-                                    'type': 'text',
-                                    'maxlenght' : 6,
-                                    'size' : 6
-                                },
-                                'origin' : {
-                                    'class': 'origam-colorpick--origin_field',
-                                    'label': '#'
-                                },
-                                'rgb_r' : {
-                                    'class': 'origam-colorpick--rgb_r',
-                                    'label': 'R',
-                                    'max': '255'
-                                },
-                                'hsb_h' : {
-                                    'class': 'origam-colorpick--hsb_h',
-                                    'label': 'H',
-                                    'max': '360'
-                                },
-                                'rgb_g' : {
-                                    'class': 'origam-colorpick--rgb_g',
-                                    'label': 'G',
-                                    'max': '255'
-                                },
-                                'hsb_s' : {
-                                    'class': 'origam-colorpick--hsb_s',
-                                    'label': 'S',
-                                    'max': '100'
-                                },
-                                'rgb_b' : {
-                                    'class': 'origam-colorpick--rgb_b',
-                                    'label': 'B',
-                                    'max': '255'
-                                },
-                                'hsb_b' : {
-                                    'class': 'origam-colorpick--hsb_b',
-                                    'label': 'B',
-                                    'max': '100'
-                                }
-                            };
+    Colorpicker.prototype.event = function (options) {
+        this.options = this.getOptions(options);
+        this.field = new Array();
+        this.fields = {
+            'hex': {
+                'class': 'origam-colorpick--hex_field',
+                'label': '#',
+                'type': 'text',
+                'maxlenght': 6,
+                'size': 6
+            },
+            'origin': {
+                'class': 'origam-colorpick--origin_field',
+                'label': '#'
+            },
+            'rgb_r': {
+                'class': 'origam-colorpick--rgb_r',
+                'label': 'R',
+                'max': '255'
+            },
+            'hsb_h': {
+                'class': 'origam-colorpick--hsb_h',
+                'label': 'H',
+                'max': '360'
+            },
+            'rgb_g': {
+                'class': 'origam-colorpick--rgb_g',
+                'label': 'G',
+                'max': '255'
+            },
+            'hsb_s': {
+                'class': 'origam-colorpick--hsb_s',
+                'label': 'S',
+                'max': '100'
+            },
+            'rgb_b': {
+                'class': 'origam-colorpick--rgb_b',
+                'label': 'B',
+                'max': '255'
+            },
+            'hsb_b': {
+                'class': 'origam-colorpick--hsb_b',
+                'label': 'B',
+                'max': '100'
+            }
+        };
 
         this.$element.data('origam-colorpickId', this.id);
 
@@ -1323,7 +1354,7 @@
 
         this.$colorpick = $(this.options.templateWrapper)
             .attr('id', this.id)
-            .addClass('origam-colorpick--'+this.options.layout);
+            .addClass('origam-colorpick--' + this.options.layout);
 
         this.$submitField = $(this.options.templateSubmit).attr('data-target', '#' + this.id);
 
@@ -1332,8 +1363,8 @@
         this.$newColor = $(this.options.templateNewColor);
 
         this.$selector = $(this.options.templateColor).css({
-            'height' : this.options.height,
-            'width' : this.options.height
+            'height': this.options.height,
+            'width': this.options.height
         });
         this.$selectorIndic = $(this.options.templateColorSelector);
 
@@ -1347,30 +1378,121 @@
         this.$color = $(this.options.templateColorElement);
 
         this.$output = $('<div/>', {
-            class: this.options.fieldClass
+            class: this.classes.field
         });
 
         this.$element
             .after(this.$output)
             .parents(this.$parent)
+            .addClass(this.classes.parent)
             .on('click', $.proxy(this.show, this))
             .prepend(this.$color);
 
         $(w).on('resize', $.proxy(this.moveColorpick, this));
     };
 
-    Color.prototype.getDefaults = function () {
-        return Color.DEFAULTS
+    Colorpicker.prototype.getDefaults = function () {
+        return Colorpicker.DEFAULTS
     };
 
-    Color.prototype.submit = function(e) {
+    Colorpicker.prototype.submit = function (e) {
         this.origColor = this.options.color;
         this.setCurrentColor(this.options.color);
         this.setOrigineFields(this.options.color);
         this.setElement(this.options.color);
     };
 
-    Color.prototype.change = function(field) {
+    Colorpicker.prototype.createSelector = function () {
+        this.$selector
+            .html('')
+            .on('mousedown touchstart', $.proxy(this.eventSelector, this))
+            .append('<div class="origam-colorpick--color_overlay1"><div class="origam-colorpick--color_overlay2"></div></div>')
+            .children().children().append(this.$selectorIndic);
+    };
+
+    Colorpicker.prototype.createHue = function () {
+        var UA = navigator.userAgent.toLowerCase(),
+            isIE = navigator.appName === 'Microsoft Internet Explorer',
+            IEver = isIE ? parseFloat(UA.match(/msie ([0-9]{1,}[\.0-9]{0,})/)[1]) : 0,
+            ngIE = ( isIE && IEver < 10 ),
+            stops = ['#ff0000', '#ff0080', '#ff00ff', '#8000ff', '#0000ff', '#0080ff', '#00ffff', '#00ff80', '#00ff00', '#80ff00', '#ffff00', '#ff8000', '#ff0000'];
+
+
+        if (ngIE) {
+            var i;
+            for (i = 0; i <= 11; i++) {
+                $('<div>')
+                    .attr('style', 'height:8.333333%; filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=' + stops[i] + ', endColorstr=' + stops[i + 1] + '); -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=' + stops[i] + ', endColorstr=' + stops[i + 1] + ')";')
+                    .appendTo(this.$huebar);
+            }
+        } else {
+            var stopList = stops.join(',');
+            this.$huebar.attr('style', 'background:-webkit-linear-gradient(top,' + stopList + '); background: -o-linear-gradient(top,' + stopList + '); background: -ms-linear-gradient(top,' + stopList + '); background:-moz-linear-gradient(top,' + stopList + '); -webkit-linear-gradient(top,' + stopList + '); background:linear-gradient(to bottom,' + stopList + '); ');
+        }
+
+        this.$huebar
+            .on('mousedown touchstart', $.proxy(this.eventHue, this))
+            .height(this.options.height)
+            .append(this.$hue);
+    };
+
+    Colorpicker.prototype.createForm = function() {
+        var count = 0;
+
+        this.$form
+            .html('')
+            .append(this.$newColor);
+
+        this.$currentColor
+            .on("click", $.proxy(this.restoreOriginal, this))
+            .appendTo(this.$form);
+
+        for (var i in this.fields) {
+            var $wrapper = $(this.options.templateWrapperField),
+                $label = $(this.options.templateLabelField),
+                $field = $(this.options.templateField);
+
+            $label
+                .text(this.fields[i]['label'])
+                .appendTo($wrapper.children());
+
+            if (i === 'hex') {
+                $field
+                    .attr('type', this.fields[i]['type'])
+                    .attr('maxlenght', this.fields[i]['maxlenght'])
+                    .attr('size', this.fields[i]['size']);
+            }
+            else if (i === 'origin') {
+                $field = $('<div>');
+                $wrapper.addClass('text-field--disabled');
+            }
+            else {
+                $field
+                    .attr('max', this.fields[i]['max']);
+            }
+
+            this.field[count] = $field
+                .on('focusin', $.proxy(this.startFocus, this))
+                .on('focusout', $.proxy(this.endFocus, this))
+                .on('change', $.proxy(this.eventField, this))
+                .addClass(this.classes.field)
+                .appendTo($wrapper.children());
+
+            $wrapper
+                .addClass(this.fields[i]['class'])
+                .appendTo(this.$form);
+
+            count++;
+        }
+
+        this.$submitField
+            .text(this.options.submittext)
+            .on("click", $.proxy(this.submit, this))
+            .appendTo(this.$form);
+
+    };
+
+    Colorpicker.prototype.change = function(field) {
 
         if (field.parents(this.$parent).attr('class').indexOf('--hex') > 0) {
             this.options.color = hexToHsb(fixHex(this.field[0].val()));
@@ -1399,11 +1521,11 @@
         this.setNewColor(this.options.color);
     };
 
-    Color.prototype.eventField = function (e){
+    Colorpicker.prototype.eventField = function (e){
         this.change($(e.currentTarget));
     };
 
-    Color.prototype.eventSelector = function (e) {
+    Colorpicker.prototype.eventSelector = function (e) {
         e.preventDefault ? e.preventDefault() : e.returnValue = false;
 
         var offset      = 0,
@@ -1425,7 +1547,7 @@
         return false;
     };
 
-    Color.prototype.moveSelector = function (e) {
+    Colorpicker.prototype.moveSelector = function (e) {
         var offset      = 0,
             pageX       = ((e.type == 'touchmove') ? e.originalEvent.changedTouches[0].pageX : e.pageX ),
             pageY       = ((e.type == 'touchmove') ? e.originalEvent.changedTouches[0].pageY : e.pageY );
@@ -1444,13 +1566,13 @@
         return false;
     };
 
-    Color.prototype.updateSelector = function (e) {
+    Colorpicker.prototype.updateSelector = function (e) {
         $(document).off('mouseup touchend', $.proxy(this.updateSelector, this));
         $(document).off('mousemove touchmove', $.proxy(this.moveSelector, this));
         return false;
     };
 
-    Color.prototype.eventHue = function (e) {
+    Colorpicker.prototype.eventHue = function (e) {
         e.preventDefault ? e.preventDefault() : e.returnValue = false;
 
         var offset      = 0,
@@ -1473,7 +1595,7 @@
         return false;
     };
 
-    Color.prototype.moveHue = function (e) {
+    Colorpicker.prototype.moveHue = function (e) {
         var offset      = 0,
             offsetTop   = 0,
             pageY       = ((e.type == 'touchmove') ? e.originalEvent.changedTouches[0].pageY : e.pageY );
@@ -1493,14 +1615,14 @@
         return false;
     };
 
-    Color.prototype.updateHue = function (e) {
+    Colorpicker.prototype.updateHue = function (e) {
 
         $(document).off('mouseup touchend', $.proxy(this.updateHue, this));
         $(document).off('mousemove touchmove',$.proxy(this.moveHue, this));
         return false;
     };
 
-    Color.prototype.restoreOriginal = function(e) {
+    Colorpicker.prototype.restoreOriginal = function(e) {
         var col = this.origColor;
         this.options.color = col;
         this.fillRGBFields(col);
@@ -1512,28 +1634,28 @@
         this.setNewColor(col);
     };
 
-    Color.prototype.fillRGBFields = function  (hsb) {
+    Colorpicker.prototype.fillRGBFields = function  (hsb) {
         var rgb = hsbToRgb(hsb);
         this.field[2].val(rgb.r);
         this.field[4].val(rgb.g);
         this.field[6].val(rgb.b);
     };
 
-    Color.prototype.fillHSBFields = function  (hsb) {
+    Colorpicker.prototype.fillHSBFields = function  (hsb) {
         this.field[3].val(Math.round(hsb.h));
         this.field[5].val(Math.round(hsb.s));
         this.field[7].val(Math.round(hsb.b));
     };
 
-    Color.prototype.fillHexFields = function (hsb) {
+    Colorpicker.prototype.fillHexFields = function (hsb) {
         this.field[0].val(hsbToHex(hsb));
     };
 
-    Color.prototype.setHue = function (hsb) {
+    Colorpicker.prototype.setHue = function (hsb) {
         this.$hue.css('top', parseInt(this.options.height - this.options.height * hsb.h/360, 10));
     };
 
-    Color.prototype.setSelector = function (hsb) {
+    Colorpicker.prototype.setSelector = function (hsb) {
         this.$selector.css('backgroundColor', '#' + hsbToHex({h: hsb.h, s: 100, b: 100}));
         this.$selectorIndic.css({
             left: parseInt(this.options.height * hsb.s/100, 10),
@@ -1541,19 +1663,19 @@
         });
     };
 
-    Color.prototype.setCurrentColor = function (hsb) {
+    Colorpicker.prototype.setCurrentColor = function (hsb) {
         this.$currentColor.css('backgroundColor', '#' + hsbToHex(hsb));
     };
 
-    Color.prototype.setNewColor = function (hsb) {
+    Colorpicker.prototype.setNewColor = function (hsb) {
         this.$newColor.css('backgroundColor', '#' + hsbToHex(hsb));
     };
 
-    Color.prototype.setOrigineFields = function (hsb) {
+    Colorpicker.prototype.setOrigineFields = function (hsb) {
         this.field[1].text(hsbToHex(hsb));
     };
 
-    Color.prototype.setElement = function (hsb) {
+    Colorpicker.prototype.setElement = function (hsb) {
         var formatColor,
             rgb;
 
@@ -1577,36 +1699,20 @@
         this.$element
             .val(formatColor)
             .parents(this.$parent)
-            .addClass(this.options.classes.active);
+            .addClass(this.classes.active);
 
         this.$color.css('backgroundColor', '#' + hsbToHex(hsb));
 
         this.hide();
     };
 
-    Color.prototype.bindSelector = function () {
-        var that = this;
-
-        this.$colorpick.bind('mouseenter.origam.'+ this.type, function(e) {
-            that.mouseEnter();
-        });
-
-        this.$colorpick.bind('mouseleave.origam.'+ this.type, function(e) {
-            that.mouseLeave();
-        });
-
-        $(this.$colorpick[0].ownerDocument).bind('click.origam.'+ this.type, function (e) {
-            that.action(e);
-        });
-    };
-
-    Color.prototype.action = function(e){
+    Colorpicker.prototype.action = function(e){
         if (!this.mouseOnContainer && this.activate){
             this.hide();
         }
     };
 
-    Color.prototype.moveColorpick = function (e) {
+    Colorpicker.prototype.moveColorpick = function (e) {
         var viewportHeight  = $(window).height(),
             viewportWidtht  = $(window).width();
 
@@ -1617,93 +1723,17 @@
             });
     };
 
-    Color.prototype.show = function (e) {
+    Colorpicker.prototype.show = function (e) {
         var that            = this,
             viewportHeight  = $(window).height(),
-            viewportWidtht  = $(window).width(),
-            count           = 0,
-            UA              = navigator.userAgent.toLowerCase(),
-            isIE            = navigator.appName === 'Microsoft Internet Explorer',
-            IEver           = isIE ? parseFloat( UA.match( /msie ([0-9]{1,}[\.0-9]{0,})/ )[1] ) : 0,
-            ngIE            = ( isIE && IEver < 10 ),
-            stops           = ['#ff0000','#ff0080','#ff00ff','#8000ff','#0000ff','#0080ff','#00ffff','#00ff80','#00ff00','#80ff00','#ffff00','#ff8000','#ff0000'];
+            viewportWidtht  = $(window).width();
 
         this.activate = true;
         this.$element.off('click', $.proxy(this.show, this));
 
-        this.$selector
-            .html('')
-            .on('mousedown touchstart', $.proxy(this.eventSelector, this))
-            .append('<div class="origam-colorpick--color_overlay1"><div class="origam-colorpick--color_overlay2"></div></div>')
-            .children().children().append(this.$selectorIndic);
-
-        if(ngIE) {
-            var i;
-            for(i=0; i<=11; i++) {
-                $('<div>')
-                    .attr('style','height:8.333333%; filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='+stops[i]+', endColorstr='+stops[i+1]+'); -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='+stops[i]+', endColorstr='+stops[i+1]+')";')
-                    .appendTo(this.$huebar);
-            }
-        } else {
-            var stopList = stops.join(',');
-            this.$huebar.attr('style','background:-webkit-linear-gradient(top,'+stopList+'); background: -o-linear-gradient(top,'+stopList+'); background: -ms-linear-gradient(top,'+stopList+'); background:-moz-linear-gradient(top,'+stopList+'); -webkit-linear-gradient(top,'+stopList+'); background:linear-gradient(to bottom,'+stopList+'); ');
-        }
-
-        this.$huebar
-            .on('mousedown touchstart', $.proxy(this.eventHue, this))
-            .height(this.options.height)
-            .append(this.$hue);
-
-        this.$form
-            .html('')
-            .append(this.$newColor);
-
-        this.$currentColor
-            .on("click", $.proxy(this.restoreOriginal, this))
-            .appendTo(this.$form);
-
-        for(var i in this.fields) {
-            var $wrapper         = $(this.options.templateWrapperField),
-                $label           = $(this.options.templateLabelField),
-                $field           = $(this.options.templateField);
-
-            $label
-                .text(this.fields[i]['label'])
-                .appendTo($wrapper.children());
-
-            if(i === 'hex'){
-                $field
-                    .attr('type', this.fields[i]['type'])
-                    .attr('maxlenght', this.fields[i]['maxlenght'])
-                    .attr('size', this.fields[i]['size']);
-            }
-            else if(i === 'origin'){
-                $field = $('<div>');
-                $wrapper.addClass('text-field--disabled');
-            }
-            else {
-                $field
-                    .attr('max', this.fields[i]['max']);
-            }
-
-            this.field[count] = $field
-                .on('focusin', $.proxy(this.startFocus, this))
-                .on('focusout', $.proxy(this.endFocus, this))
-                .on('change', $.proxy(this.eventField, this))
-                .addClass(this.options.fieldClass)
-                .appendTo($wrapper.children());
-
-            $wrapper
-                .addClass(this.fields[i]['class'])
-                .appendTo(this.$form);
-
-            count++;
-        }
-
-        this.$submitField
-            .text(this.options.submitText)
-            .on("click", $.proxy(this.submit, this))
-            .appendTo(this.$form);
+        this.createSelector();
+        this.createHue();
+        this.createForm();
 
         this.$colorpick
             .append(this.$selector)
@@ -1736,7 +1766,7 @@
                 'left': (viewportWidtht/2) - (this.$colorpick.outerWidth()/2)
             });
 
-        this.bindSelector();
+        this.bindSelector(this.$colorpick);
 
         var onShow = function () {
             if (that.$colorpick.hasClass(animateClass))
@@ -1754,7 +1784,7 @@
         
     };
 
-    Color.prototype.hide = function (e) {
+    Colorpicker.prototype.hide = function (e) {
         var that = this;
 
         this.activate = false;
@@ -1789,88 +1819,146 @@
         $.support.transition && this.$colorpick.hasClass(animateClass)?
             this.$colorpick
                 .one('origamTransitionEnd', removeElement)
-                .emulateTransitionEnd(Color.TRANSITION_DURATION) :
+                .emulateTransitionEnd(Colorpicker.TRANSITION_DURATION) :
             removeElement()
 
     };
 
-    // COLOR PLUGIN DEFINITION
+    // COLORPICKER PLUGIN DEFINITION
     // =========================
 
     function Plugin(option) {
         return this.each(function () {
             var $this   = $(this);
-            var data    = $this.data('origam.color');
+            var data    = $this.data('origam.colorpicker');
             var options = typeof option == 'object' && option;
 
-            if (!data) $this.data('origam.color', (data = new Color(this, options)));
+            if (!data) $this.data('origam.colorpicker', (data = new Colorpicker(this, options)));
             if (typeof option == 'string') data[option]()
         })
     }
 
-    var old = $.fn.color;
+    var old = $.fn.colorpicker;
 
-    $.fn.color             = Plugin;
-    $.fn.color.Constructor = Color;
+    $.fn.colorpicker             = Plugin;
+    $.fn.colorpicker.Constructor = Colorpicker;
 
 
-    // COLOR NO CONFLICT
+    // COLORPICKER NO CONFLICT
     // ===================
 
     $.fn.input.noConflict = function () {
-        $.fn.color = old;
+        $.fn.colorpicker = old;
         return this
     };
 
     $(document).ready(function() {
-        $('[data-form="color"]').color();
-        $('[type="color"]').color();
+        $('[data-form="color"]').colorpicker();
+        $('[type="color"]').colorpicker();
     });
 
 })(jQuery, window);
 /**
- * Apply origamDatePicker
+ * Apply origamDatepickerPicker
  */
 
 (function ($, w) {
 
     'use strict';
 
-    // DATE PUBLIC CLASS DEFINITION
+    // DATEPICKER PUBLIC CLASS DEFINITION
     // ===============================
 
-    var Date = function (element, options) {
+    var Datepicker = function (element, options) {
         this.type       = null;
         this.options    = null;
         this.$element   = null;
 
-        this.init('date', element, options)
+        this.init('datepicker', element, options)
     };
 
     if (!$.fn.input) throw new Error('Datepicker requires input.js');
 
-    Date.VERSION  = '0.1.0';
+    Datepicker.VERSION  = '0.1.0';
 
-    Date.TRANSITION_DURATION = 1000;
+    Datepicker.TRANSITION_DURATION = 1000;
 
-    Date.DEFAULTS = $.extend({}, $.fn.input.Constructor.DEFAULTS, {
+    Datepicker.DEFAULTS = $.extend({}, $.fn.input.Constructor.DEFAULTS, {
         templateWrapper: '<div class="origam-datepick"></div>',
         templateView: '<div class="origam-datepick--view"></div>',
-        templateCalendar: '<div class="origam-datepick--calendar"></div>',
+        templateDayL: '<div class="origam-datepick--view__dayL"></div>',
+        templateDayN: '<div class="origam-datepick--view__dayN"></div>',
+        templateMonth: '<div class="origam-datepick--view__month"></div>',
+        templateYear: '<div class="origam-datepick--view__year"></div>',
+        templateForm: '<div class="origam-datepick--form"></div>',
+        templateCalendarWrapper: '<div class="origam-datepick--calendar"></div>',
+        templateCalendarHeader: '<div class="origam-datepick--calendar__header"></div>',
         templateSubmit: '<div class="origam-datepick--submit btn btn-ghost"></div>',
         templateOverlay: '<div class="origam-overlay"></div>',
-        submitText: 'OK',
-        type: 'date'
+        templateLeft: '<span class="calendar-header--left origamicon origamicon-angle-left"></span>',
+        templateRight: '<span class="calendar-header--right origamicon origamicon-angle-right"></span>',
+        classes: {
+            focus: 'text-field--focused',
+            active: 'text-field--active',
+            addonsLeft: 'text-field--addons left',
+            addonsRight: 'text-field--addons right',
+            calendarTitle: 'calendar-header--title'
+        },
+        submittext: 'OK',
+        startdate: '',
+        enddate: '',
+        weekday: {
+            0: "Sunday",
+            1: "Monday",
+            2: "Tuesday",
+            3: "Wednesday",
+            4: "Thursday",
+            5: "Friday",
+            6: "Saturday"
+        },
+        month: {
+            0: "January",
+            1: "February",
+            2: "March",
+            3: "April",
+            4: "May",
+            5: "June",
+            6: "July",
+            7: "August",
+            8: "September",
+            9: "October",
+            10: "November",
+            11: "December"
+        },
+        type: 'date',
+        createView: function ($dayLetter, $dayNumber, $month, $year, $container, options, date) {
+            $dayLetter.text(options.weekday[date.getDay()]);
+            $dayNumber.text(date.getDate());
+            $month.text(options.month[date.getMonth()]);
+            $year.text(date.getFullYear());
+
+            $container.html('');
+            $container
+                .append($dayLetter)
+                .append($month)
+                .append($dayNumber)
+                .append($year);
+        }
     });
 
-    Date.prototype = $.extend({}, $.fn.input.Constructor.prototype);
+    Datepicker.prototype = $.extend({}, $.fn.input.Constructor.prototype);
 
-    Date.prototype.constructor = Date;
+    Datepicker.prototype.constructor = Datepicker;
 
-    Date.prototype.event = function (options) {
+    Datepicker.prototype.event = function (options) {
         this.options            = this.getOptions(options);
         this.field              = new Array();
-        this.options.type       = this.$element.attr('type') ? this.$element.attr('type') : this.options.type;
+        this.options.type       = this.$element.attr('type') && this.$element.attr('type')!== 'text' ? this.$element.attr('type') : this.options.type;
+        this.lang               = navigator.language || navigator.userLanguage;
+        this.date               = this.options.startdate.length !== 0 ? new Date(this.options.startdate) : new Date();
+        this.seconds            = this.date.getSeconds();
+        this.minutes            = this.date.getMinutes();
+        this.hours              = this.date.getHours();
 
         this.$overlay = $(this.options.templateOverlay);
         this.$element.data('origam-'+ this.options.type +'pickId', this.id);
@@ -1882,50 +1970,60 @@
         this.$submitField = $(this.options.templateSubmit).attr('data-target', '#' + this.id);
 
         this.$view = $(this.options.templateView);
-        this.$calendar = $(this.options.templateCalendar);
+        this.$form = $(this.options.templateForm);
 
         this.$element
             .parents(this.$parent)
             .on('click', $.proxy(this.show, this));
     };
 
-    Date.prototype.getDefaults = function () {
-        return Date.DEFAULTS
+    Datepicker.prototype.getDefaults = function () {
+        return Datepicker.DEFAULTS
     };
 
-    Date.prototype.submit = function(e) {
+    Datepicker.prototype.submit = function(e) {
 
     };
 
-    Date.prototype.bindSelector = function () {
-        var that = this;
+    Datepicker.prototype.createOrUpdateView = function(container, date){
+        this.$viewDayL = $(this.options.templateDayL);
+        this.$viewDayN = $(this.options.templateDayN);
+        this.$viewMonth = $(this.options.templateMonth);
+        this.$viewYear = $(this.options.templateYear);
 
-        this.$colorpick.bind('mouseenter.origam.'+ this.type, function(e) {
-            that.mouseEnter();
-        });
-
-        this.$colorpick.bind('mouseleave.origam.'+ this.type, function(e) {
-            that.mouseLeave();
-        });
-
-        $(this.$colorpick[0].ownerDocument).bind('click.origam.'+ this.type, function (e) {
-            that.action(e);
-        });
+        this.options.createView(this.$viewDayL, this.$viewDayN, this.$viewMonth, this.$viewYear, container, this.options, date);
     };
 
-    Date.prototype.action = function(e){
+    Datepicker.prototype.createForm = function(){
+        this.$header = $(this.options.templateCalendarHeader);
+        this.$right = $(this.options.templateRight);
+        this.$left = $(this.options.templateLeft);
+        this.$title = $('<span/>', {
+            class: this.classes.calendarTitle
+        });
+
+    };
+
+    Datepicker.prototype.action = function(e){
         if (!this.mouseOnContainer && this.activate){
             this.hide();
         }
     };
 
-    Date.prototype.show = function (e) {
+    Datepicker.prototype.show = function (e) {
         var that            = this,
             viewportHeight  = $(window).height(),
             viewportWidtht  = $(window).width();
 
         this.activate = true;
         this.$element.off('click', $.proxy(this.show, this));
+
+        this.createOrUpdateView(this.$view, this.date);
+        this.createForm();
+
+        this.$datepick
+            .append(this.$view)
+            .append(this.$form);
 
         if(this.options.animate) {
             this.$datepick
@@ -1937,7 +2035,7 @@
         }
 
         this.$submitField
-            .text(this.options.submitText)
+            .text(this.options.submittext)
             .on("click", $.proxy(this.submit, this))
             .appendTo(this.$calendar);
 
@@ -1949,7 +2047,7 @@
                 'left': (viewportWidtht/2) - (this.$datepick.outerWidth()/2)
             });
 
-        this.bindSelector();
+        this.bindSelector(this.$datepick);
 
         var onShow = function () {
             if (that.$datepick.hasClass(animateClass))
@@ -1960,14 +2058,14 @@
         $.support.transition && this.$datepick.hasClass(animateClass) ?
             this.$datepick
                 .one('origamTransitionEnd', onShow)
-                .emulateTransitionEnd(Date.TRANSITION_DURATION) :
+                .emulateTransitionEnd(Datepicker.TRANSITION_DURATION) :
             onShow();
 
         return false;
 
     };
 
-    Date.prototype.hide = function (e) {
+    Datepicker.prototype.hide = function (e) {
         var that = this;
 
         this.activate = false;
@@ -2002,41 +2100,46 @@
         $.support.transition && this.$datepick.hasClass(animateClass)?
             this.$datepick
                 .one('origamTransitionEnd', removeElement)
-                .emulateTransitionEnd(Date.TRANSITION_DURATION) :
+                .emulateTransitionEnd(Datepicker.TRANSITION_DURATION) :
             removeElement()
 
     };
 
-    // DATE PLUGIN DEFINITION
+    // DATEPICKER PLUGIN DEFINITION
     // =========================
 
     function Plugin(option) {
         return this.each(function () {
             var $this   = $(this);
-            var data    = $this.data('origam.date');
+            var data    = $this.data('origam.datepicker');
             var options = typeof option == 'object' && option;
 
-            if (!data) $this.data('origam.date', (data = new Date(this, options)));
+            if (!data) $this.data('origam.datepicker', (data = new Datepicker(this, options)));
             if (typeof option == 'string') data[option]()
         })
     }
 
-    var old = $.fn.date;
+    var old = $.fn.datepicker;
 
-    $.fn.date             = Plugin;
-    $.fn.date.Constructor = Date;
+    $.fn.datepicker             = Plugin;
+    $.fn.datepicker.Constructor = Datepicker;
 
 
-    // DATE NO CONFLICT
+    // DATEPICKER NO CONFLICT
     // ===================
 
     $.fn.input.noConflict = function () {
-        $.fn.date = old;
+        $.fn.datepicker = old;
         return this
     };
 
     $(document).ready(function() {
-        $('[data-form="date"]').date();
+        $('[data-form="date"]').datepicker();
+        $('[type="date"]').datepicker();
+        $('[type="month"]').datepicker();
+        $('[type="week"]').datepicker();
+        $('[type="time"]').datepicker();
+        $('[type="datetime"]').datepicker();
     });
 
 })(jQuery, window);

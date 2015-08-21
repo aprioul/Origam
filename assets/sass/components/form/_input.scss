@@ -365,7 +365,7 @@ input[type="range"].text-field--group__input {
 .text-field--error {
   .text-field--group:after {
     background-color: $color-error;
-    @include transform(scale(1));
+    @include size(100%);
   }
 
   .text-field--label {
@@ -380,7 +380,7 @@ input[type="range"].text-field--group__input {
 
   .text-field--group:after {
     background-color: $color-success;
-    @include transform(scale(1));
+    @include size(100%);
   }
 }
 
@@ -391,6 +391,6 @@ input[type="range"].text-field--group__input {
 
   .text-field--group:after {
     background-color: $color-warning;
-    @include transform(scale(1));
+    @include size(100%);
   }
 }

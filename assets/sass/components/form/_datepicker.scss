@@ -9,3 +9,47 @@
   @include user-select(none);
   z-index: 2;
 }
+
+/**
+  * Date View
+  */
+.origam-datepick--view {
+  @include position(relative);
+  overflow: hidden;
+  outline: none;
+  display: inline-block;
+  margin: 0;
+  background-color: $blue;
+  min-width: 273px;
+  max-width: 275px;
+  text-align: center;
+  color: white;
+  margin-bottom: -4px;
+
+  > * {
+    padding: $padding-base-vertical $padding-base-horizontal;
+  }
+
+  > .origam-datepick--view__dayL {
+    background-color: $black-3;
+    margin-bottom: $padding-base-vertical;
+    @include font-size($font-size-xs);
+  }
+
+  > .origam-datepick--view__dayN {
+    @include font-size($size-xl);
+    padding: 0;
+  }
+
+  > .origam-datepick--view__month {
+    @include font-size($font-size-large);
+    padding-bottom: 0;
+  }
+
+  > .origam-datepick--view__year {
+    @include font-size($font-size-small);
+    padding-top: 0;
+    color: $white-3;
+  }
+
+}
