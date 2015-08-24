@@ -20407,6 +20407,128 @@ th {
 }
 
 /**
+  * Calendar
+  */
+.origam-datepick--calendar {
+  display: block;
+  margin: 0;
+  min-width: 273px;
+  max-width: 275px;
+  vertical-align: top;
+  word-spacing: -0.43em;
+}
+.origam-datepick--calendar > * {
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-rendering: auto;
+}
+
+/**
+  * Submit/Select button
+  */
+.origam-datepick--submit {
+  margin: 0;
+  display: block;
+}
+
+/**
+  * Calendar Header
+  */
+.origam-datepick--calendar__header {
+  border-bottom: 1px solid transparent;
+  border-color: #d4d4d4;
+}
+
+.calendar-header--left,
+.calendar-header--right {
+  display: inline-block;
+  width: 10%;
+  height: 100%;
+  min-height: 36px;
+  line-height: 36px;
+  text-align: center;
+  font-size: 20px;
+  font-size: 1.25rem;
+  vertical-align: top;
+  cursor: pointer;
+}
+.calendar-header--left:hover,
+.calendar-header--right:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.calendar-header--title {
+  display: inline-block;
+  width: 80%;
+  height: 100%;
+  min-height: 36px;
+  line-height: 36px;
+  text-align: center;
+  vertical-align: top;
+}
+
+/**
+  * Calendar Content
+  */
+.calendar-content--weekdays {
+  margin: 6px;
+  color: #0196d1;
+  border: 1px solid transparent;
+  border-bottom-color: #0196d1;
+}
+
+.calendar-content--weekdays__day {
+  width: 14.28571%;
+  display: inline-block;
+  text-align: center;
+  min-height: 36px;
+  line-height: 36px;
+  vertical-align: top;
+}
+
+.calendar-content--days {
+  margin: 6px;
+  border: 1px solid transparent;
+}
+
+.calendar-content--days__week > * {
+  width: 14.28571%;
+  display: inline-block;
+  text-align: center;
+  min-height: 36px;
+  line-height: 36px;
+  vertical-align: top;
+}
+
+.calendar-content--days__day {
+  border: 1px inset transparent;
+  box-sizing: border-box;
+  cursor: pointer;
+  position: relative;
+}
+.calendar-content--days__day:hover:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.26);
+  z-index: 1;
+}
+.calendar-content--days__day.calendar-content--days__select {
+  background-color: #0196d1;
+  color: #FFFFFF;
+}
+.calendar-content--days__day.calendar-content--days__select span {
+  z-index: 2;
+  position: relative;
+}
+.calendar-content--days__day.calendar-content--days__today {
+  border-color: #0196d1;
+}
+
+/**
   * Text field base styles
   */
 .text-field {
