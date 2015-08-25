@@ -100,6 +100,7 @@
         this.lang               = navigator.language || navigator.userLanguage;
         this.date               = this.options.startdate.length !== 0 ? new Date(this.options.startdate) : new Date();
         this.today              = new Date();
+        this.currentDay         = this.date;
         this.seconds            = this.date.getSeconds();
         this.minutes            = this.date.getMinutes();
         this.hours              = this.date.getHours();
@@ -229,7 +230,7 @@
         $.each( this.options.weekday , function (index, day) {
             that.weekDay[index] = $('<div/>', {
                 class: that.classes.weekdays + '__day'
-            }).text(day.substring(0, 3));
+            }).text(day.substring(0, 1));
 
             that.$weekdays.append(that.weekDay[index]);
         });
@@ -268,7 +269,7 @@
                 var pos = this.startingDay - this.options.startIn,
                     p = pos < 0 ? 6 + pos + 1 : pos,
                     today = month === this.today.getMonth() && year === this.today.getFullYear() && day === this.today.getDate(),
-                    selected = month === this.month.number && year === this.year && day === this.day.number,
+                    selected = month === this.currentDay.getMonth() && year === this.currentDay.getFullYear() && day === this.currentDay.getDate(),
                     content = '';
 
                 if ( day <= monthLength && ( i > 0 || j >= p ) ) {

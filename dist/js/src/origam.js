@@ -1959,6 +1959,7 @@
         this.lang               = navigator.language || navigator.userLanguage;
         this.date               = this.options.startdate.length !== 0 ? new Date(this.options.startdate) : new Date();
         this.today              = new Date();
+        this.currentDay         = this.date;
         this.seconds            = this.date.getSeconds();
         this.minutes            = this.date.getMinutes();
         this.hours              = this.date.getHours();
@@ -2088,7 +2089,7 @@
         $.each( this.options.weekday , function (index, day) {
             that.weekDay[index] = $('<div/>', {
                 class: that.classes.weekdays + '__day'
-            }).text(day.substring(0, 3));
+            }).text(day.substring(0, 1));
 
             that.$weekdays.append(that.weekDay[index]);
         });
@@ -2127,7 +2128,7 @@
                 var pos = this.startingDay - this.options.startIn,
                     p = pos < 0 ? 6 + pos + 1 : pos,
                     today = month === this.today.getMonth() && year === this.today.getFullYear() && day === this.today.getDate(),
-                    selected = month === this.month.number && year === this.year && day === this.day.number,
+                    selected = month === this.currentDay.getMonth() && year === this.currentDay.getFullYear() && day === this.currentDay.getDate(),
                     content = '';
 
                 if ( day <= monthLength && ( i > 0 || j >= p ) ) {
@@ -5257,7 +5258,7 @@
         this.optionData = optData;
         
         this.addDropdown();
-        this.bindSelector();
+        this.bindSelector(this.$container);
     };
 
     Select.prototype.getDefaults = function () {
@@ -5632,20 +5633,6 @@
         this.maxHeight          = this.fieldsHeight + this.searchHeight;
     };
 
-    Select.prototype.bindSelector = function () {
-        var that = this;
-
-        this.$container.bind('mouseenter.origam.'+ this.type, function(e) {
-            that.mouseEnter();
-        });
-        this.$container.bind('mouseleave.origam.'+ this.type, function(e) {
-            that.mouseLeave();
-        });
-        $(this.$container[0].ownerDocument).bind('click.origam.'+ this.type, function (e) {
-            that.action(e);
-        });
-    };
-
     Select.prototype.action = function(e){
         var element = e.target,
             group = $(element).parents('.' + this.classes.selectOptionGroup).length !== 0 ? true : false,
@@ -5666,7 +5653,7 @@
             if($(element).not('.' + this.classes.selected).hasClass(this.classes.selectOption)) {
                 this.setValue(element, group);
             }
-            if($(element).hasClass(this.options.selectorToggle) && $(element).is('div')) {
+            if(($(element).hasClass(this.options.selectorToggle) && $(element).is('div')) || ($(element).closest('.' + this.options.selectorToggle).is('div'))) {
                 this.toggle(e);
             }
         }

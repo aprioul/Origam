@@ -119,7 +119,7 @@
         this.optionData = optData;
         
         this.addDropdown();
-        this.bindSelector();
+        this.bindSelector(this.$container);
     };
 
     Select.prototype.getDefaults = function () {
@@ -494,20 +494,6 @@
         this.maxHeight          = this.fieldsHeight + this.searchHeight;
     };
 
-    Select.prototype.bindSelector = function () {
-        var that = this;
-
-        this.$container.bind('mouseenter.origam.'+ this.type, function(e) {
-            that.mouseEnter();
-        });
-        this.$container.bind('mouseleave.origam.'+ this.type, function(e) {
-            that.mouseLeave();
-        });
-        $(this.$container[0].ownerDocument).bind('click.origam.'+ this.type, function (e) {
-            that.action(e);
-        });
-    };
-
     Select.prototype.action = function(e){
         var element = e.target,
             group = $(element).parents('.' + this.classes.selectOptionGroup).length !== 0 ? true : false,
@@ -528,7 +514,7 @@
             if($(element).not('.' + this.classes.selected).hasClass(this.classes.selectOption)) {
                 this.setValue(element, group);
             }
-            if($(element).hasClass(this.options.selectorToggle) && $(element).is('div')) {
+            if(($(element).hasClass(this.options.selectorToggle) && $(element).is('div')) || ($(element).closest('.' + this.options.selectorToggle).is('div'))) {
                 this.toggle(e);
             }
         }
