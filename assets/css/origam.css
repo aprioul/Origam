@@ -20047,6 +20047,264 @@ th {
 }
 
 /**
+  * Text field base styles
+  */
+.text-field {
+  position: relative;
+  padding-top: 32px;
+  padding-bottom: 8px;
+}
+
+.text-field--group {
+  position: relative;
+  padding-bottom: 8px;
+}
+.text-field--group:before, .text-field--group:after {
+  content: '';
+}
+.text-field--group:before {
+  position: absolute;
+  right: 0;
+  bottom: 7px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+.text-field--group:after {
+  position: absolute;
+  right: 0;
+  bottom: 6px;
+  left: 0;
+  background-color: #0196d1;
+  z-index: 2;
+  width: 0;
+  height: 2px;
+  -moz-transition-property: all;
+  -o-transition-property: all;
+  -webkit-transition-property: all;
+  transition-property: all;
+  -moz-transition-duration: 0.6s;
+  -o-transition-duration: 0.6s;
+  -webkit-transition-duration: 0.6s;
+  transition-duration: 0.6s;
+  -moz-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+
+.text-field--active .text-field--label {
+  -moz-transform: translateY(0);
+  -ms-transform: translateY(0);
+  -webkit-transform: translateY(0);
+  transform: translateY(0);
+  font-size: 14px;
+  font-size: 0.875rem;
+}
+
+.text-field--focused:not(.text-field--password) .text-field--group:after, .text-field--focused:not(.text-field--select) .text-field--group:after {
+  width: 100%;
+  height: 2px;
+}
+.text-field--focused .text-field--label {
+  color: #0196d1;
+  -moz-transform: translateY(0);
+  -ms-transform: translateY(0);
+  -webkit-transform: translateY(0);
+  transform: translateY(0);
+  font-size: 14px;
+  font-size: 0.875rem;
+}
+
+.text-field--disabled .text-field--group:before {
+  border-bottom-style: dashed;
+}
+.text-field--disabled .text-field--group__input {
+  color: rgba(0, 0, 0, 0.26);
+  cursor: not-allowed;
+}
+
+.text-field--fixed {
+  padding-top: 8px;
+}
+.text-field--fixed .text-field--label {
+  font-size: 16px;
+  font-size: 1rem;
+  -moz-transform: none;
+  -ms-transform: none;
+  -webkit-transform: none;
+  transform: none;
+}
+.text-field--fixed.text-field--focused .text-field--label {
+  color: rgba(0, 0, 0, 0.26);
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+}
+.text-field--fixed.text-field--active .text-field--label {
+  display: none;
+}
+
+.text-field--hidden .text-field--label {
+  display: none;
+}
+
+/**
+  * Text field label
+  */
+.text-field--label {
+  display: block;
+  position: absolute;
+  top: 8px;
+  left: 0;
+  color: rgba(0, 0, 0, 0.26);
+  line-height: 32px;
+  pointer-events: none;
+  filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
+  opacity: 1;
+  -moz-transform: translateY(24px);
+  -ms-transform: translateY(24px);
+  -webkit-transform: translateY(24px);
+  transform: translateY(24px);
+  -moz-transform-origin: bottom left 50%;
+  -ms-transform-origin: bottom left 50%;
+  -webkit-transform-origin: bottom left 50%;
+  transform-origin: bottom left 50%;
+  -moz-transition-property: all;
+  -o-transition-property: all;
+  -webkit-transition-property: all;
+  transition-property: all;
+  -moz-transition-duration: 0.4s;
+  -o-transition-duration: 0.4s;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  -moz-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.text-field--color .text-field--label {
+  position: absolute;
+  top: initial;
+  bottom: 30px;
+  left: 0;
+}
+
+/**
+  * Text field input
+  */
+.text-field--group__input {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+  overflow: hidden;
+  resize: none;
+  font-weight: 400;
+  cursor: text;
+  background-color: transparent;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  box-shadow: none;
+}
+.text-field--group__input:focus {
+  outline: none;
+}
+
+input::-ms-clear {
+  display: none;
+}
+
+input.text-field--group__input {
+  height: 32px;
+  line-height: 32px;
+}
+
+/**
+  *  Text field addons
+  */
+.text-field--addons.left {
+  padding-left: 68px;
+}
+.text-field--addons.left .text-field--label {
+  position: absolute;
+  left: 68px;
+}
+.text-field--addons.right {
+  padding-right: 68px;
+}
+
+.text-field--group__addons {
+  position: absolute;
+  top: 0;
+  left: -55px;
+  width: 100%;
+  height: 100%;
+  max-width: 40px;
+  max-height: 40px;
+  line-height: 40px;
+  font-size: 24px;
+  font-size: 1.5rem;
+  color: rgba(0, 0, 0, 0.54);
+  text-align: center;
+  -moz-transition-property: color;
+  -o-transition-property: color;
+  -webkit-transition-property: color;
+  transition-property: color;
+  -moz-transition-duration: 0.4s;
+  -o-transition-duration: 0.4s;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  -moz-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.text-field--group__input + .text-field--group__addons, .text-field.right .text-field--group__addons {
+  position: absolute;
+  right: -55px;
+  left: auto;
+}
+.text-field--group__addons:hover .text-field--group__switchpass,
+.text-field--group__addons:hover .text-field--group__selectcountry {
+  color: rgba(0, 0, 0, 0.54);
+}
+.text-field--focused .text-field--group__addons {
+  color: #0196d1;
+}
+.text-field--error .text-field--group__addons {
+  color: #FFA726;
+}
+.text-field--success .text-field--group__addons {
+  color: #9CCC65;
+}
+
+/**
+  * Validation
+  */
+.text-field--error .text-field--group:after {
+  background-color: #EF5350;
+}
+.text-field--error .text-field--label {
+  color: #EF5350;
+}
+
+.text-field--success .text-field--label {
+  color: #9CCC65;
+}
+.text-field--success .text-field--group:after {
+  background-color: #9CCC65;
+}
+
+.text-field--warning .text-field--label {
+  color: #FFA726;
+}
+.text-field--warning .text-field--group:after {
+  background-color: #FFA726;
+}
+
+/**
   * Checkbox base styles
   */
 .checkbox {
@@ -20135,6 +20393,68 @@ th {
   text-align: left;
 }
 
+/**
+  * Color
+  */
+.text-field--color {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  padding: 8px;
+  cursor: pointer;
+  -moz-transition-property: border;
+  -o-transition-property: border;
+  -webkit-transition-property: border;
+  transition-property: border;
+  -moz-transition-duration: 0.6s;
+  -o-transition-duration: 0.6s;
+  -webkit-transition-duration: 0.6s;
+  transition-duration: 0.6s;
+  -moz-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.text-field--color.text-field--active label, .text-field--color.text-field--focused label {
+  display: none;
+}
+.text-field--color.text-field--focused {
+  border-color: #0196d1;
+}
+.text-field--color .text-field--group {
+  padding: 0;
+  padding-top: 4px;
+}
+.text-field--color .text-field--group:before, .text-field--color .text-field--group:after {
+  display: none;
+}
+.text-field--color .text-field--group__input {
+  cursor: pointer;
+}
+.text-field--color input {
+  display: none;
+}
+.text-field--color input[type=color],
+.text-field--color div[type=color],
+.text-field--color output[type=color] {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+}
+.text-field--color input.text-field--group__input,
+.text-field--color div.text-field--group__input,
+.text-field--color output.text-field--group__input {
+  height: 32px;
+  line-height: 32px;
+}
+
+.text-field--color_current {
+  width: calc( 100% + 60px );
+  height: 100px;
+  margin-left: -60px;
+  background-color: rgba(0, 0, 0, 0.12);
+}
+
+/**
+  * Colorpicker
+  */
 .origam-colorpick {
   position: fixed;
   font-family: Arial, Helvetica, sans-serif;
@@ -20349,6 +20669,31 @@ th {
   cursor: pointer;
 }
 
+/**
+  * Date
+  */
+input[type=month], input[type=time], input[type=datetime], input[type=week], input[type=date] {
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+}
+input[type=month]::-webkit-inner-spin-button, input[type=month]::-webkit-calendar-picker-indicator, input[type=time]::-webkit-inner-spin-button, input[type=time]::-webkit-calendar-picker-indicator, input[type=datetime]::-webkit-inner-spin-button, input[type=datetime]::-webkit-calendar-picker-indicator, input[type=week]::-webkit-inner-spin-button, input[type=week]::-webkit-calendar-picker-indicator, input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-calendar-picker-indicator {
+  display: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}
+input[type=month]::-webkit-datetime-edit-text, input[type=month]::-webkit-time-edit-text, input[type=time]::-webkit-datetime-edit-text, input[type=time]::-webkit-time-edit-text, input[type=datetime]::-webkit-datetime-edit-text, input[type=datetime]::-webkit-time-edit-text, input[type=week]::-webkit-datetime-edit-text, input[type=week]::-webkit-time-edit-text, input[type=date]::-webkit-datetime-edit-text, input[type=date]::-webkit-time-edit-text {
+  color: transparent;
+}
+input[type=month]::-webkit-datetime-edit-ampm-field, input[type=month]::-webkit-datetime-edit-millisecond-field, input[type=month]::-webkit-datetime-edit-second-field, input[type=month]::-webkit-datetime-edit-minute-field, input[type=month]::-webkit-datetime-edit-hour-field, input[type=month]::-webkit-datetime-edit-day-field, input[type=month]::-webkit-datetime-edit-week-field, input[type=month]::-webkit-datetime-edit-month-field, input[type=month]::-webkit-datetime-edit-year-field, input[type=time]::-webkit-datetime-edit-ampm-field, input[type=time]::-webkit-datetime-edit-millisecond-field, input[type=time]::-webkit-datetime-edit-second-field, input[type=time]::-webkit-datetime-edit-minute-field, input[type=time]::-webkit-datetime-edit-hour-field, input[type=time]::-webkit-datetime-edit-day-field, input[type=time]::-webkit-datetime-edit-week-field, input[type=time]::-webkit-datetime-edit-month-field, input[type=time]::-webkit-datetime-edit-year-field, input[type=datetime]::-webkit-datetime-edit-ampm-field, input[type=datetime]::-webkit-datetime-edit-millisecond-field, input[type=datetime]::-webkit-datetime-edit-second-field, input[type=datetime]::-webkit-datetime-edit-minute-field, input[type=datetime]::-webkit-datetime-edit-hour-field, input[type=datetime]::-webkit-datetime-edit-day-field, input[type=datetime]::-webkit-datetime-edit-week-field, input[type=datetime]::-webkit-datetime-edit-month-field, input[type=datetime]::-webkit-datetime-edit-year-field, input[type=week]::-webkit-datetime-edit-ampm-field, input[type=week]::-webkit-datetime-edit-millisecond-field, input[type=week]::-webkit-datetime-edit-second-field, input[type=week]::-webkit-datetime-edit-minute-field, input[type=week]::-webkit-datetime-edit-hour-field, input[type=week]::-webkit-datetime-edit-day-field, input[type=week]::-webkit-datetime-edit-week-field, input[type=week]::-webkit-datetime-edit-month-field, input[type=week]::-webkit-datetime-edit-year-field, input[type=date]::-webkit-datetime-edit-ampm-field, input[type=date]::-webkit-datetime-edit-millisecond-field, input[type=date]::-webkit-datetime-edit-second-field, input[type=date]::-webkit-datetime-edit-minute-field, input[type=date]::-webkit-datetime-edit-hour-field, input[type=date]::-webkit-datetime-edit-day-field, input[type=date]::-webkit-datetime-edit-week-field, input[type=date]::-webkit-datetime-edit-month-field, input[type=date]::-webkit-datetime-edit-year-field {
+  background-color: transparent;
+}
+input[type=month]::-webkit-datetime-edit-ampm-field:not([aria-valuenow]), input[type=month]::-webkit-datetime-edit-millisecond-field:not([aria-valuenow]), input[type=month]::-webkit-datetime-edit-second-field:not([aria-valuenow]), input[type=month]::-webkit-datetime-edit-minute-field:not([aria-valuenow]), input[type=month]::-webkit-datetime-edit-hour-field:not([aria-valuenow]), input[type=month]::-webkit-datetime-edit-day-field:not([aria-valuenow]), input[type=month]::-webkit-datetime-edit-week-field:not([aria-valuenow]), input[type=month]::-webkit-datetime-edit-month-field:not([aria-valuenow]), input[type=month]::-webkit-datetime-edit-year-field:not([aria-valuenow]), input[type=time]::-webkit-datetime-edit-ampm-field:not([aria-valuenow]), input[type=time]::-webkit-datetime-edit-millisecond-field:not([aria-valuenow]), input[type=time]::-webkit-datetime-edit-second-field:not([aria-valuenow]), input[type=time]::-webkit-datetime-edit-minute-field:not([aria-valuenow]), input[type=time]::-webkit-datetime-edit-hour-field:not([aria-valuenow]), input[type=time]::-webkit-datetime-edit-day-field:not([aria-valuenow]), input[type=time]::-webkit-datetime-edit-week-field:not([aria-valuenow]), input[type=time]::-webkit-datetime-edit-month-field:not([aria-valuenow]), input[type=time]::-webkit-datetime-edit-year-field:not([aria-valuenow]), input[type=datetime]::-webkit-datetime-edit-ampm-field:not([aria-valuenow]), input[type=datetime]::-webkit-datetime-edit-millisecond-field:not([aria-valuenow]), input[type=datetime]::-webkit-datetime-edit-second-field:not([aria-valuenow]), input[type=datetime]::-webkit-datetime-edit-minute-field:not([aria-valuenow]), input[type=datetime]::-webkit-datetime-edit-hour-field:not([aria-valuenow]), input[type=datetime]::-webkit-datetime-edit-day-field:not([aria-valuenow]), input[type=datetime]::-webkit-datetime-edit-week-field:not([aria-valuenow]), input[type=datetime]::-webkit-datetime-edit-month-field:not([aria-valuenow]), input[type=datetime]::-webkit-datetime-edit-year-field:not([aria-valuenow]), input[type=week]::-webkit-datetime-edit-ampm-field:not([aria-valuenow]), input[type=week]::-webkit-datetime-edit-millisecond-field:not([aria-valuenow]), input[type=week]::-webkit-datetime-edit-second-field:not([aria-valuenow]), input[type=week]::-webkit-datetime-edit-minute-field:not([aria-valuenow]), input[type=week]::-webkit-datetime-edit-hour-field:not([aria-valuenow]), input[type=week]::-webkit-datetime-edit-day-field:not([aria-valuenow]), input[type=week]::-webkit-datetime-edit-week-field:not([aria-valuenow]), input[type=week]::-webkit-datetime-edit-month-field:not([aria-valuenow]), input[type=week]::-webkit-datetime-edit-year-field:not([aria-valuenow]), input[type=date]::-webkit-datetime-edit-ampm-field:not([aria-valuenow]), input[type=date]::-webkit-datetime-edit-millisecond-field:not([aria-valuenow]), input[type=date]::-webkit-datetime-edit-second-field:not([aria-valuenow]), input[type=date]::-webkit-datetime-edit-minute-field:not([aria-valuenow]), input[type=date]::-webkit-datetime-edit-hour-field:not([aria-valuenow]), input[type=date]::-webkit-datetime-edit-day-field:not([aria-valuenow]), input[type=date]::-webkit-datetime-edit-week-field:not([aria-valuenow]), input[type=date]::-webkit-datetime-edit-month-field:not([aria-valuenow]), input[type=date]::-webkit-datetime-edit-year-field:not([aria-valuenow]) {
+  color: transparent;
+}
+
+/**
+  * Datepicker
+  */
 .origam-datepick {
   position: fixed;
   font-family: Arial, Helvetica, sans-serif;
@@ -20529,356 +20874,25 @@ th {
 }
 
 /**
-  * Text field base styles
-  */
-.text-field {
-  position: relative;
-  padding-top: 32px;
-  padding-bottom: 8px;
-}
-
-.text-field--group {
-  position: relative;
-  padding-bottom: 8px;
-}
-.text-field--group:before, .text-field--group:after {
-  content: '';
-}
-.text-field--group:before {
-  position: absolute;
-  right: 0;
-  bottom: 7px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-}
-.text-field--group:after {
-  position: absolute;
-  right: 0;
-  bottom: 6px;
-  left: 0;
-  background-color: #0196d1;
-  z-index: 2;
-  width: 0;
-  height: 2px;
-  -moz-transition-property: all;
-  -o-transition-property: all;
-  -webkit-transition-property: all;
-  transition-property: all;
-  -moz-transition-duration: 0.6s;
-  -o-transition-duration: 0.6s;
-  -webkit-transition-duration: 0.6s;
-  transition-duration: 0.6s;
-  -moz-transition-timing-function: ease-out;
-  -o-transition-timing-function: ease-out;
-  -webkit-transition-timing-function: ease-out;
-  transition-timing-function: ease-out;
-}
-
-.text-field--active .text-field--label {
-  -moz-transform: translateY(0);
-  -ms-transform: translateY(0);
-  -webkit-transform: translateY(0);
-  transform: translateY(0);
-  font-size: 14px;
-  font-size: 0.875rem;
-}
-
-.text-field--focused:not(.text-field--password) .text-field--group:after, .text-field--focused:not(.text-field--select) .text-field--group:after {
-  width: 100%;
-  height: 2px;
-}
-.text-field--focused .text-field--label {
-  color: #0196d1;
-  -moz-transform: translateY(0);
-  -ms-transform: translateY(0);
-  -webkit-transform: translateY(0);
-  transform: translateY(0);
-  font-size: 14px;
-  font-size: 0.875rem;
-}
-
-.text-field--disabled .text-field--group:before {
-  border-bottom-style: dashed;
-}
-.text-field--disabled .text-field--group__input {
-  color: rgba(0, 0, 0, 0.26);
-  cursor: not-allowed;
-}
-
-.text-field--fixed {
-  padding-top: 8px;
-}
-.text-field--fixed .text-field--label {
-  font-size: 16px;
-  font-size: 1rem;
-  -moz-transform: none;
-  -ms-transform: none;
-  -webkit-transform: none;
-  transform: none;
-}
-.text-field--fixed.text-field--focused .text-field--label {
-  color: rgba(0, 0, 0, 0.26);
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
-  opacity: 0;
-}
-.text-field--fixed.text-field--active .text-field--label {
-  display: none;
-}
-
-.text-field--hidden .text-field--label {
-  display: none;
-}
-
-/**
-  * Text field label
-  */
-.text-field--label {
-  display: block;
-  position: absolute;
-  top: 8px;
-  left: 0;
-  color: rgba(0, 0, 0, 0.26);
-  line-height: 32px;
-  pointer-events: none;
-  filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
-  opacity: 1;
-  -moz-transform: translateY(24px);
-  -ms-transform: translateY(24px);
-  -webkit-transform: translateY(24px);
-  transform: translateY(24px);
-  -moz-transform-origin: bottom left 50%;
-  -ms-transform-origin: bottom left 50%;
-  -webkit-transform-origin: bottom left 50%;
-  transform-origin: bottom left 50%;
-  -moz-transition-property: all;
-  -o-transition-property: all;
-  -webkit-transition-property: all;
-  transition-property: all;
-  -moz-transition-duration: 0.4s;
-  -o-transition-duration: 0.4s;
-  -webkit-transition-duration: 0.4s;
-  transition-duration: 0.4s;
-  -moz-transition-timing-function: ease-out;
-  -o-transition-timing-function: ease-out;
-  -webkit-transition-timing-function: ease-out;
-  transition-timing-function: ease-out;
-}
-.text-field--color .text-field--label {
-  position: absolute;
-  top: initial;
-  bottom: 30px;
-  left: 0;
-}
-
-/**
-  * Text field input
-  */
-.text-field--group__input {
-  display: block;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  border: none;
-  overflow: hidden;
-  resize: none;
-  font-weight: 400;
-  cursor: text;
-  background-color: transparent;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  box-shadow: none;
-}
-.text-field--group__input:focus {
-  outline: none;
-}
-
-input.text-field--group__input {
-  height: 32px;
-  line-height: 32px;
-}
-
-textarea.text-field--group__input {
-  height: 24px;
-  margin: 4px 0;
-  overflow: hidden;
-  resize: none;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-/**
-  *  Text field addons
-  */
-.text-field--addons.left {
-  padding-left: 68px;
-}
-.text-field--addons.left .text-field--label {
-  position: absolute;
-  left: 68px;
-}
-.text-field--addons.left .text-field--progressbar {
-  position: absolute;
-  left: 68px;
-}
-.text-field--addons.right {
-  padding-right: 68px;
-}
-
-.text-field--group__addons {
-  position: absolute;
-  top: 0;
-  left: -55px;
-  width: 100%;
-  height: 100%;
-  max-width: 40px;
-  max-height: 40px;
-  line-height: 40px;
-  font-size: 24px;
-  font-size: 1.5rem;
-  color: rgba(0, 0, 0, 0.54);
-  text-align: center;
-  -moz-transition-property: color;
-  -o-transition-property: color;
-  -webkit-transition-property: color;
-  transition-property: color;
-  -moz-transition-duration: 0.4s;
-  -o-transition-duration: 0.4s;
-  -webkit-transition-duration: 0.4s;
-  transition-duration: 0.4s;
-  -moz-transition-timing-function: ease-out;
-  -o-transition-timing-function: ease-out;
-  -webkit-transition-timing-function: ease-out;
-  transition-timing-function: ease-out;
-}
-.text-field--group__input + .text-field--group__addons, .text-field.right .text-field--group__addons {
-  position: absolute;
-  right: -55px;
-  left: auto;
-}
-.text-field--group__addons:hover .text-field--group__switchpass,
-.text-field--group__addons:hover .text-field--group__selectcountry {
-  color: rgba(0, 0, 0, 0.54);
-}
-.text-field--focused .text-field--group__addons {
-  color: #0196d1;
-}
-.text-field--error .text-field--group__addons {
-  color: #FFA726;
-}
-.text-field--success .text-field--group__addons {
-  color: #9CCC65;
-}
-
-/**
-  * Color
-  */
-.text-field--color {
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  padding: 8px;
-  cursor: pointer;
-  -moz-transition-property: border;
-  -o-transition-property: border;
-  -webkit-transition-property: border;
-  transition-property: border;
-  -moz-transition-duration: 0.6s;
-  -o-transition-duration: 0.6s;
-  -webkit-transition-duration: 0.6s;
-  transition-duration: 0.6s;
-  -moz-transition-timing-function: ease-out;
-  -o-transition-timing-function: ease-out;
-  -webkit-transition-timing-function: ease-out;
-  transition-timing-function: ease-out;
-}
-.text-field--color.text-field--active label, .text-field--color.text-field--focused label {
-  display: none;
-}
-.text-field--color.text-field--focused {
-  border-color: #0196d1;
-}
-.text-field--color .text-field--group {
-  padding: 0;
-  padding-top: 4px;
-}
-.text-field--color .text-field--group:before, .text-field--color .text-field--group:after {
-  display: none;
-}
-.text-field--color .text-field--group__input {
-  cursor: pointer;
-}
-.text-field--color input {
-  display: none;
-}
-.text-field--color input[type=color],
-.text-field--color div[type=color],
-.text-field--color output[type=color] {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
-  opacity: 0;
-}
-.text-field--color input.text-field--group__input,
-.text-field--color div.text-field--group__input,
-.text-field--color output.text-field--group__input {
-  height: 32px;
-  line-height: 32px;
-}
-
-.text-field--color_current {
-  width: calc( 100% + 60px );
-  height: 100px;
-  margin-left: -60px;
-  background-color: rgba(0, 0, 0, 0.12);
-}
-
-/**
   * File
   */
-.text-field--file.text-field--addons.left {
-  padding-left: 118px;
+input[type=number] {
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
 }
-.text-field--file.text-field--addons.left label {
-  position: absolute;
-  top: initial;
-  bottom: 40px;
-  left: 118px;
-}
-.text-field--file .text-field--group {
-  height: 90px;
-}
-.text-field--file .text-field--group__addons {
-  max-width: 90px;
-  max-height: 90px;
-  left: -105px;
-}
-.text-field--file .text-field--file_current {
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  font-size: 14px;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  padding: 5px;
-}
-.text-field--file .text-field--file_current .text-field--file_current__close {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  line-height: initial;
-  cursor: pointer;
-}
-.text-field--file .text-field--file_current .text-field--file_current__file {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.12);
-}
-.text-field--file .text-field--group__input {
-  position: absolute;
-  bottom: 10px;
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  display: none;
 }
 
 /**
   * Password
   */
+input[type=password]::-ms-reveal {
+  display: none;
+}
+
 .text-field--progressbar {
   position: absolute;
   bottom: 6px;
@@ -20904,63 +20918,14 @@ textarea.text-field--group__input {
 .text-field--progressbar.text-field--progressbar__success {
   border-color: #9CCC65;
 }
+.text-field--addons.left .text-field--progressbar {
+  position: absolute;
+  left: 68px;
+}
 
 .text-field--group__switchpass {
   color: rgba(0, 0, 0, 0.26);
   cursor: pointer;
-}
-
-/**
-  * Range
-  */
-input[type="range"].text-field--group__input {
-  position: relative;
-  overflow: visible;
-  cursor: pointer;
-  margin-bottom: 2em;
-}
-input[type="range"].text-field--group__input:after, input[type="range"].text-field--group__input:before {
-  position: absolute;
-  top: 2em;
-  color: rgba(0, 0, 0, 0.54);
-}
-input[type="range"].text-field--group__input:before {
-  left: 0em;
-  content: attr(min);
-}
-input[type="range"].text-field--group__input:after {
-  right: 0em;
-  content: attr(max);
-}
-
-/**
-  * Validation
-  */
-.text-field--error .text-field--group:after {
-  background-color: #EF5350;
-  width: 100%;
-  height: auto;
-}
-.text-field--error .text-field--label {
-  color: #EF5350;
-}
-
-.text-field--success .text-field--label {
-  color: #9CCC65;
-}
-.text-field--success .text-field--group:after {
-  background-color: #9CCC65;
-  width: 100%;
-  height: auto;
-}
-
-.text-field--warning .text-field--label {
-  color: #FFA726;
-}
-.text-field--warning .text-field--group:after {
-  background-color: #FFA726;
-  width: 100%;
-  height: auto;
 }
 
 /**
@@ -21045,6 +21010,29 @@ input[type="range"].text-field--group__input:after {
   padding-left: 32px;
   color: rgba(0, 0, 0, 0.54);
   text-align: left;
+}
+
+/**
+  * Range
+  */
+input[type="range"].text-field--group__input {
+  position: relative;
+  overflow: visible;
+  cursor: pointer;
+  margin-bottom: 2em;
+}
+input[type="range"].text-field--group__input:after, input[type="range"].text-field--group__input:before {
+  position: absolute;
+  top: 2em;
+  color: rgba(0, 0, 0, 0.54);
+}
+input[type="range"].text-field--group__input:before {
+  left: 0em;
+  content: attr(min);
+}
+input[type="range"].text-field--group__input:after {
+  right: 0em;
+  content: attr(max);
 }
 
 /**
@@ -21320,6 +21308,19 @@ input[type="range"].text-field--group__input:after {
   padding-left: 45px;
   color: rgba(0, 0, 0, 0.54);
   text-align: left;
+}
+
+/**
+  * Textarea
+  */
+textarea .text-field--group__input {
+  height: 24px;
+  margin: 4px 0;
+  overflow: hidden;
+  resize: none;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /**

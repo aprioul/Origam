@@ -36,19 +36,16 @@
         templateCalendarContent: '<div class="origam-datepick--calendar__content"></div>',
         templateSubmit: '<div class="origam-datepick--submit btn btn-ghost"></div>',
         templateOverlay: '<div class="origam-overlay"></div>',
-        templateLeft: '<span class="calendar-header--left origamicon origamicon-angle-left"></span>',
-        templateRight: '<span class="calendar-header--right origamicon origamicon-angle-right"></span>',
+        templatePrev: '<span class="calendar-header--prev origamicon origamicon-angle-left"></span>',
+        templateNext: '<span class="calendar-header--next origamicon origamicon-angle-right"></span>',
         classes: {
             focus: 'text-field--focused',
             active: 'text-field--active',
             addonsLeft: 'text-field--addons left',
             addonsRight: 'text-field--addons right',
-            calendarTitle: 'calendar-header--title',
-            weekdays: 'calendar-content--weekdays',
-            days: 'calendar-content--days',
-            today: 'calendar-content--days__today',
-            selected: 'calendar-content--days__select',
-            week: 'calendar-content--days__week'
+            header: 'calendar-header--title',
+            month: 'calendar-header--title__month',
+            year: 'calendar-header--title__year'
         },
         submittext: 'OK',
         startdate: '',
@@ -79,7 +76,6 @@
         },
         type: 'date',
         createView: function ($dayLetter, $dayNumber, $month, $year, $container) {
-            $container.html('');
             $container
                 .append($dayLetter)
                 .append($month)
@@ -98,7 +94,7 @@
         this.row                = new Array();
         this.options.type       = this.$element.attr('type') && this.$element.attr('type')!== 'text' ? this.$element.attr('type') : this.options.type;
         this.lang               = navigator.language || navigator.userLanguage;
-        this.date               = this.options.startdate.length !== 0 ? new Date(this.options.startdate) : new Date();
+        this.date               = this.options.startdate.length !== 0 ? new Date(this.options.startdate) : this.$element.val() ? this.$element.val() : new Date();
         this.today              = new Date();
         this.currentDay         = this.date;
         this.seconds            = this.date.getSeconds();
@@ -124,8 +120,37 @@
         this.$submitField = $(this.options.templateSubmit).attr('data-target', '#' + this.id);
 
         this.$view = $(this.options.templateView);
-        this.$form = $(this.options.templateForm);
 
+        this.$viewDayL = $(this.options.templateDayL);
+        this.$viewDayN = $(this.options.templateDayN);
+        this.$viewMonth = $(this.options.templateMonth);
+        this.$viewYear = $(this.options.templateYear);
+
+        this.$form = $(this.options.templateForm);
+        
+        this.$next = $(this.options.templateNext);
+        this.$prev = $(this.options.templatePrev);
+        this.$month = $('<span/>', {class: this.classes.month});
+        this.$year = $('<span/>', {class: this.classes.year});
+        this.$title = $('<div/>', {class: this.classes.header});
+
+        this.$title
+            .append(this.$month)
+            .append(this.$year);
+
+
+        this.$header = $(this.options.templateCalendarHeader)
+            .append(this.$prev)
+            .append(this.$title)
+            .append(this.$next);
+
+        this.$content = $(this.options.templateCalendarContent);
+
+        this.$form
+            .append(this.$header)
+            .append(this.$content)
+            .append(this.$submitField);
+        
         this.$element
             .parents(this.$parent)
             .on('click', $.proxy(this.show, this));
@@ -135,193 +160,99 @@
         return Datepicker.DEFAULTS
     };
 
-    Datepicker.prototype.submit = function(e) {
-        var day = ("0" + this.day.number).slice(-2),
-            month = ("0" + (this.month.number + 1)).slice(-2),
-            date = this.year + '-' + (month) + '-' + (day);
-
-        this.$element
-            .val(date)
-            .parents(this.$parent)
-            .addClass(this.classes.active);
-
+    Datepicker.prototype.submit = function() {
         this.hide();
     };
 
-    Datepicker.prototype.createOrUpdateView = function(){
-        this.$viewDayL = $(this.options.templateDayL)
-            .text(this.day.letter);
-        this.$viewDayN = $(this.options.templateDayN)
-            .text(this.day.number);
-        this.$viewMonth = $(this.options.templateMonth)
-            .text(this.month.letter.substring(0, 3));
-        this.$viewYear = $(this.options.templateYear)
-            .text(this.year);
+    Datepicker.prototype.updateView = function(){
+        this.$viewDayL.text(this.day.letter);
+        this.$viewDayN.text(this.day.number);
+        this.$viewMonth.text(this.month.letter.substring(0, 3));
+        this.$viewYear.text(this.year);
+    };
 
-        this.options.createView(this.$viewDayL, this.$viewDayN, this.$viewMonth, this.$viewYear, this.$view);
+    Datepicker.prototype.updateHeader = function(month, year){
+        this.updateYear(year);
+        this.updateMonth(month);
+    };
+
+    Datepicker.prototype.updateYear = function(year){
+        this.year = year;
+        this.$year.text(year);
+    };
+
+    Datepicker.prototype.updateMonth = function(month){
+        this.month.number = month;
+        this.month.letter = this.options.month[month];
+        this.$month.text(this.month.letter);
+    };
+
+    Datepicker.prototype.updateCalendar = function(){
+        
+    };
+
+    Datepicker.prototype.updateTime = function(){
+
     };
 
     Datepicker.prototype.createForm = function(){
-        this.$header = $(this.options.templateCalendarHeader);
-        this.$right = $(this.options.templateRight)
-            .on('click', $.proxy(this.next, this));
-        this.$left = $(this.options.templateLeft)
-            .on('click', $.proxy(this.prev, this));
-        this.$title = $('<span/>', {
-            class: this.classes.calendarTitle
-        });
+        this.$next.on('click', $.proxy(this.next, this));
+        this.$prev.on('click', $.proxy(this.prev, this));
 
-        this.$header
-            .html('')
-            .append(this.$left)
-            .append(this.$title)
-            .append(this.$right);
+        this.$submitField
+            .text(this.options.submittext)
+            .on("click", $.proxy(this.submit, this));
 
-        this.updateTitle(this.month.letter + ' ' + this.year);
+        this.updateHeader(this.month.number, this.year);
 
-        this.$content = $(this.options.templateCalendarContent);
-
-        this.createOrUpdateDays(this.month.number, this.year);
-
-        this.$form
-            .html('')
-            .append(this.$header)
-            .append(this.$content)
-            .append(this.$submitField);
-
-    };
-
-    Datepicker.prototype.updateTitle = function(text){
-        this.$title.text(text);
     };
 
     Datepicker.prototype.next = function(){
+        var month = this.month.number,
+            year = this.year;
 
-        if((this.month.number + 1) <= 11) {
-            this.month.number = this.month.number + 1;
+        if((month + 1) <= 11) {
+            month = month + 1;
         } else {
-            this.month.number = 0;
-            this.year = this.year + 1;
+            month = 0;
+            year = year + 1;
         }
-        this.month.letter = this.options.month[this.month.number];
-        this.updateTitle(this.month.letter + ' ' + this.year);
-        this.createOrUpdateDays(this.month.number, this.year);
+
+        this.updateHeader(month, year);
+        this.updateView();
     };
 
     Datepicker.prototype.prev = function(){
-        if((this.month.number - 1) >= 0) {
-            this.month.number = this.month.number - 1;
+        var month = this.month.number,
+            year = this.year;
+
+        if((month - 1) >= 0) {
+            month = month - 1;
         } else {
-            this.month.number = 11;
-            this.year = this.year - 1;
+            month = 11;
+            year = year - 1;
         }
-        this.month.letter = this.options.month[this.month.number];
-        this.updateTitle(this.month.letter + ' ' + this.year);
-        this.createOrUpdateDays(this.month.number, this.year);
+
+        this.updateHeader(month, year);
+        this.updateView();
     };
 
     Datepicker.prototype.createWeekDays = function(){
-        var that = this;
 
-        this.$weekdays = $('<div/>', {
-            class: this.classes.weekdays
-        });
-
-        $.each( this.options.weekday , function (index, day) {
-            that.weekDay[index] = $('<div/>', {
-                class: that.classes.weekdays + '__day'
-            }).text(day.substring(0, 1));
-
-            that.$weekdays.append(that.weekDay[index]);
-        });
     };
 
-    Datepicker.prototype.createOrUpdateDays = function(month, year){
+    Datepicker.prototype.createDays = function(month, year){
         var d = new Date( year, month + 1, 0),
             monthLength = d.getDate(),
             firstDay = new Date( year, month, 1),
             day = 1,
-            that = this;
-
-        this.createWeekDays();
-
-        this.$days = $('<div/>', {
-            class: this.classes.days
-        }).html('');
-
-        this.startingDay = firstDay.getDay();
-
-        // this loop is for weeks (rows)
-        for ( var i = 0; i < 7; i++ ) {
-
-            // stop making rows if we've run out of days
-            if (day > monthLength) {
-                break;
-            }
-
-            this.row[i] = $('<div/>',{
-                class: this.classes.week
-            });
-
-            // this loop is for weekdays (cells)
-            for (var j = 0; j <= 6; j++) {
-
-                var pos = this.startingDay - this.options.startIn,
-                    p = pos < 0 ? 6 + pos + 1 : pos,
-                    today = month === this.today.getMonth() && year === this.today.getFullYear() && day === this.today.getDate(),
-                    selected = month === this.currentDay.getMonth() && year === this.currentDay.getFullYear() && day === this.currentDay.getDate(),
-                    content = '';
-
-                if ( day <= monthLength && ( i > 0 || j >= p ) ) {
-
-                    var $thisDay = this.field[day] = $('<div/>', {
-                       class: this.classes.days + '__day'
-                    }).html('<span>' + day + '</span>');
-
-                    this.field[day].on('click', $.proxy(this.getValue, this));
-
-                    this.row[i].append(this.field[day]);
-
-                    ++day;
-                }
-                else{
-                    this.row[i].append($('<div/>'));
-                }
-
-                if(today){
-                    $thisDay.addClass(this.classes.today);
-                }
-
-                if(selected) {
-                    $thisDay.addClass(this.classes.selected);
-                }
-
-            }
-            this.$days.append(this.row[i]);
-        }
-
-        this.$content
-            .html('')
-            .append(this.$weekdays)
-            .append(this.$days);
+            that = this,
+            today = month === this.today.getMonth() && year === this.today.getFullYear() && day === this.today.getDate(),
+            selected = month === this.currentDay.getMonth() && year === this.currentDay.getFullYear() && day === this.currentDay.getDate();
     };
 
     Datepicker.prototype.getValue = function(e){
 
-        console.log($(e.target).closest('.' + this.classes.days + '__day'));
-
-        this.$days
-            .find('.' + this.classes.selected)
-            .removeClass(this.classes.selected);
-
-        $(e.target)
-            .closest('.' + this.classes.days + '__day')
-            .addClass(this.classes.selected);
-
-        this.day.number = parseInt(e.target.innerText);
-        this.date = new Date(this.year, this.month.number, this.day.number);
-        this.day.letter = this.options.weekday[this.date.getDay()-1];
-        this.createOrUpdateView();
     };
 
     Datepicker.prototype.action = function(e){
@@ -338,7 +269,8 @@
         this.activate = true;
         this.$element.off('click', $.proxy(this.show, this));
 
-        this.createOrUpdateView();
+        this.updateView();
+        this.options.createView(this.$viewDayL, this.$viewDayN, this.$viewMonth, this.$viewYear, this.$view);
         this.createForm();
 
         this.$datepick
@@ -353,11 +285,6 @@
                 .addClass('animated');
             var animateClass = this.options.animationIn + ' animated';
         }
-
-        this.$submitField
-            .text(this.options.submittext)
-            .on("click", $.proxy(this.submit, this))
-            .appendTo(this.$calendar);
 
         this.$overlay.appendTo(document.body);
         this.$datepick

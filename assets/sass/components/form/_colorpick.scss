@@ -1,3 +1,62 @@
+/**
+  * Color
+  */
+
+.text-field--color{
+  border: 1px solid $black-4;
+  padding: $base-space;
+  cursor: pointer;
+  @include transition-property(border);
+  @include transition-duration(0.6s);
+  @include transition-timing-function(ease-out);
+  &.text-field--active,
+  &.text-field--focused{
+    label{
+      display: none;
+    }
+  }
+  &.text-field--focused{
+    border-color:$primary-color-1;
+  }
+  .text-field--group {
+    padding: 0;
+    padding-top: 4px;
+    &:before,
+    &:after {
+      display: none;
+    }
+  }
+  .text-field--group__input{
+    cursor: pointer;
+  }
+
+  input{
+    display: none;
+  }
+
+  input,
+  div,
+  output{
+    &[type=color]{
+      @include opacity(0);
+    }
+    &.text-field--group__input {
+      height: 32px;
+      line-height: 32px;
+    }
+  }
+}
+
+.text-field--color_current{
+  @include size(calc( 100% + 60px ),100px);
+  margin-left: -60px;
+  background-color: $black-4;
+}
+
+/**
+  * Colorpicker
+  */
+
 .origam-colorpick{
   @include position(fixed, null, null, null, null);
   font-family: Arial, Helvetica, sans-serif;

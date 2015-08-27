@@ -1,3 +1,46 @@
+/**
+  * Date
+  */
+
+input {
+  &[type=month],
+  &[type=time],
+  &[type=datetime],
+  &[type=week],
+  &[type=date]{
+    @include appearance(textfield);
+    &::-webkit-inner-spin-button,
+    &::-webkit-calendar-picker-indicator{
+      display: none;
+      @include appearance(none);
+    }
+
+    &::-webkit-datetime-edit-text,
+    &::-webkit-time-edit-text {
+      color: transparent;
+    }
+
+    &::-webkit-datetime-edit-ampm-field,
+    &::-webkit-datetime-edit-millisecond-field,
+    &::-webkit-datetime-edit-second-field,
+    &::-webkit-datetime-edit-minute-field,
+    &::-webkit-datetime-edit-hour-field,
+    &::-webkit-datetime-edit-day-field,
+    &::-webkit-datetime-edit-week-field,
+    &::-webkit-datetime-edit-month-field,
+    &::-webkit-datetime-edit-year-field {
+      background-color: transparent;
+      &:not([aria-valuenow]) {
+        color: transparent;
+      }
+    }
+  }
+}
+
+/**
+  * Datepicker
+  */
+
 .origam-datepick{
   @include position(fixed, null, null, null, null);
   font-family: Arial, Helvetica, sans-serif;

@@ -254,7 +254,7 @@
         }
 
         this.$overlay = $(this.options.templateOverlay);
-        this.origColor = this.options.color;
+        this.origColor = this.$element.val() ? this.$element.val() : this.options.color;
 
         this.$colorpick = $(this.options.templateWrapper)
             .attr('id', this.id)
