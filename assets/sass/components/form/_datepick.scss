@@ -14,26 +14,6 @@ input {
       display: none;
       @include appearance(none);
     }
-
-    &::-webkit-datetime-edit-text,
-    &::-webkit-time-edit-text {
-      color: transparent;
-    }
-
-    &::-webkit-datetime-edit-ampm-field,
-    &::-webkit-datetime-edit-millisecond-field,
-    &::-webkit-datetime-edit-second-field,
-    &::-webkit-datetime-edit-minute-field,
-    &::-webkit-datetime-edit-hour-field,
-    &::-webkit-datetime-edit-day-field,
-    &::-webkit-datetime-edit-week-field,
-    &::-webkit-datetime-edit-month-field,
-    &::-webkit-datetime-edit-year-field {
-      background-color: transparent;
-      &:not([aria-valuenow]) {
-        color: transparent;
-      }
-    }
   }
 }
 
@@ -133,8 +113,8 @@ input {
   border-color: darken($white, 17%);
 }
 
-.calendar-header--left,
-.calendar-header--right {
+.calendar-header--prev,
+.calendar-header--next {
   display: inline-block;
   @include size(10%,100%);
   min-height: ($base-line-height * 1.5);
@@ -155,6 +135,9 @@ input {
   line-height: ($base-line-height * 1.5);
   text-align: center;
   vertical-align: top;
+  > * {
+    padding: $padding-xs-vertical $padding-xs-horizontal;
+  }
 }
 
 
@@ -162,14 +145,14 @@ input {
   * Calendar Content
   */
 
-.calendar-content--weekdays {
+.calendar-content--week {
   margin: $padding-base-vertical;
   color: $blue;
   border: 1px solid transparent;
   border-bottom-color: $blue;
 }
 
-.calendar-content--weekdays__day {
+.calendar-content--week__day {
   width: grid-size(1, 7);
   display: inline-block;
   text-align: center;

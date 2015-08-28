@@ -66,6 +66,16 @@
         this.activate           = false;
         this.id                 = this.getUID(8);
 
+        var userAgent = navigator.userAgent.toLowerCase();
+
+        this.browser = {
+            chrome: /chrome/.test( userAgent ),
+            safari: /webkit/.test( userAgent )&& !/chrome/.test( userAgent ),
+            opera: /opera/.test( userAgent ),
+            msie: /msie/.test( userAgent ) && !/opera/.test( userAgent ),
+            mozilla: /mozilla/.test( userAgent ) && !/(compatible|webkit)/.test( userAgent )
+        };
+
         this.$element
             .parents(this.$parent)
             .addClass(this.options.parentClass);
@@ -184,7 +194,7 @@
     };
 
     Input.prototype.valChange = function (e) {
-        if($(e.currentTarget).val() != ''){
+        if($(e.currentTarget).val() != '' || e.currentTarget.value != ''){
             $(e.currentTarget)
                 .closest(this.$parent)
                 .addClass(this.classes.active);
@@ -1369,7 +1379,7 @@
         this.$selectorIndic = $(this.options.templateColorSelector);
 
         this.$hue = $(this.options.templateHueSelector);
-        this.$huebar = $(this.options.templateHue);
+        this.$huebar = $(this.options.templateHue).append(this.$hue);
 
         this.options.placement = 'before';
         this.$wrapper = this.addAddon();
@@ -1377,9 +1387,7 @@
 
         this.$color = $(this.options.templateColorElement);
 
-        this.$output = $('<div/>', {
-            class: this.classes.field
-        });
+        this.$output = $('<div/>').addClass(this.classes.field);
 
         this.$element
             .after(this.$output)
@@ -1388,7 +1396,7 @@
             .on('click', $.proxy(this.show, this))
             .prepend(this.$color);
 
-        $(w).on('resize', $.proxy(this.moveColorpick, this));
+        $(w).on('resize', $.proxy(this.moveModal, this));
     };
 
     Colorpicker.prototype.getDefaults = function () {
@@ -1417,6 +1425,7 @@
             ngIE = ( isIE && IEver < 10 ),
             stops = ['#ff0000', '#ff0080', '#ff00ff', '#8000ff', '#0000ff', '#0080ff', '#00ffff', '#00ff80', '#00ff00', '#80ff00', '#ffff00', '#ff8000', '#ff0000'];
 
+        this.$huebar.html('');
 
         if (ngIE) {
             var i;
@@ -1432,8 +1441,7 @@
 
         this.$huebar
             .on('mousedown touchstart', $.proxy(this.eventHue, this))
-            .height(this.options.height)
-            .append(this.$hue);
+            .height(this.options.height);
     };
 
     Colorpicker.prototype.createForm = function() {
@@ -1467,8 +1475,7 @@
                 $wrapper.addClass('text-field--disabled');
             }
             else {
-                $field
-                    .attr('max', this.fields[i]['max']);
+                $field.attr('max', this.fields[i]['max']);
             }
 
             this.field[count] = $field
@@ -1712,7 +1719,7 @@
         }
     };
 
-    Colorpicker.prototype.moveColorpick = function (e) {
+    Colorpicker.prototype.moveModal = function (e) {
         var viewportHeight  = $(window).height(),
             viewportWidtht  = $(window).width();
 
@@ -1888,6 +1895,7 @@
         templateView: '<div class="origam-datepick--view"></div>',
         templateDayL: '<div class="origam-datepick--view__dayL"></div>',
         templateDayN: '<div class="origam-datepick--view__dayN"></div>',
+        templateWeek: '<div class="origam-datepick--view__week"></div>',
         templateMonth: '<div class="origam-datepick--view__month"></div>',
         templateYear: '<div class="origam-datepick--view__year"></div>',
         templateForm: '<div class="origam-datepick--calendar"></div>',
@@ -1904,12 +1912,15 @@
             addonsRight: 'text-field--addons right',
             header: 'calendar-header--title',
             month: 'calendar-header--title__month',
-            year: 'calendar-header--title__year'
+            year: 'calendar-header--title__year',
+            weekTitle: 'view-week--title',
+            weekContent: 'view-week--content'
         },
         submittext: 'OK',
         startdate: '',
         enddate: '',
         startIn : 1,
+        weekText: 'Week',
         weekday: {
             0: "Sunday",
             1: "Monday",
@@ -1934,12 +1945,25 @@
             11: "December"
         },
         type: 'date',
-        createView: function ($dayLetter, $dayNumber, $month, $year, $container) {
-            $container
-                .append($dayLetter)
-                .append($month)
-                .append($dayNumber)
-                .append($year);
+        createView: function (content, $container) {
+            if(content.time){
+                $container.append(content.time);
+            }
+            if(content.dayL){
+                $container.append(content.dayL);
+            }
+            if(content.month){
+                $container.append(content.month);
+            }
+            if(content.dayN){
+                $container.append(content.dayN);
+            }
+            if(content.week){
+                $container.append(content.week);
+            }
+            if(content.year){
+                $container.append(content.year);
+            }
         }
     });
 
@@ -1951,7 +1975,7 @@
         this.options            = this.getOptions(options);
         this.field              = new Array();
         this.row                = new Array();
-        this.options.type       = this.$element.attr('type') && this.$element.attr('type')!== 'text' ? this.$element.attr('type') : this.options.type;
+        this.type               = this.$element.attr('type') && this.$element.attr('type')!== 'text' ? this.$element.attr('type') : this.options.type;
         this.lang               = navigator.language || navigator.userLanguage;
         this.date               = this.options.startdate.length !== 0 ? new Date(this.options.startdate) : this.$element.val() ? this.$element.val() : new Date();
         this.today              = new Date();
@@ -1959,22 +1983,22 @@
         this.seconds            = this.date.getSeconds();
         this.minutes            = this.date.getMinutes();
         this.hours              = this.date.getHours();
+        this.day                = new Array();
+        this.day.letter         = this.options.weekday[this.date.getDay()];
+        this.day.number         = this.date.getDate();
+        this.week               = this.getWeekNumber(this.date);
         this.month              = new Array();
         this.month.letter       = this.options.month[this.date.getMonth()];
         this.month.number       = this.date.getMonth();
         this.year               = this.date.getFullYear();
-        this.day                = new Array();
-        this.day.letter         = this.options.weekday[this.date.getDay()];
-        this.day.number         = this.date.getDate();
-        this.weekDay            = new Array();
-
+        this.viewContent        = new Array();
 
         this.$overlay = $(this.options.templateOverlay);
-        this.$element.data('origam-'+ this.options.type +'pickId', this.id);
+        this.$element.data('origam-'+ this.type +'pickId', this.id);
 
         this.$datepick = $(this.options.templateWrapper)
             .attr('id', this.id)
-            .addClass('origam-datepick--' + this.options.type);
+            .addClass('origam-datepick--' + this.type);
 
         this.$submitField = $(this.options.templateSubmit).attr('data-target', '#' + this.id);
 
@@ -1982,16 +2006,26 @@
 
         this.$viewDayL = $(this.options.templateDayL);
         this.$viewDayN = $(this.options.templateDayN);
+        this.$viewWeek = $(this.options.templateWeek);
         this.$viewMonth = $(this.options.templateMonth);
         this.$viewYear = $(this.options.templateYear);
+
+        this.$week = $('<span/>').addClass(this.classes.weekContent);
+        var weekTitle = $('<span/>')
+            .addClass(this.classes.weekTitle)
+            .text(this.options.weekText);
+
+        this.$viewWeek
+            .append(this.$week)
+            .append(weekTitle);
 
         this.$form = $(this.options.templateForm);
         
         this.$next = $(this.options.templateNext);
         this.$prev = $(this.options.templatePrev);
-        this.$month = $('<span/>', {class: this.classes.month});
-        this.$year = $('<span/>', {class: this.classes.year});
-        this.$title = $('<div/>', {class: this.classes.header});
+        this.$month = $('<span/>').addClass(this.classes.month);
+        this.$year = $('<span/>').addClass(this.classes.year);
+        this.$title = $('<div/>').addClass(this.classes.header);
 
         this.$title
             .append(this.$month)
@@ -2009,7 +2043,13 @@
             .append(this.$header)
             .append(this.$content)
             .append(this.$submitField);
-        
+
+        if(this.browser.chrome){
+            this.$element
+                .closest(this.$parent)
+                .addClass(this.classes.active);
+        }
+
         this.$element
             .parents(this.$parent)
             .on('click', $.proxy(this.show, this));
@@ -2020,19 +2060,47 @@
     };
 
     Datepicker.prototype.submit = function() {
+        this.updateView();
+        var value = this.result.join('-');
+        this.$element
+            .val(value)
+            .change();
         this.hide();
     };
 
     Datepicker.prototype.updateView = function(){
-        this.$viewDayL.text(this.day.letter);
-        this.$viewDayN.text(this.day.number);
-        this.$viewMonth.text(this.month.letter.substring(0, 3));
-        this.$viewYear.text(this.year);
+        this.result = new Array();
+
+        if(this.type !== 'time') {
+            this.$viewYear.text(this.year);
+            this.viewContent.year = this.$viewYear;
+            this.result.push(this.year);
+
+            if(this.type !== 'month' && this.type !== 'date' && this.type !== 'datetime') {
+                this.$week.text(this.week);
+                this.viewContent.week = this.$viewWeek;
+                this.result.push('W' + this.week);
+            }
+
+            if(this.type !== 'week') {
+                this.$viewMonth.text(this.month.letter.substring(0, 3) + '.');
+                this.viewContent.month = this.$viewMonth;
+                this.result.push(('0' + (this.month.number + 1)).slice(-2));
+            }
+
+            if(this.type !== 'month' && this.type !== 'week') {
+                this.$viewDayL.text(this.day.letter);
+                this.viewContent.dayL = this.$viewDayL;
+                this.$viewDayN.text(this.day.number);
+                this.viewContent.dayN = this.$viewDayN;
+                this.result.push(('0' + this.day.number).slice(-2));
+            }
+        }
     };
 
     Datepicker.prototype.updateHeader = function(month, year){
-        this.updateYear(year);
         this.updateMonth(month);
+        this.updateYear(year);
     };
 
     Datepicker.prototype.updateYear = function(year){
@@ -2043,15 +2111,22 @@
     Datepicker.prototype.updateMonth = function(month){
         this.month.number = month;
         this.month.letter = this.options.month[month];
-        this.$month.text(this.month.letter);
+        this.$month.text(this.options.month[month]);
     };
 
-    Datepicker.prototype.updateCalendar = function(){
-        
+    Datepicker.prototype.updateDay = function(day, month, year){
+        var d = new Date(year, month, day);
+
+        this.day.number = day;
+        this.day.letter = this.options.month[d.getDay()];
     };
 
     Datepicker.prototype.updateTime = function(){
 
+    };
+
+    Datepicker.prototype.updateCalendar = function(){
+        
     };
 
     Datepicker.prototype.createForm = function(){
@@ -2066,6 +2141,35 @@
 
     };
 
+    Datepicker.prototype.createWeekDays = function(){
+
+    };
+
+    Datepicker.prototype.createCalendar = function(month, year){
+        var d = new Date( year, month + 1, 0),
+            monthLength = d.getDate(),
+            firstDay = new Date( year, month, 1),
+            day = 1,
+            that = this,
+            today = month === this.today.getMonth() && year === this.today.getFullYear() && day === this.today.getDate(),
+            selected = month === this.currentDay.getMonth() && year === this.currentDay.getFullYear() && day === this.currentDay.getDate();
+    };
+
+    Datepicker.prototype.getWeekNumber = function(d) {
+        // Copy date so don't modify original
+        d = new Date(+d);
+        d.setHours(0,0,0);
+        // Set to nearest Thursday: current date + 4 - current day number
+        // Make Sunday's day number 7
+        d.setDate(d.getDate() + 4 - (d.getDay()||7));
+        // Get first day of year
+        var yearStart = new Date(d.getFullYear(),0,1);
+        // Calculate full weeks to nearest Thursday
+        var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+        // Return array of year and week number
+        return weekNo;
+    };
+
     Datepicker.prototype.next = function(){
         var month = this.month.number,
             year = this.year;
@@ -2078,7 +2182,6 @@
         }
 
         this.updateHeader(month, year);
-        this.updateView();
     };
 
     Datepicker.prototype.prev = function(){
@@ -2093,21 +2196,6 @@
         }
 
         this.updateHeader(month, year);
-        this.updateView();
-    };
-
-    Datepicker.prototype.createWeekDays = function(){
-
-    };
-
-    Datepicker.prototype.createDays = function(month, year){
-        var d = new Date( year, month + 1, 0),
-            monthLength = d.getDate(),
-            firstDay = new Date( year, month, 1),
-            day = 1,
-            that = this,
-            today = month === this.today.getMonth() && year === this.today.getFullYear() && day === this.today.getDate(),
-            selected = month === this.currentDay.getMonth() && year === this.currentDay.getFullYear() && day === this.currentDay.getDate();
     };
 
     Datepicker.prototype.getValue = function(e){
@@ -2129,7 +2217,7 @@
         this.$element.off('click', $.proxy(this.show, this));
 
         this.updateView();
-        this.options.createView(this.$viewDayL, this.$viewDayN, this.$viewMonth, this.$viewYear, this.$view);
+        this.options.createView(this.viewContent, this.$view);
         this.createForm();
 
         this.$datepick
@@ -2880,7 +2968,8 @@
         progress: 'text-field--progressbar',
         strong: 'text-field--progressbar__success',
         danger: 'text-field--progressbar__danger',
-        modules: 'switch strenght',
+        showHide: true,
+        strenght: true,
         password: 'text-field--password'
     });
 
@@ -2889,18 +2978,13 @@
     Password.prototype.constructor = Password;
 
     Password.prototype.event = function (options) {
-        this.options        = this.getOptions(options);
-        var modules    = this.options.modules.split(' ');
+        this.options = this.getOptions(options);
 
-        for (var i = modules.length; i--;) {
-            var module = modules[i];
-
-            if (module == 'switch') {
-                this.switch();
-            }
-            if (module == 'strenght') {
-                this.strenght();
-            }
+        if (this.options.showHide) {
+            this.showHide();
+        }
+        if (this.options.strenght) {
+            this.strenght();
         }
     };
 
@@ -2908,7 +2992,7 @@
         return Password.DEFAULTS
     };
 
-    Password.prototype.switch = function(){
+    Password.prototype.showHide = function(){
         this.$wrapper = this.addAddon();
 
         this.$switch = this.options.templateSwitch;
@@ -4555,8 +4639,8 @@
 
                 for (var j = 0; j < groups[group].data.length; j++) {
                     var separator = (groups[group].data[j].name) ? detailSeparator : '';
-                    element.append($('<div></div>').addClass(classes.detailInnerRow).append($('<div></div>').addClass(classes.detailInnerName)
-                        .append(groups[group].data[j].name + separator)).append($('<div></div>').addClass(classes.detailInnerValue)
+                    element.append($('<div/>').addClass(classes.detailInnerRow).append($('<div/>').addClass(classes.detailInnerName)
+                        .append(groups[group].data[j].name + separator)).append($('<div/>').addClass(classes.detailInnerValue)
                         .attr('data-bind-value', groups[group].data[j].bindName).append(groups[group].data[j].display)));
                 }
             }
@@ -5225,9 +5309,7 @@
     };
 
     Select.prototype.addSearch = function () {
-        var $searchWrapper = $('<div/>', {
-                class: this.classes.search
-            });
+        var $searchWrapper = $('<div/>').addClass(this.classes.search);
 
         this.$list.append($searchWrapper);
 
@@ -5254,13 +5336,11 @@
     };
 
     Select.prototype.addList = function () {
-        this.$listContainer = $('<div/>', {
-            class: this.classes.options
-        }).appendTo(this.$list);
+        this.$listContainer = $('<div/>')
+            .addClass(this.classes.options)
+            .appendTo(this.$list);
 
-        this.$fields = $('<ul/>', {
-            class: this.classes.selectList
-        });
+        this.$fields = $('<ul/>').addClass(this.classes.selectList);
 
         var $options = this.$element.find('option'),
             that = this;
@@ -5278,12 +5358,8 @@
     Select.prototype.addGroups = function (index) {
         if (this.optionData[index].group !== null) {
             if (this.optionData[index].groupIndex !== this.groupIndex) {
-                this.groupField[this.optionData[index].groupIndex] = $('<li/>', {
-                    class: this.classes.selectOptionGroup
-                });
-                this.group[this.optionData[index].groupIndex] = $('<ul/>', {
-                    class: this.classes.selectList
-                });
+                this.groupField[this.optionData[index].groupIndex] = $('<li/>').addClass(this.classes.selectOptionGroup);
+                this.group[this.optionData[index].groupIndex] = $('<ul/>').addClass(this.classes.selectList);
 
                 this.groupIndex = this.optionData[index].groupIndex;
 
@@ -5314,9 +5390,9 @@
     };
 
     Select.prototype.addField = function (gptindex, index, $parent) {
-        this.field[index] = $('<li/>', {
-            class: this.classes.selectOption
-        }).text(this.optionData[index].name);
+        this.field[index] = $('<li/>')
+            .addClass(this.classes.selectOption)
+            .text(this.optionData[index].name);
 
         if(this.optionData[index].active) {
             this.field[index].addClass(this.classes.selected);
@@ -5360,12 +5436,8 @@
     };
 
     Select.prototype.addValue = function(data, index) {
-        var $resultContainer = $('<div/>', {
-                class : this.classes.resultContainer
-            }),
-            $resultContent = $('<span/>', {
-                class : this.classes.resultContent
-            }),
+        var $resultContainer = $('<div/>').addClass(this.classes.resultContainer),
+            $resultContent = $('<span/>').addClass(this.classes.resultContent),
             $close = $(this.options.templateClose);
 
         $resultContent.text(data.name);
@@ -5508,9 +5580,9 @@
             end = start + params.length,
             hightLightText = str.slice(start, end);
 
-        this.hightLightContent = $('<span/>', {
-            class: that.classes.hightLightContent
-        }).text(hightLightText);
+        this.hightLightContent = $('<span/>')
+            .addClass(that.classes.hightLightContent)
+            .text(hightLightText);
 
         this.field[index].html(str.replace(hightLightText, this.hightLightContent.get(0).outerHTML));
     };
@@ -5579,10 +5651,9 @@
         if(this.options.animate)
             this.$container.addClass('animate');
 
-        this.$list = $('<div/>', {
-            class: this.classes.list,
-            id: this.id
-        });
+        this.$list = $('<div/>')
+            .addClass(this.classes.list)
+            .attr('id', this.id);
 
         this.addSearch();
         this.addList();

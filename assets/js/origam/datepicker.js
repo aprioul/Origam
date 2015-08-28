@@ -29,6 +29,7 @@
         templateView: '<div class="origam-datepick--view"></div>',
         templateDayL: '<div class="origam-datepick--view__dayL"></div>',
         templateDayN: '<div class="origam-datepick--view__dayN"></div>',
+        templateWeek: '<div class="origam-datepick--view__week"></div>',
         templateMonth: '<div class="origam-datepick--view__month"></div>',
         templateYear: '<div class="origam-datepick--view__year"></div>',
         templateForm: '<div class="origam-datepick--calendar"></div>',
@@ -45,12 +46,15 @@
             addonsRight: 'text-field--addons right',
             header: 'calendar-header--title',
             month: 'calendar-header--title__month',
-            year: 'calendar-header--title__year'
+            year: 'calendar-header--title__year',
+            weekTitle: 'view-week--title',
+            weekContent: 'view-week--content'
         },
         submittext: 'OK',
         startdate: '',
         enddate: '',
         startIn : 1,
+        weekText: 'Week',
         weekday: {
             0: "Sunday",
             1: "Monday",
@@ -75,12 +79,25 @@
             11: "December"
         },
         type: 'date',
-        createView: function ($dayLetter, $dayNumber, $month, $year, $container) {
-            $container
-                .append($dayLetter)
-                .append($month)
-                .append($dayNumber)
-                .append($year);
+        createView: function (content, $container) {
+            if(content.time){
+                $container.append(content.time);
+            }
+            if(content.dayL){
+                $container.append(content.dayL);
+            }
+            if(content.month){
+                $container.append(content.month);
+            }
+            if(content.dayN){
+                $container.append(content.dayN);
+            }
+            if(content.week){
+                $container.append(content.week);
+            }
+            if(content.year){
+                $container.append(content.year);
+            }
         }
     });
 
@@ -92,7 +109,7 @@
         this.options            = this.getOptions(options);
         this.field              = new Array();
         this.row                = new Array();
-        this.options.type       = this.$element.attr('type') && this.$element.attr('type')!== 'text' ? this.$element.attr('type') : this.options.type;
+        this.type               = this.$element.attr('type') && this.$element.attr('type')!== 'text' ? this.$element.attr('type') : this.options.type;
         this.lang               = navigator.language || navigator.userLanguage;
         this.date               = this.options.startdate.length !== 0 ? new Date(this.options.startdate) : this.$element.val() ? this.$element.val() : new Date();
         this.today              = new Date();
@@ -100,22 +117,22 @@
         this.seconds            = this.date.getSeconds();
         this.minutes            = this.date.getMinutes();
         this.hours              = this.date.getHours();
+        this.day                = new Array();
+        this.day.letter         = this.options.weekday[this.date.getDay()];
+        this.day.number         = this.date.getDate();
+        this.week               = this.getWeekNumber(this.date);
         this.month              = new Array();
         this.month.letter       = this.options.month[this.date.getMonth()];
         this.month.number       = this.date.getMonth();
         this.year               = this.date.getFullYear();
-        this.day                = new Array();
-        this.day.letter         = this.options.weekday[this.date.getDay()];
-        this.day.number         = this.date.getDate();
-        this.weekDay            = new Array();
-
+        this.viewContent        = new Array();
 
         this.$overlay = $(this.options.templateOverlay);
-        this.$element.data('origam-'+ this.options.type +'pickId', this.id);
+        this.$element.data('origam-'+ this.type +'pickId', this.id);
 
         this.$datepick = $(this.options.templateWrapper)
             .attr('id', this.id)
-            .addClass('origam-datepick--' + this.options.type);
+            .addClass('origam-datepick--' + this.type);
 
         this.$submitField = $(this.options.templateSubmit).attr('data-target', '#' + this.id);
 
@@ -123,16 +140,26 @@
 
         this.$viewDayL = $(this.options.templateDayL);
         this.$viewDayN = $(this.options.templateDayN);
+        this.$viewWeek = $(this.options.templateWeek);
         this.$viewMonth = $(this.options.templateMonth);
         this.$viewYear = $(this.options.templateYear);
+
+        this.$week = $('<span/>').addClass(this.classes.weekContent);
+        var weekTitle = $('<span/>')
+            .addClass(this.classes.weekTitle)
+            .text(this.options.weekText);
+
+        this.$viewWeek
+            .append(this.$week)
+            .append(weekTitle);
 
         this.$form = $(this.options.templateForm);
         
         this.$next = $(this.options.templateNext);
         this.$prev = $(this.options.templatePrev);
-        this.$month = $('<span/>', {class: this.classes.month});
-        this.$year = $('<span/>', {class: this.classes.year});
-        this.$title = $('<div/>', {class: this.classes.header});
+        this.$month = $('<span/>').addClass(this.classes.month);
+        this.$year = $('<span/>').addClass(this.classes.year);
+        this.$title = $('<div/>').addClass(this.classes.header);
 
         this.$title
             .append(this.$month)
@@ -150,7 +177,13 @@
             .append(this.$header)
             .append(this.$content)
             .append(this.$submitField);
-        
+
+        if(this.browser.chrome){
+            this.$element
+                .closest(this.$parent)
+                .addClass(this.classes.active);
+        }
+
         this.$element
             .parents(this.$parent)
             .on('click', $.proxy(this.show, this));
@@ -161,19 +194,47 @@
     };
 
     Datepicker.prototype.submit = function() {
+        this.updateView();
+        var value = this.result.join('-');
+        this.$element
+            .val(value)
+            .change();
         this.hide();
     };
 
     Datepicker.prototype.updateView = function(){
-        this.$viewDayL.text(this.day.letter);
-        this.$viewDayN.text(this.day.number);
-        this.$viewMonth.text(this.month.letter.substring(0, 3));
-        this.$viewYear.text(this.year);
+        this.result = new Array();
+
+        if(this.type !== 'time') {
+            this.$viewYear.text(this.year);
+            this.viewContent.year = this.$viewYear;
+            this.result.push(this.year);
+
+            if(this.type !== 'month' && this.type !== 'date' && this.type !== 'datetime') {
+                this.$week.text(this.week);
+                this.viewContent.week = this.$viewWeek;
+                this.result.push('W' + this.week);
+            }
+
+            if(this.type !== 'week') {
+                this.$viewMonth.text(this.month.letter.substring(0, 3) + '.');
+                this.viewContent.month = this.$viewMonth;
+                this.result.push(('0' + (this.month.number + 1)).slice(-2));
+            }
+
+            if(this.type !== 'month' && this.type !== 'week') {
+                this.$viewDayL.text(this.day.letter);
+                this.viewContent.dayL = this.$viewDayL;
+                this.$viewDayN.text(this.day.number);
+                this.viewContent.dayN = this.$viewDayN;
+                this.result.push(('0' + this.day.number).slice(-2));
+            }
+        }
     };
 
     Datepicker.prototype.updateHeader = function(month, year){
-        this.updateYear(year);
         this.updateMonth(month);
+        this.updateYear(year);
     };
 
     Datepicker.prototype.updateYear = function(year){
@@ -184,15 +245,22 @@
     Datepicker.prototype.updateMonth = function(month){
         this.month.number = month;
         this.month.letter = this.options.month[month];
-        this.$month.text(this.month.letter);
+        this.$month.text(this.options.month[month]);
     };
 
-    Datepicker.prototype.updateCalendar = function(){
-        
+    Datepicker.prototype.updateDay = function(day, month, year){
+        var d = new Date(year, month, day);
+
+        this.day.number = day;
+        this.day.letter = this.options.month[d.getDay()];
     };
 
     Datepicker.prototype.updateTime = function(){
 
+    };
+
+    Datepicker.prototype.updateCalendar = function(){
+        
     };
 
     Datepicker.prototype.createForm = function(){
@@ -207,6 +275,35 @@
 
     };
 
+    Datepicker.prototype.createWeekDays = function(){
+
+    };
+
+    Datepicker.prototype.createCalendar = function(month, year){
+        var d = new Date( year, month + 1, 0),
+            monthLength = d.getDate(),
+            firstDay = new Date( year, month, 1),
+            day = 1,
+            that = this,
+            today = month === this.today.getMonth() && year === this.today.getFullYear() && day === this.today.getDate(),
+            selected = month === this.currentDay.getMonth() && year === this.currentDay.getFullYear() && day === this.currentDay.getDate();
+    };
+
+    Datepicker.prototype.getWeekNumber = function(d) {
+        // Copy date so don't modify original
+        d = new Date(+d);
+        d.setHours(0,0,0);
+        // Set to nearest Thursday: current date + 4 - current day number
+        // Make Sunday's day number 7
+        d.setDate(d.getDate() + 4 - (d.getDay()||7));
+        // Get first day of year
+        var yearStart = new Date(d.getFullYear(),0,1);
+        // Calculate full weeks to nearest Thursday
+        var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+        // Return array of year and week number
+        return weekNo;
+    };
+
     Datepicker.prototype.next = function(){
         var month = this.month.number,
             year = this.year;
@@ -219,7 +316,6 @@
         }
 
         this.updateHeader(month, year);
-        this.updateView();
     };
 
     Datepicker.prototype.prev = function(){
@@ -234,21 +330,6 @@
         }
 
         this.updateHeader(month, year);
-        this.updateView();
-    };
-
-    Datepicker.prototype.createWeekDays = function(){
-
-    };
-
-    Datepicker.prototype.createDays = function(month, year){
-        var d = new Date( year, month + 1, 0),
-            monthLength = d.getDate(),
-            firstDay = new Date( year, month, 1),
-            day = 1,
-            that = this,
-            today = month === this.today.getMonth() && year === this.today.getFullYear() && day === this.today.getDate(),
-            selected = month === this.currentDay.getMonth() && year === this.currentDay.getFullYear() && day === this.currentDay.getDate();
     };
 
     Datepicker.prototype.getValue = function(e){
@@ -270,7 +351,7 @@
         this.$element.off('click', $.proxy(this.show, this));
 
         this.updateView();
-        this.options.createView(this.$viewDayL, this.$viewDayN, this.$viewMonth, this.$viewYear, this.$view);
+        this.options.createView(this.viewContent, this.$view);
         this.createForm();
 
         this.$datepick

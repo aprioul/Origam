@@ -66,6 +66,16 @@
         this.activate           = false;
         this.id                 = this.getUID(8);
 
+        var userAgent = navigator.userAgent.toLowerCase();
+
+        this.browser = {
+            chrome: /chrome/.test( userAgent ),
+            safari: /webkit/.test( userAgent )&& !/chrome/.test( userAgent ),
+            opera: /opera/.test( userAgent ),
+            msie: /msie/.test( userAgent ) && !/opera/.test( userAgent ),
+            mozilla: /mozilla/.test( userAgent ) && !/(compatible|webkit)/.test( userAgent )
+        };
+
         this.$element
             .parents(this.$parent)
             .addClass(this.options.parentClass);
@@ -184,7 +194,7 @@
     };
 
     Input.prototype.valChange = function (e) {
-        if($(e.currentTarget).val() != ''){
+        if($(e.currentTarget).val() != '' || e.currentTarget.value != ''){
             $(e.currentTarget)
                 .closest(this.$parent)
                 .addClass(this.classes.active);

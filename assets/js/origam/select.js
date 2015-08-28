@@ -175,9 +175,7 @@
     };
 
     Select.prototype.addSearch = function () {
-        var $searchWrapper = $('<div/>', {
-                class: this.classes.search
-            });
+        var $searchWrapper = $('<div/>').addClass(this.classes.search);
 
         this.$list.append($searchWrapper);
 
@@ -204,13 +202,11 @@
     };
 
     Select.prototype.addList = function () {
-        this.$listContainer = $('<div/>', {
-            class: this.classes.options
-        }).appendTo(this.$list);
+        this.$listContainer = $('<div/>')
+            .addClass(this.classes.options)
+            .appendTo(this.$list);
 
-        this.$fields = $('<ul/>', {
-            class: this.classes.selectList
-        });
+        this.$fields = $('<ul/>').addClass(this.classes.selectList);
 
         var $options = this.$element.find('option'),
             that = this;
@@ -228,12 +224,8 @@
     Select.prototype.addGroups = function (index) {
         if (this.optionData[index].group !== null) {
             if (this.optionData[index].groupIndex !== this.groupIndex) {
-                this.groupField[this.optionData[index].groupIndex] = $('<li/>', {
-                    class: this.classes.selectOptionGroup
-                });
-                this.group[this.optionData[index].groupIndex] = $('<ul/>', {
-                    class: this.classes.selectList
-                });
+                this.groupField[this.optionData[index].groupIndex] = $('<li/>').addClass(this.classes.selectOptionGroup);
+                this.group[this.optionData[index].groupIndex] = $('<ul/>').addClass(this.classes.selectList);
 
                 this.groupIndex = this.optionData[index].groupIndex;
 
@@ -264,9 +256,9 @@
     };
 
     Select.prototype.addField = function (gptindex, index, $parent) {
-        this.field[index] = $('<li/>', {
-            class: this.classes.selectOption
-        }).text(this.optionData[index].name);
+        this.field[index] = $('<li/>')
+            .addClass(this.classes.selectOption)
+            .text(this.optionData[index].name);
 
         if(this.optionData[index].active) {
             this.field[index].addClass(this.classes.selected);
@@ -310,12 +302,8 @@
     };
 
     Select.prototype.addValue = function(data, index) {
-        var $resultContainer = $('<div/>', {
-                class : this.classes.resultContainer
-            }),
-            $resultContent = $('<span/>', {
-                class : this.classes.resultContent
-            }),
+        var $resultContainer = $('<div/>').addClass(this.classes.resultContainer),
+            $resultContent = $('<span/>').addClass(this.classes.resultContent),
             $close = $(this.options.templateClose);
 
         $resultContent.text(data.name);
@@ -458,9 +446,9 @@
             end = start + params.length,
             hightLightText = str.slice(start, end);
 
-        this.hightLightContent = $('<span/>', {
-            class: that.classes.hightLightContent
-        }).text(hightLightText);
+        this.hightLightContent = $('<span/>')
+            .addClass(that.classes.hightLightContent)
+            .text(hightLightText);
 
         this.field[index].html(str.replace(hightLightText, this.hightLightContent.get(0).outerHTML));
     };
@@ -529,10 +517,9 @@
         if(this.options.animate)
             this.$container.addClass('animate');
 
-        this.$list = $('<div/>', {
-            class: this.classes.list,
-            id: this.id
-        });
+        this.$list = $('<div/>')
+            .addClass(this.classes.list)
+            .attr('id', this.id);
 
         this.addSearch();
         this.addList();

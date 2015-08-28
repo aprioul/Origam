@@ -138,7 +138,8 @@
         progress: 'text-field--progressbar',
         strong: 'text-field--progressbar__success',
         danger: 'text-field--progressbar__danger',
-        modules: 'switch strenght',
+        showHide: true,
+        strenght: true,
         password: 'text-field--password'
     });
 
@@ -147,18 +148,13 @@
     Password.prototype.constructor = Password;
 
     Password.prototype.event = function (options) {
-        this.options        = this.getOptions(options);
-        var modules    = this.options.modules.split(' ');
+        this.options = this.getOptions(options);
 
-        for (var i = modules.length; i--;) {
-            var module = modules[i];
-
-            if (module == 'switch') {
-                this.switch();
-            }
-            if (module == 'strenght') {
-                this.strenght();
-            }
+        if (this.options.showHide) {
+            this.showHide();
+        }
+        if (this.options.strenght) {
+            this.strenght();
         }
     };
 
@@ -166,7 +162,7 @@
         return Password.DEFAULTS
     };
 
-    Password.prototype.switch = function(){
+    Password.prototype.showHide = function(){
         this.$wrapper = this.addAddon();
 
         this.$switch = this.options.templateSwitch;

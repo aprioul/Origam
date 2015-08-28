@@ -69,8 +69,8 @@
 
                 for (var j = 0; j < groups[group].data.length; j++) {
                     var separator = (groups[group].data[j].name) ? detailSeparator : '';
-                    element.append($('<div></div>').addClass(classes.detailInnerRow).append($('<div></div>').addClass(classes.detailInnerName)
-                        .append(groups[group].data[j].name + separator)).append($('<div></div>').addClass(classes.detailInnerValue)
+                    element.append($('<div/>').addClass(classes.detailInnerRow).append($('<div/>').addClass(classes.detailInnerName)
+                        .append(groups[group].data[j].name + separator)).append($('<div/>').addClass(classes.detailInnerValue)
                         .attr('data-bind-value', groups[group].data[j].bindName).append(groups[group].data[j].display)));
                 }
             }

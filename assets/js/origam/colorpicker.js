@@ -273,7 +273,7 @@
         this.$selectorIndic = $(this.options.templateColorSelector);
 
         this.$hue = $(this.options.templateHueSelector);
-        this.$huebar = $(this.options.templateHue);
+        this.$huebar = $(this.options.templateHue).append(this.$hue);
 
         this.options.placement = 'before';
         this.$wrapper = this.addAddon();
@@ -281,9 +281,7 @@
 
         this.$color = $(this.options.templateColorElement);
 
-        this.$output = $('<div/>', {
-            class: this.classes.field
-        });
+        this.$output = $('<div/>').addClass(this.classes.field);
 
         this.$element
             .after(this.$output)
@@ -292,7 +290,7 @@
             .on('click', $.proxy(this.show, this))
             .prepend(this.$color);
 
-        $(w).on('resize', $.proxy(this.moveColorpick, this));
+        $(w).on('resize', $.proxy(this.moveModal, this));
     };
 
     Colorpicker.prototype.getDefaults = function () {
@@ -321,6 +319,7 @@
             ngIE = ( isIE && IEver < 10 ),
             stops = ['#ff0000', '#ff0080', '#ff00ff', '#8000ff', '#0000ff', '#0080ff', '#00ffff', '#00ff80', '#00ff00', '#80ff00', '#ffff00', '#ff8000', '#ff0000'];
 
+        this.$huebar.html('');
 
         if (ngIE) {
             var i;
@@ -336,8 +335,7 @@
 
         this.$huebar
             .on('mousedown touchstart', $.proxy(this.eventHue, this))
-            .height(this.options.height)
-            .append(this.$hue);
+            .height(this.options.height);
     };
 
     Colorpicker.prototype.createForm = function() {
@@ -371,8 +369,7 @@
                 $wrapper.addClass('text-field--disabled');
             }
             else {
-                $field
-                    .attr('max', this.fields[i]['max']);
+                $field.attr('max', this.fields[i]['max']);
             }
 
             this.field[count] = $field
@@ -616,7 +613,7 @@
         }
     };
 
-    Colorpicker.prototype.moveColorpick = function (e) {
+    Colorpicker.prototype.moveModal = function (e) {
         var viewportHeight  = $(window).height(),
             viewportWidtht  = $(window).width();
 

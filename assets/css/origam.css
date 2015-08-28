@@ -20681,15 +20681,6 @@ input[type=month]::-webkit-inner-spin-button, input[type=month]::-webkit-calenda
   -moz-appearance: none;
   -webkit-appearance: none;
 }
-input[type=month]::-webkit-datetime-edit-text, input[type=month]::-webkit-time-edit-text, input[type=time]::-webkit-datetime-edit-text, input[type=time]::-webkit-time-edit-text, input[type=datetime]::-webkit-datetime-edit-text, input[type=datetime]::-webkit-time-edit-text, input[type=week]::-webkit-datetime-edit-text, input[type=week]::-webkit-time-edit-text, input[type=date]::-webkit-datetime-edit-text, input[type=date]::-webkit-time-edit-text {
-  color: transparent;
-}
-input[type=month]::-webkit-datetime-edit-ampm-field, input[type=month]::-webkit-datetime-edit-millisecond-field, input[type=month]::-webkit-datetime-edit-second-field, input[type=month]::-webkit-datetime-edit-minute-field, input[type=month]::-webkit-datetime-edit-hour-field, input[type=month]::-webkit-datetime-edit-day-field, input[type=month]::-webkit-datetime-edit-week-field, input[type=month]::-webkit-datetime-edit-month-field, input[type=month]::-webkit-datetime-edit-year-field, input[type=time]::-webkit-datetime-edit-ampm-field, input[type=time]::-webkit-datetime-edit-millisecond-field, input[type=time]::-webkit-datetime-edit-second-field, input[type=time]::-webkit-datetime-edit-minute-field, input[type=time]::-webkit-datetime-edit-hour-field, input[type=time]::-webkit-datetime-edit-day-field, input[type=time]::-webkit-datetime-edit-week-field, input[type=time]::-webkit-datetime-edit-month-field, input[type=time]::-webkit-datetime-edit-year-field, input[type=datetime]::-webkit-datetime-edit-ampm-field, input[type=datetime]::-webkit-datetime-edit-millisecond-field, input[type=datetime]::-webkit-datetime-edit-second-field, input[type=datetime]::-webkit-datetime-edit-minute-field, input[type=datetime]::-webkit-datetime-edit-hour-field, input[type=datetime]::-webkit-datetime-edit-day-field, input[type=datetime]::-webkit-datetime-edit-week-field, input[type=datetime]::-webkit-datetime-edit-month-field, input[type=datetime]::-webkit-datetime-edit-year-field, input[type=week]::-webkit-datetime-edit-ampm-field, input[type=week]::-webkit-datetime-edit-millisecond-field, input[type=week]::-webkit-datetime-edit-second-field, input[type=week]::-webkit-datetime-edit-minute-field, input[type=week]::-webkit-datetime-edit-hour-field, input[type=week]::-webkit-datetime-edit-day-field, input[type=week]::-webkit-datetime-edit-week-field, input[type=week]::-webkit-datetime-edit-month-field, input[type=week]::-webkit-datetime-edit-year-field, input[type=date]::-webkit-datetime-edit-ampm-field, input[type=date]::-webkit-datetime-edit-millisecond-field, input[type=date]::-webkit-datetime-edit-second-field, input[type=date]::-webkit-datetime-edit-minute-field, input[type=date]::-webkit-datetime-edit-hour-field, input[type=date]::-webkit-datetime-edit-day-field, input[type=date]::-webkit-datetime-edit-week-field, input[type=date]::-webkit-datetime-edit-month-field, input[type=date]::-webkit-datetime-edit-year-field {
-  background-color: transparent;
-}
-input[type=month]::-webkit-datetime-edit-ampm-field:not([aria-valuenow]), input[type=month]::-webkit-datetime-edit-millisecond-field:not([aria-valuenow]), input[type=month]::-webkit-datetime-edit-second-field:not([aria-valuenow]), input[type=month]::-webkit-datetime-edit-minute-field:not([aria-valuenow]), input[type=month]::-webkit-datetime-edit-hour-field:not([aria-valuenow]), input[type=month]::-webkit-datetime-edit-day-field:not([aria-valuenow]), input[type=month]::-webkit-datetime-edit-week-field:not([aria-valuenow]), input[type=month]::-webkit-datetime-edit-month-field:not([aria-valuenow]), input[type=month]::-webkit-datetime-edit-year-field:not([aria-valuenow]), input[type=time]::-webkit-datetime-edit-ampm-field:not([aria-valuenow]), input[type=time]::-webkit-datetime-edit-millisecond-field:not([aria-valuenow]), input[type=time]::-webkit-datetime-edit-second-field:not([aria-valuenow]), input[type=time]::-webkit-datetime-edit-minute-field:not([aria-valuenow]), input[type=time]::-webkit-datetime-edit-hour-field:not([aria-valuenow]), input[type=time]::-webkit-datetime-edit-day-field:not([aria-valuenow]), input[type=time]::-webkit-datetime-edit-week-field:not([aria-valuenow]), input[type=time]::-webkit-datetime-edit-month-field:not([aria-valuenow]), input[type=time]::-webkit-datetime-edit-year-field:not([aria-valuenow]), input[type=datetime]::-webkit-datetime-edit-ampm-field:not([aria-valuenow]), input[type=datetime]::-webkit-datetime-edit-millisecond-field:not([aria-valuenow]), input[type=datetime]::-webkit-datetime-edit-second-field:not([aria-valuenow]), input[type=datetime]::-webkit-datetime-edit-minute-field:not([aria-valuenow]), input[type=datetime]::-webkit-datetime-edit-hour-field:not([aria-valuenow]), input[type=datetime]::-webkit-datetime-edit-day-field:not([aria-valuenow]), input[type=datetime]::-webkit-datetime-edit-week-field:not([aria-valuenow]), input[type=datetime]::-webkit-datetime-edit-month-field:not([aria-valuenow]), input[type=datetime]::-webkit-datetime-edit-year-field:not([aria-valuenow]), input[type=week]::-webkit-datetime-edit-ampm-field:not([aria-valuenow]), input[type=week]::-webkit-datetime-edit-millisecond-field:not([aria-valuenow]), input[type=week]::-webkit-datetime-edit-second-field:not([aria-valuenow]), input[type=week]::-webkit-datetime-edit-minute-field:not([aria-valuenow]), input[type=week]::-webkit-datetime-edit-hour-field:not([aria-valuenow]), input[type=week]::-webkit-datetime-edit-day-field:not([aria-valuenow]), input[type=week]::-webkit-datetime-edit-week-field:not([aria-valuenow]), input[type=week]::-webkit-datetime-edit-month-field:not([aria-valuenow]), input[type=week]::-webkit-datetime-edit-year-field:not([aria-valuenow]), input[type=date]::-webkit-datetime-edit-ampm-field:not([aria-valuenow]), input[type=date]::-webkit-datetime-edit-millisecond-field:not([aria-valuenow]), input[type=date]::-webkit-datetime-edit-second-field:not([aria-valuenow]), input[type=date]::-webkit-datetime-edit-minute-field:not([aria-valuenow]), input[type=date]::-webkit-datetime-edit-hour-field:not([aria-valuenow]), input[type=date]::-webkit-datetime-edit-day-field:not([aria-valuenow]), input[type=date]::-webkit-datetime-edit-week-field:not([aria-valuenow]), input[type=date]::-webkit-datetime-edit-month-field:not([aria-valuenow]), input[type=date]::-webkit-datetime-edit-year-field:not([aria-valuenow]) {
-  color: transparent;
-}
 
 /**
   * Datepicker
@@ -20784,8 +20775,8 @@ input[type=month]::-webkit-datetime-edit-ampm-field:not([aria-valuenow]), input[
   border-color: #d4d4d4;
 }
 
-.calendar-header--left,
-.calendar-header--right {
+.calendar-header--prev,
+.calendar-header--next {
   display: inline-block;
   width: 10%;
   height: 100%;
@@ -20797,8 +20788,8 @@ input[type=month]::-webkit-datetime-edit-ampm-field:not([aria-valuenow]), input[
   vertical-align: top;
   cursor: pointer;
 }
-.calendar-header--left:hover,
-.calendar-header--right:hover {
+.calendar-header--prev:hover,
+.calendar-header--next:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
@@ -20811,18 +20802,21 @@ input[type=month]::-webkit-datetime-edit-ampm-field:not([aria-valuenow]), input[
   text-align: center;
   vertical-align: top;
 }
+.calendar-header--title > * {
+  padding: 1px 5px;
+}
 
 /**
   * Calendar Content
   */
-.calendar-content--weekdays {
+.calendar-content--week {
   margin: 6px;
   color: #0196d1;
   border: 1px solid transparent;
   border-bottom-color: #0196d1;
 }
 
-.calendar-content--weekdays__day {
+.calendar-content--week__day {
   width: 14.28571%;
   display: inline-block;
   text-align: center;
@@ -22253,7 +22247,6 @@ a .badge:hover, a .badge:focus {
   margin-bottom: 20px;
   list-style: none;
   background-color: #ECEFF1;
-  border-radius: 4px;
 }
 .breadcrumb > li {
   display: inline-block;
@@ -22270,85 +22263,6 @@ a .badge:hover, a .badge:focus {
 /**
   * Pager
   */
-.goo-pager {
-  position: relative;
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.goo-pager--navigation {
-  position: relative;
-  text-align: center;
-  font-size: 0;
-  -webkit-filter: url("../filter/filter.html#goo");
-  filter: url("../filter/filter.html#goo");
-  -moz-transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-}
-
-.goo-pager--dot,
-.goo-pager--current {
-  position: relative;
-  display: inline-block;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  line-height: 32px;
-  background: #0196d1;
-  -moz-border-radius: 50%;
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
-  margin: 0 12px;
-  border: none;
-  outline: none;
-  font-size: 20px;
-  font-weight: bold;
-  color: #fff;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-.goo-pager--number {
-  display: block;
-  width: 100%;
-  height: 100%;
-  -moz-border-radius: 50%;
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
-  -moz-transform: scale(0.01, 0.01);
-  -ms-transform: scale(0.01, 0.01);
-  -webkit-transform: scale(0.01, 0.01);
-  transform: scale(0.01, 0.01);
-}
-
-.goo-pager--current {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.goo-pager--content {
-  height: 300px;
-}
-
-.goo-pager--item {
-  position: absolute;
-  left: 50%;
-  margin-left: -200px;
-  font-size: 0;
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
-  border-radius: 6px;
-  border: 7px solid #fff;
-}
-
-.goo-pager--item img {
-  position: relative;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=95);
-  opacity: 0.95;
-}
-
 /**
  * Back top top
  */
