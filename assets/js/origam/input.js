@@ -210,6 +210,7 @@
 
     Input.prototype.endFocus = function (e) {
         $(e.currentTarget)
+            .change()
             .closest(this.$parent)
             .removeClass(this.options.classes.focus);
     };

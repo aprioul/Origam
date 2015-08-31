@@ -117,8 +117,8 @@ input {
 .calendar-header--next {
   display: inline-block;
   @include size(10%,100%);
-  min-height: ($base-line-height * 1.5);
-  line-height: ($base-line-height * 1.5);
+  min-height: 60px;
+  line-height: 60px;
   text-align: center;
   @include font-size($font-size-large);
   vertical-align: top;
@@ -135,9 +135,6 @@ input {
   line-height: ($base-line-height * 1.5);
   text-align: center;
   vertical-align: top;
-  > * {
-    padding: $padding-xs-vertical $padding-xs-horizontal;
-  }
 }
 
 

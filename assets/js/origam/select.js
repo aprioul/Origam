@@ -34,6 +34,7 @@
         templateClose: '<div class="select-close"><i class="origamicon origamicon-close"></i></div>',
         selectorToggle: 'text-field--group__input',
         selectorSearch: '.text-field > .text-field--group',
+        arrow: true,
         classes: {
             focus: 'text-field--focused',
             active: 'text-field--active',
@@ -92,17 +93,19 @@
             $options = this.$element.find('option'),
             optData = [];
 
-        this.$element
-            .attr('data-id', this.id)
-            .hide()
-            .after(this.options.templateSelect);
-
-        this.$container = this.$element.next();
-
-        this.$container
+        this.$container = $(this.options.templateSelect)
             .attr('data-id', this.id)
             .addClass(that.classes.select)
             .addClass(this.classes.fixed);
+
+        if(this.$element.next().hasClass(that.classes.select)){
+            this.$element.next().remove();
+        }
+
+        this.$element
+            .attr('data-id', this.id)
+            .hide()
+            .after(this.$container);
 
         this.$label = this.$container.find('label');
         this.$label
@@ -117,8 +120,10 @@
         });
 
         this.optionData = optData;
-        
-        this.addDropdown();
+
+        if(this.options.arrow) {
+            this.addDropdown();
+        }
         this.bindSelector(this.$container);
     };
 
@@ -528,7 +533,9 @@
         this.$container
             .addClass('open');
 
-        this.removeDropdown();
+        if(that.options.arrow) {
+            this.removeDropdown();
+        }
         this.initHeight();
         this.calculHeight();
 
@@ -570,7 +577,9 @@
                 .detach()
                 .trigger('closed.origam.' + that.type)
                 .remove();
-            that.addDropdown();
+            if(that.options.arrow) {
+                that.addDropdown();
+            }
             setTimeout(function(){
                 if(that.options.animate)
                     that.$container.removeClass('animate');

@@ -630,6 +630,7 @@
             viewportWidtht  = $(window).width();
 
         this.activate = true;
+        this.mouseOnContainer = false;
         this.$element.off('click', $.proxy(this.show, this));
 
         this.createSelector();
@@ -715,6 +716,7 @@
                 .detach()
                 .trigger('closed.origam.' + that.type)
                 .remove();
+            that.$element.change();
         }
 
         $.support.transition && this.$colorpick.hasClass(animateClass)?
