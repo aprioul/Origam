@@ -45,7 +45,8 @@
             addonsLeft: 'text-field--addons left',
             addonsRight: 'text-field--addons right',
             header: 'calendar-header--title',
-            select: 'calendar-header--title__select',
+            month: 'calendar-header--title__month',
+            year: 'calendar-header--title__year',
             weekTitle: 'view-week--title',
             weekContent: 'view-week--content'
         },
@@ -54,7 +55,6 @@
         enddate: '',
         startIn : 1,
         weekText: 'Week',
-        plusminus: 10,
         weekday: {
             0: "Sunday",
             1: "Monday",
@@ -155,7 +155,21 @@
 
         this.$form = $(this.options.templateForm);
 
-        this.createHeader(this.month.number, this.year);
+        this.$next = $(this.options.templateNext);
+        this.$prev = $(this.options.templatePrev);
+        this.$month = $('<span/>').addClass(this.classes.month);
+        this.$year = $('<span/>').addClass(this.classes.year);
+        this.$title = $('<div/>').addClass(this.classes.header);
+
+        this.$title
+            .append(this.$month)
+            .append(this.$year);
+
+
+        this.$header = $(this.options.templateCalendarHeader)
+            .append(this.$prev)
+            .append(this.$title)
+            .append(this.$next);
 
         this.$content = $(this.options.templateCalendarContent);
 
@@ -163,6 +177,12 @@
             .append(this.$header)
             .append(this.$content)
             .append(this.$submitField);
+
+        if(this.browser.chrome){
+            this.$element
+                .closest(this.$parent)
+                .addClass(this.classes.active);
+        }
 
         this.$element
             .parents(this.$parent)
@@ -174,13 +194,15 @@
     };
 
     Datepicker.prototype.submit = function() {
-        this.updateData();
+        this.updateView();
         var value = this.result.join('-');
-        this.$element.val(value);
+        this.$element
+            .val(value)
+            .change();
         this.hide();
     };
 
-    Datepicker.prototype.updateData = function(){
+    Datepicker.prototype.updateView = function(){
         this.result = new Array();
 
         if(this.type !== 'time') {
@@ -210,32 +232,20 @@
         }
     };
 
-    Datepicker.prototype.getWeekNumber = function(d) {
-        // Copy date so don't modify original
-        d = new Date(+d);
-        d.setHours(0,0,0);
-        // Set to nearest Thursday: current date + 4 - current day number
-        // Make Sunday's day number 7
-        d.setDate(d.getDate() + 4 - (d.getDay()||7));
-        // Get first day of year
-        var yearStart = new Date(d.getFullYear(),0,1);
-        // Calculate full weeks to nearest Thursday
-        var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
-        // Return array of year and week number
-        return weekNo;
-    };
-
     Datepicker.prototype.updateHeader = function(month, year){
-
+        this.updateMonth(month);
+        this.updateYear(year);
     };
 
     Datepicker.prototype.updateYear = function(year){
         this.year = year;
+        this.$year.text(year);
     };
 
     Datepicker.prototype.updateMonth = function(month){
         this.month.number = month;
         this.month.letter = this.options.month[month];
+        this.$month.text(this.options.month[month]);
     };
 
     Datepicker.prototype.updateDay = function(day, month, year){
@@ -250,7 +260,7 @@
     };
 
     Datepicker.prototype.updateCalendar = function(){
-        
+
     };
 
     Datepicker.prototype.createForm = function(){
@@ -260,40 +270,9 @@
         this.$submitField
             .text(this.options.submittext)
             .on("click", $.proxy(this.submit, this));
-    };
 
-    Datepicker.prototype.createHeader = function(month, year){
-        this.$select = $('<select/>')
-            .addClass(this.classes.select)
-            .attr('data-form', 'select')
-            .attr('size', 6)
-            .attr('data-arrow', 'false');
+        this.updateHeader(this.month.number, this.year);
 
-        for(var i = -(this.options.plusminus); i < this.options.plusminus; i++){
-            var newYear = year + i;
-            for( var j=0; j < 11; j++) {
-                var option = $('<option/>')
-                    .attr('value', j + '/' + newYear)
-                    .text(this.options.month[j] + ' ' + newYear)
-                    .appendTo(this.$select);
-                if(j === month && newYear === year){
-                    this.updateMonth(month);
-                    this.updateYear(year);
-                    option.attr('selected', 'selected');
-                }
-            }
-        };
-        this.$next = $(this.options.templateNext);
-        this.$prev = $(this.options.templatePrev);
-
-        this.$title = $('<div/>')
-            .addClass(this.classes.header)
-            .append(this.$select);
-
-        this.$header = $(this.options.templateCalendarHeader)
-            .append(this.$prev)
-            .append(this.$title)
-            .append(this.$next);
     };
 
     Datepicker.prototype.createWeekDays = function(){
@@ -308,6 +287,21 @@
             that = this,
             today = month === this.today.getMonth() && year === this.today.getFullYear() && day === this.today.getDate(),
             selected = month === this.currentDay.getMonth() && year === this.currentDay.getFullYear() && day === this.currentDay.getDate();
+    };
+
+    Datepicker.prototype.getWeekNumber = function(d) {
+        // Copy date so don't modify original
+        d = new Date(+d);
+        d.setHours(0,0,0);
+        // Set to nearest Thursday: current date + 4 - current day number
+        // Make Sunday's day number 7
+        d.setDate(d.getDate() + 4 - (d.getDay()||7));
+        // Get first day of year
+        var yearStart = new Date(d.getFullYear(),0,1);
+        // Calculate full weeks to nearest Thursday
+        var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+        // Return array of year and week number
+        return weekNo;
     };
 
     Datepicker.prototype.next = function(){
@@ -354,10 +348,9 @@
             viewportWidtht  = $(window).width();
 
         this.activate = true;
-        this.mouseOnContainer = false;
         this.$element.off('click', $.proxy(this.show, this));
 
-        this.updateData();
+        this.updateView();
         this.options.createView(this.viewContent, this.$view);
         this.createForm();
 
@@ -381,8 +374,6 @@
                 'top':  (viewportHeight/2) - (this.$datepick.outerHeight()/2),
                 'left': (viewportWidtht/2) - (this.$datepick.outerWidth()/2)
             });
-
-        this.$select.select();
 
         this.bindSelector(this.$datepick);
 
