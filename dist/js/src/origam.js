@@ -3660,14 +3660,14 @@
         ],
         MinimumChars: 8,
         ScaleFactor: 1,
-        templateSwitch: '<span class="text-field--group__switchpass origamicon origamicon-eye"></span>',
+        templateShowhide: '<span class="text-field--group__switchpass origamicon origamicon-eye"></span>',
         templateStrenght: '<span class="text-field--progressbar text-field--progressbar__danger"></span>',
         show: 'origamicon-eye',
         hide: 'origamicon-eye-blocked',
         progress: 'text-field--progressbar',
         strong: 'text-field--progressbar__success',
         danger: 'text-field--progressbar__danger',
-        showHide: true,
+        showhide: true,
         strenght: true,
         password: 'text-field--password'
     });
@@ -3679,8 +3679,8 @@
     Password.prototype.event = function (options) {
         this.options = this.getOptions(options);
 
-        if (this.options.showHide) {
-            this.showHide();
+        if (this.options.showhide) {
+            this.showhide();
         }
         if (this.options.strenght) {
             this.strenght();
@@ -3691,10 +3691,10 @@
         return Password.DEFAULTS
     };
 
-    Password.prototype.showHide = function(){
+    Password.prototype.showhide = function(){
         this.$wrapper = this.addAddon();
 
-        this.$switch = this.options.templateSwitch;
+        this.$switch = this.options.templateShowhide;
 
         this.$wrapper.append(this.$switch);
         var $switch = this.$wrapper.children();
