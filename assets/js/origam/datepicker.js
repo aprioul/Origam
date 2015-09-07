@@ -53,15 +53,15 @@
             weekDay: 'calendar-content--week__day',
             days: 'calendar-content--days',
             day: 'calendar-content--days__day',
-            selected: 'calendar-content--selected',
-            today: 'calendar-content--today',
-            otherMonth: 'calendar-content--disable'
+            selected: 'calendar-content--days__selected',
+            today: 'calendar-content--days__today',
+            otherMonth: 'calendar-content--days__disable'
         },
         submittext: 'OK',
         startdate: '',
         enddate: '',
-        startIn : 1,
-        weekText: 'Week',
+        startin : 0,
+        weektext: 'Week',
         weekday: {
             0: "Sunday",
             1: "Monday",
@@ -153,7 +153,7 @@
         this.$week = $('<span/>').addClass(this.classes.weekContent);
         var weekTitle = $('<span/>')
             .addClass(this.classes.weekTitle)
-            .text(this.options.weekText);
+            .text(this.options.weektext);
 
         this.$viewWeek
             .append(this.$week)
@@ -161,29 +161,35 @@
 
         this.$form = $(this.options.templateForm);
 
-        this.$next = $(this.options.templateNext);
-        this.$prev = $(this.options.templatePrev);
-        this.$month = $('<span/>').addClass(this.classes.month);
-        this.$year = $('<span/>').addClass(this.classes.year);
-        this.$title = $('<div/>').addClass(this.classes.header);
+        if(this.type !== 'time') {
 
-        this.$title
-            .append(this.$month)
-            .append(this.$year);
+            this.$next = $(this.options.templateNext);
+            this.$prev = $(this.options.templatePrev);
+            this.$month = $('<span/>').addClass(this.classes.month);
+            this.$year = $('<span/>').addClass(this.classes.year);
+            this.$title = $('<div/>').addClass(this.classes.header);
 
-        this.$days = $('<div/>').addClass(this.classes.days);
-        this.$week = $('<div/>').addClass(this.classes.week);
+            this.$title
+                .append(this.$month)
+                .append(this.$year);
 
-        this.createWeekDays();
+            this.$header = $(this.options.templateCalendarHeader)
+                .append(this.$prev)
+                .append(this.$title)
+                .append(this.$next);
 
-        this.$content = $(this.options.templateCalendarContent)
-            .append(this.$week)
-            .append(this.$days);
+            if(this.type !== 'month') {
 
-        this.$header = $(this.options.templateCalendarHeader)
-            .append(this.$prev)
-            .append(this.$title)
-            .append(this.$next);
+                this.$days = $('<div/>').addClass(this.classes.days);
+                this.$week = $('<div/>').addClass(this.classes.week);
+
+                this.createWeekDays();
+
+                this.$content = $(this.options.templateCalendarContent)
+                    .append(this.$week)
+                    .append(this.$days);
+            }
+        }
 
         this.$form
             .append(this.$header)
@@ -227,7 +233,7 @@
             this.result.push(this.year);
 
             if(this.type !== 'month' && this.type !== 'date' && this.type !== 'datetime') {
-                this.$week.text(this.week);
+                this.$viewWeek.text(this.week);
                 this.viewContent.week = this.$viewWeek;
                 this.result.push('W' + this.week);
             }
@@ -245,31 +251,41 @@
                 this.viewContent.dayN = this.$viewDayN;
                 this.result.push(('0' + this.day.number).slice(-2));
             }
+        }else {
+            console.log('View Time');
         }
     };
 
-    Datepicker.prototype.updateHeader = function(month, year){
-        this.updateMonth(month);
-        this.updateYear(year);
-        this.updateCalendar(month, year);
+    Datepicker.prototype.update = function(day, month, year){
+        if(this.type !== 'time') {
+            this.updateYear(year);
+            this.updateMonth(month);
+            if(this.type !== 'month') {
+                this.updateDay(day, month, year)
+            }
+        }else {
+            console.log('Time');
+        }
     };
 
-    Datepicker.prototype.updateYear = function(year){
+    Datepicker.prototype.updateYear = function (year) {
         this.year = year;
         this.$year.text(year);
     };
 
-    Datepicker.prototype.updateMonth = function(month){
+    Datepicker.prototype.updateMonth = function (month) {
         this.month.number = month;
         this.month.letter = this.options.month[month];
         this.$month.text(this.options.month[month]);
     };
 
-    Datepicker.prototype.updateDay = function(day, month, year){
+    Datepicker.prototype.updateDay = function (day, month, year) {
         var d = new Date(year, month, day);
 
         this.day.number = day;
-        this.day.letter = this.options.month[d.getDay()];
+        this.day.letter = this.options.weekday[d.getDay()];
+
+        this.updateCalendar(month, year);
     };
 
     Datepicker.prototype.updateTime = function(){
@@ -287,7 +303,7 @@
             var classes = that.classes.day;
             classes += value.selected ? ' ' + that.classes.selected : '';
             classes += value.today ? ' ' + that.classes.today : '';
-            classes += value.selectedMonth ? ' ' + that.classes.otherMonth : '';
+            classes += value.selectedMonth ? '' : ' ' + that.classes.otherMonth;
 
             var $field = $('<div/>')
                 .addClass(classes)
@@ -298,9 +314,12 @@
     };
 
     Datepicker.prototype.getCalendarData = function (month, year){
-        var d = new Date( year, month + 1, 0),
-            monthLength = d.getDate(),
+        var thisMonth = new Date( year, month + 1, 0),
+            monthLength = thisMonth.getDate(),
             firstDay = new Date( year, month, 1),
+            prevMonth = new Date( year, month, 0),
+            prevMonthLength = prevMonth.getDate(),
+            nextMonthDay = 1,
             day = 1,
             count = 0,
             optData = [];
@@ -310,32 +329,39 @@
         // this loop is for weeks (rows)
         for ( var week = 0; week < 7; week++ ) {
 
-            // stop making rows if we've run out of days
             if (day > monthLength) {
                 break;
             }
 
             // this loop is for weekdays (cells)
             for (var weekday = 0; weekday <= 6; weekday++) {
-                var pos = this.startingDay - this.options.startIn,
+                var pos = this.startingDay - this.options.startin,
                     p = pos < 0 ? 6 + pos + 1 : pos,
                     today = month === this.today.getMonth() && year === this.today.getFullYear() && day === this.today.getDate(),
-                    selected = month === this.month.number && year === this.year && day === this.day.number;
+                    selected = month === this.currentDay.getMonth() && year === this.currentDay.getFullYear() && day === this.currentDay.getDate(),
+                    weekDaySelected = this.date.getDay();
 
                 var data = {
                     'index': count,
                     'value': 0,
-                    'selected': selected ? true : false,
+                    'selected': false,
                     'today' : today ? true : false,
                     'selectedMonth': false
                 };
+
+                if (selected || (this.type === 'week' && ((day >= (this.currentDay.getDate() - weekDaySelected)) && (day <= (this.currentDay.getDate() + (6 - weekDaySelected)))))){
+                    data.selected = true;
+                }
 
                 if ( day <= monthLength && ( week > 0 || weekday >= p ) ) {
                     data.value = day;
                     data.selectedMonth = true;
                     day++;
+                } else if (day < monthLength) {
+                    data.value = prevMonthLength - (p - (weekday + 1));
                 } else {
-
+                    data.value = nextMonthDay;
+                    nextMonthDay++;
                 }
 
                 optData[count] = data;
@@ -343,22 +369,37 @@
             }
         }
         this.fields = optData;
-    }
+    };
 
     Datepicker.prototype.createForm = function(){
-        this.$next.on('click', $.proxy(this.next, this));
-        this.$prev.on('click', $.proxy(this.prev, this));
+
+        if(this.type !== 'time') {
+
+            this.$next.on('click', $.proxy(this.next, this));
+            this.$prev.on('click', $.proxy(this.prev, this));
+
+            this.update(this.day.number, this.month.number, this.year);
+
+        } else {
+            console.log('Form Time');
+        }
 
         this.$submitField
             .text(this.options.submittext)
             .on("click", $.proxy(this.submit, this));
 
-        this.updateHeader(this.month.number, this.year);
-
     };
 
     Datepicker.prototype.createWeekDays = function(){
+        var that = this;
 
+        $.each( this.options.weekday , function (index, day) {
+            var weekDay = $('<div/>')
+                .addClass(that.classes.weekday)
+                .text(day.substring(0, 1));
+
+            that.$week.append(weekDay);
+        });
     };
 
     Datepicker.prototype.getWeekNumber = function(d) {
@@ -387,7 +428,7 @@
             year = year + 1;
         }
 
-        this.updateHeader(month, year);
+        this.update(this.day.number, month, year);
     };
 
     Datepicker.prototype.prev = function(){
@@ -401,7 +442,7 @@
             year = year - 1;
         }
 
-        this.updateHeader(month, year);
+        this.update(this.day.number, month, year);
     };
 
     Datepicker.prototype.getValue = function(e){

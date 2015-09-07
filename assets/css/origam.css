@@ -20780,8 +20780,8 @@ input[type=month]::-webkit-inner-spin-button, input[type=month]::-webkit-calenda
   display: inline-block;
   width: 10%;
   height: 100%;
-  min-height: 60px;
-  line-height: 60px;
+  min-height: 36px;
+  line-height: 36px;
   text-align: center;
   font-size: 20px;
   font-size: 1.25rem;
@@ -20802,6 +20802,9 @@ input[type=month]::-webkit-inner-spin-button, input[type=month]::-webkit-calenda
   text-align: center;
   vertical-align: top;
 }
+.calendar-header--title > * {
+  padding: 1px 5px;
+}
 
 /**
   * Calendar Content
@@ -20813,21 +20816,13 @@ input[type=month]::-webkit-inner-spin-button, input[type=month]::-webkit-calenda
   border-bottom-color: #0196d1;
 }
 
-.calendar-content--week__day {
-  width: 14.28571%;
-  display: inline-block;
-  text-align: center;
-  min-height: 36px;
-  line-height: 36px;
-  vertical-align: top;
-}
-
 .calendar-content--days {
   margin: 6px;
   border: 1px solid transparent;
 }
 
-.calendar-content--days__week > * {
+.calendar-content--week > *,
+.calendar-content--days > * {
   width: 14.28571%;
   display: inline-block;
   text-align: center;
@@ -20842,7 +20837,7 @@ input[type=month]::-webkit-inner-spin-button, input[type=month]::-webkit-calenda
   cursor: pointer;
   position: relative;
 }
-.calendar-content--days__day:hover:before {
+.calendar-content--days__day:hover:not(.calendar-content--days__disable):before {
   content: '';
   position: absolute;
   top: 0;
@@ -20852,11 +20847,15 @@ input[type=month]::-webkit-inner-spin-button, input[type=month]::-webkit-calenda
   background-color: rgba(0, 0, 0, 0.26);
   z-index: 1;
 }
-.calendar-content--days__day.calendar-content--days__select {
+.calendar-content--days__day.calendar-content--days__disable {
+  color: rgba(0, 0, 0, 0.26);
+  cursor: default;
+}
+.calendar-content--days__day.calendar-content--days__selected {
   background-color: #0196d1;
   color: #FFFFFF;
 }
-.calendar-content--days__day.calendar-content--days__select span {
+.calendar-content--days__day.calendar-content--days__selected span {
   z-index: 2;
   position: relative;
 }

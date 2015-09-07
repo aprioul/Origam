@@ -117,8 +117,8 @@ input {
 .calendar-header--next {
   display: inline-block;
   @include size(10%,100%);
-  min-height: 60px;
-  line-height: 60px;
+  min-height: ($base-line-height * 1.5);
+  line-height: ($base-line-height * 1.5);
   text-align: center;
   @include font-size($font-size-large);
   vertical-align: top;
@@ -126,6 +126,7 @@ input {
   &:hover{
     background-color: rgba(255,255,255,0.2);
   }
+
 }
 
 .calendar-header--title {
@@ -135,6 +136,9 @@ input {
   line-height: ($base-line-height * 1.5);
   text-align: center;
   vertical-align: top;
+  > * {
+    padding: $padding-xs-vertical $padding-xs-horizontal;
+  }
 }
 
 
@@ -149,27 +153,21 @@ input {
   border-bottom-color: $blue;
 }
 
-.calendar-content--week__day {
-  width: grid-size(1, 7);
-  display: inline-block;
-  text-align: center;
-  min-height: ($base-line-height * 1.5);
-  line-height: ($base-line-height * 1.5);
-  vertical-align: top;
-}
-
 .calendar-content--days {
   margin: $padding-base-vertical;
   border: 1px solid transparent;
 }
 
-.calendar-content--days__week > * {
-  width: grid-size(1, 7);
-  display: inline-block;
-  text-align: center;
-  min-height: ($base-line-height * 1.5);
-  line-height: ($base-line-height * 1.5);
-  vertical-align: top;
+.calendar-content--week,
+.calendar-content--days{
+  > * {
+    width: grid-size(1, 7);
+    display: inline-block;
+    text-align: center;
+    min-height: ($base-line-height * 1.5);
+    line-height: ($base-line-height * 1.5);
+    vertical-align: top;
+  }
 }
 
 .calendar-content--days__day {
@@ -179,16 +177,23 @@ input {
   @include position(relative);
 
   &:hover{
-    &:before{
-      content: '';
-      @include position(absolute, 0, null, null, 0);
-      @include size(100%, 100%);
-      background-color: $black-3;
-      z-index: 1;
+    &:not(.calendar-content--days__disable) {
+      &:before {
+        content: '';
+        @include position(absolute, 0, null, null, 0);
+        @include size(100%, 100%);
+        background-color: $black-3;
+        z-index: 1;
+      }
     }
   }
 
-  &.calendar-content--days__select {
+  &.calendar-content--days__disable{
+    color: $black-3;
+    cursor: default;
+  }
+
+  &.calendar-content--days__selected {
     background-color: $blue;
     color: $white;
     span {
