@@ -52,10 +52,12 @@
             week: 'calendar-content--week',
             weekDay: 'calendar-content--week__day',
             days: 'calendar-content--days',
+            row: 'calendar-content--days__week',
             day: 'calendar-content--days__day',
             selected: 'calendar-content--days__selected',
             today: 'calendar-content--days__today',
-            otherMonth: 'calendar-content--days__disable'
+            otherMonth: 'calendar-content--days__disable',
+            hover: 'calendar-content--days__hover'
         },
         submittext: 'OK',
         startdate: '',
@@ -295,20 +297,37 @@
     Datepicker.prototype.updateCalendar = function(month, year){
         var that = this;
 
-        this.getCalendarData(month, year);
+        var data = this.getCalendarData(month, year);
 
         this.$days.html('');
 
-        $.each(this.fields, function (index, value) {
-            var classes = that.classes.day;
-            classes += value.selected ? ' ' + that.classes.selected : '';
-            classes += value.today ? ' ' + that.classes.today : '';
-            classes += value.selectedMonth ? '' : ' ' + that.classes.otherMonth;
+        $.each(data, function (indexRow, valueRow) {
 
-            var $field = $('<div/>')
-                .addClass(classes)
-                .text(value.value)
+            var $row = $('<div/>')
+                .addClass(that.classes.row)
                 .appendTo(that.$days);
+
+            $.each(data[indexRow], function (indexField, valueField) {
+
+                var classes = that.classes.day;
+                classes += valueField.today ? ' ' + that.classes.today : '';
+                classes += valueField.selectedMonth ? '' : ' ' + that.classes.otherMonth;
+
+                if(that.type !== 'week') {
+                    classes += valueField.selected ? ' ' + that.classes.selected : '';
+                } else {
+                    if(valueField.selected) {
+                        $row.addClass(that.classes.selected);
+                    }
+                }
+
+                var $field = $('<div/>')
+                    .addClass(classes)
+                    .text(valueField.value)
+                    .appendTo($row);
+
+            });
+
         });
 
     };
@@ -321,13 +340,17 @@
             prevMonthLength = prevMonth.getDate(),
             nextMonthDay = 1,
             day = 1,
-            count = 0,
-            optData = [];
+            index = 0,
+            row = 0,
+            optDataRow = [];
 
         this.startingDay = firstDay.getDay();
 
         // this loop is for weeks (rows)
         for ( var week = 0; week < 7; week++ ) {
+
+            var optDataField = [],
+                column = 0
 
             if (day > monthLength) {
                 break;
@@ -342,7 +365,7 @@
                     weekDaySelected = this.date.getDay();
 
                 var data = {
-                    'index': count,
+                    'index': index,
                     'value': 0,
                     'selected': false,
                     'today' : today ? true : false,
@@ -364,11 +387,16 @@
                     nextMonthDay++;
                 }
 
-                optData[count] = data;
-                count++;
+                optDataField[column] = data;
+                index++;
+                column++;
             }
+
+            optDataRow[row] = optDataField;
+            row++;
+
         }
-        this.fields = optData;
+        return optDataRow;
     };
 
     Datepicker.prototype.createForm = function(){

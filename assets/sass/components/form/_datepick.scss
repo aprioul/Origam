@@ -1,4 +1,28 @@
 /**
+  * Utils
+  */
+
+%calendarhover {
+  @include position(relative);
+  &:not(.calendar-content--days__disable) {
+    cursor: pointer;
+    &:hover {
+      &:not(.calendar-content--days__selected) {
+        background-color: $blue-100;
+      }
+      &:after {
+        content: '';
+        @include position(absolute, 0, null, null, 0);
+        @include size(100%, 100%);
+        background-color: $white-3;
+        z-index: 1;
+      }
+    }
+  }
+}
+
+
+/**
   * Date
   */
 
@@ -159,7 +183,7 @@ input {
 }
 
 .calendar-content--week,
-.calendar-content--days{
+.calendar-content--days__week{
   > * {
     width: grid-size(1, 7);
     display: inline-block;
@@ -170,29 +194,21 @@ input {
   }
 }
 
-.calendar-content--days__day {
-  border: 1px inset transparent;
-  box-sizing: border-box;
-  cursor: pointer;
-  @include position(relative);
-
-  &:hover{
-    &:not(.calendar-content--days__disable) {
-      &:before {
-        content: '';
-        @include position(absolute, 0, null, null, 0);
-        @include size(100%, 100%);
-        background-color: $black-3;
-        z-index: 1;
-      }
-    }
+.origam-datepick--date,
+.origam-datepick--datetime{
+  .calendar-content--days__day {
+    @extend %calendarhover;
   }
+}
 
-  &.calendar-content--days__disable{
-    color: $black-3;
-    cursor: default;
+.origam-datepick--week{
+  .calendar-content--days__week{
+    @extend %calendarhover;
   }
+}
 
+.calendar-content--days__week,
+.calendar-content--days__day{
   &.calendar-content--days__selected {
     background-color: $blue;
     color: $white;
@@ -201,8 +217,20 @@ input {
       position: relative;
     }
   }
+}
+
+.calendar-content--days__day {
+  border: 1px inset transparent;
+  box-sizing: border-box;
+  z-index: 2;
+  @include position(relative);
+
+  &.calendar-content--days__disable{
+    color: $black-3;
+    cursor: default;
+  }
 
   &.calendar-content--days__today{
-    border-color: $blue;
+    border-color: $black-3;
   }
 }
