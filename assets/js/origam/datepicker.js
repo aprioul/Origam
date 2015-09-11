@@ -239,17 +239,13 @@
     };
 
     Datepicker.prototype.update = function(day, month, year){
-        if(this.type !== 'time') {
-            this.updateYear(year);
-            this.updateMonth(month);
-            if(this.type !== 'month' && this.type !== 'date' && this.type !== 'datetime') {
-                this.updateWeek(day, month, year);
-            }
-            if(this.type !== 'month') {
-                this.updateDay(day, month, year);
-            }
-        }else {
-            console.log('Time');
+        this.updateYear(year);
+        this.updateMonth(month);
+        if(this.type !== 'month' && this.type !== 'date' && this.type !== 'datetime') {
+            this.updateWeek(day, month, year);
+        }
+        if(this.type !== 'month') {
+            this.updateDay(day, month, year);
         }
     };
 
@@ -264,10 +260,59 @@
         this.$month.text(this.options.month[month]);
     };
 
+    Datepicker.prototype.next = function(){
+        var month = this.month.number,
+            year = this.year;
+
+        if((month + 1) <= 11) {
+            month = month + 1;
+        } else {
+            month = 0;
+            year = year + 1;
+        }
+
+        this.update(this.day.number, month, year);
+        if(this.type === 'month'){
+            this.updateView();
+        }
+    };
+
+    Datepicker.prototype.prev = function(){
+        var month = this.month.number,
+            year = this.year;
+
+        if((month - 1) >= 0) {
+            month = month - 1;
+        } else {
+            month = 11;
+            year = year - 1;
+        }
+
+        this.update(this.day.number, month, year);
+        if(this.type === 'month'){
+            this.updateView();
+        }
+    };
+
     Datepicker.prototype.updateWeek = function (day, month, year) {
         var d = new Date(year, month, day);
 
         this.week = this.getWeekNumber(d);
+    };
+
+    Datepicker.prototype.getWeekNumber = function(d) {
+        // Copy date so don't modify original
+        d = new Date(+d);
+        d.setHours(0,0,0);
+        // Set to nearest Thursday: current date + 4 - current day number
+        // Make Sunday's day number 7
+        d.setDate(d.getDate() + 4 - (d.getDay()||7));
+        // Get first day of year
+        var yearStart = new Date(d.getFullYear(),0,1);
+        // Calculate full weeks to nearest Thursday
+        var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+        // Return array of year and week number
+        return weekNo;
     };
 
     Datepicker.prototype.updateDay = function (day, month, year) {
@@ -277,10 +322,6 @@
         this.day.letter = this.options.weekday[d.getDay()];
 
         this.updateCalendar(month, year);
-    };
-
-    Datepicker.prototype.updateTime = function(){
-
     };
 
     Datepicker.prototype.updateCalendar = function(month, year){
@@ -395,6 +436,12 @@
         return optDataRow;
     };
 
+    Datepicker.prototype.updateTime = function(hours, minutes, seconds){
+        console.log(hours);
+        console.log(minutes);
+        console.log(seconds);
+    };
+
     Datepicker.prototype.createForm = function(){
 
         if(this.type !== 'time') {
@@ -405,7 +452,7 @@
             this.update(this.day.number, this.month.number, this.year);
 
         } else {
-            console.log('Form Time');
+            this.updateTime(this.hours, this.minutes, this.seconds);
         }
 
         this.$submitField
@@ -424,55 +471,6 @@
 
             that.$week.append(weekDay);
         });
-    };
-
-    Datepicker.prototype.getWeekNumber = function(d) {
-        // Copy date so don't modify original
-        d = new Date(+d);
-        d.setHours(0,0,0);
-        // Set to nearest Thursday: current date + 4 - current day number
-        // Make Sunday's day number 7
-        d.setDate(d.getDate() + 4 - (d.getDay()||7));
-        // Get first day of year
-        var yearStart = new Date(d.getFullYear(),0,1);
-        // Calculate full weeks to nearest Thursday
-        var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
-        // Return array of year and week number
-        return weekNo;
-    };
-
-    Datepicker.prototype.next = function(){
-        var month = this.month.number,
-            year = this.year;
-
-        if((month + 1) <= 11) {
-            month = month + 1;
-        } else {
-            month = 0;
-            year = year + 1;
-        }
-
-        this.update(this.day.number, month, year);
-        if(this.type === 'month'){
-            this.updateView();
-        }
-    };
-
-    Datepicker.prototype.prev = function(){
-        var month = this.month.number,
-            year = this.year;
-
-        if((month - 1) >= 0) {
-            month = month - 1;
-        } else {
-            month = 11;
-            year = year - 1;
-        }
-
-        this.update(this.day.number, month, year);
-        if(this.type === 'month'){
-            this.updateView();
-        }
     };
 
     Datepicker.prototype.getValue = function(e){
