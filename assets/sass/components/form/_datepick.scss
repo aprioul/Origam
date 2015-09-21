@@ -26,6 +26,19 @@
   * Date
   */
 
+::-webkit-datetime-edit-year-field:not([aria-valuenow]),
+::-webkit-datetime-edit-month-field:not([aria-valuenow]),
+::-webkit-datetime-edit-week-field:not([aria-valuenow]),
+::-webkit-datetime-edit-day-field:not([aria-valuenow]),
+::-webkit-datetime-edit-hour-field:not([aria-valuenow]),
+::-webkit-datetime-edit-minute-field:not([aria-valuenow]),
+::-webkit-datetime-edit-text{
+  color: transparent;
+  .text-field--active &{
+    color: inherit;
+  }
+}
+
 input {
   &[type=month],
   &[type=time],

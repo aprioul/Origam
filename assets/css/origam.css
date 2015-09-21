@@ -20212,7 +20212,7 @@ th {
   outline: none;
 }
 
-input::-ms-clear {
+input::-ms-clear, input::-webkit-clear-button {
   display: none;
 }
 
@@ -20699,6 +20699,31 @@ input.text-field--group__input {
 /**
   * Date
   */
+::-webkit-datetime-edit-year-field:not([aria-valuenow]),
+::-webkit-datetime-edit-month-field:not([aria-valuenow]),
+::-webkit-datetime-edit-week-field:not([aria-valuenow]),
+::-webkit-datetime-edit-day-field:not([aria-valuenow]),
+::-webkit-datetime-edit-hour-field:not([aria-valuenow]),
+::-webkit-datetime-edit-minute-field:not([aria-valuenow]),
+::-webkit-datetime-edit-text {
+  color: transparent;
+}
+.text-field--active ::-webkit-datetime-edit-year-field:not([aria-valuenow]), .text-field--focused ::-webkit-datetime-edit-year-field:not([aria-valuenow]), .text-field--active
+::-webkit-datetime-edit-month-field:not([aria-valuenow]), .text-field--focused
+::-webkit-datetime-edit-month-field:not([aria-valuenow]), .text-field--active
+::-webkit-datetime-edit-week-field:not([aria-valuenow]), .text-field--focused
+::-webkit-datetime-edit-week-field:not([aria-valuenow]), .text-field--active
+::-webkit-datetime-edit-day-field:not([aria-valuenow]), .text-field--focused
+::-webkit-datetime-edit-day-field:not([aria-valuenow]), .text-field--active
+::-webkit-datetime-edit-hour-field:not([aria-valuenow]), .text-field--focused
+::-webkit-datetime-edit-hour-field:not([aria-valuenow]), .text-field--active
+::-webkit-datetime-edit-minute-field:not([aria-valuenow]), .text-field--focused
+::-webkit-datetime-edit-minute-field:not([aria-valuenow]), .text-field--active
+::-webkit-datetime-edit-text, .text-field--focused
+::-webkit-datetime-edit-text {
+  color: inherit;
+}
+
 input[type=month], input[type=time], input[type=datetime], input[type=week], input[type=date] {
   -moz-appearance: textfield;
   -webkit-appearance: textfield;

@@ -194,7 +194,7 @@
     };
 
     Input.prototype.valChange = function (e) {
-        if($(e.currentTarget).val() != '' || e.currentTarget.value != ''){
+        if($(e.currentTarget).val() != ''){
             $(e.currentTarget)
                 .closest(this.$parent)
                 .addClass(this.classes.active);
@@ -2677,12 +2677,6 @@
 
             }
 
-        }
-
-        if(this.browser.chrome){
-            this.$element
-                .closest(this.$parent)
-                .addClass(this.classes.active);
         }
 
         this.$element

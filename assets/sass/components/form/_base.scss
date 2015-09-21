@@ -139,8 +139,11 @@
   }
 }
 
-input::-ms-clear {
-  display: none;
+input {
+  &::-ms-clear,
+  &::-webkit-clear-button {
+    display: none;
+  }
 }
 
 input.text-field--group__input {

@@ -182,12 +182,6 @@
 
         }
 
-        if(this.browser.chrome){
-            this.$element
-                .closest(this.$parent)
-                .addClass(this.classes.active);
-        }
-
         this.$element
             .parents(this.$parent)
             .on('click', $.proxy(this.show, this));

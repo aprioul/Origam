@@ -194,7 +194,7 @@
     };
 
     Input.prototype.valChange = function (e) {
-        if($(e.currentTarget).val() != '' || e.currentTarget.value != ''){
+        if($(e.currentTarget).val() != ''){
             $(e.currentTarget)
                 .closest(this.$parent)
                 .addClass(this.classes.active);
