@@ -194,7 +194,7 @@
     };
 
     Input.prototype.valChange = function (e) {
-        if($(e.currentTarget).val() != ''){
+        if($(e.currentTarget).val() !== ''){
             $(e.currentTarget)
                 .closest(this.$parent)
                 .addClass(this.classes.active);
@@ -204,8 +204,10 @@
     Input.prototype.startFocus = function (e) {
         $(e.currentTarget)
             .closest(this.$parent)
-            .removeClass(this.options.classes.active)
             .addClass(this.options.classes.focus);
+        if($(e.currentTarget).val() === ''){
+            $(e.currentTarget).removeClass(this.options.classes.active);
+        }
     };
 
     Input.prototype.endFocus = function (e) {
@@ -213,6 +215,9 @@
             .change()
             .closest(this.$parent)
             .removeClass(this.options.classes.focus);
+        if($(e.currentTarget).val() === ''){
+            $(e.currentTarget).removeClass(this.options.classes.active);
+        }
     };
 
     // INPUT PLUGIN DEFINITION

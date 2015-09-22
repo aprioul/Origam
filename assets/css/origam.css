@@ -20708,18 +20708,12 @@ input.text-field--group__input {
 ::-webkit-datetime-edit-text {
   color: transparent;
 }
-.text-field--active ::-webkit-datetime-edit-year-field:not([aria-valuenow]), .text-field--focused ::-webkit-datetime-edit-year-field:not([aria-valuenow]), .text-field--active
-::-webkit-datetime-edit-month-field:not([aria-valuenow]), .text-field--focused
+.text-field--active ::-webkit-datetime-edit-year-field:not([aria-valuenow]), .text-field--active
 ::-webkit-datetime-edit-month-field:not([aria-valuenow]), .text-field--active
-::-webkit-datetime-edit-week-field:not([aria-valuenow]), .text-field--focused
 ::-webkit-datetime-edit-week-field:not([aria-valuenow]), .text-field--active
-::-webkit-datetime-edit-day-field:not([aria-valuenow]), .text-field--focused
 ::-webkit-datetime-edit-day-field:not([aria-valuenow]), .text-field--active
-::-webkit-datetime-edit-hour-field:not([aria-valuenow]), .text-field--focused
 ::-webkit-datetime-edit-hour-field:not([aria-valuenow]), .text-field--active
-::-webkit-datetime-edit-minute-field:not([aria-valuenow]), .text-field--focused
 ::-webkit-datetime-edit-minute-field:not([aria-valuenow]), .text-field--active
-::-webkit-datetime-edit-text, .text-field--focused
 ::-webkit-datetime-edit-text {
   color: inherit;
 }
