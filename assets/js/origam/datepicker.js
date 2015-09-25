@@ -59,8 +59,9 @@
             today: 'calendar-content--days__today',
             otherMonth: 'calendar-content--days__disable',
             hover: 'calendar-content--days__hover',
-            prev : 'calendar-header--prev',
-            next: 'calendar-header--next'
+            canvas: 'view-canvas',
+            prev : 'title-col--prev',
+            next: 'title-col--next'
         },
         submittext: 'OK',
         startdate: '',
@@ -95,6 +96,9 @@
             if(content.time){
                 $container.append(content.time);
             }
+            if(content.clock){
+                $container.append(content.clock);
+            }
             if(content.dayL){
                 $container.append(content.dayL);
             }
@@ -122,6 +126,20 @@
         this.type               = this.$element.attr('type') && this.$element.attr('type')!== 'text' ? this.$element.attr('type') : this.options.type;
         this.lang               = navigator.language || navigator.userLanguage;
         this.viewContent        = new Array();
+
+        this.date               = this.options.startdate.length !== 0 ? new Date(this.options.startdate) : this.$element.val() ? this.$element.val() : new Date();
+        this.today              = new Date();
+        this.currentDay         = this.date;
+        this.minutes            = this.date.getMinutes();
+        this.hours              = this.date.getHours();
+        this.day                = new Array();
+        this.day.letter         = this.options.weekday[this.date.getDay()];
+        this.day.number         = this.date.getDate();
+        this.week               = this.getWeekNumber(this.date);
+        this.month              = new Array();
+        this.month.letter       = this.options.month[this.date.getMonth()];
+        this.month.number       = this.date.getMonth();
+        this.year               = this.date.getFullYear();
 
         this.$overlay = $(this.options.templateOverlay);
         this.$element.data('origam-'+ this.type +'pickId', this.id);
@@ -160,7 +178,6 @@
         this.nextArraw = new Array();
         this.prevArraw = new Array();
         this.selector = new Array();
-        this.dataCol = new Array();
 
         for( var j = 0; j < 2; j++) {
             this.col[j] = $('<span/>').addClass(this.classes.col);
@@ -174,6 +191,13 @@
                 this.$days = $('<div/>').addClass(this.classes.days);
                 this.$week = $('<div/>').addClass(this.classes.week);
             }
+        } else {
+            this.$clock = $('<canvas/>')
+                .attr('width','250')
+                .attr('height','250')
+                .addClass(this.classes.canvas);
+
+            this.initDraw();
         }
 
         this.$element
@@ -213,9 +237,92 @@
                 this.result.push(('0' + this.day.number).slice(-2));
             }
         }else {
-            this.$viewTime.text(this.hours + ':' + this.minutes);
+            var minutesText = this.minutes < 10 ? '0' + this.minutes : '' + this.minutes;
+            this.$viewTime.text(this.hours + ':' + minutesText);
             this.viewContent.time = this.$viewTime;
+            this.result.push(this.$viewTime.text());
+            this.drawClock();
+            this.viewContent.clock = this.$clock;
         }
+    };
+
+    Datepicker.prototype.initDraw = function(){
+        this.ctx = this.$clock[0].getContext("2d");
+        this.radius = this.$clock[0].height /2;
+    };
+
+    Datepicker.prototype.drawClock = function(){
+        this.ctx.translate(this.radius, this.radius);
+        var radius = this.radius * 0.90;
+        this.drawFace(radius);
+        this.drawNumbers(radius);
+        this.drawTime(radius);
+    };
+
+    Datepicker.prototype.drawFace = function(radius){
+        this.ctx.beginPath();
+        this.ctx.arc(0, 0, radius, 0, 2 * Math.PI);
+        this.ctx.fillStyle = 'white';
+        this.ctx.fill();
+
+        this.ctx.lineWidth = 5;
+        this.ctx.strokeStyle = '#1976D2';
+        this.ctx.stroke();
+
+        this.ctx.beginPath();
+        this.ctx.arc(0, 0, radius * 0.1, 0, 2 * Math.PI);
+        this.ctx.fillStyle = '#333';
+        this.ctx.fill();
+    };
+
+    Datepicker.prototype.drawNumbers = function(radius){
+        var ang;
+        var num;
+        this.ctx.font = radius * 0.15 + "px arial";
+        this.ctx.textBaseline = "middle";
+        this.ctx.textAlign = "center";
+        this.ctx.fillStyle = '#333';
+        for(num = 1; num < 13; num++){
+            ang = num * Math.PI / 6;
+            this.ctx.rotate(ang);
+            this.ctx.translate(0, - radius * 0.85);
+            this.ctx.rotate(-ang);
+            this.ctx.fillText(num.toString(), 0, 0);
+            this.ctx.rotate(ang);
+            this.ctx.translate(0, radius * 0.85);
+            this.ctx.rotate(-ang);
+        }
+    };
+
+    Datepicker.prototype.drawTime = function(radius){
+        var hour = this.hours,
+            minute = this.minutes;
+
+        //hour
+        hour = hour % 12;
+        hour = (hour * Math.PI / 6)+
+        (minute * Math.PI / (6 * 60));
+        this.drawHand(this.ctx, hour, radius * 0.5, radius * 0.07);
+        //minute
+        minute = (minute * Math.PI / 30);
+        this.drawHand(this.ctx, minute, radius * 0.8, radius * 0.07);
+    };
+
+    Datepicker.prototype.drawHand = function(ctx, pos, length, width) {
+        ctx.beginPath();
+        ctx.lineWidth = width;
+        ctx.lineCap = "round";
+        ctx.strokeStyle = '#333';
+        ctx.moveTo(0,0);
+        ctx.rotate(pos);
+        ctx.lineTo(0, -length);
+        ctx.stroke();
+        ctx.rotate(-pos);
+    };
+
+    Datepicker.prototype.resetDraw = function(){
+        this.ctx.translate(- this.radius, - this.radius);
+        this.ctx.clearRect(0, 0, this.$clock[0].width, this.$clock[0].height);
     };
 
     Datepicker.prototype.update = function(day, month, year, hours, minutes){
@@ -252,7 +359,8 @@
 
     Datepicker.prototype.updateMinutes = function(minutes){
         this.minutes = minutes;
-        this.selector[1].text(minutes);
+        var minutesText = minutes < 10 ? '0' + this.minutes : '' + minutes;
+        this.selector[1].text(minutesText);
     };
 
     Datepicker.prototype.updateWeek = function (day, month, year) {
@@ -457,8 +565,13 @@
     };
 
     Datepicker.prototype.submit = function() {
+        var value = this.result;;
+
         this.updateView();
-        var value = this.result.join('-');
+        if(this.type !== 'time') {
+            value = this.result.join('-');
+        }
+
         this.$element
             .val(value)
             .change();
@@ -535,13 +648,11 @@
             }
         }
 
-        console.log(month);
-        console.log(year);
-        console.log(hours);
-        console.log(minutes);
-
         this.update(this.day.number, month, year, hours, minutes);
-        if(this.type === 'month'){
+        if(this.type === 'month' || this.type === 'time'){
+            if(this.type === 'time'){
+                this.resetDraw();
+            }
             this.updateView();
         }
 
@@ -563,20 +674,6 @@
             viewportHeight  = $(window).height(),
             viewportWidtht  = $(window).width();
 
-
-        this.date               = this.options.startdate.length !== 0 ? new Date(this.options.startdate) : this.$element.val() ? this.$element.val() : new Date();
-        this.today              = new Date();
-        this.currentDay         = this.date;
-        this.minutes            = this.date.getMinutes() >= 10 ? this.date.getMinutes() : '0' + this.date.getMinutes();
-        this.hours              = this.date.getHours();
-        this.day                = new Array();
-        this.day.letter         = this.options.weekday[this.date.getDay()];
-        this.day.number         = this.date.getDate();
-        this.week               = this.getWeekNumber(this.date);
-        this.month              = new Array();
-        this.month.letter       = this.options.month[this.date.getMonth()];
-        this.month.number       = this.date.getMonth();
-        this.year               = this.date.getFullYear();
         this.activate           = true;
 
         this.$element.off('click', $.proxy(this.show, this));
@@ -650,6 +747,7 @@
             if (that.$datepick.hasClass(animateClass))
                 that.$datepick.removeClass(animateClass);
             that.$overlay.remove();
+            that.resetDraw();
             that.$datepick
                 .detach()
                 .trigger('closed.origam.' + that.type)

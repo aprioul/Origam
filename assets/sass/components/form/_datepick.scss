@@ -112,6 +112,9 @@ input {
     color: $white-3;
   }
 
+  > .origam-datepick--view__time {
+    font-size: 2.5em;
+  }
 }
 
 /**
@@ -150,8 +153,25 @@ input {
   border-color: darken($white, 17%);
 }
 
-.calendar-header--prev,
-.calendar-header--next {
+.calendar-header--title {
+  display: inline-block;
+  @include size(100%,100%);
+  min-height: ($base-line-height * 1.5);
+  line-height: ($base-line-height * 1.5);
+  text-align: center;
+  vertical-align: top;
+  > * {
+    padding: $padding-xs-vertical $padding-xs-horizontal;
+  }
+}
+
+.calendar-header--title__col{
+  display: inline-block;
+  @include size(50%,100%);
+}
+
+.title-col--prev,
+.title-col--next {
   display: inline-block;
   @include size(10%,100%);
   min-height: ($base-line-height * 1.5);
@@ -166,18 +186,10 @@ input {
 
 }
 
-.calendar-header--title {
-  display: inline-block;
+.title-col--selector {
   @include size(80%,100%);
-  min-height: ($base-line-height * 1.5);
-  line-height: ($base-line-height * 1.5);
-  text-align: center;
-  vertical-align: top;
-  > * {
-    padding: $padding-xs-vertical $padding-xs-horizontal;
-  }
+  display: inline-block;
 }
-
 
 /**
   * Calendar Content
