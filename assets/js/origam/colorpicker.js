@@ -18,7 +18,8 @@
         this.init('colorpicker', element, options)
     };
 
-    //Color space convertions
+    // COLOR CONVERTION PUBLIC FUNCTIONS
+    // ===============================
     var hexToRgb = function (hex) {
             var hex = parseInt(((hex.indexOf('#') > -1) ? hex.substring(1) : hex), 16);
             return {
@@ -124,6 +125,8 @@
             return hex.join('');
         },
 
+        // COLOR FIX FORMAT PUBLIC FUNCTIONS
+        // ===============================
         fixHSB = function (hsb) {
             return {
                 h: Math.min(360, Math.max(0, hsb.h)),
@@ -194,7 +197,17 @@
 
     Colorpicker.prototype.constructor = Colorpicker;
 
+    /**
+     * @Implement event
+     *
+     * @define Add event to input. This input Event make colorpicker
+     *
+     * @param options
+     *
+     * @returns {Colorpicker}
+     */
     Colorpicker.prototype.event = function (options) {
+        // Init colorpicker object
         this.options = this.getOptions(options);
         this.field = new Array();
         this.fields = {
@@ -243,6 +256,7 @@
 
         this.$element.data('origam-colorpickId', this.id);
 
+        // Convert default color to HSB color
         if (typeof this.options.color == 'string') {
             this.options.color = hexToHsb(this.options.color);
         } else if (this.options.color.r != undefined && this.options.color.g != undefined && this.options.color.b != undefined) {
@@ -253,6 +267,7 @@
             return this;
         }
 
+        // Create colorpicker
         this.$overlay = $(this.options.templateOverlay);
         this.origColor = this.$element.val() ? this.$element.val() : this.options.color;
 
@@ -283,6 +298,7 @@
 
         this.$output = $('<div/>').addClass(this.classes.field);
 
+        // Define input event
         this.$element
             .after(this.$output)
             .parents(this.$parent)
@@ -290,13 +306,19 @@
             .on('click', $.proxy(this.show, this))
             .prepend(this.$color);
 
-        $(w).on('resize', $.proxy(this.moveModal, this));
+        // Centering modal if window is resize
+        $(w).on('resize', $.proxy(this.moveModal(this.$colorpick), this));
     };
 
     Colorpicker.prototype.getDefaults = function () {
         return Colorpicker.DEFAULTS
     };
 
+    /**
+     * @Implement submit
+     *
+     * @param e
+     */
     Colorpicker.prototype.submit = function (e) {
         this.origColor = this.options.color;
         this.setCurrentColor(this.options.color);
@@ -304,6 +326,12 @@
         this.setElement(this.options.color);
     };
 
+    /**
+     * @Implement createSelector
+     *
+     * @definition Create saturation/brightness selector
+     *
+     */
     Colorpicker.prototype.createSelector = function () {
         this.$selector
             .html('')
@@ -312,6 +340,12 @@
             .children().children().append(this.$selectorIndic);
     };
 
+    /**
+     * @Implement createHue
+     *
+     * @definition Create hue selector
+     *
+     */
     Colorpicker.prototype.createHue = function () {
         var UA = navigator.userAgent.toLowerCase(),
             isIE = navigator.appName === 'Microsoft Internet Explorer',
@@ -337,6 +371,15 @@
             .on('mousedown touchstart', $.proxy(this.eventHue, this))
             .height(this.options.height);
     };
+
+    /**
+     * @Implement createForm
+     *
+     * @definition Create input form to select color with HEX color,
+     * HSB color or RGB color.
+     * Form contain original color and current color, you can come back to your
+     * origin color when you click on.
+     */
 
     Colorpicker.prototype.createForm = function() {
         var count = 0;
@@ -393,6 +436,14 @@
 
     };
 
+    /**
+     * @Implement change
+     *
+     * @definition When you change form field value, set value to selector,
+     * hue and other form field to match them.
+     *
+     * @param field
+     */
     Colorpicker.prototype.change = function(field) {
 
         if (field.parents(this.$parent).attr('class').indexOf('--hex') > 0) {
@@ -422,10 +473,24 @@
         this.setNewColor(this.options.color);
     };
 
+    /**
+     * @Implement eventField
+     *
+     * @definition Add event to all field
+     *
+     * @param e
+     */
     Colorpicker.prototype.eventField = function (e){
         this.change($(e.currentTarget));
     };
 
+    /**
+     * @Implement eventSelector
+     *
+     * @definition Add event to selector
+     *
+     * @param e
+     */
     Colorpicker.prototype.eventSelector = function (e) {
         e.preventDefault ? e.preventDefault() : e.returnValue = false;
 
@@ -448,6 +513,13 @@
         return false;
     };
 
+    /**
+     * @Implement moveSelector
+     *
+     * @definition Add event move to selector
+     *
+     * @param e
+     */
     Colorpicker.prototype.moveSelector = function (e) {
         var offset      = 0,
             pageX       = ((e.type == 'touchmove') ? e.originalEvent.changedTouches[0].pageX : e.pageX ),
@@ -467,12 +539,26 @@
         return false;
     };
 
+    /**
+     * @Implement updateSelector
+     *
+     * @definition Events ends
+     *
+     * @param e
+     */
     Colorpicker.prototype.updateSelector = function (e) {
         $(document).off('mouseup touchend', $.proxy(this.updateSelector, this));
         $(document).off('mousemove touchmove', $.proxy(this.moveSelector, this));
         return false;
     };
 
+    /**
+     * @Implement eventHue
+     *
+     * @definition Add event to hue
+     *
+     * @param e
+     */
     Colorpicker.prototype.eventHue = function (e) {
         e.preventDefault ? e.preventDefault() : e.returnValue = false;
 
@@ -496,6 +582,13 @@
         return false;
     };
 
+    /**
+     * @Implement moveHue
+     *
+     * @definition Add event move to hue
+     *
+     * @param e
+     */
     Colorpicker.prototype.moveHue = function (e) {
         var offset      = 0,
             offsetTop   = 0,
@@ -516,6 +609,13 @@
         return false;
     };
 
+    /**
+     * @Implement updateHue
+     *
+     * @definition Events ends
+     *
+     * @param e
+     */
     Colorpicker.prototype.updateHue = function (e) {
 
         $(document).off('mouseup touchend', $.proxy(this.updateHue, this));
@@ -523,6 +623,13 @@
         return false;
     };
 
+    /**
+     * @Implement restoreOriginal
+     *
+     * @definition Restore original color to selector, hue and field
+     *
+     * @param e
+     */
     Colorpicker.prototype.restoreOriginal = function(e) {
         var col = this.origColor;
         this.options.color = col;
@@ -535,6 +642,13 @@
         this.setNewColor(col);
     };
 
+    /**
+     * @Implement fillRGBFields
+     *
+     * @definition Set value to RGB fields
+     *
+     * @param hsb
+     */
     Colorpicker.prototype.fillRGBFields = function  (hsb) {
         var rgb = hsbToRgb(hsb);
         this.field[2].val(rgb.r);
@@ -542,20 +656,48 @@
         this.field[6].val(rgb.b);
     };
 
+    /**
+     * @Implement fillHSBFields
+     *
+     * @definition Set value to HSB fields
+     *
+     * @param hsb
+     */
     Colorpicker.prototype.fillHSBFields = function  (hsb) {
         this.field[3].val(Math.round(hsb.h));
         this.field[5].val(Math.round(hsb.s));
         this.field[7].val(Math.round(hsb.b));
     };
 
+    /**
+     * @Implement fillHexFields
+     *
+     * @definition Set value to HEX fields
+     *
+     * @param hsb
+     */
     Colorpicker.prototype.fillHexFields = function (hsb) {
         this.field[0].val(hsbToHex(hsb));
     };
 
+    /**
+     * @Implement setHue
+     *
+     * @definition Set value to hue barre
+     *
+     * @param hsb
+     */
     Colorpicker.prototype.setHue = function (hsb) {
         this.$hue.css('top', parseInt(this.options.height - this.options.height * hsb.h/360, 10));
     };
 
+    /**
+     * @Implement setSelector
+     *
+     * @definition Set value to selector
+     *
+     * @param hsb
+     */
     Colorpicker.prototype.setSelector = function (hsb) {
         this.$selector.css('backgroundColor', '#' + hsbToHex({h: hsb.h, s: 100, b: 100}));
         this.$selectorIndic.css({
@@ -564,18 +706,46 @@
         });
     };
 
+    /**
+     * @Implement setCurrentColor
+     *
+     * @definition Set value to current color div
+     *
+     * @param hsb
+     */
     Colorpicker.prototype.setCurrentColor = function (hsb) {
         this.$currentColor.css('backgroundColor', '#' + hsbToHex(hsb));
     };
 
+    /**
+     * @Implement setNewColor
+     *
+     * @definition Set value to new color div
+     *
+     * @param hsb
+     */
     Colorpicker.prototype.setNewColor = function (hsb) {
         this.$newColor.css('backgroundColor', '#' + hsbToHex(hsb));
     };
 
+    /**
+     * @Implement setOrigineFields
+     *
+     * @definition Set value to original field
+     *
+     * @param hsb
+     */
     Colorpicker.prototype.setOrigineFields = function (hsb) {
         this.field[1].text(hsbToHex(hsb));
     };
 
+    /**
+     * @Implement setElement
+     *
+     * @definition Set value to input
+     *
+     * @param hsb
+     */
     Colorpicker.prototype.setElement = function (hsb) {
         var formatColor,
             rgb;
@@ -607,23 +777,27 @@
         this.hide();
     };
 
+    /**
+     * @Implement action
+     *
+     * @definition hide colorpicker if user click outside modal and
+     * if modal is active
+     *
+     * @param e
+     */
     Colorpicker.prototype.action = function(e){
         if (!this.mouseOnContainer && this.activate){
             this.hide();
         }
     };
 
-    Colorpicker.prototype.moveModal = function (e) {
-        var viewportHeight  = $(window).height(),
-            viewportWidtht  = $(window).width();
-
-        this.$colorpick
-            .css({
-                'top':  (viewportHeight/2) - (this.$colorpick.outerHeight()/2),
-                'left': (viewportWidtht/2) - (this.$colorpick.outerWidth()/2)
-            });
-    };
-
+    /**
+     * @Implement show
+     *
+     * @definition Show colorpick in modal when user click on input
+     *
+     * @param e
+     */
     Colorpicker.prototype.show = function (e) {
         var that            = this,
             viewportHeight  = $(window).height(),
@@ -686,6 +860,13 @@
         
     };
 
+    /**
+     * @Implement hide
+     *
+     * @definition hide colorpick
+     *
+     * @param e
+     */
     Colorpicker.prototype.hide = function (e) {
         var that = this;
 

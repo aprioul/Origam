@@ -18,11 +18,22 @@
 
     Close.TRANSITION_DURATION = 1000;
 
+    /**
+     * @Implement close
+     *
+     * @definition Init close function, when click on button close,
+     * search parent target (default : ".alert") and close them.
+     *
+     * @param e
+     */
     Close.prototype.close = function (e) {
 
+        // Init variables
         var $this    = $(this),
             selector = $this.attr('data-target');
 
+        // Define Parent selector
+        // Default parent is .alert (notification)
         if (!selector) {
             selector = $this.attr('href');
             selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '');// strip for ie7
@@ -38,9 +49,11 @@
 
         $parent.trigger(e = $.Event('close.origam.close'));
 
+        // Init animation variables
         var animate = $parent.attr('data-animate');
         var animation = $parent.attr('data-animation');
 
+        // Make closed animation
         if (animate) {
             if(animation){$parent.addClass(animation);}
             else{$parent.addClass('fadeOut');}
@@ -50,6 +63,7 @@
 
         if (e.isDefaultPrevented()) return;
 
+        // Remove function
         function removeElement() {
             if ($parent.hasClass(animateClass))
                 $parent.removeClass(animateClass);
@@ -59,6 +73,7 @@
                 .remove();
         }
 
+        // Execute function after animation
         $.support.transition && $parent.hasClass(animateClass)?
             $parent
                 .one('origamTransitionEnd', removeElement)

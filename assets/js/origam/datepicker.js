@@ -121,6 +121,15 @@
 
     Datepicker.prototype.constructor = Datepicker;
 
+    /**
+     * @Implement event
+     *
+     * @define Add event to input. This input Event make datepicker
+     *
+     * @param options
+     *
+     * @returns {Datepicker}
+     */
     Datepicker.prototype.event = function (options) {
         this.options            = this.getOptions(options);
         this.type               = this.$element.attr('type') && this.$element.attr('type')!== 'text' ? this.$element.attr('type') : this.options.type;
@@ -203,12 +212,19 @@
         this.$element
             .parents(this.$parent)
             .on('click', $.proxy(this.show, this));
+
+        $(w).on('resize', $.proxy(this.moveModal(this.$datepick), this));
     };
 
     Datepicker.prototype.getDefaults = function () {
         return Datepicker.DEFAULTS
     };
 
+    /**
+     * @Implement updateView
+     *
+     * @define Update view in datepicker and set result variables
+     */
     Datepicker.prototype.updateView = function(){
         this.result = new Array();
 
@@ -246,11 +262,21 @@
         }
     };
 
+    /**
+     * @Implement initDraw
+     *
+     * @define set clock variables
+     */
     Datepicker.prototype.initDraw = function(){
         this.ctx = this.$clock[0].getContext("2d");
         this.radius = this.$clock[0].height /2;
     };
 
+    /**
+     * @Implement drawClock
+     *
+     * @define Init draw clock
+     */
     Datepicker.prototype.drawClock = function(){
         this.ctx.translate(this.radius, this.radius);
         var radius = this.radius * 0.90;
@@ -259,6 +285,13 @@
         this.drawTime(radius);
     };
 
+    /**
+     * @Implement drawFace
+     *
+     * @define Create background of clock
+     *
+     * @param radius
+     */
     Datepicker.prototype.drawFace = function(radius){
         this.ctx.beginPath();
         this.ctx.arc(0, 0, radius, 0, 2 * Math.PI);
@@ -275,6 +308,13 @@
         this.ctx.fill();
     };
 
+    /**
+     * @Implement drawNumbers
+     *
+     * @define Draw hours in clock
+     *
+     * @param radius
+     */
     Datepicker.prototype.drawNumbers = function(radius){
         var ang;
         var num;
@@ -294,6 +334,13 @@
         }
     };
 
+    /**
+     * @Implement drawTime
+     *
+     * @define Draw hours and minutes
+     *
+     * @param radius
+     */
     Datepicker.prototype.drawTime = function(radius){
         var hour = this.hours,
             minute = this.minutes;
@@ -308,6 +355,16 @@
         this.drawHand(this.ctx, minute, radius * 0.8, radius * 0.07);
     };
 
+    /**
+     * @Implement drawHand
+     *
+     * @define Draw clock hand
+     *
+     * @param ctx
+     * @param pos
+     * @param length
+     * @param width
+     */
     Datepicker.prototype.drawHand = function(ctx, pos, length, width) {
         ctx.beginPath();
         ctx.lineWidth = width;
@@ -320,11 +377,28 @@
         ctx.rotate(-pos);
     };
 
+    /**
+     * @Implement resetDraw
+     *
+     * @define Reset clock
+     */
     Datepicker.prototype.resetDraw = function(){
         this.ctx.translate(- this.radius, - this.radius);
         this.ctx.clearRect(0, 0, this.$clock[0].width, this.$clock[0].height);
     };
 
+    /**
+     * @Implement update
+     *
+     * @define Update each variables
+     * depend of input type / data-type / option type
+     *
+     * @param day
+     * @param month
+     * @param year
+     * @param hours
+     * @param minutes
+     */
     Datepicker.prototype.update = function(day, month, year, hours, minutes){
         if(this.type !== 'time') {
             this.updateYear(year);
@@ -341,34 +415,80 @@
         }
     };
 
+    /**
+     * @Implement updateYear
+     *
+     * @definition Update year variables and selector
+     *
+     * @param year
+     */
     Datepicker.prototype.updateYear = function (year) {
         this.year = year;
         this.selector[1].text(year);
     };
 
+    /**
+     * @Implement updateMonth
+     *
+     * @definition Update month variables and selector
+     *
+     * @param month
+     */
     Datepicker.prototype.updateMonth = function (month) {
         this.month.number = month;
         this.month.letter = this.options.month[month];
         this.selector[0].text(this.options.month[month]);
     };
 
+    /**
+     * @Implement updateHours
+     *
+     * @definition Update hours variables and selector
+     *
+     * @param hours
+     */
     Datepicker.prototype.updateHours = function(hours){
         this.hours = hours;
         this.selector[0].text(hours);
     };
 
+    /**
+     * @Implement updateMinutes
+     *
+     * @definition Update minutes variables and selector
+     *
+     * @param minutes
+     */
     Datepicker.prototype.updateMinutes = function(minutes){
         this.minutes = minutes;
         var minutesText = minutes < 10 ? '0' + this.minutes : '' + minutes;
         this.selector[1].text(minutesText);
     };
 
+    /**
+     * @Implement updateWeek
+     *
+     * @definition Update week variables
+     *
+     * @param day
+     * @param month
+     * @param year
+     */
     Datepicker.prototype.updateWeek = function (day, month, year) {
         var d = new Date(year, month, day);
 
         this.week = this.getWeekNumber(d);
     };
 
+    /**
+     * @Implement getWeekNumber
+     *
+     * @definition Get week number in year selected
+     *
+     * @param d
+     *
+     * @return weekNo
+     */
     Datepicker.prototype.getWeekNumber = function(d) {
         // Copy date so don't modify original
         d = new Date(+d);
@@ -384,6 +504,15 @@
         return weekNo;
     };
 
+    /**
+     * @Implement updateDay
+     *
+     * @definition Update day variables and selector
+     *
+     * @param day
+     * @param month
+     * @param year
+     */
     Datepicker.prototype.updateDay = function (day, month, year) {
         var d = new Date(year, month, day);
 
@@ -393,6 +522,14 @@
         this.updateCalendar(month, year);
     };
 
+    /**
+     * @Implement updateCalendar
+     *
+     * @definition Create calendar, depend of month and year
+     *
+     * @param month
+     * @param year
+     */
     Datepicker.prototype.updateCalendar = function(month, year){
         var that = this,
             data = this.getCalendarData(month, year);
@@ -438,6 +575,16 @@
 
     };
 
+    /**
+     * @Implement getCalendarData
+     *
+     * @definition set Data to make calendar
+     *
+     * @param month
+     * @param year
+     *
+     * @return optDataRow
+     */
     Datepicker.prototype.getCalendarData = function (month, year){
         var thisMonth = new Date( year, month + 1, 0),
             monthLength = thisMonth.getDate(),
@@ -505,6 +652,17 @@
         return optDataRow;
     };
 
+    /**
+     * @Implement createHeader
+     *
+     * @definition Create Header of datepicker, the header content
+     * depend of type.
+     * Type Time : Header contain Hours and Minutes selector
+     * Type Date
+     *      DateTime
+     *      Month
+     *      Week : Header contain Month and Years selector
+     */
     Datepicker.prototype.createHeader = function(){
         var length = this.col.length,
             that = this;
@@ -526,6 +684,11 @@
             .append(this.$title);
     };
 
+    /**
+     * @Implement createWeekDays
+     *
+     * @definition Create week days first letter before calendar
+     */
     Datepicker.prototype.createWeekDays = function(){
         var that = this;
 
@@ -540,6 +703,12 @@
         });
     };
 
+    /**
+     * @Implement createForm
+     *
+     * @definition Create form, form contain header, weekdays and calendar,
+     * depend of input type / data-type / option type.
+     */
     Datepicker.prototype.createForm = function(){
 
         this.createHeader();
@@ -564,8 +733,13 @@
 
     };
 
+    /**
+     * @Implement submit
+     *
+     * @definition Add submit event to datepicker
+     */
     Datepicker.prototype.submit = function() {
-        var value = this.result;;
+        var value = this.result;
 
         this.updateView();
         if(this.type !== 'time') {
@@ -578,16 +752,40 @@
         this.hide();
     };
 
+    /**
+     * @Implement next
+     *
+     * @definition add event next
+     * You can choose next month, hours, minutes or year when you click on.
+     *
+     * @param e
+     */
     Datepicker.prototype.next = function(e){
         var index = $(e.currentTarget.parentNode).index();
         this.updateCol(index, 'next');
     };
 
+    /**
+     * @Implement prev
+     *
+     * @definition add event prev
+     * You can choose prev month, hours, minutes or year when you click on.
+     *
+     * @param e
+     */
     Datepicker.prototype.prev = function(e){
         var index  = $(e.currentTarget.parentNode).index();
         this.updateCol(index, 'prev');
     };
 
+    /**
+     * @Implement updateCol
+     *
+     * @definition Update header content, depend of next and prev event.
+     *
+     * @param index
+     * @param type
+     */
     Datepicker.prototype.updateCol = function(index, type){
         var month = this.month.number,
             year = this.year,
@@ -650,25 +848,46 @@
 
         this.update(this.day.number, month, year, hours, minutes);
         if(this.type === 'month' || this.type === 'time'){
-            if(this.type === 'time'){
-                this.resetDraw();
-            }
             this.updateView();
         }
-
+        if(this.type === 'time'){
+            this.resetDraw();
+        }
     };
 
+    /**
+     * @Implement getValue
+     *
+     * @definition Get value of target (day or week)
+     *
+     * @param e
+     */
     Datepicker.prototype.getValue = function(e){
         this.update(e.target.innerText, this.month.number, this.year);
         this.updateView();
     };
 
+    /**
+     * @Implement action
+     *
+     * @definition hide datepicker if user click outside modal and
+     * if modal is active
+     *
+     * @param e
+     */
     Datepicker.prototype.action = function(e){
         if (!this.mouseOnContainer && this.activate){
             this.hide();
         }
     };
 
+    /**
+     * @Implement show
+     *
+     * @definition Show datepick in modal when user click on input
+     *
+     * @param e
+     */
     Datepicker.prototype.show = function (e) {
         var that            = this,
             viewportHeight  = $(window).height(),
@@ -721,6 +940,13 @@
 
     };
 
+    /**
+     * @Implement hide
+     *
+     * @definition hide datepick
+     *
+     * @param e
+     */
     Datepicker.prototype.hide = function (e) {
         var that = this;
 
@@ -747,7 +973,9 @@
             if (that.$datepick.hasClass(animateClass))
                 that.$datepick.removeClass(animateClass);
             that.$overlay.remove();
-            that.resetDraw();
+            if(that.type === 'time'){
+                that.resetDraw();
+            }
             that.$datepick
                 .detach()
                 .trigger('closed.origam.' + that.type)

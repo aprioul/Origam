@@ -54,6 +54,15 @@
         onSubmit: function () {}
     };
 
+    /**
+     * @Implement init
+     *
+     * @definition Init input events
+     *
+     * @param type
+     * @param element
+     * @param options
+     */
     Input.prototype.init = function (type, element, options) {
         this.type               = type;
         this.element            = element;
@@ -67,14 +76,6 @@
         this.id                 = this.getUID(8);
 
         var userAgent = navigator.userAgent.toLowerCase();
-
-        this.browser = {
-            chrome: /chrome/.test( userAgent ),
-            safari: /webkit/.test( userAgent )&& !/chrome/.test( userAgent ),
-            opera: /opera/.test( userAgent ),
-            msie: /msie/.test( userAgent ) && !/opera/.test( userAgent ),
-            mozilla: /mozilla/.test( userAgent ) && !/(compatible|webkit)/.test( userAgent )
-        };
 
         this.$element
             .parents(this.$parent)
@@ -98,6 +99,15 @@
         return options
     };
 
+    /**
+     * @Implement getUID
+     *
+     * @definition Generate random uid
+     *
+     * @param length
+     *
+     * @returns {string}
+     */
     Input.prototype.getUID = function (length){
         var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split('');
         if (!length) {
@@ -110,6 +120,13 @@
         return str;
     };
 
+    /**
+     * @Implement isInStateTrue
+     *
+     * @definition check statement
+     *
+     * @returns {boolean}
+     */
     Input.prototype.isInStateTrue = function () {
         for (var key in this.inState) {
             if (this.inState[key]) return true
@@ -118,24 +135,54 @@
         return false
     };
 
+    /**
+     * @Implement toggle
+     *
+     * @definition Toggle click
+     *
+     * @param e
+     */
     Input.prototype.toggle = function(e){
-        var self = this;
+        var that = this;
 
         if(e){
-            self.inState.click = !self.inState.click;
-            if (self.isInStateTrue()) self.show(e);
-            else self.hide(e);
+            that.inState.click = !that.inState.click;
+            if (that.isInStateTrue()) that.show(e);
+            else that.hide(e);
         }
     };
 
+    /**
+     * @Implement mouseEnter
+     *
+     * @definition set variables mouseOnContainer to know if click is
+     * inside element
+     *
+     * @returns {boolean}
+     */
     Input.prototype.mouseEnter = function() {
         return this.mouseOnContainer = true;
     };
 
+    /**
+     * @Implement mouseLeave
+     *
+     * @definition set variables mouseOnContainer to know if click is
+     * outside element
+     *
+     * @returns {boolean}
+     */
     Input.prototype.mouseLeave = function() {
         return this.mouseOnContainer = false;
     };
 
+    /**
+     * @Implement bindSelector
+     *
+     * @definition bind events
+     *
+     * @params element
+     */
     Input.prototype.bindSelector = function (element) {
         var that = this;
 
@@ -152,10 +199,47 @@
         });
     };
 
+    /**
+     * @Implement moveModal
+     *
+     * @definition Move modal so that it's always centered
+     *
+     * @param element
+     */
+    Input.prototype.moveModal = function (element) {
+        var viewportHeight  = $(window).height(),
+            viewportWidtht  = $(window).width();
+
+        element
+            .css({
+                'top':  (viewportHeight/2) - (element.outerHeight()/2),
+                'left': (viewportWidtht/2) - (element.outerWidth()/2)
+            });
+    };
+
+    /**
+     * @Implement event
+     *
+     * @define Add event to input. (use on other type)
+     *
+     * @param options
+     *
+     * @returns {null}
+     */
     Input.prototype.event = function (options) {
         return null;
     };
 
+    /**
+     * @Implement addAddon
+     *
+     * @define Add addon before or after input
+     * (this can to be icon, help text or button)
+     *
+     * @param element
+     *
+     * @returns {*}
+     */
     Input.prototype.addAddon = function(element) {
         if(typeof element === 'undefined'){
             element = this.$element;
@@ -177,6 +261,13 @@
         }
     };
 
+    /**
+     * @Implement removeAddon
+     *
+     * @define Remove addon
+     *
+     * @param element
+     */
     Input.prototype.removeAddon = function(element) {
         if(typeof element === 'undefined'){
             element = this.$element;
@@ -193,31 +284,50 @@
 
     };
 
+    /**
+     * @Implement ValChange
+     *
+     * @definition Add or remove active class depend value of input
+     *
+     * @param e
+     */
     Input.prototype.valChange = function (e) {
         if($(e.currentTarget).val() !== ''){
             $(e.currentTarget)
                 .closest(this.$parent)
                 .addClass(this.classes.active);
-        }
-    };
-
-    Input.prototype.startFocus = function (e) {
-        $(e.currentTarget)
-            .closest(this.$parent)
-            .addClass(this.options.classes.focus);
-        if($(e.currentTarget).val() === ''){
+        }else {
             $(e.currentTarget).removeClass(this.options.classes.active);
         }
     };
 
+    /**
+     * @Implement startFocus
+     *
+     * @definition Add focus class if input is focused
+     *
+     * @param e
+     */
+    Input.prototype.startFocus = function (e) {
+        $(e.currentTarget)
+            .closest(this.$parent)
+            .addClass(this.options.classes.focus);
+        this.valChange(e);
+    };
+
+    /**
+     * @Implement endFocus
+     *
+     * @definition remove focus class if input is focused
+     *
+     * @param e
+     */
     Input.prototype.endFocus = function (e) {
         $(e.currentTarget)
             .change()
             .closest(this.$parent)
             .removeClass(this.options.classes.focus);
-        if($(e.currentTarget).val() === ''){
-            $(e.currentTarget).removeClass(this.options.classes.active);
-        }
+        this.valChange(e);
     };
 
     // INPUT PLUGIN DEFINITION

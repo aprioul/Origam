@@ -54,6 +54,15 @@
         onSubmit: function () {}
     };
 
+    /**
+     * @Implement init
+     *
+     * @definition Init input events
+     *
+     * @param type
+     * @param element
+     * @param options
+     */
     Input.prototype.init = function (type, element, options) {
         this.type               = type;
         this.element            = element;
@@ -67,14 +76,6 @@
         this.id                 = this.getUID(8);
 
         var userAgent = navigator.userAgent.toLowerCase();
-
-        this.browser = {
-            chrome: /chrome/.test( userAgent ),
-            safari: /webkit/.test( userAgent )&& !/chrome/.test( userAgent ),
-            opera: /opera/.test( userAgent ),
-            msie: /msie/.test( userAgent ) && !/opera/.test( userAgent ),
-            mozilla: /mozilla/.test( userAgent ) && !/(compatible|webkit)/.test( userAgent )
-        };
 
         this.$element
             .parents(this.$parent)
@@ -98,6 +99,15 @@
         return options
     };
 
+    /**
+     * @Implement getUID
+     *
+     * @definition Generate random uid
+     *
+     * @param length
+     *
+     * @returns {string}
+     */
     Input.prototype.getUID = function (length){
         var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split('');
         if (!length) {
@@ -110,6 +120,13 @@
         return str;
     };
 
+    /**
+     * @Implement isInStateTrue
+     *
+     * @definition check statement
+     *
+     * @returns {boolean}
+     */
     Input.prototype.isInStateTrue = function () {
         for (var key in this.inState) {
             if (this.inState[key]) return true
@@ -118,24 +135,54 @@
         return false
     };
 
+    /**
+     * @Implement toggle
+     *
+     * @definition Toggle click
+     *
+     * @param e
+     */
     Input.prototype.toggle = function(e){
-        var self = this;
+        var that = this;
 
         if(e){
-            self.inState.click = !self.inState.click;
-            if (self.isInStateTrue()) self.show(e);
-            else self.hide(e);
+            that.inState.click = !that.inState.click;
+            if (that.isInStateTrue()) that.show(e);
+            else that.hide(e);
         }
     };
 
+    /**
+     * @Implement mouseEnter
+     *
+     * @definition set variables mouseOnContainer to know if click is
+     * inside element
+     *
+     * @returns {boolean}
+     */
     Input.prototype.mouseEnter = function() {
         return this.mouseOnContainer = true;
     };
 
+    /**
+     * @Implement mouseLeave
+     *
+     * @definition set variables mouseOnContainer to know if click is
+     * outside element
+     *
+     * @returns {boolean}
+     */
     Input.prototype.mouseLeave = function() {
         return this.mouseOnContainer = false;
     };
 
+    /**
+     * @Implement bindSelector
+     *
+     * @definition bind events
+     *
+     * @params element
+     */
     Input.prototype.bindSelector = function (element) {
         var that = this;
 
@@ -152,10 +199,47 @@
         });
     };
 
+    /**
+     * @Implement moveModal
+     *
+     * @definition Move modal so that it's always centered
+     *
+     * @param element
+     */
+    Input.prototype.moveModal = function (element) {
+        var viewportHeight  = $(window).height(),
+            viewportWidtht  = $(window).width();
+
+        element
+            .css({
+                'top':  (viewportHeight/2) - (element.outerHeight()/2),
+                'left': (viewportWidtht/2) - (element.outerWidth()/2)
+            });
+    };
+
+    /**
+     * @Implement event
+     *
+     * @define Add event to input. (use on other type)
+     *
+     * @param options
+     *
+     * @returns {null}
+     */
     Input.prototype.event = function (options) {
         return null;
     };
 
+    /**
+     * @Implement addAddon
+     *
+     * @define Add addon before or after input
+     * (this can to be icon, help text or button)
+     *
+     * @param element
+     *
+     * @returns {*}
+     */
     Input.prototype.addAddon = function(element) {
         if(typeof element === 'undefined'){
             element = this.$element;
@@ -177,6 +261,13 @@
         }
     };
 
+    /**
+     * @Implement removeAddon
+     *
+     * @define Remove addon
+     *
+     * @param element
+     */
     Input.prototype.removeAddon = function(element) {
         if(typeof element === 'undefined'){
             element = this.$element;
@@ -193,31 +284,50 @@
 
     };
 
+    /**
+     * @Implement ValChange
+     *
+     * @definition Add or remove active class depend value of input
+     *
+     * @param e
+     */
     Input.prototype.valChange = function (e) {
         if($(e.currentTarget).val() !== ''){
             $(e.currentTarget)
                 .closest(this.$parent)
                 .addClass(this.classes.active);
-        }
-    };
-
-    Input.prototype.startFocus = function (e) {
-        $(e.currentTarget)
-            .closest(this.$parent)
-            .addClass(this.options.classes.focus);
-        if($(e.currentTarget).val() === ''){
+        }else {
             $(e.currentTarget).removeClass(this.options.classes.active);
         }
     };
 
+    /**
+     * @Implement startFocus
+     *
+     * @definition Add focus class if input is focused
+     *
+     * @param e
+     */
+    Input.prototype.startFocus = function (e) {
+        $(e.currentTarget)
+            .closest(this.$parent)
+            .addClass(this.options.classes.focus);
+        this.valChange(e);
+    };
+
+    /**
+     * @Implement endFocus
+     *
+     * @definition remove focus class if input is focused
+     *
+     * @param e
+     */
     Input.prototype.endFocus = function (e) {
         $(e.currentTarget)
             .change()
             .closest(this.$parent)
             .removeClass(this.options.classes.focus);
-        if($(e.currentTarget).val() === ''){
-            $(e.currentTarget).removeClass(this.options.classes.active);
-        }
+        this.valChange(e);
     };
 
     // INPUT PLUGIN DEFINITION
@@ -902,11 +1012,22 @@
 
     Close.TRANSITION_DURATION = 1000;
 
+    /**
+     * @Implement close
+     *
+     * @definition Init close function, when click on button close,
+     * search parent target (default : ".alert") and close them.
+     *
+     * @param e
+     */
     Close.prototype.close = function (e) {
 
+        // Init variables
         var $this    = $(this),
             selector = $this.attr('data-target');
 
+        // Define Parent selector
+        // Default parent is .alert (notification)
         if (!selector) {
             selector = $this.attr('href');
             selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '');// strip for ie7
@@ -922,9 +1043,11 @@
 
         $parent.trigger(e = $.Event('close.origam.close'));
 
+        // Init animation variables
         var animate = $parent.attr('data-animate');
         var animation = $parent.attr('data-animation');
 
+        // Make closed animation
         if (animate) {
             if(animation){$parent.addClass(animation);}
             else{$parent.addClass('fadeOut');}
@@ -934,6 +1057,7 @@
 
         if (e.isDefaultPrevented()) return;
 
+        // Remove function
         function removeElement() {
             if ($parent.hasClass(animateClass))
                 $parent.removeClass(animateClass);
@@ -943,6 +1067,7 @@
                 .remove();
         }
 
+        // Execute function after animation
         $.support.transition && $parent.hasClass(animateClass)?
             $parent
                 .one('origamTransitionEnd', removeElement)
@@ -1758,7 +1883,8 @@
         this.init('colorpicker', element, options)
     };
 
-    //Color space convertions
+    // COLOR CONVERTION PUBLIC FUNCTIONS
+    // ===============================
     var hexToRgb = function (hex) {
             var hex = parseInt(((hex.indexOf('#') > -1) ? hex.substring(1) : hex), 16);
             return {
@@ -1864,6 +1990,8 @@
             return hex.join('');
         },
 
+        // COLOR FIX FORMAT PUBLIC FUNCTIONS
+        // ===============================
         fixHSB = function (hsb) {
             return {
                 h: Math.min(360, Math.max(0, hsb.h)),
@@ -1934,7 +2062,17 @@
 
     Colorpicker.prototype.constructor = Colorpicker;
 
+    /**
+     * @Implement event
+     *
+     * @define Add event to input. This input Event make colorpicker
+     *
+     * @param options
+     *
+     * @returns {Colorpicker}
+     */
     Colorpicker.prototype.event = function (options) {
+        // Init colorpicker object
         this.options = this.getOptions(options);
         this.field = new Array();
         this.fields = {
@@ -1983,6 +2121,7 @@
 
         this.$element.data('origam-colorpickId', this.id);
 
+        // Convert default color to HSB color
         if (typeof this.options.color == 'string') {
             this.options.color = hexToHsb(this.options.color);
         } else if (this.options.color.r != undefined && this.options.color.g != undefined && this.options.color.b != undefined) {
@@ -1993,6 +2132,7 @@
             return this;
         }
 
+        // Create colorpicker
         this.$overlay = $(this.options.templateOverlay);
         this.origColor = this.$element.val() ? this.$element.val() : this.options.color;
 
@@ -2023,6 +2163,7 @@
 
         this.$output = $('<div/>').addClass(this.classes.field);
 
+        // Define input event
         this.$element
             .after(this.$output)
             .parents(this.$parent)
@@ -2030,13 +2171,19 @@
             .on('click', $.proxy(this.show, this))
             .prepend(this.$color);
 
-        $(w).on('resize', $.proxy(this.moveModal, this));
+        // Centering modal if window is resize
+        $(w).on('resize', $.proxy(this.moveModal(this.$colorpick), this));
     };
 
     Colorpicker.prototype.getDefaults = function () {
         return Colorpicker.DEFAULTS
     };
 
+    /**
+     * @Implement submit
+     *
+     * @param e
+     */
     Colorpicker.prototype.submit = function (e) {
         this.origColor = this.options.color;
         this.setCurrentColor(this.options.color);
@@ -2044,6 +2191,12 @@
         this.setElement(this.options.color);
     };
 
+    /**
+     * @Implement createSelector
+     *
+     * @definition Create saturation/brightness selector
+     *
+     */
     Colorpicker.prototype.createSelector = function () {
         this.$selector
             .html('')
@@ -2052,6 +2205,12 @@
             .children().children().append(this.$selectorIndic);
     };
 
+    /**
+     * @Implement createHue
+     *
+     * @definition Create hue selector
+     *
+     */
     Colorpicker.prototype.createHue = function () {
         var UA = navigator.userAgent.toLowerCase(),
             isIE = navigator.appName === 'Microsoft Internet Explorer',
@@ -2077,6 +2236,15 @@
             .on('mousedown touchstart', $.proxy(this.eventHue, this))
             .height(this.options.height);
     };
+
+    /**
+     * @Implement createForm
+     *
+     * @definition Create input form to select color with HEX color,
+     * HSB color or RGB color.
+     * Form contain original color and current color, you can come back to your
+     * origin color when you click on.
+     */
 
     Colorpicker.prototype.createForm = function() {
         var count = 0;
@@ -2133,6 +2301,14 @@
 
     };
 
+    /**
+     * @Implement change
+     *
+     * @definition When you change form field value, set value to selector,
+     * hue and other form field to match them.
+     *
+     * @param field
+     */
     Colorpicker.prototype.change = function(field) {
 
         if (field.parents(this.$parent).attr('class').indexOf('--hex') > 0) {
@@ -2162,10 +2338,24 @@
         this.setNewColor(this.options.color);
     };
 
+    /**
+     * @Implement eventField
+     *
+     * @definition Add event to all field
+     *
+     * @param e
+     */
     Colorpicker.prototype.eventField = function (e){
         this.change($(e.currentTarget));
     };
 
+    /**
+     * @Implement eventSelector
+     *
+     * @definition Add event to selector
+     *
+     * @param e
+     */
     Colorpicker.prototype.eventSelector = function (e) {
         e.preventDefault ? e.preventDefault() : e.returnValue = false;
 
@@ -2188,6 +2378,13 @@
         return false;
     };
 
+    /**
+     * @Implement moveSelector
+     *
+     * @definition Add event move to selector
+     *
+     * @param e
+     */
     Colorpicker.prototype.moveSelector = function (e) {
         var offset      = 0,
             pageX       = ((e.type == 'touchmove') ? e.originalEvent.changedTouches[0].pageX : e.pageX ),
@@ -2207,12 +2404,26 @@
         return false;
     };
 
+    /**
+     * @Implement updateSelector
+     *
+     * @definition Events ends
+     *
+     * @param e
+     */
     Colorpicker.prototype.updateSelector = function (e) {
         $(document).off('mouseup touchend', $.proxy(this.updateSelector, this));
         $(document).off('mousemove touchmove', $.proxy(this.moveSelector, this));
         return false;
     };
 
+    /**
+     * @Implement eventHue
+     *
+     * @definition Add event to hue
+     *
+     * @param e
+     */
     Colorpicker.prototype.eventHue = function (e) {
         e.preventDefault ? e.preventDefault() : e.returnValue = false;
 
@@ -2236,6 +2447,13 @@
         return false;
     };
 
+    /**
+     * @Implement moveHue
+     *
+     * @definition Add event move to hue
+     *
+     * @param e
+     */
     Colorpicker.prototype.moveHue = function (e) {
         var offset      = 0,
             offsetTop   = 0,
@@ -2256,6 +2474,13 @@
         return false;
     };
 
+    /**
+     * @Implement updateHue
+     *
+     * @definition Events ends
+     *
+     * @param e
+     */
     Colorpicker.prototype.updateHue = function (e) {
 
         $(document).off('mouseup touchend', $.proxy(this.updateHue, this));
@@ -2263,6 +2488,13 @@
         return false;
     };
 
+    /**
+     * @Implement restoreOriginal
+     *
+     * @definition Restore original color to selector, hue and field
+     *
+     * @param e
+     */
     Colorpicker.prototype.restoreOriginal = function(e) {
         var col = this.origColor;
         this.options.color = col;
@@ -2275,6 +2507,13 @@
         this.setNewColor(col);
     };
 
+    /**
+     * @Implement fillRGBFields
+     *
+     * @definition Set value to RGB fields
+     *
+     * @param hsb
+     */
     Colorpicker.prototype.fillRGBFields = function  (hsb) {
         var rgb = hsbToRgb(hsb);
         this.field[2].val(rgb.r);
@@ -2282,20 +2521,48 @@
         this.field[6].val(rgb.b);
     };
 
+    /**
+     * @Implement fillHSBFields
+     *
+     * @definition Set value to HSB fields
+     *
+     * @param hsb
+     */
     Colorpicker.prototype.fillHSBFields = function  (hsb) {
         this.field[3].val(Math.round(hsb.h));
         this.field[5].val(Math.round(hsb.s));
         this.field[7].val(Math.round(hsb.b));
     };
 
+    /**
+     * @Implement fillHexFields
+     *
+     * @definition Set value to HEX fields
+     *
+     * @param hsb
+     */
     Colorpicker.prototype.fillHexFields = function (hsb) {
         this.field[0].val(hsbToHex(hsb));
     };
 
+    /**
+     * @Implement setHue
+     *
+     * @definition Set value to hue barre
+     *
+     * @param hsb
+     */
     Colorpicker.prototype.setHue = function (hsb) {
         this.$hue.css('top', parseInt(this.options.height - this.options.height * hsb.h/360, 10));
     };
 
+    /**
+     * @Implement setSelector
+     *
+     * @definition Set value to selector
+     *
+     * @param hsb
+     */
     Colorpicker.prototype.setSelector = function (hsb) {
         this.$selector.css('backgroundColor', '#' + hsbToHex({h: hsb.h, s: 100, b: 100}));
         this.$selectorIndic.css({
@@ -2304,18 +2571,46 @@
         });
     };
 
+    /**
+     * @Implement setCurrentColor
+     *
+     * @definition Set value to current color div
+     *
+     * @param hsb
+     */
     Colorpicker.prototype.setCurrentColor = function (hsb) {
         this.$currentColor.css('backgroundColor', '#' + hsbToHex(hsb));
     };
 
+    /**
+     * @Implement setNewColor
+     *
+     * @definition Set value to new color div
+     *
+     * @param hsb
+     */
     Colorpicker.prototype.setNewColor = function (hsb) {
         this.$newColor.css('backgroundColor', '#' + hsbToHex(hsb));
     };
 
+    /**
+     * @Implement setOrigineFields
+     *
+     * @definition Set value to original field
+     *
+     * @param hsb
+     */
     Colorpicker.prototype.setOrigineFields = function (hsb) {
         this.field[1].text(hsbToHex(hsb));
     };
 
+    /**
+     * @Implement setElement
+     *
+     * @definition Set value to input
+     *
+     * @param hsb
+     */
     Colorpicker.prototype.setElement = function (hsb) {
         var formatColor,
             rgb;
@@ -2347,23 +2642,27 @@
         this.hide();
     };
 
+    /**
+     * @Implement action
+     *
+     * @definition hide colorpicker if user click outside modal and
+     * if modal is active
+     *
+     * @param e
+     */
     Colorpicker.prototype.action = function(e){
         if (!this.mouseOnContainer && this.activate){
             this.hide();
         }
     };
 
-    Colorpicker.prototype.moveModal = function (e) {
-        var viewportHeight  = $(window).height(),
-            viewportWidtht  = $(window).width();
-
-        this.$colorpick
-            .css({
-                'top':  (viewportHeight/2) - (this.$colorpick.outerHeight()/2),
-                'left': (viewportWidtht/2) - (this.$colorpick.outerWidth()/2)
-            });
-    };
-
+    /**
+     * @Implement show
+     *
+     * @definition Show colorpick in modal when user click on input
+     *
+     * @param e
+     */
     Colorpicker.prototype.show = function (e) {
         var that            = this,
             viewportHeight  = $(window).height(),
@@ -2426,6 +2725,13 @@
         
     };
 
+    /**
+     * @Implement hide
+     *
+     * @definition hide colorpick
+     *
+     * @param e
+     */
     Colorpicker.prototype.hide = function (e) {
         var that = this;
 
@@ -2623,6 +2929,15 @@
 
     Datepicker.prototype.constructor = Datepicker;
 
+    /**
+     * @Implement event
+     *
+     * @define Add event to input. This input Event make datepicker
+     *
+     * @param options
+     *
+     * @returns {Datepicker}
+     */
     Datepicker.prototype.event = function (options) {
         this.options            = this.getOptions(options);
         this.type               = this.$element.attr('type') && this.$element.attr('type')!== 'text' ? this.$element.attr('type') : this.options.type;
@@ -2705,12 +3020,19 @@
         this.$element
             .parents(this.$parent)
             .on('click', $.proxy(this.show, this));
+
+        $(w).on('resize', $.proxy(this.moveModal(this.$datepick), this));
     };
 
     Datepicker.prototype.getDefaults = function () {
         return Datepicker.DEFAULTS
     };
 
+    /**
+     * @Implement updateView
+     *
+     * @define Update view in datepicker and set result variables
+     */
     Datepicker.prototype.updateView = function(){
         this.result = new Array();
 
@@ -2748,11 +3070,21 @@
         }
     };
 
+    /**
+     * @Implement initDraw
+     *
+     * @define set clock variables
+     */
     Datepicker.prototype.initDraw = function(){
         this.ctx = this.$clock[0].getContext("2d");
         this.radius = this.$clock[0].height /2;
     };
 
+    /**
+     * @Implement drawClock
+     *
+     * @define Init draw clock
+     */
     Datepicker.prototype.drawClock = function(){
         this.ctx.translate(this.radius, this.radius);
         var radius = this.radius * 0.90;
@@ -2761,6 +3093,13 @@
         this.drawTime(radius);
     };
 
+    /**
+     * @Implement drawFace
+     *
+     * @define Create background of clock
+     *
+     * @param radius
+     */
     Datepicker.prototype.drawFace = function(radius){
         this.ctx.beginPath();
         this.ctx.arc(0, 0, radius, 0, 2 * Math.PI);
@@ -2777,6 +3116,13 @@
         this.ctx.fill();
     };
 
+    /**
+     * @Implement drawNumbers
+     *
+     * @define Draw hours in clock
+     *
+     * @param radius
+     */
     Datepicker.prototype.drawNumbers = function(radius){
         var ang;
         var num;
@@ -2796,6 +3142,13 @@
         }
     };
 
+    /**
+     * @Implement drawTime
+     *
+     * @define Draw hours and minutes
+     *
+     * @param radius
+     */
     Datepicker.prototype.drawTime = function(radius){
         var hour = this.hours,
             minute = this.minutes;
@@ -2810,6 +3163,16 @@
         this.drawHand(this.ctx, minute, radius * 0.8, radius * 0.07);
     };
 
+    /**
+     * @Implement drawHand
+     *
+     * @define Draw clock hand
+     *
+     * @param ctx
+     * @param pos
+     * @param length
+     * @param width
+     */
     Datepicker.prototype.drawHand = function(ctx, pos, length, width) {
         ctx.beginPath();
         ctx.lineWidth = width;
@@ -2822,11 +3185,28 @@
         ctx.rotate(-pos);
     };
 
+    /**
+     * @Implement resetDraw
+     *
+     * @define Reset clock
+     */
     Datepicker.prototype.resetDraw = function(){
         this.ctx.translate(- this.radius, - this.radius);
         this.ctx.clearRect(0, 0, this.$clock[0].width, this.$clock[0].height);
     };
 
+    /**
+     * @Implement update
+     *
+     * @define Update each variables
+     * depend of input type / data-type / option type
+     *
+     * @param day
+     * @param month
+     * @param year
+     * @param hours
+     * @param minutes
+     */
     Datepicker.prototype.update = function(day, month, year, hours, minutes){
         if(this.type !== 'time') {
             this.updateYear(year);
@@ -2843,34 +3223,80 @@
         }
     };
 
+    /**
+     * @Implement updateYear
+     *
+     * @definition Update year variables and selector
+     *
+     * @param year
+     */
     Datepicker.prototype.updateYear = function (year) {
         this.year = year;
         this.selector[1].text(year);
     };
 
+    /**
+     * @Implement updateMonth
+     *
+     * @definition Update month variables and selector
+     *
+     * @param month
+     */
     Datepicker.prototype.updateMonth = function (month) {
         this.month.number = month;
         this.month.letter = this.options.month[month];
         this.selector[0].text(this.options.month[month]);
     };
 
+    /**
+     * @Implement updateHours
+     *
+     * @definition Update hours variables and selector
+     *
+     * @param hours
+     */
     Datepicker.prototype.updateHours = function(hours){
         this.hours = hours;
         this.selector[0].text(hours);
     };
 
+    /**
+     * @Implement updateMinutes
+     *
+     * @definition Update minutes variables and selector
+     *
+     * @param minutes
+     */
     Datepicker.prototype.updateMinutes = function(minutes){
         this.minutes = minutes;
         var minutesText = minutes < 10 ? '0' + this.minutes : '' + minutes;
         this.selector[1].text(minutesText);
     };
 
+    /**
+     * @Implement updateWeek
+     *
+     * @definition Update week variables
+     *
+     * @param day
+     * @param month
+     * @param year
+     */
     Datepicker.prototype.updateWeek = function (day, month, year) {
         var d = new Date(year, month, day);
 
         this.week = this.getWeekNumber(d);
     };
 
+    /**
+     * @Implement getWeekNumber
+     *
+     * @definition Get week number in year selected
+     *
+     * @param d
+     *
+     * @return weekNo
+     */
     Datepicker.prototype.getWeekNumber = function(d) {
         // Copy date so don't modify original
         d = new Date(+d);
@@ -2886,6 +3312,15 @@
         return weekNo;
     };
 
+    /**
+     * @Implement updateDay
+     *
+     * @definition Update day variables and selector
+     *
+     * @param day
+     * @param month
+     * @param year
+     */
     Datepicker.prototype.updateDay = function (day, month, year) {
         var d = new Date(year, month, day);
 
@@ -2895,6 +3330,14 @@
         this.updateCalendar(month, year);
     };
 
+    /**
+     * @Implement updateCalendar
+     *
+     * @definition Create calendar, depend of month and year
+     *
+     * @param month
+     * @param year
+     */
     Datepicker.prototype.updateCalendar = function(month, year){
         var that = this,
             data = this.getCalendarData(month, year);
@@ -2940,6 +3383,16 @@
 
     };
 
+    /**
+     * @Implement getCalendarData
+     *
+     * @definition set Data to make calendar
+     *
+     * @param month
+     * @param year
+     *
+     * @return optDataRow
+     */
     Datepicker.prototype.getCalendarData = function (month, year){
         var thisMonth = new Date( year, month + 1, 0),
             monthLength = thisMonth.getDate(),
@@ -3007,6 +3460,17 @@
         return optDataRow;
     };
 
+    /**
+     * @Implement createHeader
+     *
+     * @definition Create Header of datepicker, the header content
+     * depend of type.
+     * Type Time : Header contain Hours and Minutes selector
+     * Type Date
+     *      DateTime
+     *      Month
+     *      Week : Header contain Month and Years selector
+     */
     Datepicker.prototype.createHeader = function(){
         var length = this.col.length,
             that = this;
@@ -3028,6 +3492,11 @@
             .append(this.$title);
     };
 
+    /**
+     * @Implement createWeekDays
+     *
+     * @definition Create week days first letter before calendar
+     */
     Datepicker.prototype.createWeekDays = function(){
         var that = this;
 
@@ -3042,6 +3511,12 @@
         });
     };
 
+    /**
+     * @Implement createForm
+     *
+     * @definition Create form, form contain header, weekdays and calendar,
+     * depend of input type / data-type / option type.
+     */
     Datepicker.prototype.createForm = function(){
 
         this.createHeader();
@@ -3066,8 +3541,13 @@
 
     };
 
+    /**
+     * @Implement submit
+     *
+     * @definition Add submit event to datepicker
+     */
     Datepicker.prototype.submit = function() {
-        var value = this.result;;
+        var value = this.result;
 
         this.updateView();
         if(this.type !== 'time') {
@@ -3080,16 +3560,40 @@
         this.hide();
     };
 
+    /**
+     * @Implement next
+     *
+     * @definition add event next
+     * You can choose next month, hours, minutes or year when you click on.
+     *
+     * @param e
+     */
     Datepicker.prototype.next = function(e){
         var index = $(e.currentTarget.parentNode).index();
         this.updateCol(index, 'next');
     };
 
+    /**
+     * @Implement prev
+     *
+     * @definition add event prev
+     * You can choose prev month, hours, minutes or year when you click on.
+     *
+     * @param e
+     */
     Datepicker.prototype.prev = function(e){
         var index  = $(e.currentTarget.parentNode).index();
         this.updateCol(index, 'prev');
     };
 
+    /**
+     * @Implement updateCol
+     *
+     * @definition Update header content, depend of next and prev event.
+     *
+     * @param index
+     * @param type
+     */
     Datepicker.prototype.updateCol = function(index, type){
         var month = this.month.number,
             year = this.year,
@@ -3152,25 +3656,46 @@
 
         this.update(this.day.number, month, year, hours, minutes);
         if(this.type === 'month' || this.type === 'time'){
-            if(this.type === 'time'){
-                this.resetDraw();
-            }
             this.updateView();
         }
-
+        if(this.type === 'time'){
+            this.resetDraw();
+        }
     };
 
+    /**
+     * @Implement getValue
+     *
+     * @definition Get value of target (day or week)
+     *
+     * @param e
+     */
     Datepicker.prototype.getValue = function(e){
         this.update(e.target.innerText, this.month.number, this.year);
         this.updateView();
     };
 
+    /**
+     * @Implement action
+     *
+     * @definition hide datepicker if user click outside modal and
+     * if modal is active
+     *
+     * @param e
+     */
     Datepicker.prototype.action = function(e){
         if (!this.mouseOnContainer && this.activate){
             this.hide();
         }
     };
 
+    /**
+     * @Implement show
+     *
+     * @definition Show datepick in modal when user click on input
+     *
+     * @param e
+     */
     Datepicker.prototype.show = function (e) {
         var that            = this,
             viewportHeight  = $(window).height(),
@@ -3223,6 +3748,13 @@
 
     };
 
+    /**
+     * @Implement hide
+     *
+     * @definition hide datepick
+     *
+     * @param e
+     */
     Datepicker.prototype.hide = function (e) {
         var that = this;
 
@@ -3249,7 +3781,9 @@
             if (that.$datepick.hasClass(animateClass))
                 that.$datepick.removeClass(animateClass);
             that.$overlay.remove();
-            that.resetDraw();
+            if(that.type === 'time'){
+                that.resetDraw();
+            }
             that.$datepick
                 .detach()
                 .trigger('closed.origam.' + that.type)
