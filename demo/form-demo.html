@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Form</title>
+    <link href="../dist/css/origam.min.css" rel="stylesheet"/>
+    <link href="../dist/css/demo.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script type="text/javascript" src="../dist/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../dist/js/plugins.min.js"></script>
+    <script type="text/javascript" src="../dist/js/src/origam.js"></script>
+    <script type="text/javascript" src="../dist/js/main.min.js"></script>
+    <script>
+        hljs.configure({
+            tabReplace: '    ', // 4 spaces
+            useBR: true, // generate <br> tags instead of new-line characters in the output
+            classPrefix: 'hljs-origam-' //append class prefix
+        });
+        hljs.initHighlightingOnLoad();
+    </script>
+</head>
+<body>
+    <div class="origam-grid">
+        <div class="origam-wrapper">
+            <div class="origam-section">
+                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                    <h1 id="form" class="page-header">
+                        Form
+                        <a class="anchor-link" href="#form">
+                                            <span class="anchor-icon">
+                                                <i class="origamicon origamicon-link2"></i>
+                                            </span>
+                        </a>
+                    </h1>
+                </div>
+                <div class="origam-grid__cell origam-size-1of1 origam-content">
+                    <div class="origam-grid">
+                        <div class="origam-wrapper">
+                            <div class="origam-section">
+                                <div class="origam-grid__cell origam-size-3of12">
+                                    <nav class="origam-nav" id="doc-nav">
+                                        <ul class="origam-nav--menu">
+                                            <li class="origam-nav--menu__tab">
+                                                <a class="menu-tab--link" href="#form-gettingstarted">
+                                                    Getting Started
+                                                </a>
+                                                <ul class="origam-nav--menu">
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-gettingstarted--introduction">
+                                                            Introduction
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-gettingstarted--install">
+                                                            Install
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-gettingstarted--running">
+                                                            Running Script
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="origam-nav--menu__tab">
+                                                <a class="menu-tab--link" href="#form-styling">
+                                                    Styling
+                                                </a>
+                                            </li>
+                                            <li class="origam-nav--menu__tab">
+                                                <a class="menu-tab--link" href="#form-firststep">
+                                                    First Step
+                                                </a>
+                                                <ul class="origam-nav--menu">
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-firststep--creatingform">
+                                                            Creating form
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-firststep--fieldsconfiguration">
+                                                            Fields configuration
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="origam-nav--menu__tab">
+                                                <a class="menu-tab--link" href="#form-texttextarea">
+                                                    Text & Textarea
+                                                </a>
+                                                <ul class="origam-nav--menu">
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-texttextarea--states">
+                                                            States
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-texttextarea--tipslabelhelp">
+                                                            Tips, label and help
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-texttextarea--addons">
+                                                            Addons
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-texttextarea--validation">
+                                                            Validation
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-texttextarea--masking">
+                                                            Masking
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-texttextarea--dynamiccapcha">
+                                                            Dynamic Capcha
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-texttextarea--expanding">
+                                                            Expanding Textarea
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="origam-nav--menu__tab">
+                                                <a class="menu-tab--link" href="#form-checkboxswitch">
+                                                    Checkbox & Swicth
+                                                </a>
+                                                <ul class="origam-nav--menu">
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-checkboxswitch--basics">
+                                                            Basics
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-checkboxswitch--iconsbox">
+                                                            IconBox
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-checkboxswitch--switch">
+                                                            Switch
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="origam-nav--menu__tab">
+                                                <a class="menu-tab--link" href="#form-date">
+                                                    Date
+                                                </a>
+                                                <ul class="origam-nav--menu">
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-date--datepicker">
+                                                            Datepicker
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-date--timepicker">
+                                                            Timepicker
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="origam-nav--menu__tab">
+                                                <a class="menu-tab--link" href="#form-rangerate">
+                                                    Range & Rate
+                                                </a>
+                                                <ul class="origam-nav--menu">
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-rangerate--basics">
+                                                            Basics
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-rangerate--multiple">
+                                                            Multiple
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-rangerate--rate">
+                                                            Rate
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="origam-nav--menu__tab">
+                                                <a class="menu-tab--link" href="#form-select">
+                                                    Select
+                                                </a>
+                                                <ul class="origam-nav--menu">
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-select--basics">
+                                                            Basics
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-select--multiple">
+                                                            Multiple
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="origam-nav--menu__tab">
+                                                <a class="menu-tab--link" href="#form-others">
+                                                    Others
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                                <div class="origam-grid__cell origam-size-9of12">
+                                    <div class="origam-grid">
+                                        <div class="origam-wrapper">
+                                            <div class="origam-section">
+                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                    <h2 id="form-gettingstarted">
+                                                        Getting Started
+                                                        <a class="anchor-link" href="#form-gettingstarted">
+                                                            <span class="anchor-icon">
+                                                                <i class="origamicon origamicon-link2"></i>
+                                                            </span>
+                                                        </a>
+                                                    </h2>
+                                                </div>
+                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+                                                    <div class="origam-grid">
+                                                        <div class="origam-wrapper">
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-gettingstarted--introduction">
+                                                                        Introduction
+                                                                        <a class="anchor-link" href="#form-gettingstarted--introduction">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+                                                                    <div class="origam-text">
+                                                                        <p> Origam contain an easy-to-use JavaScript library, which allows you forget about boring creating forms and problems associated with them. It does not require knowledge of JavaScript, so all parameters can be set as attributes of the input, textarea or select element.</p>
+                                                                        <p> Let's see a simple code needed to create a field</p>
+                                                                    </div>
+                                                                    <div class="origam-demo">
+                                                                        <pre><code class="html">
+&lt;input class="text-field--group__input" data-form="input" type="text" id="Text"/&gt;</br>
+                                                                        </code></pre>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-gettingstarted--install">
+                                                                        Install
+                                                                        <a class="anchor-link" href="#form-gettingstarted--install">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+                                                                    <div class="origam-text">
+                                                                        <p>There is no need to install any software. Simply place the appropriate scripts and styles in the <code>&lt;head&gt;</code> section.</p>
+                                                                    </div>
+                                                                    <div class="origam-demo">
+                                                                        <pre><code class="html">
+&lt;head&gt;</br>
+    &lt;link href="formify/css/default/origam.min.css" rel="stylesheet" &gt;</br>
+    &lt;script src="formify/origam.min.js"&gt;&lt;/script&gt;</br>
+&lt;/head&gt;
+                                                                        </code></pre>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="origam-section">
+                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                    <h2 id="form-styling">
+                                                        Styling
+                                                        <a class="anchor-link" href="#form-styling">
+                                                            <span class="anchor-icon">
+                                                                <i class="origamicon origamicon-link2"></i>
+                                                            </span>
+                                                        </a>
+                                                    </h2>
+                                                </div>
+                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+                                                    <div class="origam-text">
+                                                        <p> Each element is converted according to the same pattern, so creating your own style is very simple. The pattern looks like this:</p>
+                                                    </div>
+                                                    <div class="origam-demo">
+                                                        <pre><code class="html">
+&lt;div class="text-field"&gt;</br>
+    &lt;label class="text-field--label" for="Text"&gt;Text&lt;/label&gt;</br>
+    &lt;div class="text-field--group"&gt;</br>
+        &lt;input class="text-field--group__input" data-form="input" type="text" id="Text"/&gt;</br>
+    &lt;/div&gt;</br>
+&lt;/div&gt;
+                                                        </code></pre>
+                                                        <div class="origam-example">
+                                                            <div class="text-field">
+                                                                <label class="text-field--label" for="Text">Text</label>
+                                                                <div class="text-field--group">
+                                                                    <input class="text-field--group__input" data-form="input" type="text" id="Text"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

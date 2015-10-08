@@ -5,18 +5,30 @@
  * followed by a code snippet.
  */
 
-.origam-example {
+.origam-example,
+.origam-demo{
     position: relative;
-    padding: 45px 15px 15px;
-    margin: 0 -15px 15px;
-    border-color: #e5e5e5 #eee #eee;
-    border-style: solid;
-    border-width: 1px 0;
+    color: #455A64;
+    background-color: rgba(255,255,255,.7);
+    border: 1px solid rgba(0,0,0,.26);
     -webkit-box-shadow: inset 0 3px 6px rgba(0,0,0,.05);
     box-shadow: inset 0 3px 6px rgba(0,0,0,.05);
+    border-radius: 4px 4px 0 0;
 }
+
+.origam-example{
+    padding: 45px 15px 15px;
+    margin: 0 -15px 15px;
+}
+
+.origam-demo{
+    padding: 0;
+    padding-top: 45px;
+}
+
 /* Echo out a label for the example */
-.origam-example:after {
+.origam-example:after,
+.origam-demo:after,{
     position: absolute;
     top: 15px;
     left: 15px;
@@ -26,6 +38,32 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     content: "Example";
+}
+
+.origam-demo:after{
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 45px;
+    padding: 15px;
+    border-bottom: 1px solid rgba(0,0,0,.26);
+}
+
+.origam-demo .origam-example:after{
+    content: none;
+}
+
+.origam-demo pre,
+.origam-demo .origam-example {
+    margin-bottom: 0;
+    border: none;
+    border-radius: 0;
+    padding: 10.5px;
+}
+
+.origam-demo pre:not(:last-child),
+.origam-demo .origam-example:not(:last-child) {
+    border-bottom: 1px solid rgba(0,0,0,.26);
 }
 
 .origam-example.origam-example-limited{
@@ -61,6 +99,51 @@
         box-shadow: none;
     }
 }
+
+/*
+
+Doc-nav
+
+*/
+
+#doc-nav .origam-nav--menu .origam-nav--menu{
+    display: none;
+    padding-bottom: 10px;
+}
+
+#doc-nav .origam-nav--menu>.active>ul {
+    display: block;
+}
+
+#doc-nav .origam-nav--menu>.active>a.menu-tab--link {
+    padding-left: 18px;
+    font-weight: 700;
+    color: #0196d1;
+    background-color: transparent;
+    border-left: 2px solid #0196d1;
+}
+
+#doc-nav .origam-nav--menu>li>a.menu-tab--link {
+    display: block;
+    padding: 4px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #767676;
+}
+
+#doc-nav .origam-nav--menu .origam-nav--menu>li>a.menu-tab--link {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 30px;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+/*
+
+Brandbar
+
+*/
 
 #brandbar {
     position: fixed;
@@ -154,4 +237,129 @@
         right:10px;
         top:0;
     }
+}
+
+/*
+
+Code hisghtlight style
+
+*/
+
+.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 0.5em;
+    color: #333;
+    background: #f8f8f8;
+    -webkit-text-size-adjust: none;
+    font-size: 0.8em;
+}
+
+.hljs-origam-comment,
+.diff .hljs-origam-header {
+    color: #998;
+    font-style: italic;
+}
+
+.hljs-origam-keyword,
+.css .rule .hljs-origam-keyword,
+.hljs-origam-winutils,
+.nginx .hljs-origam-title,
+.hljs-origam-subst,
+.hljs-origam-request,
+.hljs-origam-status {
+    color: #333;
+    font-weight: bold;
+}
+
+.hljs-origam-number,
+.hljs-origam-hexcolor,
+.ruby .hljs-origam-constant {
+    color: #008080;
+}
+
+.hljs-origam-string,
+.hljs-origam-tag .hljs-origam-value,
+.hljs-origam-doctag,
+.tex .hljs-origam-formula {
+    color: #d14;
+}
+
+.hljs-origam-title,
+.hljs-origam-id,
+.scss .hljs-origam-preprocessor {
+    color: #900;
+    font-weight: bold;
+}
+
+.hljs-origam-list .hljs-origam-keyword,
+.hljs-origam-subst {
+    font-weight: normal;
+}
+
+.hljs-origam-class .hljs-origam-title,
+.hljs-origam-type,
+.vhdl .hljs-origam-literal,
+.tex .hljs-origam-command {
+    color: #458;
+    font-weight: bold;
+}
+
+.hljs-origam-tag,
+.hljs-origam-tag .hljs-origam-title,
+.hljs-origam-rule .hljs-origam-property,
+.django .hljs-origam-tag .hljs-origam-keyword {
+    color: #000080;
+    font-weight: normal;
+}
+
+.hljs-origam-attribute,
+.hljs-origam-variable,
+.lisp .hljs-origam-body,
+.hljs-origam-name {
+    color: #008080;
+}
+
+.hljs-origam-regexp {
+    color: #009926;
+}
+
+.hljs-origam-symbol,
+.ruby .hljs-origam-symbol .hljs-origam-string,
+.lisp .hljs-origam-keyword,
+.clojure .hljs-origam-keyword,
+.scheme .hljs-origam-keyword,
+.tex .hljs-origam-special,
+.hljs-origam-prompt {
+    color: #990073;
+}
+
+.hljs-origam-built_in {
+    color: #0086b3;
+}
+
+.hljs-origam-preprocessor,
+.hljs-origam-pragma,
+.hljs-origam-pi,
+.hljs-origam-doctype,
+.hljs-origam-shebang,
+.hljs-origam-cdata {
+    color: #999;
+    font-weight: bold;
+}
+
+.hljs-origam-deletion {
+    background: #fdd;
+}
+
+.hljs-origam-addition {
+    background: #dfd;
+}
+
+.diff .hljs-origam-change {
+    background: #0086b3;
+}
+
+.hljs-origam-chunk {
+    color: #aaa;
 }

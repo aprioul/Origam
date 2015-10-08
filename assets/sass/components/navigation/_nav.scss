@@ -1,0 +1,20 @@
+.origam-nav {
+
+}
+
+.origam-nav--menu{
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+  @extend %clearfix;
+  > li {
+    position: relative;
+    display: block;
+    > a {
+      position: relative;
+      display: block;
+      padding: 10px 15px;
+    }
+  }
+}
+

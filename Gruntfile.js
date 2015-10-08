@@ -74,7 +74,7 @@ module.exports = function(grunt) {
                 livereload: true // Activons le livereload du navigateur
             },
             src: {
-                files: ['assets/js/origam/*.js', 'assets/css/*.css', 'demo/*.html'], // Les fichiers à observer…
+                files: ['assets/js/origam/*.js', 'assets/js/main/demo.js', 'assets/css/*.css', 'demo/*.html'], // Les fichiers à observer…
                 tasks: ['default']  // … la commande à effectuer
             }
         }

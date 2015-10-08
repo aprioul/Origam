@@ -13748,21 +13748,25 @@ Copyright (c) 2015 Daniel Eden
 
 .clearfix,
 .origam-section,
-.card {
+.card,
+.origam-nav--menu {
   *zoom: 1;
 }
 .clearfix:before, .clearfix:after,
 .origam-section:before,
 .card:before,
+.origam-nav--menu:before,
 .origam-section:after,
-.card:after {
+.card:after,
+.origam-nav--menu:after {
   content: " ";
   display: table;
   line-height: 0;
 }
 .clearfix:after,
 .origam-section:after,
-.card:after {
+.card:after,
+.origam-nav--menu:after {
   clear: both;
 }
 
@@ -22308,6 +22312,21 @@ a .badge:hover, a .badge:focus {
 }
 .breadcrumb > .active {
   color: #777;
+}
+
+.origam-nav--menu {
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+}
+.origam-nav--menu > li {
+  position: relative;
+  display: block;
+}
+.origam-nav--menu > li > a {
+  position: relative;
+  display: block;
+  padding: 10px 15px;
 }
 
 /**
