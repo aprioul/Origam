@@ -131,22 +131,27 @@
                                                 </ul>
                                             </li>
                                             <li class="origam-nav--menu__tab">
-                                                <a class="menu-tab--link" href="#form-checkboxswitch">
-                                                    Checkbox & Swicth
+                                                <a class="menu-tab--link" href="#form-checkboxradioswitch">
+                                                    Checkbox, Radio & Swicth
                                                 </a>
                                                 <ul class="origam-nav--menu">
                                                     <li class="origam-nav--menu__tab">
-                                                        <a class="menu-tab--link" href="#form-checkboxswitch--basics">
+                                                        <a class="menu-tab--link" href="#form-checkboxradioswitch--basics">
                                                             Basics
                                                         </a>
                                                     </li>
                                                     <li class="origam-nav--menu__tab">
-                                                        <a class="menu-tab--link" href="#form-checkboxswitch--iconsbox">
+                                                        <a class="menu-tab--link" href="#form-checkboxradioswitch--radio">
+                                                            Radio
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-checkboxradioswitch--iconsbox">
                                                             IconBox
                                                         </a>
                                                     </li>
                                                     <li class="origam-nav--menu__tab">
-                                                        <a class="menu-tab--link" href="#form-checkboxswitch--switch">
+                                                        <a class="menu-tab--link" href="#form-checkboxradioswitch--switch">
                                                             Switch
                                                         </a>
                                                     </li>
@@ -493,9 +498,9 @@
                                             </div>
                                             <div class="origam-section">
                                                 <div class="origam-grid__cell origam-size-1of1 origam-title">
-                                                    <h2 id="form-checkboxswitch">
-                                                        Checkbox & Switch
-                                                        <a class="anchor-link" href="#form-checkboxswitch">
+                                                    <h2 id="form-checkboxradioswitch">
+                                                        Checkbox, Radio & Switch
+                                                        <a class="anchor-link" href="#form-checkboxradioswitch">
                                                             <span class="anchor-icon">
                                                                 <i class="origamicon origamicon-link2"></i>
                                                             </span>
@@ -507,9 +512,9 @@
                                                         <div class="origam-wrapper">
                                                             <div class="origam-section">
                                                                 <div class="origam-grid__cell origam-size-1of1 origam-title">
-                                                                    <h3 id="form-checkboxswitch--basics">
+                                                                    <h3 id="form-checkboxradioswitch--basics">
                                                                         Basics
-                                                                        <a class="anchor-link" href="#form-checkboxswitch--basics">
+                                                                        <a class="anchor-link" href="#form-checkboxradioswitch--basics">
                                                                             <span class="anchor-icon">
                                                                                 <i class="origamicon origamicon-link2"></i>
                                                                             </span>
@@ -554,9 +559,84 @@
                                                             </div>
                                                             <div class="origam-section">
                                                                 <div class="origam-grid__cell origam-size-1of1 origam-title">
-                                                                    <h3 id="form-checkboxswitch--iconsbox">
+                                                                    <h3 id="form-checkboxradioswitch--radio">
+                                                                        Radio
+                                                                        <a class="anchor-link" href="#form-checkboxradioswitch--radio">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+                                                                    <div class="origam-text">
+                                                                        <p> text comming</p>
+                                                                    </div>
+                                                                    <div class="origam-demo">
+                                                                        <pre><code class="html">
+&lt;div class="radio-group"&gt;</br>
+    &lt;div class="radio-button"&gt;</br>
+        &lt;input type="radio" id="radio1" name="group1" value="1" class="radio-button--input"/&gt;</br>
+        &lt;label for="radio1" class="radio-button--label"&gt;Radio Button&lt;/label&gt;</br>
+    &lt;/div&gt;</br>
+&lt;/div&gt;
+                                                                        </code></pre>
+                                                                        <div class="origam-example">
+                                                                            <div class="radio-group">
+                                                                                <div class="radio-button">
+                                                                                    <input type="radio" id="radio1" name="group1" value="1" class="radio-button--input">
+                                                                                    <label for="radio1" class="radio-button--label">Radio Button 1</label>
+                                                                                </div>
+
+                                                                                <div class="radio-button">
+                                                                                    <input type="radio" id="radio2" name="group1" value="2" class="radio-button--input">
+                                                                                    <label for="radio2" class="radio-button--label">Radio Button 2</label>
+                                                                                </div>
+
+                                                                                <div class="radio-button">
+                                                                                    <input type="radio" id="radio3" name="group1" value="3" class="radio-button--input">
+                                                                                    <label for="radio3" class="radio-button--label">Radio Button 3</label>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="radio-group">
+                                                                                <div class="radio-button">
+                                                                                    <input type="radio" id="radio4" name="group2" value="4" class="radio-button--input">
+                                                                                    <label for="radio4" class="radio-button--label">Radio with help 1</label>
+                                                                                    <span class="radio-button--help">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere faucibus efficitur.</span>
+                                                                                </div>
+
+                                                                                <div class="radio-button">
+                                                                                    <input type="radio" id="radio5" name="group2" value="4" class="radio-button--input">
+                                                                                    <label for="radio5" class="radio-button--label">Radio with help 2</label>
+                                                                                    <span class="radio-button--help">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere faucibus efficitur.</span>
+                                                                                </div>
+
+                                                                                <div class="radio-button">
+                                                                                    <input type="radio" id="radio6" name="group2" value="5" class="radio-button--input" checked>
+                                                                                    <label for="radio6" class="radio-button--label">Radio with help 3</label>
+                                                                                    <span class="radio-button--help">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere faucibus efficitur.</span>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="radio-button">
+                                                                                <input type="radio" id="radio7" class="radio-button--input" disabled>
+                                                                                <label for="radio7" class="radio-button--label">Radio disabled</label>
+                                                                            </div>
+
+                                                                            <div class="radio-button">
+                                                                                <input type="radio" id="radio8" class="radio-button--input" disabled checked>
+                                                                                <label for="radio8" class="radio-button--label">Radio checked and disabled</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-checkboxradioswitch--iconsbox">
                                                                         IconsBox
-                                                                        <a class="anchor-link" href="#form-checkboxswitch--iconsbox">
+                                                                        <a class="anchor-link" href="#form-checkboxradioswitch--iconsbox">
                                                                             <span class="anchor-icon">
                                                                                 <i class="origamicon origamicon-link2"></i>
                                                                             </span>
@@ -569,9 +649,9 @@
                                                             </div>
                                                             <div class="origam-section">
                                                                 <div class="origam-grid__cell origam-size-1of1 origam-title">
-                                                                    <h3 id="form-checkboxswitch--switch">
+                                                                    <h3 id="form-checkboxradioswitch--switch">
                                                                         Switch
-                                                                        <a class="anchor-link" href="#form-checkboxswitch--switch">
+                                                                        <a class="anchor-link" href="#form-checkboxradioswitch--switch">
                                                                             <span class="anchor-icon">
                                                                                 <i class="origamicon origamicon-link2"></i>
                                                                             </span>
