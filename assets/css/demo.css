@@ -106,16 +106,21 @@ Doc-nav
 
 */
 
-#doc-nav .origam-nav--menu .origam-nav--menu{
+.origam-nav.fixed{
+    position: fixed;
+    top: 0;
+}
+
+#menu .origam-nav--menu .origam-nav--menu{
     display: none;
     padding-bottom: 10px;
 }
 
-#doc-nav .origam-nav--menu>.active>ul {
+#menu .origam-nav--menu>.active>ul {
     display: block;
 }
 
-#doc-nav .origam-nav--menu>.active>a.menu-tab--link {
+#menu .origam-nav--menu>.active>a.menu-tab--link {
     padding-left: 18px;
     font-weight: 700;
     color: #0196d1;
@@ -123,7 +128,7 @@ Doc-nav
     border-left: 2px solid #0196d1;
 }
 
-#doc-nav .origam-nav--menu>li>a.menu-tab--link {
+#menu .origam-nav--menu>li>a.menu-tab--link {
     display: block;
     padding: 4px 20px;
     font-size: 13px;
@@ -131,7 +136,7 @@ Doc-nav
     color: #767676;
 }
 
-#doc-nav .origam-nav--menu .origam-nav--menu>li>a.menu-tab--link {
+#menu .origam-nav--menu .origam-nav--menu>li>a.menu-tab--link {
     padding-top: 1px;
     padding-bottom: 1px;
     padding-left: 30px;
