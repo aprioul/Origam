@@ -506,6 +506,7 @@
         } else if( this.mouseOnContainer && this.activate){
             if($(element).not('.' + this.classes.selected).hasClass(this.classes.selectOption)) {
                 this.setValue(element, group);
+                this.mouseLeave();
             }
             if(($(element).hasClass(this.options.selectorToggle) && $(element).is('div')) || ($(element).closest('.' + this.options.selectorToggle).is('div'))) {
                 this.toggle(e);
