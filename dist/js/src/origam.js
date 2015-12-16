@@ -595,7 +595,7 @@
     Select.prototype.addGroups = function (index) {
         if (this.optionData[index].group !== null) {
             if (this.optionData[index].groupIndex !== this.groupIndex) {
-                this.groupField[this.optionData[index].groupIndex] = $('<li/>').addClass(this.classes.selectOptionGroup);
+                this.groupField[this.optionData[index].groupIndex] = $('<li/>').attr('data-index',index).addClass(this.classes.selectOptionGroup);
                 this.group[this.optionData[index].groupIndex] = $('<ul/>').addClass(this.classes.selectList);
 
                 this.groupIndex = this.optionData[index].groupIndex;
@@ -628,6 +628,7 @@
 
     Select.prototype.addField = function (gptindex, index, $parent) {
         this.field[index] = $('<li/>')
+            .attr('data-index',index)
             .addClass(this.classes.selectOption)
             .text(this.optionData[index].name);
 
@@ -647,18 +648,7 @@
             dataIndex = null,
             thisData = null;
 
-        if(group){
-            var optIndex = $(element).index(),
-                optGroupIndex = $(element).parents('.' + that.classes.selectOptionGroup).index();
-
-            this.$list.find('.' + this.classes.selectOption).each(function(index, e) {
-                if($(e).index() === optIndex && $(e).parents('.' + that.classes.selectOptionGroup).index() === optGroupIndex)
-                    dataIndex = index;
-            });
-
-        } else {
-            dataIndex = $(element).index();
-        }
+        dataIndex = $(element).data('index');
 
         this.field[dataIndex].addClass(this.classes.selected);
 
