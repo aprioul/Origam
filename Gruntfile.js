@@ -7,7 +7,7 @@ module.exports = function(grunt) {
                 separator: "<%= current_file_name %>"
             },
             dist: {
-                src: [ 'assets/js/origam/input.js','assets/js/origam/mask.js','assets/js/origam/close.js','assets/js/origam/tooltip.js','assets/js/origam/*.js'],
+                src: [ 'assets/js/origam/input.js', 'assets/js/origam/select.js','assets/js/origam/close.js','assets/js/origam/tooltip.js','assets/js/origam/table.js','assets/js/origam/*.js'],
                 dest: 'dist/js/src/<%= pkg.name %>.js'
             }
         },
@@ -74,7 +74,7 @@ module.exports = function(grunt) {
                 livereload: true // Activons le livereload du navigateur
             },
             src: {
-                files: ['assets/js/origam/*.js', 'assets/css/*.css', 'demo/*.html'], // Les fichiers à observer…
+                files: ['assets/js/origam/*.js', 'assets/js/main/demo.js', 'assets/css/*.css', 'demo/*.html'], // Les fichiers à observer…
                 tasks: ['default']  // … la commande à effectuer
             }
         }

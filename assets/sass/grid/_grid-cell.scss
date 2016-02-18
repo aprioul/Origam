@@ -19,4 +19,5 @@
   letter-spacing: normal;
   word-spacing: normal;
   text-rendering: auto;
+  @include box-sizing(border-box);
 }

@@ -1,0 +1,26 @@
+/**
+  * Range
+  */
+
+input[type="range"].text-field--group__input {
+  @include position(relative);
+  overflow: visible;
+  cursor: pointer;
+  margin-bottom: 2em;
+
+  &:after,
+  &:before {
+    @include position(absolute, 2em);
+    color: $black-2;
+  }
+
+  &:before {
+    left: 0em;
+    content: attr(min);
+  }
+
+  &:after {
+    right: 0em;
+    content: attr(max);
+  }
+}

@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Form</title>
+    <link href="../dist/css/origam.min.css" rel="stylesheet"/>
+    <link href="../dist/css/demo.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script type="text/javascript" src="../dist/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../dist/js/plugins.min.js"></script>
+    <script type="text/javascript" src="../dist/js/src/origam.js"></script>
+    <script type="text/javascript" src="../dist/js/main.min.js"></script>
+    <script>
+        hljs.configure({
+            tabReplace: '    ', // 4 spaces
+            useBR: true, // generate <br> tags instead of new-line characters in the output
+            classPrefix: 'hljs-origam-' //append class prefix
+        });
+        hljs.initHighlightingOnLoad();
+    </script>
+</head>
+<body>
+    <div class="origam-grid">
+        <div class="origam-wrapper">
+            <div class="origam-section--full">
+                <div class="origam-grid__cell origam-size-1of1" id="title">
+                    <div class="origam-grid">
+                        <div class="origam-wrapper">
+                            <div class="origam-section">
+                                <div class="origam-grid__cell origam-size-1of1">
+                                    <h1 id="form" class="page-header">
+                                        Form
+                                        <a class="anchor-link" href="#form">
+                                                            <span class="anchor-icon">
+                                                                <i class="origamicon origamicon-link2"></i>
+                                                            </span>
+                                        </a>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="origam-grid__cell origam-size-1of1">
+                    <div class="origam-grid">
+                        <div class="origam-wrapper">
+                            <div class="origam-section">
+                                <div class="origam-grid__cell origam-size-3of12" id="menu">
+                                    <nav class="origam-nav">
+                                        <ul class="origam-nav--menu">
+                                            <li class="origam-nav--menu__tab">
+                                                <a class="menu-tab--link" href="#form-gettingstarted">
+                                                    Getting Started
+                                                </a>
+                                                <ul class="origam-nav--menu">
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-gettingstarted--introduction">
+                                                            Introduction
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-gettingstarted--install">
+                                                            Install
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="origam-nav--menu__tab">
+                                                <a class="menu-tab--link" href="#form-styling">
+                                                    Styling
+                                                </a>
+                                            </li>
+                                            <li class="origam-nav--menu__tab">
+                                                <a class="menu-tab--link" href="#form-firststep">
+                                                    First Step
+                                                </a>
+                                                <ul class="origam-nav--menu">
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-firststep--creatingform">
+                                                            Creating form
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-firststep--fieldsconfiguration">
+                                                            Fields configuration
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="origam-nav--menu__tab">
+                                                <a class="menu-tab--link" href="#form-texttextarea">
+                                                    Text & Textarea
+                                                </a>
+                                                <ul class="origam-nav--menu">
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-texttextarea--states">
+                                                            States
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-texttextarea--tipslabelhelp">
+                                                            Tips, label and help
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-texttextarea--addons">
+                                                            Addons
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-texttextarea--validation">
+                                                            Validation
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-texttextarea--masking">
+                                                            Masking
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-texttextarea--dynamiccapcha">
+                                                            Dynamic Capcha
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-texttextarea--expanding">
+                                                            Expanding Textarea
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="origam-nav--menu__tab">
+                                                <a class="menu-tab--link" href="#form-checkboxradioswitch">
+                                                    Checkbox, Radio & Swicth
+                                                </a>
+                                                <ul class="origam-nav--menu">
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-checkboxradioswitch--basics">
+                                                            Basics
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-checkboxradioswitch--radio">
+                                                            Radio
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-checkboxradioswitch--iconsbox">
+                                                            IconBox
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-checkboxradioswitch--switch">
+                                                            Switch
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="origam-nav--menu__tab">
+                                                <a class="menu-tab--link" href="#form-date">
+                                                    Date
+                                                </a>
+                                                <ul class="origam-nav--menu">
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-date--datepicker">
+                                                            Datepicker
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-date--timepicker">
+                                                            Timepicker
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="origam-nav--menu__tab">
+                                                <a class="menu-tab--link" href="#form-rangerate">
+                                                    Range & Rate
+                                                </a>
+                                                <ul class="origam-nav--menu">
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-rangerate--basics">
+                                                            Basics
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-rangerate--multiple">
+                                                            Multiple
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-rangerate--rate">
+                                                            Rate
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="origam-nav--menu__tab">
+                                                <a class="menu-tab--link" href="#form-select">
+                                                    Select
+                                                </a>
+                                                <ul class="origam-nav--menu">
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-select--basics">
+                                                            Basics
+                                                        </a>
+                                                    </li>
+                                                    <li class="origam-nav--menu__tab">
+                                                        <a class="menu-tab--link" href="#form-select--multiple">
+                                                            Multiple
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="origam-nav--menu__tab">
+                                                <a class="menu-tab--link" href="#form-others">
+                                                    Others
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                                <div class="origam-grid__cell origam-size-9of12" id="content">
+                                    <div class="origam-grid">
+                                        <div class="origam-wrapper">
+                                            <div class="origam-section">
+                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                    <h2 id="form-gettingstarted">
+                                                        Getting Started
+                                                        <a class="anchor-link" href="#form-gettingstarted">
+                                                            <span class="anchor-icon">
+                                                                <i class="origamicon origamicon-link2"></i>
+                                                            </span>
+                                                        </a>
+                                                    </h2>
+                                                </div>
+                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+                                                    <div class="origam-grid">
+                                                        <div class="origam-wrapper">
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-gettingstarted--introduction">
+                                                                        Introduction
+                                                                        <a class="anchor-link" href="#form-gettingstarted--introduction">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+                                                                    <div class="origam-text">
+                                                                        <p> Origam contain an easy-to-use JavaScript library, which allows you forget about boring creating forms and problems associated with them. It does not require knowledge of JavaScript, so all parameters can be set as attributes of the input, textarea or select element.</p>
+                                                                        <p> Let's see a simple code needed to create a field</p>
+                                                                    </div>
+                                                                    <div class="origam-demo">
+                                                                        <pre><code class="html">
+&lt;input class="text-field--group__input" data-form="input" type="text" id="Text"/&gt;</br>
+                                                                        </code></pre>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-gettingstarted--install">
+                                                                        Install
+                                                                        <a class="anchor-link" href="#form-gettingstarted--install">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+                                                                    <div class="origam-text">
+                                                                        <p>There is no need to install any software. Simply place the appropriate scripts and styles in the <code>&lt;head&gt;</code> section.</p>
+                                                                    </div>
+                                                                    <div class="origam-demo">
+                                                                        <pre><code class="html">
+&lt;head&gt;</br>
+    &lt;link href="formify/css/default/origam.min.css" rel="stylesheet" &gt;</br>
+    &lt;script src="formify/origam.min.js"&gt;&lt;/script&gt;</br>
+&lt;/head&gt;
+                                                                        </code></pre>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="origam-section">
+                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                    <h2 id="form-styling">
+                                                        Styling
+                                                        <a class="anchor-link" href="#form-styling">
+                                                            <span class="anchor-icon">
+                                                                <i class="origamicon origamicon-link2"></i>
+                                                            </span>
+                                                        </a>
+                                                    </h2>
+                                                </div>
+                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+                                                    <div class="origam-text">
+                                                        <p> Each element is converted according to the same pattern, so creating your own style is very simple. The pattern looks like this:</p>
+                                                    </div>
+                                                    <div class="origam-demo">
+                                                        <pre><code class="html">
+&lt;div class="text-field"&gt;</br>
+    &lt;label class="text-field--label" for="Text"&gt;Text&lt;/label&gt;</br>
+    &lt;div class="text-field--group"&gt;</br>
+        &lt;input class="text-field--group__input" data-form="input" type="text" id="Text"/&gt;</br>
+    &lt;/div&gt;</br>
+&lt;/div&gt;
+                                                        </code></pre>
+                                                        <div class="origam-example">
+                                                            <div class="text-field">
+                                                                <label class="text-field--label" for="Text">Text</label>
+                                                                <div class="text-field--group">
+                                                                    <input class="text-field--group__input" data-form="input" type="text" id="Text"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="origam-section">
+                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                    <h2 id="form-firststep">
+                                                        First Step
+                                                        <a class="anchor-link" href="#form-firststep">
+                                                            <span class="anchor-icon">
+                                                                <i class="origamicon origamicon-link2"></i>
+                                                            </span>
+                                                        </a>
+                                                    </h2>
+                                                </div>
+                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+                                                    <div class="origam-grid">
+                                                        <div class="origam-wrapper">
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-firststep--creatingform">
+                                                                        Creating Form
+                                                                        <a class="anchor-link" href="#form-firststep--creatingform">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-firststep--fieldsconfiguration">
+                                                                        Fields Configuration
+                                                                        <a class="anchor-link" href="#form-firststep--fieldsconfiguration">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="origam-section">
+                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                    <h2 id="form-texttextarea">
+                                                        Text & Textarea
+                                                        <a class="anchor-link" href="#form-texttextarea">
+                                                            <span class="anchor-icon">
+                                                                <i class="origamicon origamicon-link2"></i>
+                                                            </span>
+                                                        </a>
+                                                    </h2>
+                                                </div>
+                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+                                                    <div class="origam-grid">
+                                                        <div class="origam-wrapper">
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-texttextarea--states">
+                                                                        States
+                                                                        <a class="anchor-link" href="#form-texttextarea--states">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-texttextarea--tipslabelhelp">
+                                                                        Tips, Label and Help
+                                                                        <a class="anchor-link" href="#form-texttextarea--tipslabelhelp">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-texttextarea--addons">
+                                                                        Addons
+                                                                        <a class="anchor-link" href="#form-texttextarea--addons">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-texttextarea--validation">
+                                                                        Validation
+                                                                        <a class="anchor-link" href="#form-texttextarea--validation">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-texttextarea--masking">
+                                                                        Masking
+                                                                        <a class="anchor-link" href="#form-texttextarea--masking">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-texttextarea--dynamiccapcha">
+                                                                        Dynamic Capcha
+                                                                        <a class="anchor-link" href="#form-texttextarea--dynamiccapcha">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-texttextarea--expanding">
+                                                                        Expanding Textarea
+                                                                        <a class="anchor-link" href="#form-texttextarea--expanding">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="origam-section">
+                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                    <h2 id="form-checkboxradioswitch">
+                                                        Checkbox, Radio & Switch
+                                                        <a class="anchor-link" href="#form-checkboxradioswitch">
+                                                            <span class="anchor-icon">
+                                                                <i class="origamicon origamicon-link2"></i>
+                                                            </span>
+                                                        </a>
+                                                    </h2>
+                                                </div>
+                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+                                                    <div class="origam-grid">
+                                                        <div class="origam-wrapper">
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-checkboxradioswitch--basics">
+                                                                        Basics
+                                                                        <a class="anchor-link" href="#form-checkboxradioswitch--basics">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+                                                                    <div class="origam-text">
+                                                                        <p> text comming</p>
+                                                                    </div>
+                                                                    <div class="origam-demo">
+                                                                        <pre><code class="html">
+&lt;div class="checkbox"&gt;</br>
+    &lt;input type="checkbox" id="checkbox1" class="checkbox-input"/&gt;</br>
+    &lt;label for="checkbox1" class="checkbox-label"&gt;Checkbox&lt;/label&gt;</br>
+&lt;/div&gt;
+                                                                        </code></pre>
+                                                                        <div class="origam-example">
+                                                                            <div class="checkbox">
+                                                                                <input type="checkbox" id="checkbox1" class="checkbox-input">
+                                                                                <label for="checkbox1" class="checkbox-label">Checkbox</label>
+                                                                            </div>
+
+                                                                            <div class="checkbox">
+                                                                                <input type="checkbox" id="checkbox2" class="checkbox-input" checked>
+                                                                                <label for="checkbox2" class="checkbox-label">Checkbox checked with help</label>
+                                                                                <span class="checkbox-help">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere faucibus efficitur.</span>
+                                                                            </div>
+
+                                                                            <div class="checkbox">
+                                                                                <input type="checkbox" id="checkbox3" class="checkbox-input" disabled>
+                                                                                <label for="checkbox3" class="checkbox-label">Checkbox disabled</label>
+                                                                            </div>
+
+                                                                            <div class="checkbox">
+                                                                                <input type="checkbox" id="checkbox4" class="checkbox-input" disabled checked>
+                                                                                <label for="checkbox4" class="checkbox-label">Checkbox checked and disabled</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-checkboxradioswitch--radio">
+                                                                        Radio
+                                                                        <a class="anchor-link" href="#form-checkboxradioswitch--radio">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+                                                                    <div class="origam-text">
+                                                                        <p> text comming</p>
+                                                                    </div>
+                                                                    <div class="origam-demo">
+                                                                        <pre><code class="html">
+&lt;div class="radio-group"&gt;</br>
+    &lt;div class="radio-button"&gt;</br>
+        &lt;input type="radio" id="radio1" name="group1" value="1" class="radio-button--input"/&gt;</br>
+        &lt;label for="radio1" class="radio-button--label"&gt;Radio Button&lt;/label&gt;</br>
+    &lt;/div&gt;</br>
+&lt;/div&gt;
+                                                                        </code></pre>
+                                                                        <div class="origam-example">
+                                                                            <div class="radio-group">
+                                                                                <div class="radio-button">
+                                                                                    <input type="radio" id="radio1" name="group1" value="1" class="radio-button--input">
+                                                                                    <label for="radio1" class="radio-button--label">Radio Button 1</label>
+                                                                                </div>
+
+                                                                                <div class="radio-button">
+                                                                                    <input type="radio" id="radio2" name="group1" value="2" class="radio-button--input">
+                                                                                    <label for="radio2" class="radio-button--label">Radio Button 2</label>
+                                                                                </div>
+
+                                                                                <div class="radio-button">
+                                                                                    <input type="radio" id="radio3" name="group1" value="3" class="radio-button--input">
+                                                                                    <label for="radio3" class="radio-button--label">Radio Button 3</label>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="radio-group">
+                                                                                <div class="radio-button">
+                                                                                    <input type="radio" id="radio4" name="group2" value="4" class="radio-button--input">
+                                                                                    <label for="radio4" class="radio-button--label">Radio with help 1</label>
+                                                                                    <span class="radio-button--help">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere faucibus efficitur.</span>
+                                                                                </div>
+
+                                                                                <div class="radio-button">
+                                                                                    <input type="radio" id="radio5" name="group2" value="4" class="radio-button--input">
+                                                                                    <label for="radio5" class="radio-button--label">Radio with help 2</label>
+                                                                                    <span class="radio-button--help">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere faucibus efficitur.</span>
+                                                                                </div>
+
+                                                                                <div class="radio-button">
+                                                                                    <input type="radio" id="radio6" name="group2" value="5" class="radio-button--input" checked>
+                                                                                    <label for="radio6" class="radio-button--label">Radio with help 3</label>
+                                                                                    <span class="radio-button--help">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere faucibus efficitur.</span>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="radio-button">
+                                                                                <input type="radio" id="radio7" class="radio-button--input" disabled>
+                                                                                <label for="radio7" class="radio-button--label">Radio disabled</label>
+                                                                            </div>
+
+                                                                            <div class="radio-button">
+                                                                                <input type="radio" id="radio8" class="radio-button--input" disabled checked>
+                                                                                <label for="radio8" class="radio-button--label">Radio checked and disabled</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-checkboxradioswitch--iconsbox">
+                                                                        IconsBox
+                                                                        <a class="anchor-link" href="#form-checkboxradioswitch--iconsbox">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-checkboxradioswitch--switch">
+                                                                        Switch
+                                                                        <a class="anchor-link" href="#form-checkboxradioswitch--switch">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+                                                                    <div class="origam-text">
+                                                                        <p> text comming</p>
+                                                                    </div>
+                                                                    <div class="origam-demo">
+                                                                        <pre><code class="html">
+&lt;div class="switch"&gt;</br>
+    &lt;input type="checkbox" id="switch1" class="switch-input"/&gt;</br>
+    &lt;label for="switch1" class="switch-label"&gt;Switch&lt;/label&gt;</br>
+&lt;/div&gt;
+                                                                        </code></pre>
+                                                                        <div class="origam-example">
+                                                                            <div class="switch">
+                                                                                <input type="checkbox" id="switch1" class="switch-input">
+                                                                                <label for="switch1" class="switch-label">Switch</label>
+                                                                            </div>
+
+                                                                            <div class="switch">
+                                                                                <input type="checkbox" id="switch2" class="switch-input" checked>
+                                                                                <label for="switch2" class="switch-label">Switch with help</label>
+                                                                                <span class="switch-help">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere faucibus efficitur.</span>
+                                                                            </div>
+
+                                                                            <div class="switch">
+                                                                                <input type="checkbox" id="switch3" class="switch-input" disabled>
+                                                                                <label for="switch3" class="switch-label">Switch disabled</label>
+                                                                            </div>
+
+                                                                            <div class="switch">
+                                                                                <input type="checkbox" id="switch4" class="switch-input" disabled checked>
+                                                                                <label for="switch4" class="switch-label">Switch checked and disabled</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="origam-section">
+                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                    <h2 id="form-date">
+                                                        Date
+                                                        <a class="anchor-link" href="#form-date">
+                                                            <span class="anchor-icon">
+                                                                <i class="origamicon origamicon-link2"></i>
+                                                            </span>
+                                                        </a>
+                                                    </h2>
+                                                </div>
+                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+                                                    <div class="origam-grid">
+                                                        <div class="origam-wrapper">
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-date--datepicker">
+                                                                        Datepicker
+                                                                        <a class="anchor-link" href="#form-date--datepicker">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-date--timepicker">
+                                                                        Timepicker
+                                                                        <a class="anchor-link" href="#form-date--timepicker">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="origam-section">
+                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                    <h2 id="form-rangerate">
+                                                        Range & Rate
+                                                        <a class="anchor-link" href="#form-rangerate">
+                                                            <span class="anchor-icon">
+                                                                <i class="origamicon origamicon-link2"></i>
+                                                            </span>
+                                                        </a>
+                                                    </h2>
+                                                </div>
+                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+                                                    <div class="origam-grid">
+                                                        <div class="origam-wrapper">
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-rangerate--basics">
+                                                                        Basics
+                                                                        <a class="anchor-link" href="#form-rangerate--basics">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-rangerate--multiple">
+                                                                        Multiple
+                                                                        <a class="anchor-link" href="#form-rangerate--multiple">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-rangerate--rate">
+                                                                        Rate
+                                                                        <a class="anchor-link" href="#form-rangerate--rate">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="origam-section">
+                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                    <h2 id="form-select">
+                                                        Select
+                                                        <a class="anchor-link" href="#form-select">
+                                                            <span class="anchor-icon">
+                                                                <i class="origamicon origamicon-link2"></i>
+                                                            </span>
+                                                        </a>
+                                                    </h2>
+                                                </div>
+                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+                                                    <div class="origam-grid">
+                                                        <div class="origam-wrapper">
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-select--basics">
+                                                                        Basics
+                                                                        <a class="anchor-link" href="#form-select--basics">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="origam-section">
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                                    <h3 id="form-select--multiple">
+                                                                        Multiple
+                                                                        <a class="anchor-link" href="#form-select--multiple">
+                                                                            <span class="anchor-icon">
+                                                                                <i class="origamicon origamicon-link2"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="origam-section">
+                                                <div class="origam-grid__cell origam-size-1of1 origam-title">
+                                                    <h2 id="form-others">
+                                                        Others
+                                                        <a class="anchor-link" href="#form-others">
+                                                            <span class="anchor-icon">
+                                                                <i class="origamicon origamicon-link2"></i>
+                                                            </span>
+                                                        </a>
+                                                    </h2>
+                                                </div>
+                                                <div class="origam-grid__cell origam-size-1of1 origam-content">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

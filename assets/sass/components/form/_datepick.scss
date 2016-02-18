@@ -1,0 +1,261 @@
+/**
+  * Utils
+  */
+
+%calendarhover {
+  @include position(relative);
+  &:not(.calendar-content--days__disable) {
+    cursor: pointer;
+    &:hover {
+      &:not(.calendar-content--days__selected) {
+        background-color: $blue-100;
+      }
+      &:after {
+        content: '';
+        @include position(absolute, 0, null, null, 0);
+        @include size(100%, 100%);
+        background-color: $white-3;
+        z-index: 1;
+      }
+    }
+  }
+}
+
+
+/**
+  * Date
+  */
+
+::-webkit-datetime-edit-year-field:not([aria-valuenow]),
+::-webkit-datetime-edit-month-field:not([aria-valuenow]),
+::-webkit-datetime-edit-week-field:not([aria-valuenow]),
+::-webkit-datetime-edit-day-field:not([aria-valuenow]),
+::-webkit-datetime-edit-hour-field:not([aria-valuenow]),
+::-webkit-datetime-edit-minute-field:not([aria-valuenow]),
+::-webkit-datetime-edit-text{
+  color: transparent;
+  .text-field--active &{
+    color: inherit;
+  }
+}
+
+input {
+  &[type=month],
+  &[type=time],
+  &[type=datetime],
+  &[type=week],
+  &[type=date]{
+    @include appearance(textfield);
+    &::-webkit-inner-spin-button,
+    &::-webkit-calendar-picker-indicator{
+      display: none;
+      @include appearance(none);
+    }
+  }
+}
+
+/**
+  * Datepicker
+  */
+
+.origam-datepick{
+  @include position(fixed, null, null, null, null);
+  font-family: Arial, Helvetica, sans-serif;
+  background-image: none;
+  border: 10px solid transparent;
+  color: $black;
+  background-color: $white;
+  border-color: darken($white, 17%);
+  @include user-select(none);
+  z-index: 2;
+}
+
+/**
+  * Date View
+  */
+.origam-datepick--view {
+  @include position(relative);
+  overflow: hidden;
+  outline: none;
+  display: inline-block;
+  margin: 0;
+  background-color: $blue;
+  min-width: 273px;
+  max-width: 275px;
+  text-align: center;
+  color: white;
+  margin-bottom: -4px;
+
+  > * {
+    padding: $padding-base-vertical $padding-base-horizontal;
+  }
+
+  > .origam-datepick--view__dayL {
+    background-color: $black-3;
+    margin-bottom: $padding-base-vertical;
+    @include font-size($font-size-xs);
+  }
+
+  > .origam-datepick--view__dayN {
+    @include font-size($size-xl);
+    padding: 0;
+  }
+
+  > .origam-datepick--view__month {
+    @include font-size($font-size-large);
+    padding-bottom: 0;
+  }
+
+  > .origam-datepick--view__year {
+    @include font-size($font-size-small);
+    padding-top: 0;
+    color: $white-3;
+  }
+
+  > .origam-datepick--view__time {
+    font-size: 2.5em;
+  }
+}
+
+/**
+  * Calendar
+  */
+
+.origam-datepick--calendar {
+  display: block;
+  margin: 0;
+  min-width: 273px;
+  max-width: 275px;
+  vertical-align: top;
+  word-spacing: -0.43em;
+  > *{
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-rendering: auto;
+  }
+}
+
+/**
+  * Submit/Select button
+  */
+
+.origam-datepick--submit {
+  margin: 0;
+  display: block;
+}
+
+/**
+  * Calendar Header
+  */
+
+.origam-datepick--calendar__header {
+  border-bottom: 1px solid transparent;
+  border-color: darken($white, 17%);
+}
+
+.calendar-header--title {
+  display: inline-block;
+  @include size(100%,100%);
+  min-height: ($base-line-height * 1.5);
+  line-height: ($base-line-height * 1.5);
+  text-align: center;
+  vertical-align: top;
+  > * {
+    padding: $padding-xs-vertical $padding-xs-horizontal;
+  }
+}
+
+.calendar-header--title__col{
+  display: inline-block;
+  @include size(50%,100%);
+}
+
+.title-col--prev,
+.title-col--next {
+  display: inline-block;
+  @include size(10%,100%);
+  min-height: ($base-line-height * 1.5);
+  line-height: ($base-line-height * 1.5);
+  text-align: center;
+  @include font-size($font-size-large);
+  vertical-align: top;
+  cursor: pointer;
+  &:hover{
+    background-color: rgba(255,255,255,0.2);
+  }
+
+}
+
+.title-col--selector {
+  @include size(80%,100%);
+  display: inline-block;
+}
+
+/**
+  * Calendar Content
+  */
+
+.calendar-content--week {
+  margin: $padding-base-vertical;
+  color: $blue;
+  border: 1px solid transparent;
+  border-bottom-color: $blue;
+}
+
+.calendar-content--days {
+  margin: $padding-base-vertical;
+  border: 1px solid transparent;
+}
+
+.calendar-content--week,
+.calendar-content--days__week{
+  > * {
+    width: grid-size(1, 7);
+    display: inline-block;
+    text-align: center;
+    min-height: ($base-line-height * 1.5);
+    line-height: ($base-line-height * 1.5);
+    vertical-align: top;
+  }
+}
+
+.origam-datepick--date,
+.origam-datepick--datetime{
+  .calendar-content--days__day {
+    @extend %calendarhover;
+  }
+}
+
+.origam-datepick--week{
+  .calendar-content--days__week{
+    @extend %calendarhover;
+  }
+}
+
+.calendar-content--days__week,
+.calendar-content--days__day{
+  &.calendar-content--days__selected {
+    background-color: $blue;
+    color: $white;
+    span {
+      z-index: 2;
+      position: relative;
+    }
+  }
+}
+
+.calendar-content--days__day {
+  border: 1px inset transparent;
+  box-sizing: border-box;
+  z-index: 2;
+  @include position(relative);
+
+  &.calendar-content--days__disable{
+    color: $black-3;
+    cursor: default;
+  }
+
+  &.calendar-content--days__today{
+    border-color: $black-3;
+  }
+}

@@ -5,16 +5,12 @@
 
 // Icon
 @mixin origamicon() {
-  font-family: origamicon;
-  font-weight: 400;
-  font-style: normal;
-  speak: none;
-  text-decoration: inherit;
-  text-transform: none;
-  text-rendering: optimizeLegibility;
+  display: inline-block;
+  font: normal normal normal 24px/1 origamicon; // shortening font declaration
+  font-size: inherit; // can't have font-size inherit on line above, so need to override
+  text-rendering: auto; // optimizelegibility throws things off #1094
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  display: inline-block;
 }
 
 // Position

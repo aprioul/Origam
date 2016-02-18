@@ -1,0 +1,13 @@
+/**
+  * Textarea
+  */
+
+textarea {
+  .text-field--group__input {
+    height: 24px;
+    margin: 4px 0;
+    overflow: hidden;
+    resize: none;
+    @include box-sizing(border-box);
+  }
+}

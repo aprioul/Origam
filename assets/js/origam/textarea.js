@@ -18,7 +18,7 @@
         this.init('textarea', element, options)
     };
 
-    if (!$.fn.input) throw new Error('Notification requires input.js');
+    if (!$.fn.input) throw new Error('Textarea requires input.js');
 
     Textarea.VERSION  = '0.1.0';
 
@@ -52,7 +52,7 @@
         var offset = this.element.offsetHeight - this.element.clientHeight;
 
         return offset;
-    }
+    };
 
     // TEXTAREA PLUGIN DEFINITION
     // =========================

@@ -6,7 +6,7 @@
 (function ($, w) {
     'use strict';
 
-    // Close CLASS DEFINITION
+    // CLOSE CLASS DEFINITION
     // ======================
 
     var app = '[data-button="close"]';
@@ -18,11 +18,22 @@
 
     Close.TRANSITION_DURATION = 1000;
 
+    /**
+     * @Implement close
+     *
+     * @definition Init close function, when click on button close,
+     * search parent target (default : ".alert") and close them.
+     *
+     * @param e
+     */
     Close.prototype.close = function (e) {
 
-        var $this    = $(this);
-        var selector = $this.attr('data-target');
+        // Init variables
+        var $this    = $(this),
+            selector = $this.attr('data-target');
 
+        // Define Parent selector
+        // Default parent is .alert (notification)
         if (!selector) {
             selector = $this.attr('href');
             selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '');// strip for ie7
@@ -33,14 +44,16 @@
         if (e) e.preventDefault();
 
         if (!$parent.length) {
-            $parent = $this.closest('.alert')
+            $parent = $this.closest('.alert');
         }
 
         $parent.trigger(e = $.Event('close.origam.close'));
 
+        // Init animation variables
         var animate = $parent.attr('data-animate');
         var animation = $parent.attr('data-animation');
 
+        // Make closed animation
         if (animate) {
             if(animation){$parent.addClass(animation);}
             else{$parent.addClass('fadeOut');}
@@ -50,6 +63,7 @@
 
         if (e.isDefaultPrevented()) return;
 
+        // Remove function
         function removeElement() {
             if ($parent.hasClass(animateClass))
                 $parent.removeClass(animateClass);
@@ -59,7 +73,8 @@
                 .remove();
         }
 
-        $.support.transition ?
+        // Execute function after animation
+        $.support.transition && $parent.hasClass(animateClass)?
             $parent
                 .one('origamTransitionEnd', removeElement)
                 .emulateTransitionEnd(Close.TRANSITION_DURATION) :
@@ -67,7 +82,7 @@
     };
 
 
-    // Close PLUGIN DEFINITION
+    // CLOSE PLUGIN DEFINITION
     // =======================
 
     function Plugin(option) {
@@ -86,7 +101,7 @@
     $.fn.close.Constructor = Close;
 
 
-    // Close NO CONFLICT
+    // CLOSE NO CONFLICT
     // =================
 
     $.fn.close.noConflict = function () {
@@ -95,7 +110,7 @@
     };
 
 
-    // Close DATA-API
+    // CLOSE DATA-API
     // ==============
 
     $(document).on('click.origam.Close.data-api', app, Close.prototype.close)

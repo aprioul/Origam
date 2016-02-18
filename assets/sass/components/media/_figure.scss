@@ -5,12 +5,499 @@
 figure {
   margin: 0;
   padding: $padding-large-horizontal;
-  border: 1px solid $primary-color-1;
+  border: 1px solid $black-3;
 
   figcaption {
     text-align: center;
     margin: $padding-large-vertical 0;
     @include font-size($base-font-size);
     color: $base-text-color;
+    &:before,
+    &:after{
+      pointer-events: none;
+    }
+  }
+}
+
+figure.effect{
+  padding: 0;
+  overflow: hidden;
+  text-align: center;
+
+  .media{
+    background: none;
+  }
+
+  img{
+    @include opacity(0.8);
+  }
+
+  h2 {
+    word-spacing: -0.15em;
+    font-weight: 300;
+
+    span {
+      font-weight: 800;
+    }
+  }
+
+  h2,
+  p {
+    margin: 0;
+  }
+
+  p {
+    letter-spacing: 1px;
+    @include font-size($font-size-small);
+  }
+
+  figcaption {
+    overflow: hidden;
+    padding: 2em;
+    margin: 0;
+    color: $white;
+    text-transform: uppercase;
+    @include font-size($font-size-large);
+    @include backface-visibility(hidden);
+
+    &,
+    > a {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    > a {
+      z-index: 1000;
+      text-indent: 200%;
+      white-space: nowrap;
+      font-size: 0;
+      opacity: 0;
+    }
+  }
+}
+
+/**
+  * Lily
+  */
+
+figure.effect-lily{
+  img {
+    max-width: none;
+    @include size (calc(100% + 50px));
+    @include opacity(0.7);
+    @include translate3d(-40px,0,0);
+    @include transition(opacity 0.35s, transform 0.35s);
+  }
+
+  h2,
+  p {
+    @include transform(translate3d(0,40px,0));
+  }
+
+  h2 {
+    @include transition(transform 0.35s);
+  }
+
+  p {
+    color: rgba(255,255,255,0.8);
+    @include opacity(0);
+    @include transition(opacity 0.2s, transform 0.35s);
+  }
+
+  figcaption {
+    text-align: left;
+
+    > div {
+      @include position(absolute, null, null, 0, 0);
+      @include size (100%, 50%);
+      padding: 2em;
+    }
+
+  }
+
+  &:hover {
+    img,
+    h2,
+    p {
+      @include translate3d(0,0,0);
+    }
+
+    img,
+    p{
+      @include opacity(1);
+    }
+
+    p {
+      @include transition-delay(0.05s);
+      @include transition-duration(0.35s);
+    }
+  }
+}
+
+/**
+  * Layla
+  */
+
+figure.effect-layla {
+  background: $primary-color-1;
+
+  img {
+    height: 390px;
+  }
+
+  h2 {
+    padding-top: 26%;
+    @include transition(transform 0.35s);
+  }
+
+  p {
+    padding: 0.5em 2em;
+    text-transform: none;
+    @include opacity(0);
+    @include translate3d(0,-10px,0);
+  }
+
+  img,
+  h2 {
+    @include translate3d(0,-30px,0);
+  }
+
+  figcaption {
+    padding: 3em;
+
+    &:before,
+    &:after {
+      content: '';
+      @include opacity(0);
+    }
+
+    &:before {
+      @include position(absolute, 15%, 10%, 15%, 10%);
+      border-top: 1px solid $white;
+      border-bottom: 1px solid $white;
+      @include scale(0,1);
+      @include transform-origin(0, 0);
+    }
+
+    &:after {
+      @include position(absolute, 10%, 15%, 10%, 15%);
+      border-right: 1px solid $white;
+      border-left: 1px solid $white;
+      @include scale(1,0);
+      @include transform-origin(100%, 0);
+    }
+
+  }
+
+  img,
+  figcaption:before,
+  figcaption:after,
+  p {
+    @include transition(opacity 0.35s, transform 0.35s);
+  }
+
+  &:hover {
+    img {
+      @include opacity(0.7);
+      @include translate3d(0,0,0);
+    }
+    figcaption:before,
+    figcaption:after {
+      @include opacity(1);
+      @include scale(1);
+    }
+
+    h2,
+    p{
+      @include opacity(1);
+      @include translate3d(0,0,0);
+    }
+
+    figcaption:after,
+    h2,
+    p,
+    img {
+      @include transition-delay(0.15s);
+    }
+
+  }
+
+}
+
+/**
+  * Marley
+  */
+
+figure.effect-marley {
+  h2,
+  p {
+    @include position(absolute, null, 10%, null, 10%);
+    padding: 10px 0;
+  }
+
+  p {
+    @include position(absolute, null, null, 10%, null);
+    line-height: 1.5;
+    @include translate3d(0,100%,0);
+  }
+
+  h2 {
+    @include position(absolute, 10%, null, null, null);
+    @include transition(transform 0.35s);
+    @include translate3d(0,20px,0);
+    &:after {
+      @include position(absolute, 100%, null, null, 0);
+      @include size(100%, 4px);
+      background: $white;
+      content: '';
+      @include translate3d(0,40px,0);
+    }
+  }
+
+  h2:after,
+  p{
+    @include opacity(0);
+    @include transition(opacity 0.35s, transform 0.35s);
+  }
+
+  figcaption {
+    text-align: right;
+  }
+
+  &:hover {
+    h2 {
+      @include translate3d(0, 0, 0);
+    }
+
+    h2:after,
+    p{
+      @include opacity(1);
+      @include translate3d(0,0,0);
+    }
+  }
+}
+
+/**
+  * Hera
+  */
+
+figure.effect-hera {
+  background: $primary-color-1;
+
+  h2 {
+    font-size: 158.75%;
+  }
+
+  h2,
+  p {
+    @include position(absolute,50%, null, null , 50%);
+    @include transition(opacity 0.35s, transform 0.35s);
+    @include translate3d(-50%,-50%,0);
+    @include transform-origin(50%);
+  }
+
+  p {
+    width: 100px;
+    text-transform: none;
+    font-size: 121%;
+    line-height: 2;
+    a{
+      color: $white;
+
+      i {
+        @include opacity(0);
+        @include transition(opacity 0.35s, transform 0.35s);
+      }
+
+      &:first-child {
+        i {
+          @include translate3d(-60px, -60px, 0);
+        }
+      }
+
+      &:nth-child(2) {
+        i {
+          @include translate3d(60px, -60px, 0);
+        }
+      }
+
+      &:nth-child(3) {
+        i {
+          @include translate3d(-60px, 60px, 0);
+        }
+      }
+
+      &:nth-child(4) {
+        i {
+          @include translate3d(60px, 60px, 0);
+        }
+      }
+
+      &:hover,
+      &:focus {
+        @include opacity(0.6);
+      }
+    }
+  }
+
+  figcaption{
+    &:before {
+      @include position(absolute,25%, null, null , 60%);
+      @include size(50%,50%);
+      border: 2px solid $white;
+      content: '';
+      @include opacity(0);
+      @include transition(opacity 0.35s, transform 0.35s);
+      @include transform3d (scale3d(0, 0, 1) rotate3d(0, 0, 1, -45deg) translate3d(-50%,-50%,0));
+      @include transform-origin(50%);
+    }
+  }
+
+  &:hover{
+    figcaption {
+      &:before {
+        @include opacity(1);
+        @include transform3d (scale3d(1, 1, 1) rotate3d(0, 0, 1, -45deg) translate3d(-50%,-50%,0));
+      }
+    }
+
+    h2 {
+      @include opacity(0);
+      @include transform3d (scale3d(0.8, 0.8, 1) translate3d(-50%,-50%,0));
+    }
+
+    p i:empty {
+      @include translate3d(0,0,0); /* just because it's stronger than nth-child */
+      @include opacity(1);
+    }
+  }
+}
+
+/**
+  * Apollo
+  */
+
+figure.effect-apollo {
+  background: $primary-color-1;
+
+  img {
+    @include opacity(95);
+    @include transition(opacity 0.35s, transform 0.35s);
+    @include scale3d(1.05,1.05,1);
+  }
+
+  p {
+    @include position(absolute, null, 0, 0, null);
+    margin: 3em;
+    padding: 0 1em;
+    max-width: 150px;
+    border-right: 4px solid $white;
+    text-align: right;
+    @include opacity(0);
+    @include transition(opacity 0.35s);
+  }
+
+  h2 {
+    text-align: left;
+  }
+
+  figcaption {
+    &:before {
+      @include position(absolute, 0, null, null , 0);
+      @include size (100%, 100%);
+      background: $white-2;
+      content: '';
+      @include transition(transform 0.6s);
+      @include transform3d (scale3d(1.9, 1.4, 1) rotate3d(0, 0, 1, 45deg) translate3d(0, -100%, 0));
+    }
+  }
+
+  &:hover {
+    img {
+      @include opacity(0.6);
+      @include scale3d(1, 1, 1);
+    }
+
+    figcaption {
+      &:before {
+        @include transform3d (scale3d(1.9, 1.4, 1) rotate3d(0, 0, 1, 45deg) translate3d(0, 100%, 0));
+      }
+    }
+
+    p {
+      @include opacity(1);
+      @include transition-delay(0.1s);
+    }
+  }
+
+}
+
+/**
+  * Jazz
+  */
+
+figure.effect-jazz {
+  @include background-image(linear-gradient(-45deg, $color-warning 0%,$color-error 100%));
+
+  img {
+    @include opacity(0.9);
+  }
+
+  figcaption:after,
+  img,
+  p {
+    @include transition(opacity 0.35s, transform 0.35s);
+  }
+
+  h2,
+  p {
+    @include opacity(1);
+    @include scale3d(0.8,0.8,1);
+  }
+
+  h2 {
+    padding-top: 26%;
+    @include transition(transform 0.35s);
+  }
+
+  p {
+    padding: 0.5em 2em;
+    text-transform: none;
+    @include font-size($font-size-small);
+    @include opacity(0);
+  }
+
+  figcaption {
+    &:after {
+      @include position(absolute, 0 , null, null, 0);
+      @include size(100%, 100%);
+      border-top: 1px solid $white;
+      border-bottom: 1px solid $white;
+      content: '';
+      @include opacity(0);
+      @include transform3d (scale3d(1,0,1) rotate3d(0, 0, 1, 45deg));
+      @include transform-origin(50%, 50%);
+    }
+  }
+
+  &:hover {
+    img {
+      @include opacity(0.7);
+      @include scale3d(1.05, 1.05, 1);
+    }
+
+    figcaption:after {
+      @include opacity(1);
+      @include transform3d (scale3d(1,1,1) rotate3d(0, 0, 1, 45deg));
+    }
+
+    h2,
+    p {
+      @include opacity(1);
+      @include scale3d(1,1,1);
+    }
   }
 }

@@ -131,14 +131,15 @@
         ],
         MinimumChars: 8,
         ScaleFactor: 1,
-        templateSwitch: '<span class="text-field--group__switchpass origamicon origamicon-eye"></span>',
+        templateShowhide: '<span class="text-field--group__switchpass origamicon origamicon-eye"></span>',
         templateStrenght: '<span class="text-field--progressbar text-field--progressbar__danger"></span>',
         show: 'origamicon-eye',
         hide: 'origamicon-eye-blocked',
         progress: 'text-field--progressbar',
         strong: 'text-field--progressbar__success',
         danger: 'text-field--progressbar__danger',
-        modules: 'switch strenght',
+        showhide: true,
+        strenght: true,
         password: 'text-field--password'
     });
 
@@ -147,18 +148,13 @@
     Password.prototype.constructor = Password;
 
     Password.prototype.event = function (options) {
-        this.inState   = { click: false, hover: false, focus: false };
-        var modules    = this.options.modules.split(' ');
+        this.options = this.getOptions(options);
 
-        for (var i = modules.length; i--;) {
-            var module = modules[i];
-
-            if (module == 'switch') {
-                var toggleSee = this.switch(options);
-            }
-            if (module == 'strenght') {
-                var strenght = this.strenght(options);
-            }
+        if (this.options.showhide) {
+            this.showhide();
+        }
+        if (this.options.strenght) {
+            this.strenght();
         }
     };
 
@@ -166,10 +162,10 @@
         return Password.DEFAULTS
     };
 
-    Password.prototype.switch = function(options){
+    Password.prototype.showhide = function(){
         this.$wrapper = this.addAddon();
 
-        this.$switch = options.templateSwitch;
+        this.$switch = this.options.templateShowhide;
 
         this.$wrapper.append(this.$switch);
         var $switch = this.$wrapper.children();
@@ -178,42 +174,28 @@
 
     };
 
-    Password.prototype.isInStateTrue = function () {
-        for (var key in this.inState) {
-            if (this.inState[key]) return true
-        }
-
-        return false
-    };
-
     Password.prototype.show = function(e){
-        this.$element.attr('type', 'text');
+        this.$element
+            .focus()
+            .attr('type', 'text');
         this.$wrapper.children().removeClass(this.options.show).addClass(this.options.hide);
     };
 
     Password.prototype.hide = function(e){
-        this.$element.attr('type', 'password');
+        this.$element
+            .focus()
+            .attr('type', 'password');
         this.$wrapper.children().removeClass(this.options.hide).addClass(this.options.show);
     };
 
-    Password.prototype.toggle = function(e){
-        var self = this;
-
-        if(e){
-            self.inState.click = !self.inState.click;
-            if (self.isInStateTrue()) self.show(e);
-            else self.hide(e);
-        }
-    };
-
-    Password.prototype.strenght = function(options){
-        this.$strenght = options.templateStrenght;
-        this.charsets = options.charsets;
+    Password.prototype.strenght = function(){
+        this.$strenght = this.options.templateStrenght;
+        this.charsets = this.options.charsets;
 
         this.$element.on('keyup focus input propertychange mouseup', $.proxy(this.calculate, this));
     };
 
-    Password.prototype.calculate = function(e){
+    Password.prototype.calculate = function(){
         var password    = this.$element.val();
         var complexity  = 0, valid = false;
         var $progress   = '.' + this.options.progress;
@@ -242,7 +224,6 @@
         $progressBar.toggleClass(this.options.danger, !valid);
 
         $progressBar.css({
-            'left': Math.max(0, ((this.$element.parent().width() - $progressBar.outerWidth()) / 2) + this.$element.parent().scrollLeft()) + "px",
             'width': complexity + '%'
         });
 
@@ -289,7 +270,7 @@
     $.fn.input.noConflict = function () {
         $.fn.password = old;
         return this
-    }
+    };
 
     $(document).ready(function() {
         $('[data-form="password"]').password();

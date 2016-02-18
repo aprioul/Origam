@@ -46,13 +46,14 @@ th {
   // Bottom align for column headings
   > thead > tr > th {
     vertical-align: bottom;
-    border-bottom: 2px solid $table-border-color;
+    border-bottom: 2px solid $blue;
   }
   // Remove top border from thead by default
   > caption + thead,
   > colgroup + thead,
   > thead:first-child {
     > tr:first-child {
+      background-color: white;
       > th,
       > td {
         border-top: 0;
@@ -120,4 +121,134 @@ th {
   > tbody > tr:hover {
     background-color: $table-bg-hover;
   }
+}
+
+/**
+  * Responsive table
+  */
+
+.origamtable-toggle{
+
+  color: $black-3;
+  cursor: pointer;
+  @include position(relative);
+  display: none;
+
+  .origamtable-active &{
+    display: table-cell;
+  }
+
+  span {
+    @include size(100%, 100%);
+    @include position(absolute, 0, null, null, 0);
+    text-align: center;
+    line-height: 200%;
+  }
+
+  &:hover {
+    color: $black-2;
+  }
+
+}
+
+.origamtable-row-detail-cell{
+  background-color: $table-bg-hover;
+  overflow: hidden;
+}
+
+.origamtable-row-detail-inner {
+  display: table;
+}
+
+.origamtable-row-detail-row {
+  display: table-row;
+  line-height: 1.5em;
+}
+
+.origamtable-row-detail-group {
+  display: block;
+  line-height: 2em;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.origamtable-row-detail-name {
+  display: table-cell;
+  font-weight: bold;
+  padding-right: 0.5em;
+}
+
+.origamtable-row-detail-value {
+  display: table-cell;
+}
+
+.origamtable > thead > tr {
+  & > th {
+    vertical-align: middle;
+    &.origamtable-sortable{
+      padding-right: 24px;
+      @include position(relative);
+
+      &.origamtable-sorted .origamtable-sort-indicator {
+        color: $black-2;
+      }
+
+      &:hover {
+        cursor: pointer;
+        .origamtable-sort-indicator {
+          color: $black-1;
+        }
+      }
+    }
+    .origamtable-sort-indicator {
+      @include position(absolute,50%, 8px, null, null);
+      @include translateY(-50%);
+      color: $black-3;
+    }
+  }
+}
+
+.origamtable-sticky-wrap {
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+  @include size(100%);
+
+  .origamtable-sticky-thead,
+  .origamtable-sticky-col,
+  .origamtable-sticky-intersect {
+    @include opacity(0);
+    @include position(absolute,0,null,null,0);
+    @include transition(all, .125s, ease-in-out);
+    z-index: 50;
+    @include size(auto);
+  }
+
+  .origamtable-sticky-thead {
+    @include box-shadow(0 0.25em 0.1em -0.1em rgba(0,0,0,.125));
+    z-index: 100;
+    @include size(100%);
+  }
+
+  .origamtable-sticky-intersect {
+    @include opacity(1);
+    z-index: 150;
+
+    th {
+      background-color: #666;
+      color: #eee;
+    }
+
+  }
+
+  td,
+  th {
+    box-sizing: border-box;
+  }
+
+  &.overflow-y {
+    overflow-y: auto;
+    max-height: 50vh;
+  }
+
 }

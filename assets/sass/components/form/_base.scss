@@ -6,7 +6,6 @@
   @include position(relative, null, null, null, null);
   padding-top: $base-space * 4;
   padding-bottom: $base-space;
-  padding-right: $base-space;
 }
 
 .text-field--group {
@@ -20,17 +19,16 @@
 
   &:before {
     @include position(absolute, null, 0, $base-space - 1, 0);
-    height: 1px;
+    @include size(100%, 2px);
     border-bottom: 1px solid $black-4;
   }
 
   &:after {
     @include position(absolute, null, 0, $base-space - 2, 0);
-    height: 2px;
     background-color: $primary-color-1;
     z-index: 2;
-    @include transform(scale(0));
-    @include transition-property(transform);
+    @include size(0, 2px);
+    @include transition-property(all);
     @include transition-duration(0.6s);
     @include transition-timing-function(ease-out);
   }
@@ -38,20 +36,23 @@
 
 .text-field--active {
   .text-field--label {
-    @include transform(scale(0.75) translateY(0));
+    @include transform(translateY(0));
+    @include font-size($font-size-small);
   }
 }
 
 .text-field--focused {
-  &:not(.text-field--password) {
+  &:not(.text-field--password),
+  &:not(.text-field--select){
     .text-field--group:after {
-      @include transform(scale(1));
+      @include size(100%, 2px);
     }
   }
 
   .text-field--label {
     color: $primary-color-1;
-    @include transform(scale(0.75) translateY(0));
+    @include transform(translateY(0));
+    @include font-size($font-size-small);
   }
 }
 
@@ -70,12 +71,20 @@
   padding-top: $base-space;
 
   .text-field--label {
+    @include font-size($font-size-base);
     @include transform(none);
   }
 
   &.text-field--focused {
     .text-field--label {
       color: $black-3;
+      @include opacity(0);
+    }
+  }
+
+  &.text-field--active {
+    .text-field--label {
+      display: none;
     }
   }
 }
@@ -86,16 +95,20 @@
   }
 }
 
-// Text field label
+/**
+  * Text field label
+  */
+
 .text-field--label {
   display: block;
   @include position(absolute, $base-space, null, null, 0);
   color: $black-3;
   line-height: 32px;
   pointer-events: none;
+  @include opacity(1);
   @include transform(translateY($base-space * 3));
   @include transform-origin(bottom left);
-  @include transition-property(transform, color);
+  @include transition-property(all);
   @include transition-duration(0.4s);
   @include transition-timing-function(ease-out);
   .text-field--color & {
@@ -103,7 +116,10 @@
   }
 }
 
-// Text field input
+/**
+  * Text field input
+  */
+
 .text-field--group__input {
   display: block;
   width: 100%;
@@ -123,48 +139,26 @@
   }
 }
 
+input {
+  &::-ms-clear,
+  &::-webkit-clear-button {
+    display: none;
+  }
+}
+
 input.text-field--group__input {
   height: 32px;
   line-height: 32px;
 }
 
-textarea.text-field--group__input {
-  height: 24px;
-  margin: 4px 0;
-  overflow: hidden;
-  resize: none;
-  @include box-sizing(border-box);
-}
+/**
+  *  Text field addons
+  */
 
-input[type="range"].text-field--group__input {
-  position: relative;
-  overflow: visible;
-  cursor: pointer;
-  margin-bottom: 2em;
-}
-input[type="range"].text-field--group__input:after,
-input[type="range"].text-field--group__input:before {
-  position: absolute;
-  top: 2em;
-  color: #aaa;
-}
-input[type="range"].text-field--group__input:before {
-  left:0em;
-  content: attr(min);
-}
-input[type="range"].text-field--group__input:after {
-  right: 0em;
-  content: attr(max);
-}
-
-// Text field addons
 .text-field--addons{
   &.left {
     padding-left: 68px;
     .text-field--label{
-      @include position(absolute, null, null, null, 68px);
-    }
-    .text-field--progressbar{
       @include position(absolute, null, null, null, 68px);
     }
   }
@@ -175,7 +169,9 @@ input[type="range"].text-field--group__input:after {
 
 .text-field--group__addons {
   @include position(absolute, 0, null, null, -55px);
-  @include size(40px, 40px);
+  @include size(100%, 100%);
+  max-width: 40px;
+  max-height: 40px;
   line-height: 40px;
   @include font-size(24px);
   color: $black-2;
@@ -186,24 +182,7 @@ input[type="range"].text-field--group__input:after {
 
   .text-field--group__input + &,
   .text-field.right &{
-    @include position(absolute, null, -55px, null, initial);
-  }
-
-  .text-field--group__switchpass{
-    color: $black-3;
-    cursor: pointer;
-  }
-
-  .text-field--group__selectcountry{
-    color: $black-3;
-    cursor: pointer;
-    @include position(relative,null,null,null,null);
-    @include font-size($font-size-base);
-    @include size(100%, 100%);
-    &:before {
-      @include position(absolute,50%,0,null,null);
-      transform: translateY(-50%);
-    }
+    @include position(absolute, null, -55px, null, auto);
   }
 
   &:hover {
@@ -227,69 +206,12 @@ input[type="range"].text-field--group__input:after {
 }
 
 /**
-  * Color
+  * Validation
   */
-
-.text-field--color{
-  border: 1px solid $black-4;
-  padding-top: $base-space;
-  cursor: pointer;
-  @include transition-property(border);
-  @include transition-duration(0.6s);
-  @include transition-timing-function(ease-out);
-  &.text-field--active,
-  &.text-field--focused{
-    label {
-      display: none;
-    }
-  }
-  &.text-field--focused{
-    border-color:$primary-color-1;
-  }
-  .text-field--group {
-    padding: 0;
-    padding-top: 4px;
-    &:before,
-    &:after {
-      display: none;
-    }
-  }
-  .text-field--group__input{
-    cursor: pointer;
-  }
-}
-
-.text-field--color_current{
-  @include size(calc( 100% + 60px ),100px);
-  margin-left: -60px;
-  background-color: $black-4;
-}
-
-
-/**
-  * Progressbar
-  */
-
-.text-field--progressbar {
-  @include position(absolute, null, null, $base-space - 2, null);
-  min-height: 1px;
-  border-top: 2px solid;
-  z-index: 3;
-  @include transition-property(all);
-  @include transition-duration(0.4s);
-  @include transition-timing-function(ease-out);
-  &.text-field--progressbar__danger{
-    border-color: $color-error;
-  }
-  &.text-field--progressbar__success{
-    border-color: $color-success;
-  }
-}
 
 .text-field--error {
   .text-field--group:after {
     background-color: $color-error;
-    @include transform(scale(1));
   }
 
   .text-field--label {
@@ -304,7 +226,6 @@ input[type="range"].text-field--group__input:after {
 
   .text-field--group:after {
     background-color: $color-success;
-    @include transform(scale(1));
   }
 }
 
@@ -315,6 +236,5 @@ input[type="range"].text-field--group__input:after {
 
   .text-field--group:after {
     background-color: $color-warning;
-    @include transform(scale(1));
   }
 }

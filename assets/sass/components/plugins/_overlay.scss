@@ -1,0 +1,10 @@
+/**
+  * Overlay
+  */
+
+.origam-overlay {
+  @include position(fixed, 0, null, null, 0);
+  @include size(100%, 100%);
+  background-color: $white-4;
+  z-index: 2;
+}

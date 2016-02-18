@@ -7,21 +7,26 @@
 
     'use strict';
 
-    // COLOR PUBLIC CLASS DEFINITION
+    // COLORPICKER PUBLIC CLASS DEFINITION
     // ===============================
 
-    var Color = function (element, options) {
-        this.type       = null;
-        this.options    = null;
-        this.$element   = null;
+    var Colorpicker = function (element, options) {
+        this.type = null;
+        this.options = null;
+        this.$element = null;
 
-        this.init('color', element, options)
+        this.init('colorpicker', element, options)
     };
 
-    //Color space convertions
+    // COLOR CONVERTION PUBLIC FUNCTIONS
+    // ===============================
     var hexToRgb = function (hex) {
             var hex = parseInt(((hex.indexOf('#') > -1) ? hex.substring(1) : hex), 16);
-            return {r: hex >> 16, g: (hex & 0x00FF00) >> 8, b: (hex & 0x0000FF)};
+            return {
+                r: hex >> 16,
+                g: (hex & 0x00FF00) >> 8,
+                b: (hex & 0x0000FF)
+            };
         },
 
         hsbToHex = function (hsb) {
@@ -32,7 +37,7 @@
             return rgbToHsb(hexToRgb(hex));
         },
 
-            rgbToHsb = function (rgb) {
+        rgbToHsb = function (rgb) {
             var hsb = {h: 0, s: 0, b: 0};
             var min = Math.min(rgb.r, rgb.g, rgb.b);
             var max = Math.max(rgb.r, rgb.g, rgb.b);
@@ -46,32 +51,64 @@
             } else hsb.h = -1;
             hsb.h *= 60;
             if (hsb.h < 0) hsb.h += 360;
-            hsb.s *= 100/255;
-            hsb.b *= 100/255;
+            hsb.s *= 100 / 255;
+            hsb.b *= 100 / 255;
             return hsb;
         },
 
         hsbToRgb = function (hsb) {
             var rgb = {};
             var h = hsb.h;
-            var s = hsb.s*255/100;
-            var v = hsb.b*255/100;
-            if(s == 0) {
+            var s = hsb.s * 255 / 100;
+            var v = hsb.b * 255 / 100;
+            if (s == 0) {
                 rgb.r = rgb.g = rgb.b = v;
             } else {
                 var t1 = v;
-                var t2 = (255-s)*v/255;
-                var t3 = (t1-t2)*(h%60)/60;
-                if(h==360) h = 0;
-                if(h<60) {rgb.r=t1;	rgb.b=t2; rgb.g=t2+t3}
-                else if(h<120) {rgb.g=t1; rgb.b=t2;	rgb.r=t1-t3}
-                else if(h<180) {rgb.g=t1; rgb.r=t2;	rgb.b=t2+t3}
-                else if(h<240) {rgb.b=t1; rgb.r=t2;	rgb.g=t1-t3}
-                else if(h<300) {rgb.b=t1; rgb.g=t2;	rgb.r=t2+t3}
-                else if(h<360) {rgb.r=t1; rgb.g=t2;	rgb.b=t1-t3}
-                else {rgb.r=0; rgb.g=0;	rgb.b=0}
+                var t2 = (255 - s) * v / 255;
+                var t3 = (t1 - t2) * (h % 60) / 60;
+                if (h == 360) h = 0;
+                if (h < 60) {
+                    rgb.r = t1;
+                    rgb.b = t2;
+                    rgb.g = t2 + t3
+                }
+                else if (h < 120) {
+                    rgb.g = t1;
+                    rgb.b = t2;
+                    rgb.r = t1 - t3
+                }
+                else if (h < 180) {
+                    rgb.g = t1;
+                    rgb.r = t2;
+                    rgb.b = t2 + t3
+                }
+                else if (h < 240) {
+                    rgb.b = t1;
+                    rgb.r = t2;
+                    rgb.g = t1 - t3
+                }
+                else if (h < 300) {
+                    rgb.b = t1;
+                    rgb.g = t2;
+                    rgb.r = t2 + t3
+                }
+                else if (h < 360) {
+                    rgb.r = t1;
+                    rgb.g = t2;
+                    rgb.b = t1 - t3
+                }
+                else {
+                    rgb.r = 0;
+                    rgb.g = 0;
+                    rgb.b = 0
+                }
             }
-            return {r:Math.round(rgb.r), g:Math.round(rgb.g), b:Math.round(rgb.b)};
+            return {
+                r: Math.round(rgb.r),
+                g: Math.round(rgb.g),
+                b: Math.round(rgb.b)
+            };
         },
 
         rgbToHex = function (rgb) {
@@ -88,6 +125,8 @@
             return hex.join('');
         },
 
+        // COLOR FIX FORMAT PUBLIC FUNCTIONS
+        // ===============================
         fixHSB = function (hsb) {
             return {
                 h: Math.min(360, Math.max(0, hsb.h)),
@@ -108,7 +147,7 @@
             var len = 6 - hex.length;
             if (len > 0) {
                 var o = [];
-                for (var i=0; i<len; i++) {
+                for (var i = 0; i < len; i++) {
                     o.push('0');
                 }
                 o.push(hex);
@@ -117,113 +156,107 @@
             return hex;
         };
 
-    if (!$.fn.input) throw new Error('Color requires input.js');
+    if (!$.fn.input) throw new Error('Colorpicker requires input.js');
 
-    Color.VERSION  = '0.1.0';
+    Colorpicker.VERSION = '0.1.0';
 
-    Color.TRANSITION_DURATION = 1000;
+    Colorpicker.TRANSITION_DURATION = 1000;
 
-    Color.DEFAULTS = $.extend({}, $.fn.input.Constructor.DEFAULTS, {
-        showEvent: 'click',
-        wrapperTemplate: '<div class="origam-colorpick"></div>',
-        colorTemplate: '<div class="origam-colorpick--color"></div>',
-        colorSelectorTemplate: '<div class="origam-colorpick--selector_outer"><div class="origam-colorpick--selector_inner"></div></div>',
-        hueTemplate: '<div class="origam-colorpick--hue"></div>',
-        hueSelectorTemplate: '<div class="origam-colorpick--hue_arrs"><div class="origam-colorpick--hue_larr"></div><div class="origam-colorpick--hue_rarr"></div></div>',
-        formTemplate: '<div class="origam-colorpick--form"></div>',
-        submitTemplate: '<div class="origam-colorpick--submit btn btn-primary" data-button="close"></div>',
-        newColorTemplate: '<div class="origam-colorpick--new_color"></div>',
-        originColorTemplate: '<div class="origam-colorpick--current_color"></div>',
-        wrapperFieldTemplate : '<div class="origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"></div></div>',
-        labelFieldTemplate : '<div class="origam-colorpick--field_letter text-field--group__addons"></div>',
-        fieldTemplate: '<input data-form="input" type="number" min="0" max="" />',
-        closeTemplate: '<div class="origam-colorpick--close" data-button="close"><i class="origamicon origamicon-close"></i></div>',
-        overlayTemplate: '<div class="origam-colorpick--overlay" data-self="true" data-button="close"></div>',
-        colorElementTemplate: '<div class="text-field--color_current"></div>',
-        fieldClass : 'text-field--group__input',
-        parentClass : 'text-field--color',
+    Colorpicker.DEFAULTS = $.extend({}, $.fn.input.Constructor.DEFAULTS, {
+        templateWrapper: '<div class="origam-colorpick"></div>',
+        templateColor: '<div class="origam-colorpick--color"></div>',
+        templateColorSelector: '<div class="origam-colorpick--selector_outer"><div class="origam-colorpick--selector_inner"></div></div>',
+        templateHue: '<div class="origam-colorpick--hue"></div>',
+        templateHueSelector: '<div class="origam-colorpick--hue_arrs"><div class="origam-colorpick--hue_larr"></div><div class="origam-colorpick--hue_rarr"></div></div>',
+        templateForm: '<div class="origam-colorpick--form"></div>',
+        templateSubmit: '<div class="origam-colorpick--submit btn btn-ghost"></div>',
+        templateNewColor: '<div class="origam-colorpick--new_color"></div>',
+        templateOriginColor: '<div class="origam-colorpick--current_color"></div>',
+        templateWrapperField: '<div class="origam-colorpick--field text-field text-field--addons left"><div class="text-field--group"></div></div>',
+        templateLabelField: '<div class="origam-colorpick--field_letter text-field--group__addons"></div>',
+        templateField: '<input data-form="input" type="number" min="0" max="" />',
+        templateColorElement: '<div class="text-field--color_current"></div>',
+        templateOverlay: '<div class="origam-overlay"></div>',
+        classes: {
+            focus: 'text-field--focused',
+            active: 'text-field--active',
+            addonsLeft: 'text-field--addons left',
+            addonsRight: 'text-field--addons right',
+            field: 'text-field--group__input',
+            parent: 'text-field--color'
+        },
         color: 'FF0000',
-        livePreview: true,
+        livepreview: true,
         layout: 'full',
-        submitText: 'OK',
-        animate: true,
-        animationIn: 'fadeInDown',
-        animationOut: 'fadeOutUp',
+        submittext: 'OK',
         format: '#',
-        height: 276,
-        onShow: function () {},
-        onBeforeShow: function(){},
-        onHide: function () {},
-        onChange: function () {},
-        onSubmit: function () {}
+        height: 230
     });
 
-    Color.prototype = $.extend({}, $.fn.input.Constructor.prototype);
+    Colorpicker.prototype = $.extend({}, $.fn.input.Constructor.prototype);
 
-    Color.prototype.constructor = Color;
+    Colorpicker.prototype.constructor = Colorpicker;
 
-    Color.prototype.getUID = function (length){
-        var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split('');
-        if (!length) {
-            length = Math.floor(Math.random() * chars.length);
-        }
-        var str = '';
-        for (var i = 0; i < length; i++) {
-            str += chars[Math.floor(Math.random() * chars.length)];
-        }
-        return str;
-    };
-
-    Color.prototype.event = function (options) {
-        this.options        = this.getOptions(options);
-        this.id             = this.getUID(8);
-        this.element        = this;
-        this.$element.data('origam-colorpickId', this.id);
+    /**
+     * @Implement event
+     *
+     * @define Add event to input. This input Event make colorpicker
+     *
+     * @param options
+     *
+     * @returns {Colorpicker}
+     */
+    Colorpicker.prototype.event = function (options) {
+        // Init colorpicker object
+        this.options = this.getOptions(options);
         this.field = new Array();
         this.fields = {
-            'hex' : {
+            'hex': {
                 'class': 'origam-colorpick--hex_field',
                 'label': '#',
                 'type': 'text',
-                'maxlenght' : 6,
-                'size' : 6
+                'maxlenght': 6,
+                'size': 6
             },
-            'origin' : {
+            'origin': {
                 'class': 'origam-colorpick--origin_field',
                 'label': '#'
             },
-            'rgb_r' : {
+            'rgb_r': {
                 'class': 'origam-colorpick--rgb_r',
                 'label': 'R',
                 'max': '255'
             },
-            'hsb_h' : {
+            'hsb_h': {
                 'class': 'origam-colorpick--hsb_h',
                 'label': 'H',
                 'max': '360'
             },
-            'rgb_g' : {
+            'rgb_g': {
                 'class': 'origam-colorpick--rgb_g',
                 'label': 'G',
                 'max': '255'
             },
-            'hsb_s' : {
+            'hsb_s': {
                 'class': 'origam-colorpick--hsb_s',
                 'label': 'S',
                 'max': '100'
             },
-            'rgb_b' : {
+            'rgb_b': {
                 'class': 'origam-colorpick--rgb_b',
                 'label': 'B',
                 'max': '255'
             },
-            'hsb_b' : {
+            'hsb_b': {
                 'class': 'origam-colorpick--hsb_b',
                 'label': 'B',
                 'max': '100'
             }
         };
 
+        this.$element.data('origam-colorpickId', this.id);
+
+        // Convert default color to HSB color
         if (typeof this.options.color == 'string') {
             this.options.color = hexToHsb(this.options.color);
         } else if (this.options.color.r != undefined && this.options.color.g != undefined && this.options.color.b != undefined) {
@@ -234,58 +267,187 @@
             return this;
         }
 
-        this.origColor = this.options.color;
+        // Create colorpicker
+        this.$overlay = $(this.options.templateOverlay);
+        this.origColor = this.$element.val() ? this.$element.val() : this.options.color;
 
-        this.colorpick = $(this.options.wrapperTemplate)
+        this.$colorpick = $(this.options.templateWrapper)
             .attr('id', this.id)
-            .addClass('origam-colorpick--'+this.options.layout);
+            .addClass('origam-colorpick--' + this.options.layout);
 
+        this.$submitField = $(this.options.templateSubmit).attr('data-target', '#' + this.id);
 
-        this.close = $(this.options.closeTemplate).attr('data-target', '#' + this.id);
-        this.submitField = $(this.options.submitTemplate).attr('data-target', '#' + this.id);
+        this.$form = $(this.options.templateForm);
+        this.$currentColor = $(this.options.templateOriginColor);
+        this.$newColor = $(this.options.templateNewColor);
 
+        this.$selector = $(this.options.templateColor).css({
+            'height': this.options.height,
+            'width': this.options.height
+        });
+        this.$selectorIndic = $(this.options.templateColorSelector);
 
-        this.form = $(this.options.formTemplate);
-        this.currentColor = $(this.options.originColorTemplate);
-        this.newColor = $(this.options.newColorTemplate);
-
-
-        this.selector = $(this.options.colorTemplate);
-        this.selectorIndic = $(this.options.colorSelectorTemplate);
-
-
-        this.hue = $(this.options.hueSelectorTemplate);
-        this.huebar = $(this.options.hueTemplate);
+        this.$hue = $(this.options.templateHueSelector);
+        this.$huebar = $(this.options.templateHue).append(this.$hue);
 
         this.options.placement = 'before';
         this.$wrapper = this.addAddon();
         this.$wrapper.text(this.options.format);
 
-        this.color = $(this.options.colorElementTemplate);
+        this.$color = $(this.options.templateColorElement);
 
+        this.$output = $('<div/>').addClass(this.classes.field);
+
+        // Define input event
         this.$element
+            .after(this.$output)
             .parents(this.$parent)
-            .on(this.options.showEvent, $.proxy(this.show, this))
-            .addClass(this.options.parentClass)
-            .prepend(this.color);
+            .addClass(this.classes.parent)
+            .on('click', $.proxy(this.show, this))
+            .prepend(this.$color);
 
+        // Centering modal if window is resize
+        $(w).on('resize', $.proxy(this.moveModal(this.$colorpick), this));
     };
 
-    Color.prototype.getDefaults = function () {
-        return Color.DEFAULTS
+    Colorpicker.prototype.getDefaults = function () {
+        return Colorpicker.DEFAULTS
     };
 
-    Color.prototype.submit = function(e) {
+    /**
+     * @Implement submit
+     *
+     * @param e
+     */
+    Colorpicker.prototype.submit = function (e) {
         this.origColor = this.options.color;
         this.setCurrentColor(this.options.color);
         this.setOrigineFields(this.options.color);
         this.setElement(this.options.color);
     };
 
-    Color.prototype.change = function(field) {
+    /**
+     * @Implement createSelector
+     *
+     * @definition Create saturation/brightness selector
+     *
+     */
+    Colorpicker.prototype.createSelector = function () {
+        this.$selector
+            .html('')
+            .on('mousedown touchstart', $.proxy(this.eventSelector, this))
+            .append('<div class="origam-colorpick--color_overlay1"><div class="origam-colorpick--color_overlay2"></div></div>')
+            .children().children().append(this.$selectorIndic);
+    };
+
+    /**
+     * @Implement createHue
+     *
+     * @definition Create hue selector
+     *
+     */
+    Colorpicker.prototype.createHue = function () {
+        var UA = navigator.userAgent.toLowerCase(),
+            isIE = navigator.appName === 'Microsoft Internet Explorer',
+            IEver = isIE ? parseFloat(UA.match(/msie ([0-9]{1,}[\.0-9]{0,})/)[1]) : 0,
+            ngIE = ( isIE && IEver < 10 ),
+            stops = ['#ff0000', '#ff0080', '#ff00ff', '#8000ff', '#0000ff', '#0080ff', '#00ffff', '#00ff80', '#00ff00', '#80ff00', '#ffff00', '#ff8000', '#ff0000'];
+
+        this.$huebar.html('');
+
+        if (ngIE) {
+            var i;
+            for (i = 0; i <= 11; i++) {
+                $('<div>')
+                    .attr('style', 'height:8.333333%; filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=' + stops[i] + ', endColorstr=' + stops[i + 1] + '); -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=' + stops[i] + ', endColorstr=' + stops[i + 1] + ')";')
+                    .appendTo(this.$huebar);
+            }
+        } else {
+            var stopList = stops.join(',');
+            this.$huebar.attr('style', 'background:-webkit-linear-gradient(top,' + stopList + '); background: -o-linear-gradient(top,' + stopList + '); background: -ms-linear-gradient(top,' + stopList + '); background:-moz-linear-gradient(top,' + stopList + '); -webkit-linear-gradient(top,' + stopList + '); background:linear-gradient(to bottom,' + stopList + '); ');
+        }
+
+        this.$huebar
+            .on('mousedown touchstart', $.proxy(this.eventHue, this))
+            .height(this.options.height);
+    };
+
+    /**
+     * @Implement createForm
+     *
+     * @definition Create input form to select color with HEX color,
+     * HSB color or RGB color.
+     * Form contain original color and current color, you can come back to your
+     * origin color when you click on.
+     */
+
+    Colorpicker.prototype.createForm = function() {
+        var count = 0;
+
+        this.$form
+            .html('')
+            .append(this.$newColor);
+
+        this.$currentColor
+            .on("click", $.proxy(this.restoreOriginal, this))
+            .appendTo(this.$form);
+
+        for (var i in this.fields) {
+            var $wrapper = $(this.options.templateWrapperField),
+                $label = $(this.options.templateLabelField),
+                $field = $(this.options.templateField);
+
+            $label
+                .text(this.fields[i]['label'])
+                .appendTo($wrapper.children());
+
+            if (i === 'hex') {
+                $field
+                    .attr('type', this.fields[i]['type'])
+                    .attr('maxlenght', this.fields[i]['maxlenght'])
+                    .attr('size', this.fields[i]['size']);
+            }
+            else if (i === 'origin') {
+                $field = $('<div>');
+                $wrapper.addClass('text-field--disabled');
+            }
+            else {
+                $field.attr('max', this.fields[i]['max']);
+            }
+
+            this.field[count] = $field
+                .on('focusin', $.proxy(this.startFocus, this))
+                .on('focusout', $.proxy(this.endFocus, this))
+                .on('change', $.proxy(this.eventField, this))
+                .addClass(this.classes.field)
+                .appendTo($wrapper.children());
+
+            $wrapper
+                .addClass(this.fields[i]['class'])
+                .appendTo(this.$form);
+
+            count++;
+        }
+
+        this.$submitField
+            .text(this.options.submittext)
+            .on("click", $.proxy(this.submit, this))
+            .appendTo(this.$form);
+
+    };
+
+    /**
+     * @Implement change
+     *
+     * @definition When you change form field value, set value to selector,
+     * hue and other form field to match them.
+     *
+     * @param field
+     */
+    Colorpicker.prototype.change = function(field) {
 
         if (field.parents(this.$parent).attr('class').indexOf('--hex') > 0) {
-            this.options.color = hexToHsb(fixHex(field.value));
+            this.options.color = hexToHsb(fixHex(this.field[0].val()));
             this.fillRGBFields(this.options.color);
             this.fillHSBFields(this.options.color);
         } else if (field.parents(this.$parent).attr('class').indexOf('--hsb') > 0) {
@@ -311,11 +473,25 @@
         this.setNewColor(this.options.color);
     };
 
-    Color.prototype.eventField = function (e){
+    /**
+     * @Implement eventField
+     *
+     * @definition Add event to all field
+     *
+     * @param e
+     */
+    Colorpicker.prototype.eventField = function (e){
         this.change($(e.currentTarget));
     };
 
-    Color.prototype.eventSelector = function (e) {
+    /**
+     * @Implement eventSelector
+     *
+     * @definition Add event to selector
+     *
+     * @param e
+     */
+    Colorpicker.prototype.eventSelector = function (e) {
         e.preventDefault ? e.preventDefault() : e.returnValue = false;
 
         var offset      = 0,
@@ -337,7 +513,14 @@
         return false;
     };
 
-    Color.prototype.moveSelector = function (e) {
+    /**
+     * @Implement moveSelector
+     *
+     * @definition Add event move to selector
+     *
+     * @param e
+     */
+    Colorpicker.prototype.moveSelector = function (e) {
         var offset      = 0,
             pageX       = ((e.type == 'touchmove') ? e.originalEvent.changedTouches[0].pageX : e.pageX ),
             pageY       = ((e.type == 'touchmove') ? e.originalEvent.changedTouches[0].pageY : e.pageY );
@@ -356,13 +539,27 @@
         return false;
     };
 
-    Color.prototype.updateSelector = function (e) {
+    /**
+     * @Implement updateSelector
+     *
+     * @definition Events ends
+     *
+     * @param e
+     */
+    Colorpicker.prototype.updateSelector = function (e) {
         $(document).off('mouseup touchend', $.proxy(this.updateSelector, this));
         $(document).off('mousemove touchmove', $.proxy(this.moveSelector, this));
         return false;
     };
 
-    Color.prototype.eventHue = function (e) {
+    /**
+     * @Implement eventHue
+     *
+     * @definition Add event to hue
+     *
+     * @param e
+     */
+    Colorpicker.prototype.eventHue = function (e) {
         e.preventDefault ? e.preventDefault() : e.returnValue = false;
 
         var offset      = 0,
@@ -385,7 +582,14 @@
         return false;
     };
 
-    Color.prototype.moveHue = function (e) {
+    /**
+     * @Implement moveHue
+     *
+     * @definition Add event move to hue
+     *
+     * @param e
+     */
+    Colorpicker.prototype.moveHue = function (e) {
         var offset      = 0,
             offsetTop   = 0,
             pageY       = ((e.type == 'touchmove') ? e.originalEvent.changedTouches[0].pageY : e.pageY );
@@ -405,14 +609,28 @@
         return false;
     };
 
-    Color.prototype.updateHue = function (e) {
+    /**
+     * @Implement updateHue
+     *
+     * @definition Events ends
+     *
+     * @param e
+     */
+    Colorpicker.prototype.updateHue = function (e) {
 
         $(document).off('mouseup touchend', $.proxy(this.updateHue, this));
         $(document).off('mousemove touchmove',$.proxy(this.moveHue, this));
         return false;
     };
 
-    Color.prototype.restoreOriginal = function(e) {
+    /**
+     * @Implement restoreOriginal
+     *
+     * @definition Restore original color to selector, hue and field
+     *
+     * @param e
+     */
+    Colorpicker.prototype.restoreOriginal = function(e) {
         var col = this.origColor;
         this.options.color = col;
         this.fillRGBFields(col);
@@ -424,53 +642,116 @@
         this.setNewColor(col);
     };
 
-    Color.prototype.fillRGBFields = function  (hsb) {
+    /**
+     * @Implement fillRGBFields
+     *
+     * @definition Set value to RGB fields
+     *
+     * @param hsb
+     */
+    Colorpicker.prototype.fillRGBFields = function  (hsb) {
         var rgb = hsbToRgb(hsb);
         this.field[2].val(rgb.r);
         this.field[4].val(rgb.g);
         this.field[6].val(rgb.b);
     };
 
-    Color.prototype.fillHSBFields = function  (hsb) {
+    /**
+     * @Implement fillHSBFields
+     *
+     * @definition Set value to HSB fields
+     *
+     * @param hsb
+     */
+    Colorpicker.prototype.fillHSBFields = function  (hsb) {
         this.field[3].val(Math.round(hsb.h));
         this.field[5].val(Math.round(hsb.s));
         this.field[7].val(Math.round(hsb.b));
     };
 
-    Color.prototype.fillHexFields = function (hsb) {
+    /**
+     * @Implement fillHexFields
+     *
+     * @definition Set value to HEX fields
+     *
+     * @param hsb
+     */
+    Colorpicker.prototype.fillHexFields = function (hsb) {
         this.field[0].val(hsbToHex(hsb));
     };
 
-    Color.prototype.setHue = function (hsb) {
-        this.hue.css('top', parseInt(this.options.height - this.options.height * hsb.h/360, 10));
+    /**
+     * @Implement setHue
+     *
+     * @definition Set value to hue barre
+     *
+     * @param hsb
+     */
+    Colorpicker.prototype.setHue = function (hsb) {
+        this.$hue.css('top', parseInt(this.options.height - this.options.height * hsb.h/360, 10));
     };
 
-    Color.prototype.setSelector = function (hsb) {
-        this.selector.css('backgroundColor', '#' + hsbToHex({h: hsb.h, s: 100, b: 100}));
-        this.selectorIndic.css({
+    /**
+     * @Implement setSelector
+     *
+     * @definition Set value to selector
+     *
+     * @param hsb
+     */
+    Colorpicker.prototype.setSelector = function (hsb) {
+        this.$selector.css('backgroundColor', '#' + hsbToHex({h: hsb.h, s: 100, b: 100}));
+        this.$selectorIndic.css({
             left: parseInt(this.options.height * hsb.s/100, 10),
             top: parseInt(this.options.height * (100-hsb.b)/100, 10)
         });
     };
 
-    Color.prototype.setCurrentColor = function (hsb) {
-        this.currentColor.css('backgroundColor', '#' + hsbToHex(hsb));
+    /**
+     * @Implement setCurrentColor
+     *
+     * @definition Set value to current color div
+     *
+     * @param hsb
+     */
+    Colorpicker.prototype.setCurrentColor = function (hsb) {
+        this.$currentColor.css('backgroundColor', '#' + hsbToHex(hsb));
     };
 
-    Color.prototype.setNewColor = function (hsb) {
-        this.newColor.css('backgroundColor', '#' + hsbToHex(hsb));
+    /**
+     * @Implement setNewColor
+     *
+     * @definition Set value to new color div
+     *
+     * @param hsb
+     */
+    Colorpicker.prototype.setNewColor = function (hsb) {
+        this.$newColor.css('backgroundColor', '#' + hsbToHex(hsb));
     };
 
-    Color.prototype.setOrigineFields = function (hsb) {
+    /**
+     * @Implement setOrigineFields
+     *
+     * @definition Set value to original field
+     *
+     * @param hsb
+     */
+    Colorpicker.prototype.setOrigineFields = function (hsb) {
         this.field[1].text(hsbToHex(hsb));
     };
 
-    Color.prototype.setElement = function (hsb) {
+    /**
+     * @Implement setElement
+     *
+     * @definition Set value to input
+     *
+     * @param hsb
+     */
+    Colorpicker.prototype.setElement = function (hsb) {
         var formatColor,
             rgb;
 
         if (this.options.format === 'rgb'){
-            rgb = hsbToRgb(hsb)
+            rgb = hsbToRgb(hsb);
             formatColor = '( ' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ') ';
         }
         else if (this.options.format === 'hsb') {
@@ -480,114 +761,68 @@
             formatColor = hsbToHex(hsb)
         }
 
+        this.$output.text(formatColor);
+
+        if(this.$element.attr('type') == 'color'){
+            formatColor = '#' + hsbToHex(hsb)
+        }
 
         this.$element
             .val(formatColor)
             .parents(this.$parent)
-            .addClass(this.options.classes.active);
+            .addClass(this.classes.active);
 
-        this.color.css('backgroundColor', '#' + hsbToHex(hsb));
-    }
+        this.$color.css('backgroundColor', '#' + hsbToHex(hsb));
 
-    Color.prototype.show = function () {
+        this.hide();
+    };
+
+    /**
+     * @Implement action
+     *
+     * @definition hide colorpicker if user click outside modal and
+     * if modal is active
+     *
+     * @param e
+     */
+    Colorpicker.prototype.action = function(e){
+        if (!this.mouseOnContainer && this.activate){
+            this.hide();
+        }
+    };
+
+    /**
+     * @Implement show
+     *
+     * @definition Show colorpick in modal when user click on input
+     *
+     * @param e
+     */
+    Colorpicker.prototype.show = function (e) {
         var that            = this,
-            $color          = that.colorpick,
             viewportHeight  = $(window).height(),
-            viewportWidtht  = $(window).width(),
-            count           = 0,
-            UA              = navigator.userAgent.toLowerCase(),
-            isIE            = navigator.appName === 'Microsoft Internet Explorer',
-            IEver           = isIE ? parseFloat( UA.match( /msie ([0-9]{1,}[\.0-9]{0,})/ )[1] ) : 0,
-            ngIE            = ( isIE && IEver < 10 ),
-            stops           = ['#ff0000','#ff0080','#ff00ff','#8000ff','#0000ff','#0080ff','#00ffff','#00ff80','#00ff00','#80ff00','#ffff00','#ff8000','#ff0000'];
+            viewportWidtht  = $(window).width();
 
+        this.activate = true;
+        this.mouseOnContainer = false;
+        this.$element.off('click', $.proxy(this.show, this));
 
-        this.selector
-            .html('')
-            .on('mousedown touchstart', $.proxy(this.eventSelector, this))
-            .append('<div class="origam-colorpick--color_overlay1"><div class="origam-colorpick--color_overlay2"></div></div>')
-            .children().children().append(this.selectorIndic);
+        this.createSelector();
+        this.createHue();
+        this.createForm();
 
-        if(ngIE) {
-            var i;
-            for(i=0; i<=11; i++) {
-                $('<div>')
-                    .attr('style','height:8.333333%; filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='+stops[i]+', endColorstr='+stops[i+1]+'); -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='+stops[i]+', endColorstr='+stops[i+1]+')";')
-                    .appendTo(this.huebar);
-            }
-        } else {
-            var stopList = stops.join(',');
-            this.huebar.attr('style','background:-webkit-linear-gradient(top,'+stopList+'); background: -o-linear-gradient(top,'+stopList+'); background: -ms-linear-gradient(top,'+stopList+'); background:-moz-linear-gradient(top,'+stopList+'); -webkit-linear-gradient(top,'+stopList+'); background:linear-gradient(to bottom,'+stopList+'); ');
-        }
+        this.$colorpick
+            .append(this.$selector)
+            .append(this.$huebar)
+            .append(this.$form);
 
-        this.huebar
-            .on('mousedown touchstart', $.proxy(this.eventHue, this))
-            .append(this.hue);
-
-        this.form
-            .html('')
-            .append(this.newColor);
-
-        this.currentColor
-            .on("click", $.proxy(this.restoreOriginal, this))
-            .appendTo(this.form);
-
-        for(var i in this.fields) {
-            var $wrapper         = $(this.options.wrapperFieldTemplate),
-                $label           = $(this.options.labelFieldTemplate),
-                $field           = $(this.options.fieldTemplate);
-
-            $label
-                .text(this.fields[i]['label'])
-                .appendTo($wrapper.children());
-
-            if(i === 'hex'){
-                $field
-                    .attr('type', this.fields[i]['type'])
-                    .attr('maxlenght', this.fields[i]['maxlenght'])
-                    .attr('size', this.fields[i]['size']);
-            }
-            else if(i === 'origin'){
-                $field = $('<div>');
-                $wrapper.addClass('text-field--disabled');
-            }
-            else {
-                $field
-                    .attr('max', this.fields[i]['max']);
-            }
-
-            this.field[count] = $field
-                .on('focusin', $.proxy(this.startFocus, this))
-                .on('focusout', $.proxy(this.endFocus, this))
-                .on('change', $.proxy(this.eventField, this))
-                .addClass(this.options.fieldClass)
-                .appendTo($wrapper.children());
-
-            $wrapper
-                .addClass(this.fields[i]['class'])
-                .appendTo(this.form);
-
-            count++;
-        }
-
-        this.submitField
-            .text(this.options.submitText)
-            .on("click", $.proxy(this.submit, this))
-            .appendTo(this.form);
-
-        this.colorpick
-            .append(this.close)
-            .append(this.selector)
-            .append(this.huebar)
-            .append(this.form);
-
-        if(that.options.animate) {
-            $color
+        if(this.options.animate) {
+            this.$colorpick
                 .attr('data-animate', 'true')
                 .attr('data-animation', that.options.animationOut)
                 .addClass(that.options.animationIn)
                 .addClass('animated');
-            var animateClass = that.options.animationIn + ' animated';
+            var animateClass = this.options.animationIn + ' animated';
         }
 
         this.fillRGBFields(this.options.color);
@@ -599,23 +834,24 @@
         this.setNewColor(this.options.color);
         this.setOrigineFields(this.options.color);
 
-        this.colorpick
+        this.$overlay.appendTo(document.body);
+        this.$colorpick
             .appendTo(document.body)
             .css({
-                'top':  (viewportHeight/2) - (this.colorpick.outerHeight()/2),
-                'left': (viewportWidtht/2) - (this.colorpick.outerWidth()/2)
+                'top':  (viewportHeight/2) - (this.$colorpick.outerHeight()/2),
+                'left': (viewportWidtht/2) - (this.$colorpick.outerWidth()/2)
             });
 
-
+        this.bindSelector(this.$colorpick);
 
         var onShow = function () {
-            if ($color.hasClass(animateClass))
-                $color.removeClass(animateClass);
-            $color.trigger('show.origam.' + that.type);
+            if (that.$colorpick.hasClass(animateClass))
+                that.$colorpick.removeClass(animateClass);
+            that.$colorpick.trigger('show.origam.' + that.type);
         };
 
-        $.support.transition && $color.hasClass(animateClass) ?
-            $color
+        $.support.transition && this.$colorpick.hasClass(animateClass) ?
+            this.$colorpick
                 .one('origamTransitionEnd', onShow)
                 .emulateTransitionEnd(Color.TRANSITION_DURATION) :
             onShow();
@@ -624,36 +860,85 @@
         
     };
 
-    // COLOR PLUGIN DEFINITION
+    /**
+     * @Implement hide
+     *
+     * @definition hide colorpick
+     *
+     * @param e
+     */
+    Colorpicker.prototype.hide = function (e) {
+        var that = this;
+
+        this.activate = false;
+
+        if (e) e.preventDefault();
+
+        this.$colorpick.trigger(e = $.Event('close.origam.' + this.type));
+
+        var animate = this.$colorpick.attr('data-animate');
+        var animation = this.$colorpick.attr('data-animation');
+
+        if (animate) {
+            if(animation){this.$colorpick.addClass(animation);}
+            else{this.$colorpick.addClass('fadeOut');}
+            this.$colorpick.addClass('animated');
+            var animateClass = animation + ' animated';
+        }
+
+
+        if (e.isDefaultPrevented()) return;
+
+        function removeElement() {
+            if (that.$colorpick.hasClass(animateClass))
+                that.$colorpick.removeClass(animateClass);
+            that.$overlay.remove();
+            that.$colorpick
+                .detach()
+                .trigger('closed.origam.' + that.type)
+                .remove();
+            that.$element.change();
+        }
+
+        $.support.transition && this.$colorpick.hasClass(animateClass)?
+            this.$colorpick
+                .one('origamTransitionEnd', removeElement)
+                .emulateTransitionEnd(Colorpicker.TRANSITION_DURATION) :
+            removeElement()
+
+    };
+
+    // COLORPICKER PLUGIN DEFINITION
     // =========================
 
     function Plugin(option) {
         return this.each(function () {
             var $this   = $(this);
-            var data    = $this.data('origam.color');
+            var data    = $this.data('origam.colorpicker');
             var options = typeof option == 'object' && option;
 
-            if (!data) $this.data('origam.color', (data = new Color(this, options)));
+            if (!data) $this.data('origam.colorpicker', (data = new Colorpicker(this, options)));
             if (typeof option == 'string') data[option]()
         })
     }
 
-    var old = $.fn.color;
+    var old = $.fn.colorpicker;
 
-    $.fn.color             = Plugin;
-    $.fn.color.Constructor = Color;
+    $.fn.colorpicker             = Plugin;
+    $.fn.colorpicker.Constructor = Colorpicker;
 
 
-    // COLOR NO CONFLICT
+    // COLORPICKER NO CONFLICT
     // ===================
 
     $.fn.input.noConflict = function () {
-        $.fn.color = old;
+        $.fn.colorpicker = old;
         return this
     };
 
     $(document).ready(function() {
-        $('[data-form="color"]').color();
+        $('[data-form="color"]').colorpicker();
+        $('[type="color"]').colorpicker();
     });
 
 })(jQuery, window);

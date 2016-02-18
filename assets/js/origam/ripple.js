@@ -6,7 +6,7 @@
 (function ($, w) {
     'use strict';
 
-    // Ripple CLASS DEFINITION
+    // RIPPLE CLASS DEFINITION
     // ======================
 
     var Ripple   = function (element, options) {
@@ -79,7 +79,7 @@
     };
 
 
-    // Ripple PLUGIN DEFINITION
+    // RIPPLE PLUGIN DEFINITION
     // =======================
 
     function Plugin(option) {
@@ -98,7 +98,7 @@
     $.fn.ripple.Constructor = Ripple;
 
 
-    // Ripple NO CONFLICT
+    // RIPPLE NO CONFLICT
     // =================
 
     $.fn.ripple.noConflict = function () {
@@ -107,7 +107,7 @@
     };
 
 
-    // Ripple DATA-API
+    // RIPPLE DATA-API
     // ==============
 
     $(document).ready(function() {

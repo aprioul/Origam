@@ -102,7 +102,7 @@
     }
 
     $(document).ready(function() {
-        $('[data-app="popover"]').notification();
+        $('[data-app="popover"]').popover();
         $('body').on('click', function (e) {
             $('[data-app="popover"]').each(function () {
                 //The 'is' for buttons that trigger popups

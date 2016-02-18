@@ -2,7 +2,10 @@
   * Checkbox base styles
   */
 
-.checkbox {}
+.checkbox {
+  min-width: 24px;
+  min-height: 24px;
+}
 
 .checkbox-input {
   @extend %visuallyhidden;
@@ -58,7 +61,6 @@
     @include position(absolute, 0, null, null, 0);
     @include font-size($size-xs);
     line-height: $size-xs;
-    height: 100%;
     @include transition-property(transform);
     @include transition-duration(0.2s);
   }
