@@ -1,0 +1,151 @@
+/*********** Origam Grid medium layout **************/
+
+@media (min-width: ($origam-md+1)) {
+  body:after {
+    display: none;
+    content: "medium";
+  }
+
+  .#{$origam-grid-prefix}_hidden--medium{
+    display: none !important;
+  }
+
+  .#{$origam-grid-prefix}_size-1of1--medium, .#{$origam-grid-prefix}_size-2of2--medium, .#{$origam-grid-prefix}_size-3of3--medium, .#{$origam-grid-prefix}_size-4of4--medium, .#{$origam-grid-prefix}_size-5of5--medium, .#{$origam-grid-prefix}_size-6of6--medium, .#{$origam-grid-prefix}_size-7of7--medium, .#{$origam-grid-prefix}_size-8of8--medium, .#{$origam-grid-prefix}_size-9of9--medium, .#{$origam-grid-prefix}_size-10of10--medium, .#{$origam-grid-prefix}_size-11of11--medium, .#{$origam-grid-prefix}_size-12of12--medium {
+    width: grid-size(1, 1);
+  }
+  .#{$origam-grid-prefix}_size-1of2--medium, .#{$origam-grid-prefix}_size-2of4--medium, .#{$origam-grid-prefix}_size-3of6--medium, .#{$origam-grid-prefix}_size-4of8--medium, .#{$origam-grid-prefix}_size-5of10--medium, .#{$origam-grid-prefix}_size-6of12--medium {
+    width: grid-size(1, 2);
+  }
+  .#{$origam-grid-prefix}_size-1of3--medium, .#{$origam-grid-prefix}_size-2of6--medium, .#{$origam-grid-prefix}_size-3of9--medium, .#{$origam-grid-prefix}_size-4of12--medium {
+    width: grid-size(1, 3);
+  }
+  .#{$origam-grid-prefix}_size-2of3--medium, .#{$origam-grid-prefix}_size-4of6--medium, .#{$origam-grid-prefix}_size-6of9--medium, .#{$origam-grid-prefix}_size-8of12--medium {
+    width: grid-size(2, 3);
+  }
+  .#{$origam-grid-prefix}_size-1of4--medium, .#{$origam-grid-prefix}_size-2of8--medium, .#{$origam-grid-prefix}_size-3of12--medium {
+    width: grid-size(1, 4);
+  }
+  .#{$origam-grid-prefix}_size-3of4--medium, .#{$origam-grid-prefix}_size-6of8--medium, .#{$origam-grid-prefix}_size-9of12--medium {
+    width: grid-size(3, 4);
+  }
+  .#{$origam-grid-prefix}_size-1of5--medium, .#{$origam-grid-prefix}_size-2of10--medium {
+    width: grid-size(1, 5);
+  }
+  .#{$origam-grid-prefix}_size-2of5--medium, .#{$origam-grid-prefix}_size-4of10--medium {
+    width: grid-size(2, 5);
+  }
+  .#{$origam-grid-prefix}_size-3of5--medium, .#{$origam-grid-prefix}_size-6of10--medium {
+    width: grid-size(3, 5);
+  }
+  .#{$origam-grid-prefix}_size-4of5--medium, .#{$origam-grid-prefix}_size-8of10--medium {
+    width: grid-size(4, 5);
+  }
+  .#{$origam-grid-prefix}_size-1of6--medium, .#{$origam-grid-prefix}_size-2of12--medium {
+    width: grid-size(1, 6);
+  }
+  .#{$origam-grid-prefix}_size-5of6--medium, .#{$origam-grid-prefix}_size-10of12--medium {
+    width: grid-size(5, 6);;
+  }
+  .#{$origam-grid-prefix}_size-1of7--medium {
+    width: grid-size(1, 7);
+  }
+  .#{$origam-grid-prefix}_size-2of7--medium {
+    width: grid-size(2, 7);
+  }
+  .#{$origam-grid-prefix}_size-3of7--medium {
+    width: grid-size(3, 7);
+  }
+  .#{$origam-grid-prefix}_size-4of7--medium {
+    width: grid-size(4, 7);
+  }
+  .#{$origam-grid-prefix}_size-5of7--medium {
+    width: grid-size(5, 7);
+  }
+  .#{$origam-grid-prefix}_size-6of7--medium {
+    width: grid-size(6, 7);
+  }
+  .#{$origam-grid-prefix}_size-1of8--medium {
+    width: grid-size(1, 8);
+  }
+  .#{$origam-grid-prefix}_size-3of8--medium {
+    width: grid-size(3, 8);
+  }
+  .#{$origam-grid-prefix}_size-5of8--medium {
+    width: grid-size(5, 8);
+  }
+  .#{$origam-grid-prefix}_size-7of8--medium {
+    width: grid-size(7, 8);
+  }
+  .#{$origam-grid-prefix}_size-1of9--medium {
+    width: grid-size(1, 9);
+  }
+  .#{$origam-grid-prefix}_size-2of9--medium {
+    width: grid-size(2, 9);
+  }
+  .#{$origam-grid-prefix}_size-4of9--medium {
+    width: grid-size(4, 9);
+  }
+  .#{$origam-grid-prefix}_size-5of9--medium {
+    width: grid-size(5, 9);
+  }
+  .#{$origam-grid-prefix}_size-7of9--medium {
+    width: grid-size(7, 9);
+  }
+  .#{$origam-grid-prefix}_size-8of9--medium {
+    width: grid-size(8, 9);
+  }
+  .#{$origam-grid-prefix}_size-1of10--medium {
+    width: grid-size(1, 10);
+  }
+  .#{$origam-grid-prefix}_size-3of10--medium {
+    width: grid-size(3, 10);
+  }
+  .#{$origam-grid-prefix}_size-7of10--medium {
+    width: grid-size(7, 10);
+  }
+  .#{$origam-grid-prefix}_size-9of10--medium {
+    width: grid-size(9, 10);
+  }
+  .#{$origam-grid-prefix}_size-1of11--medium {
+    width: grid-size(1, 11);
+  }
+  .#{$origam-grid-prefix}_size-2of11--medium {
+    width: grid-size(2, 11);
+  }
+  .#{$origam-grid-prefix}_size-3of11--medium {
+    width: grid-size(3, 11);
+  }
+  .#{$origam-grid-prefix}_size-4of11--medium {
+    width: grid-size(4, 11);
+  }
+  .#{$origam-grid-prefix}_size-5of11--medium {
+    width: grid-size(5, 11);
+  }
+  .#{$origam-grid-prefix}_size-6of11--medium {
+    width: grid-size(6, 11);
+  }
+  .#{$origam-grid-prefix}_size-7of11--medium {
+    width: grid-size(7, 11);
+  }
+  .#{$origam-grid-prefix}_size-8of11--medium {
+    width: grid-size(8, 11);
+  }
+  .#{$origam-grid-prefix}_size-9of11--medium {
+    width: grid-size(9, 11);
+  }
+  .#{$origam-grid-prefix}_size-10of11--medium {
+    width: grid-size(10, 11);
+  }
+  .#{$origam-grid-prefix}_size-1of12--medium {
+    width: grid-size(1, 12);
+  }
+  .#{$origam-grid-prefix}_size-5of12--medium {
+    width: grid-size(5, 12);
+  }
+  .#{$origam-grid-prefix}_size-7of12--medium {
+    width: grid-size(7, 12);
+  }
+  .#{$origam-grid-prefix}_size-11of12--medium {
+    width: grid-size(11, 12);
+  }
+}

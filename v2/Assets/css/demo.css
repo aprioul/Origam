@@ -28,7 +28,7 @@
 
 /* Echo out a label for the example */
 .origam-example:after,
-.origam-demo:after,{
+.origam-demo:after{
     position: absolute;
     top: 15px;
     left: 15px;

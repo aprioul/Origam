@@ -1,14 +1,10 @@
-(function ($, w) {
+BRANDBAR.breakout();
 
-    BRANDBAR.breakout();
-
-    (function (BRANDBAR, $, undefined) {
-        BRANDBAR.url = 'demo/demo.html';
-    }(w.BRANDBAR = w.BRANDBAR || {}, $));
+(function (BRANDBAR, $, undefined) {
+    BRANDBAR.url = 'demo.html';
+}(window.BRANDBAR = window.BRANDBAR || {}, jQuery));
 
 
-    $(function () {
-        BRANDBAR.init();
-    });
-
-})(jQuery, window);
+jQuery(function () {
+    BRANDBAR.init();
+});

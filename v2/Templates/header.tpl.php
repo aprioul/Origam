@@ -18,7 +18,7 @@ $files = scandir('Modules/');
             <option value="">--select demo--</option>
             <?php foreach ($files as $file) : ?>
                 <?php if ($file != '.' && $file != '..') : ?>
-                    <option value="Modules/<?php print $file;?>/k"><?php print $file;?></option>
+                    <option value="Modules/<?php print $file;?>/"><?php print $file;?></option>
                 <?php endif; ?>
             <?php endforeach; ?>
         </select>

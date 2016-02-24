@@ -1,16 +1,3 @@
-/**
- * BrandBar - Showcase any URL with a bar fixed to the top with your company branding. Similar to the Digg bar.
- *
- * http://fooplugins.com/plugin/brandbar
- *
- * Copyright 2013 FooPlugins LLC & Brad Vincent
- * http://fooplugins.com
- *
- * Date: 8 Aug 2013
- * Version : 1.0.0
- *
- * */
-
 (function (BRANDBAR, $, undefined) {
 
     BRANDBAR.Timer = function () {
