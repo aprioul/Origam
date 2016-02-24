@@ -1,5 +1,5 @@
 <meta charset="UTF-8">
-<title>Origam Demo</title>
+<title><?php print $title; ?></title>
 <?php print styles('favicon.ico', 'shortcut icon', 'image/vnd.microsoft.icon'); ?>
 <?php print styles(base_url() . '/Assets/css/normalize.css'); ?>
 <?php print styles(base_url() . '/Assets/css/demo.css'); ?>

@@ -4,12 +4,6 @@
  * Helpers for origam
  */
 
-$js_files = glob('Assets/js/*.js');
-$css_files = glob('Assets/css/*.css');
-
-$module_path = backtrace_filename_includes();
-$module = explode('\\', $module_path);
-
 function base_url() {
   return sprintf(
     "%s://%s",
@@ -30,4 +24,8 @@ function scripts($path, $type = 'text/javascript') {
 
 function styles($path, $rel = 'stylesheet', $type = '') {
   return '<link href="' . $path . '" rel="' . $rel . '" type="' . $type . '"/>';
+}
+
+function get_current_module_title(){
+  return dirname($_SERVER['PHP_SELF']);
 }

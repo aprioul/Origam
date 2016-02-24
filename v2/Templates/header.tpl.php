@@ -4,8 +4,6 @@
  * Make header for website.
  */
 
-$files = scandir('Modules/');
-
 ?>
 <div id="brandbar">
     <div id="brandbar-logo">
