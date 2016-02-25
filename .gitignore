@@ -1,0 +1,9 @@
+# Exclude IDE files
+*.idea
+*/node_modules*
+*/nbproject*
+*.buildpath
+*.project
+
+# Exclude sass cache
+*.sass-cache
