@@ -10,6 +10,8 @@ $files = scandir('../../Modules/');
 
 $title = 'Origam Demo';
 
-$section  = array();
-$section[] = 'core';
+$sections  = array();
+$sections[] = 'core';
+
+$content = '';
 

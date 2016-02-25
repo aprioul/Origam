@@ -1,1 +1,3 @@
-<iframe id="brandbar-iframe" frameborder="0" src=""></iframe>
+<div <?php print $content_attributes; ?>>
+  <?php print $content; ?>
+</div>

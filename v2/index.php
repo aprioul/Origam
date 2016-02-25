@@ -10,7 +10,7 @@
   <?php include "Templates/header.tpl.php"; ?>
 </header>
 <div class="content">
-  <?php include "Templates/content.tpl.php"; ?>
+  <iframe id="brandbar-iframe" frameborder="0" src=""></iframe>
 </div>
 <footer class="footer">
   <?php include "Templates/footer.tpl.php"; ?>
