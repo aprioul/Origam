@@ -6,7 +6,9 @@ $css_files = glob('Assets/css/*.css');
 $module_path = backtrace_filename_includes();
 $module = explode('\\', $module_path);
 
-$files = scandir('../../Modules/');
+$base_path = realpath($_SERVER['DOCUMENT_ROOT']);
+
+$files = scandir($base_path . '/Modules/');
 
 $title = 'Origam Demo';
 
