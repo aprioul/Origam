@@ -1,8 +1,0 @@
-# Exclude IDE files
-*.idea
-*/nbproject*
-*.buildpath
-*.project
-
-# Exclude sass cache
-*.sass-cache
