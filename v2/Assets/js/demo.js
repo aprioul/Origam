@@ -1,10 +1,17 @@
-BRANDBAR.breakout();
+(function ($, w) {
+    if (typeof BRANDBAR == 'function') {
+        BRANDBAR.breakout();
+        BRANDBAR.url = 'demo.html';
+        BRANDBAR.init();
+    }
 
-(function (BRANDBAR, $, undefined) {
-    BRANDBAR.url = 'demo.html';
-}(window.BRANDBAR = window.BRANDBAR || {}, jQuery));
+    hljs.configure({
+        tabReplace: '    ',
+        classPrefix: 'hljs-origam-'
+   });
 
+    $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+    });
 
-jQuery(function () {
-    BRANDBAR.init();
-});
+})(jQuery, window);

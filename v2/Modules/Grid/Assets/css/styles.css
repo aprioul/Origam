@@ -1,4 +1,3 @@
-/*********** Breakpoints **************/
 /*********** Clearfix **************/
 .clearfix,
 .origam-grid__section {
@@ -52,9 +51,6 @@
   display: block;
   margin: 0 auto;
   max-width: 1024px;
-}
-.origam-grid__section.origam-grid__section_full {
-  max-width: none !important;
 }
 
 /*********** Origam Grid wordspace **************/
@@ -272,9 +268,13 @@
   width: 91.66667%;
 }
 
+.origam-grid__section.origam-grid__section_full {
+  max-width: none;
+}
+
 /*********** Origam Grid hidden **************/
-.origam-grid_hidden {
-  display: none !important;
+.origam-grid__cell_hidden {
+  display: none;
 }
 
 /*********** Origam Grid Gutter **************/

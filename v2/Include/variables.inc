@@ -1,12 +1,12 @@
 <?php
 
+$module_path = str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'] . '/' .$_SERVER['REQUEST_URI']));
+$GLOBALS['base_path'] = realpath($_SERVER['DOCUMENT_ROOT']);
+
+$module = explode('/', $module_path);
+
 $js_files = glob('Assets/js/*.js');
 $css_files = glob('Assets/css/*.css');
-
-$module_path = backtrace_filename_includes();
-$module = explode('\\', $module_path);
-
-$base_path = realpath($_SERVER['DOCUMENT_ROOT']);
 
 $files = scandir($base_path . '/Modules/');
 
@@ -16,4 +16,3 @@ $sections  = array();
 $sections[] = 'core';
 
 $content = '';
-

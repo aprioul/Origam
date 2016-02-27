@@ -9,7 +9,8 @@
   </h2>
 </div>
 <div class="origam-grid__cell origam-size-1of1">
-  <div class="origam-example">
+  <?php print $description; ?>
+</div>
+<div class="origam-grid__cell origam-size-1of1">
     <?php print $content; ?>
-  </div>
 </div>

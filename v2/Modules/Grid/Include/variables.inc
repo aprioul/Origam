@@ -9,3 +9,5 @@ foreach ($components as $component) {
     $sections[] = str_replace('_', '', str_replace('.scss', '', $component));
   }
 }
+
+$variables = array();

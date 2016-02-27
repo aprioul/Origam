@@ -40,9 +40,6 @@
   display: block;
   margin: 0 auto;
   max-width: $origam-section-width;
-  &.#{$origam-grid-prefix}__section_full {
-    max-width: none !important;
-  }
   @extend %clearfix;
 }
 
