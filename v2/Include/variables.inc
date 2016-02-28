@@ -1,7 +1,7 @@
 <?php
 
 $module_path = str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'] . '/' .$_SERVER['REQUEST_URI']));
-$GLOBALS['base_path'] = realpath($_SERVER['DOCUMENT_ROOT']);
+$base_path = $GLOBALS['base_path'] = realpath($_SERVER['DOCUMENT_ROOT']);
 
 $module = explode('/', $module_path);
 
@@ -13,6 +13,6 @@ $files = scandir($base_path . '/Modules/');
 $title = 'Origam Demo';
 
 $sections  = array();
-$sections[] = 'core';
+$sections['core'] = "Include/core.inc";
 
 $content = '';

@@ -1,7 +1,7 @@
 <?php
 // Include global variables
-include $base_path . "/Include/helpers.inc";
 include $base_path . "/Include/variables.inc";
+include $base_path . "/Include/helpers.inc";
 // Include grid variables
 include "Include/variables.inc";
 ?>
@@ -16,9 +16,8 @@ include "Include/variables.inc";
         <div class="origam-grid__wrapper">
             <div class="origam-grid__section">
                 <?php include $base_path . "/Templates/title.tpl.php"; ?>
-                <?php foreach ($sections as $section): ?>
-                    <?php include "Include/" . $section . ".inc"; ?>
-                    <?php include $base_path . "/Templates/section.tpl.php"; ?>
+                <?php foreach ($sections as $name => $data): ?>
+                    <?php include $data; ?>
                 <?php endforeach; ?>
             </div>
         </div>

@@ -98,16 +98,11 @@
     border: 2px solid #607D8B;
     background-color: #B0BEC5;
     padding: 10px 16px;
+    opacity: 0.5;
 }
 
 .icon .origam-grid_size-1of12 .origam-grid_size-1of1:not(:first-child) {
     font-size: 70%;
-}
-
-.origam-grid__cell_hidden{
-    display: inline-block !important;
-    opacity: 0.5;
-
 }
 
 @media (min-width: 768px) {

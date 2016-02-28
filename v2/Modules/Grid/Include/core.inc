@@ -17,3 +17,5 @@ $variables['#code']['items'][1][1]['content_attributes_array']['class'][] = 'ori
 $variables['#code']['items'][1][1]['content_attributes_array']['class'][] = 'origam-grid_size-1of5';
 
 $content = origam_create_example($variables);
+
+include $base_path . "/Templates/section.tpl.php";

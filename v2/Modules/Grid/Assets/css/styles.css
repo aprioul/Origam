@@ -288,420 +288,420 @@
 }
 
 /*********** Origam Grid Pull **************/
-.origam-grid_pull-1 {
+.origam-grid__cell_pull-1of1 {
   right: 100%;
 }
 
-.origam-grid_pull-1-2,
-.origam-grid_pull-2-4,
-.origam-grid_pull-3-6,
-.origam-grid_pull-4-8,
-.origam-grid_pull-5-10,
-.origam-grid_pull-6-12 {
+.origam-grid__cell_pull-1of2,
+.origam-grid__cell_pull-2of4,
+.origam-grid__cell_pull-3of6,
+.origam-grid__cell_pull-4of8,
+.origam-grid__cell_pull-5of10,
+.origam-grid__cell_pull-6of2 {
   right: 50%;
 }
 
-.origam-grid_pull-1-3,
-.origam-grid_pull-2-6,
-.origam-grid_pull-3-9,
-.origam-grid_pull-4-12 {
+.origam-grid__cell_pull-1of3,
+.origam-grid__cell_pull-2of6,
+.origam-grid__cell_pull-3of9,
+.origam-grid__cell_pull-4of12 {
   right: 33.33333%;
 }
 
-.origam-grid_pull-2-3,
-.origam-grid_pull-4-6,
-.origam-grid_pull-6-9,
-.origam-grid_pull-8-12 {
+.origam-grid__cell_pull-2of3,
+.origam-grid__cell_pull-4of6,
+.origam-grid__cell_pull-6of9,
+.origam-grid__cell_pull-8of12 {
   right: 66.66667%;
 }
 
-.origam-grid_pull-1-4,
-.origam-grid_pull-2-8,
-.origam-grid_pull-3-12 {
+.origam-grid__cell_pull-1of4,
+.origam-grid__cell_pull-2of8,
+.origam-grid__cell_pull-3of12 {
   right: 25%;
 }
 
-.origam-grid_pull-3-4,
-.origam-grid_pull-6-8,
-.origam-grid_pull-9-12 {
+.origam-grid__cell_pull-3of4,
+.origam-grid__cell_pull-6of8,
+.origam-grid__cell_pull-9of12 {
   right: 75%;
 }
 
-.origam-grid_pull-1-5,
-.origam-grid_pull-2-10 {
+.origam-grid__cell_pull-1of5,
+.origam-grid__cell_pull-2of10 {
   right: 20%;
 }
 
-.origam-grid_pull-2-5,
-.origam-grid_pull-4-10 {
+.origam-grid__cell_pull-2of5,
+.origam-grid__cell_pull-4of10 {
   right: 40%;
 }
 
-.origam-grid_pull-3-5,
-.origam-grid_pull-6-10 {
+.origam-grid__cell_pull-3of5,
+.origam-grid__cell_pull-6of10 {
   right: 60%;
 }
 
-.origam-grid_pull-4-5,
-.origam-grid_pull-8-10 {
+.origam-grid__cell_pull-4of5,
+.origam-grid__cell_pull-8of10 {
   right: 80%;
 }
 
-.origam-grid_pull-1-6,
-.origam-grid_pull-2-12 {
+.origam-grid__cell_pull-1of6,
+.origam-grid__cell_pull-2of12 {
   right: 16.66667%;
 }
 
-.origam-grid_pull-5-6 {
+.origam-grid__cell_pull-5of6 {
   right: 83.33333%;
 }
 
-.origam-grid_pull-1-7 {
+.origam-grid__cell_pull-1of7 {
   right: 14.28571%;
 }
 
-.origam-grid_pull-2-7 {
+.origam-grid__cell_pull-2of7 {
   right: 28.57143%;
 }
 
-.origam-grid_pull-3-7 {
+.origam-grid__cell_pull-3of7 {
   right: 42.85714%;
 }
 
-.origam-grid_pull-4-7 {
+.origam-grid__cell_pull-4of7 {
   right: 57.14286%;
 }
 
-.origam-grid_pull-5-7 {
+.origam-grid__cell_pull-5of7 {
   right: 71.42857%;
 }
 
-.origam-grid_pull-6-7 {
+.origam-grid__cell_pull-6of7 {
   right: 85.71429%;
 }
 
-.origam-grid_pull-1-8 {
+.origam-grid__cell_pull-1of8 {
   right: 12.5%;
 }
 
-.origam-grid_pull-3-8 {
+.origam-grid__cell_pull-3of8 {
   right: 37.5%;
 }
 
-.origam-grid_pull-5-8 {
+.origam-grid__cell_pull-5of8 {
   right: 62.5%;
 }
 
-.origam-grid_pull-7-8 {
+.origam-grid__cell_pull-7of8 {
   right: 87.5%;
 }
 
-.origam-grid_pull-1-9 {
+.origam-grid__cell_pull-1of9 {
   right: 11.11111%;
 }
 
-.origam-grid_pull-2-9 {
+.origam-grid__cell_pull-2of9 {
   right: 22.22222%;
 }
 
-.origam-grid_pull-4-9 {
+.origam-grid__cell_pull-4of9 {
   right: 44.44444%;
 }
 
-.origam-grid_pull-5-9 {
+.origam-grid__cell_pull-5of9 {
   right: 55.55556%;
 }
 
-.origam-grid_pull-7-9 {
+.origam-grid__cell_pull-7of9 {
   right: 77.77778%;
 }
 
-.origam-grid_pull-8-9 {
+.origam-grid__cell_pull-8of9 {
   right: 88.88889%;
 }
 
-.origam-grid_pull-1-10 {
+.origam-grid__cell_pull-1of10 {
   right: 10%;
 }
 
-.origam-grid_pull-3-10 {
+.origam-grid__cell_pull-3of10 {
   right: 30%;
 }
 
-.origam-grid_pull-7-10 {
+.origam-grid__cell_pull-7of10 {
   right: 70%;
 }
 
-.origam-grid_pull-9-10 {
+.origam-grid__cell_pull-9v10 {
   right: 90%;
 }
 
-.origam-grid_pull-1-11 {
+.origam-grid__cell_pull-1of11 {
   right: 9.09091%;
 }
 
-.origam-grid_pull-2-11 {
+.origam-grid__cell_pull-2of11 {
   right: 18.18182%;
 }
 
-.origam-grid_pull-3-11 {
+.origam-grid__cell_pull-3of11 {
   right: 27.27273%;
 }
 
-.origam-grid_pull-4-11 {
+.origam-grid__cell_pull-4of11 {
   right: 36.36364%;
 }
 
-.origam-grid_pull-5-11 {
+.origam-grid__cell_pull-5of11 {
   right: 45.45455%;
 }
 
-.origam-grid_pull-6-11 {
+.origam-grid__cell_pull-6of11 {
   right: 54.54545%;
 }
 
-.origam-grid_pull-7-11 {
+.origam-grid__cell_pull-7of11 {
   right: 63.63636%;
 }
 
-.origam-grid_pull-8-11 {
+.origam-grid__cell_pull-8of11 {
   right: 72.72727%;
 }
 
-.origam-grid_pull-9-11 {
+.origam-grid__cell_pull-9of11 {
   right: 81.81818%;
 }
 
-.origam-grid_pull-10-11 {
+.origam-grid__cell_pull-10of11 {
   right: 90.90909%;
 }
 
-.origam-grid_pull-1-12 {
+.origam-grid__cell_pull-1of12 {
   right: 8.33333%;
 }
 
-.origam-grid_pull-5-12 {
+.origam-grid__cell_pull-5of12 {
   right: 41.66667%;
 }
 
-.origam-grid_pull-7-12 {
+.origam-grid__cell_pull-7of12 {
   right: 58.33333%;
 }
 
-.origam-grid_pull-10-12 {
+.origam-grid__cell_pull-10of12 {
   right: 83.33333%;
 }
 
-.origam-grid_pull-11-12 {
+.origam-grid__cell_pull-11of12 {
   right: 91.66667%;
 }
 
 /*********** Origam Grid Push **************/
-.origam-grid_push-1 {
+.origam-grid__cell_push-1of1 {
   left: 100%;
 }
 
-.origam-grid_push-1-2,
-.origam-grid_push-2-4,
-.origam-grid_push-3-6,
-.origam-grid_push-4-8,
-.origam-grid_push-5-10,
-.origam-grid_push-6-12 {
+.origam-grid__cell_push-1of2,
+.origam-grid__cell_push-2of4,
+.origam-grid__cell_push-3of6,
+.origam-grid__cell_push-4of8,
+.origam-grid__cell_push-5of10,
+.origam-grid__cell_push-6of12 {
   left: 50%;
 }
 
-.origam-grid_push-1-3,
-.origam-grid_push-2-6,
-.origam-grid_push-3-9,
-.origam-grid_push-4-12 {
+.origam-grid__cell_push-1of3,
+.origam-grid__cell_push-2of6,
+.origam-grid__cell_push-3of9,
+.origam-grid__cell_push-4of12 {
   left: 33.33333%;
 }
 
-.origam-grid_push-2-3,
-.origam-grid_push-4-6,
-.origam-grid_push-6-9,
-.origam-grid_push-8-12 {
+.origam-grid__cell_push-2of3,
+.origam-grid__cell_push-4of6,
+.origam-grid__cell_push-6of9,
+.origam-grid__cell_push-8of12 {
   left: 66.66667%;
 }
 
-.origam-grid_push-1-4,
-.origam-grid_push-2-8,
-.origam-grid_push-3-12 {
+.origam-grid__cell_push-1of4,
+.origam-grid__cell_push-2of8,
+.origam-grid__cell_push-3of12 {
   left: 25%;
 }
 
-.origam-grid_push-3-4,
-.origam-grid_push-6-8,
-.origam-grid_push-9-12 {
+.origam-grid__cell_push-3of4,
+.origam-grid__cell_push-6of8,
+.origam-grid__cell_push-9of12 {
   left: 75%;
 }
 
-.origam-grid_push-1-5,
-.origam-grid_push-2-10 {
+.origam-grid__cell_push-1of5,
+.origam-grid__cell_push-2of10 {
   left: 20%;
 }
 
-.origam-grid_push-2-5,
-.origam-grid_push-4-10 {
+.origam-grid__cell_push-2of5,
+.origam-grid__cell_push-4of10 {
   left: 40%;
 }
 
-.origam-grid_push-3-5,
-.origam-grid_push-6-10 {
+.origam-grid__cell_push-3of5,
+.origam-grid__cell_push-6of10 {
   left: 60%;
 }
 
-.origam-grid_push-4-5,
-.origam-grid_push-8-10 {
+.origam-grid__cell_push-4of5,
+.origam-grid__cell_push-8of10 {
   left: 80%;
 }
 
-.origam-grid_push-1-6,
-.origam-grid_push-2-12 {
+.origam-grid__cell_push-1of6,
+.origam-grid__cell_push-2of12 {
   left: 16.66667%;
 }
 
-.origam-grid_push-5-6 {
+.origam-grid__cell_push-5of6 {
   left: 83.33333%;
 }
 
-.origam-grid_push-1-7 {
+.origam-grid__cell_push-1of7 {
   left: 14.28571%;
 }
 
-.origam-grid_push-2-7 {
+.origam-grid__cell_push-2of7 {
   left: 28.57143%;
 }
 
-.origam-grid_push-3-7 {
+.origam-grid__cell_push-3of7 {
   left: 42.85714%;
 }
 
-.origam-grid_push-4-7 {
+.origam-grid__cell_push-4of7 {
   left: 57.14286%;
 }
 
-.origam-grid_push-5-7 {
+.origam-grid__cell_push-5of7 {
   left: 71.42857%;
 }
 
-.origam-grid_push-6-7 {
+.origam-grid__cell_push-6of7 {
   left: 85.71429%;
 }
 
-.origam-grid_push-1-8 {
+.origam-grid__cell_push-1of8 {
   left: 12.5%;
 }
 
-.origam-grid_push-3-8 {
+.origam-grid__cell_push-3of8 {
   left: 37.5%;
 }
 
-.origam-grid_push-5-8 {
+.origam-grid__cell_push-5of8 {
   left: 62.5%;
 }
 
-.origam-grid_push-7-8 {
+.origam-grid__cell_push-7of8 {
   left: 87.5%;
 }
 
-.origam-grid_push-1-9 {
+.origam-grid__cell_push-1of9 {
   left: 11.11111%;
 }
 
-.origam-grid_push-2-9 {
+.origam-grid__cell_push-2of9 {
   left: 22.22222%;
 }
 
-.origam-grid_push-4-9 {
+.origam-grid__cell_push-4of9 {
   left: 44.44444%;
 }
 
-.origam-grid_push-5-9 {
+.origam-grid__cell_push-5of9 {
   left: 55.55556%;
 }
 
-.origam-grid_push-7-9 {
+.origam-grid__cell_push-7of9 {
   left: 77.77778%;
 }
 
-.origam-grid_push-8-9 {
+.origam-grid__cell_push-8of9 {
   left: 88.88889%;
 }
 
-.origam-grid_push-1-10 {
+.origam-grid__cell_push-1of10 {
   left: 10%;
 }
 
-.origam-grid_push-3-10 {
+.origam-grid__cell_push-3of10 {
   left: 30%;
 }
 
-.origam-grid_push-7-10 {
+.origam-grid__cell_push-7of10 {
   left: 70%;
 }
 
-.origam-grid_push-9-10 {
+.origam-grid__cell_push-9of10 {
   left: 90%;
 }
 
-.origam-grid_push-1-11 {
+.origam-grid__cell_push-1of11 {
   left: 9.09091%;
 }
 
-.origam-grid_push-2-11 {
+.origam-grid__cell_push-2of11 {
   left: 18.18182%;
 }
 
-.origam-grid_push-3-11 {
+.origam-grid__cell_push-3of11 {
   left: 27.27273%;
 }
 
-.origam-grid_push-4-11 {
+.origam-grid__cell_push-4of11 {
   left: 36.36364%;
 }
 
-.origam-grid_push-5-11 {
+.origam-grid__cell_push-5of11 {
   left: 45.45455%;
 }
 
-.origam-grid_push-6-11 {
+.origam-grid__cell_push-6of11 {
   left: 54.54545%;
 }
 
-.origam-grid_push-7-11 {
+.origam-grid__cell_push-7of11 {
   left: 63.63636%;
 }
 
-.origam-grid_push-8-11 {
+.origam-grid__cell_push-8of11 {
   left: 72.72727%;
 }
 
-.origam-grid_push-9-11 {
+.origam-grid__cell_push-9of11 {
   left: 81.81818%;
 }
 
-.origam-grid_push-10-11 {
+.origam-grid__cell_push-10of11 {
   left: 90.90909%;
 }
 
-.origam-grid_push-1-12 {
+.origam-grid__cell_push-1of12 {
   left: 8.33333%;
 }
 
-.origam-grid_push-5-12 {
+.origam-grid__cell_push-5of12 {
   left: 41.66667%;
 }
 
-.origam-grid_push-7-12 {
+.origam-grid__cell_push-7of12 {
   left: 58.33333%;
 }
 
-.origam-grid_push-10-12 {
+.origam-grid__cell_push-10of12 {
   left: 83.33333%;
 }
 
-.origam-grid_push-11-12 {
+.origam-grid__cell_push-11of12 {
   left: 91.66667%;
 }
 

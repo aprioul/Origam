@@ -1,5 +1,5 @@
-<?php include "Include/helpers.inc"; ?>
 <?php include "Include/variables.inc"; ?>
+<?php include "Include/helpers.inc"; ?>
 <!DOCTYPE html>
 <html>
 <head lang="en">
