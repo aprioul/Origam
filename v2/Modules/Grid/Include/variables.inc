@@ -12,12 +12,4 @@ foreach ($components as $component) {
   }
 }
 
-$modes = scandir('Modules/');
-
-foreach ($modes as $mode) {
-  if ($mode != '.' && $mode != '..') {
-    $sections[$mode] = "Modules/" . $mode . "/";
-  }
-}
-
 $variables = array();
